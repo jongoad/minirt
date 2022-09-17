@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   matrix.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jgoad <jgoad@student.42.fr>                +#+  +:+       +#+        */
+/*   By: ismaelyahyaouiracine <ismaelyahyaouirac    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/06 23:11:16 by jgoad             #+#    #+#             */
-/*   Updated: 2022/06/20 16:53:26 by jgoad            ###   ########.fr       */
+/*   Updated: 2022/09/17 21:40:42 by ismaelyahya      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,15 +18,11 @@ float **matrix_identity(int fill, int fill_diagonal)
 	float	**m;
 	t_i		i;
 
-	m = (float **)malloc(sizeof(float *) * 4);
-	if (!m)
-		return (0);
+	m = (float **)ft_xalloc(sizeof(float *) * 4);
 	i.y = 0;
 	while (i.y < 4)
 	{
-		m[i.y] = (float *)malloc(sizeof(float) * 4);
-			if (!m[i.y])
-				return (0);
+		m[i.y] = (float *)ft_xalloc(sizeof(float) * 4);
 		i.x = 0;
 		while (i.x < 4)
 		{
@@ -168,7 +164,7 @@ void	matrix_free(float **mat)
 	t_i i;
 
 	i.y = 0;
-	while (i.y < 3)
+	while (i.y < 4)
 	{
 		free(mat[i.y]);
 	}

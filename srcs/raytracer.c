@@ -1,11 +1,20 @@
 #include "minirt.h"
 
+int	intersect(t_ray *ray, t_object *object)
+{
+	(void) ray;
+	(void) object;
+	return (0);
+
+	//Calculate if the ray intersects with a given object
+}
+
 void	raytracer(t_data *data)
 {
 	t_ray *ray;
 	t_i i;
 
-	float	dist;
+	// float	dist;
 
 	i.y = 0;
 	i.x = 0;
@@ -20,24 +29,20 @@ void	raytracer(t_data *data)
 			while (i.z < data->nb_objs) //This loop is to go through each object in the scene
 			{
 				if (intersect(ray, data->objects[i.z]))
+					(void) ray;
 					//Check if dist is shorted than prev, if it is update object
 
 				i.z++;
 			}
-			if (intersect found)
-				/* Calculate shadow ray and set pixel based on result */
-			else
-				/* Set current pixel in image to ambient colout and brightness*/
-			free_ray(ray);
+			// if (intersect(ray, data))
+			// 	/* Calculate shadow ray and set pixel based on result */
+			// else
+			// 	/* Set current pixel in image to ambient colout and brightness*/
+			// free_ray(ray);
 			i.x++;
 		}
 		i.y++;
 	}
-}
-
-int	intersect(t_ray *ray, t_object *object)
-{
-	//Calculate if the ray intersects with a given object
 }
 
 /* Basic raytracing steps:
