@@ -5,7 +5,7 @@ t_ray	*generate_primary_ray(t_data *data, int x, int y)
 {
 	t_ray *ray;
 
-	ray = malloc(sizeof(t_ray));
+	ray = ft_xalloc(sizeof(t_ray));
 	ray->second = init_pixel_point(data, x, y);
 	ray->vec3 = get_vector(ray->origin, ray->second);
 	return (ray);
@@ -16,7 +16,7 @@ t_vector	*get_vector(t_point *origin, t_point *second)
 {
 	t_vector *vector;
 
-	vector = malloc(sizeof(t_vector));
+	vector = ft_xalloc(sizeof(t_vector));
 	vector->x = second->x - origin->x;
 	vector->y = second->y - origin->y;
 	vector->z = second->z - origin->z;
@@ -31,7 +31,7 @@ t_point		*init_pixel_point(t_data *data, int x, int y)
 	float	width;
 	float	height;
 
-	point = malloc(sizeof(t_point));
+	point = ft_xalloc(sizeof(t_point));
 	data = get_data();
 	
 	/* Calculate center of pixel point in image plane */

@@ -8,7 +8,6 @@
 # include <unistd.h>
 # include <fcntl.h>
 
-# include <OpenGL>
 /* User Includes */
 #include "../minilibx_opengl/mlx_opengl.h"
 
@@ -90,7 +89,6 @@ typedef struct s_camera
 
 typedef struct s_mlx
 {
-	/* data */
 }	t_mlx;
 
 typedef struct	s_object
@@ -101,15 +99,31 @@ typedef struct	s_object
 
 }	t_object;
 
+/* mlx image */
+typedef struct s_img
+{
+	void	*img_ptr;
+	char	*data_addr;
+	int		bpp;
+	int		line_len;
+	int		endian;
+	int		width;
+	int		height;
+}	t_img;
+
 /* Master data */
 typedef struct s_data
 {
 	t_camera	cam;
-	t_object	**objects;
+	t_object	*objects;
+	void		*mlx_ptr;
+	void		*win_ptr;
+	char		*win_name;
+	t_img		*img;
 	int			nb_objs;
 	t_mlx		mlx;
-	
-
+	int			win_h;
+	int			win_w;
 }	t_data;
 
 
@@ -131,4 +145,7 @@ float	**matrix_mult_mat(float **m1, float **m2);
 void	matrix_mult_point(t_point *v, float **mat);
 void	matrix_free(float **mat);
 
-#endif
+/* Utils */
+void	*ft_xalloc(size_t size);
+
+#endif // MINIRT_H
