@@ -10,6 +10,8 @@
 
 /* User Includes */
 #include "../minilibx_opengl/mlx_opengl.h"
+#include "../minilibx_opengl/mlx.h"
+#include "../libft/libft.h"
 
 
 /* Defines */
@@ -115,7 +117,7 @@ typedef struct s_img
 typedef struct s_data
 {
 	t_camera	cam;
-	t_object	*objects;
+	t_object	**objects;
 	void		*mlx_ptr;
 	void		*win_ptr;
 	char		*win_name;
@@ -126,12 +128,15 @@ typedef struct s_data
 	int			win_w;
 }	t_data;
 
+/* Initialization */
+void	rt_init(t_data *rt, char *filepath);
+
+/* Hooks */
+void	set_hooks(t_data *rt);
 
 /* Ray Generation */
 t_ray		*generate_primary_ray(t_data *data, int x, int y);
 t_point		*init_pixel_point(t_data *data, int x, int y);
-
-
 
 t_data		*get_data(void);
 t_vector	*get_vector(t_point *origin, t_point *second);
@@ -147,5 +152,10 @@ void	matrix_free(float **mat);
 
 /* Utils */
 void	*ft_xalloc(size_t size);
+void	exit_on_err(char *err_message);
+
+/* Cleanup */
+int		rt_clean_exit(t_data *cont);
+void	rt_cleanup(t_data *cont);
 
 #endif // MINIRT_H

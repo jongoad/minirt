@@ -27,7 +27,7 @@ t_vector	*get_vector(t_point *origin, t_point *second)
 t_point		*init_pixel_point(t_data *data, int x, int y)
 {
 	t_point *point;
-	t_data	*data;
+	// t_data	*data;
 	float	width;
 	float	height;
 

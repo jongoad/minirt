@@ -11,16 +11,19 @@ RED			=	\033[0;31m
 UYELLOW		=	\033[4;33m
 RESET_COL	=	\033[0m
 
-CFILES	=	controls.c \
-			init.c \
+CFILES	=	cleanup.c \
 			hooks.c \
+			init.c \
+			key_hooks.c \
 			matrix.c \
 			main.c \
 			mlx.c \
+			mouse_hooks.c \
 			parse.c \
 			ray.c \
 			raytracer.c \
-			singleton.c
+			singleton.c \
+			utils.c
 
 SRC_DIR	= srcs
 SRCS	= $(addprefix $(SRC_DIR)/, $(CFILES))

@@ -1,4 +1,5 @@
 #include "minirt.h"
+#include "hooks.h"
 
 
 
@@ -7,15 +8,13 @@ int	main(int argc, char **argv)
 	t_data	*rt;
 
 	if (argc != 2)
-		exit_on_err("Error: FdF only accepts one input\n");
+		exit_on_err("Error: minirt only accepts a single input\n");
 	rt = ft_xalloc(sizeof(t_data));
-	fdf_parse(rt, argv[1]);
-	fdf_init(rt, argv[1]);
-	center_map(rt);
-	display_map(rt);
+	rt_init(rt, argv[1]);
 	set_hooks(rt);
 	mlx_loop(rt->mlx_ptr);
-	return (0);}
+	return (0);
+}
 
 // int	main(int argc, char **argv)
 // {
