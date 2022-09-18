@@ -12,6 +12,9 @@ UYELLOW		=	\033[4;33m
 RESET_COL	=	\033[0m
 
 CFILES	=	cleanup.c \
+			color.c \
+			display.c \
+			hello.c \
 			hooks.c \
 			init.c \
 			key_hooks.c \
@@ -21,9 +24,12 @@ CFILES	=	cleanup.c \
 			mouse_hooks.c \
 			parse.c \
 			ray.c \
+			ray_background.c \
 			raytracer.c \
 			singleton.c \
-			utils.c
+			simple_sphere.c \
+			utils.c \
+			vectors_copy.c
 
 SRC_DIR	= srcs
 SRCS	= $(addprefix $(SRC_DIR)/, $(CFILES))
@@ -32,18 +38,20 @@ SRCS	= $(addprefix $(SRC_DIR)/, $(CFILES))
 OBJ_DIR	= obj
 OBJS	= $(addprefix $(OBJ_DIR)/, $(CFILES:.c=.o))
 
-INCFILES	=	minirt.h
+INCFILES	=	hooks.h \
+				minirt.h
 
 INC_DIR			= ./includes
 INCS			= $(addprefix $(INC_DIR)/, $(INCFILES))
 
 INCLFLAGS	= -I$(INC_DIR)
 MLX_FLAGS 	= -Lminilibx_macos -lmlx  -framework OpenGL -framework AppKit
+MLX42_FLAGS 	= -lmlx42 -L MLX42 -lglfw -L /opt/homebrew/Cellar/glfw/3.3.8/lib/  -framework OpenGL -framework AppKit
 LIBFT_FLAGS	= -lft -Llibft
 LIBM_FLAG	= -lm
 
 CC		= gcc
-CFLAGS	= -Wall -Wextra -Werror -g -O3
+CFLAGS	= -Wall -Wextra -Werror -Ofast
 
 #
 # DEBUG build settings
@@ -101,14 +109,16 @@ $(NAME):	libft pretty_print $(OBJS)
 
 silent_libft:
 	@echo -e "---------------------- libft.a ----------------------\n"
-	@echo -e "$(CYAN)>>>>>>>> Archiving libft.a ...$(RESET_COL)"
-	@make -s bonus -C $(LIBFT_DIR)
-	@if [ -e $(LIBFT) ]; \
-		then \
-		echo -e "$(GREEN)>>>>>>>> Archive successful\n>>>>>>>>$(RESET_COL)"; \
-	else \
-		echo -e "$(RED)>>>>>>>> Archive failed\n>>>>>>>>$(RESET_COL)"; \
-	fi
+	@echo -e "$(RED)\t*** WARNING: LIBFT CURRENTLY NOT BUILT ***$(RESET_COL)";
+	
+# @echo -e "$(CYAN)>>>>>>>> Archiving libft.a ...$(RESET_COL)"
+# @make -s bonus -C $(LIBFT_DIR)
+# @if [ -e $(LIBFT) ]; \
+# 	then \
+# 	echo -e "$(GREEN)>>>>>>>> Archive successful\n>>>>>>>>$(RESET_COL)"; \
+# else \
+# 	echo -e "$(RED)>>>>>>>> Archive failed\n>>>>>>>>$(RESET_COL)"; \
+# fi
 
 libft: silent_libft
 
@@ -121,8 +131,9 @@ clean:
 	@echo -e "$(GREEN)>>>>>>>> obj files deleted\n>>>>>>>>$(RESET_COL)"
 
 clean_libft:
-	@echo -e "$(RED)>>>>>>>> make fclean -sC libft $(RESET_COL)$(RM_LIBFT_OUT)"
-	@echo -e "$(GREEN)>>>>>>>> libft cleaned\n>>>>>>>>$(RESET_COL)"
+	@echo -e "$(RED)\t*** WARNING: LIBFT CURRENTLY NOT BUILT ***$(RESET_COL)";
+# @echo -e "$(RED)>>>>>>>> make fclean -sC libft $(RESET_COL)$(RM_LIBFT_OUT)"
+# @echo -e "$(GREEN)>>>>>>>> libft cleaned\n>>>>>>>>$(RESET_COL)"
 
 clean_debug: clean
 	@echo -e "$(RED)>>>>>>>> Deleting debug obj files$(RESET_COL)$(RM_DBG_EXE_OUT)"
@@ -133,6 +144,8 @@ fclean:	clean clean_libft clean_debug
 	@echo -e "$(GREEN)>>>>>>>> ./$(NAME) deleted\n>>>>>>>>$(RESET_COL)"
 
 re:	fclean all
+reish:	clean
+	@${MAKE} -j4
 
 bonus:	all
 

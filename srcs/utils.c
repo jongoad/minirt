@@ -37,13 +37,8 @@ void	fill_pixel(t_img *img, int x, int y, int color)
 {
 	char	*cast_ptr;
 
-	if (!img)
-	{
-		ft_putstr_fd("fill_pixel: img does not exist\n", 2);
-		return ;
-	}
-	else if (x < 0 || x >= img->width || y < 0 || y >= img->height)
-		return ;
+	// if (x < 0 || x >= img->width || y < 0 || y >= img->height)
+	// 	return ;
 	cast_ptr = (char *)(img->data_addr + x * img->bpp / 8 + y * img->line_len);
 	*(int *)cast_ptr = color;
 }

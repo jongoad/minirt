@@ -59,4 +59,5 @@ libftTester
 *.swp
 info_fd
 .vscode
-/obj/*
+./obj/
+minirt

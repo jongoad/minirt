@@ -55,11 +55,11 @@ typedef enum e_mlx_events
 }	t_mlx_events;
 
 //FUNCTIONS
-int		handle_key_release_hook(int keysym, t_data *cont);
-int		handle_key_press_hook(int keysym, t_data *cont);
-int		handle_key_press_hook_2(int keysym, t_data *cont);
-int		handle_mouse_hook(int button, int x, int y, t_data *cont);
-int		handle_mouse_motion(int x, int y, t_data *cont);
-int		default_hook(t_data *cont);
+int		handle_key_release_hook(int keysym, t_data *rt);
+int		handle_key_press_hook(int keysym, t_data *rt);
+int		handle_key_press_hook_2(int keysym, t_data *rt);
+int		handle_mouse_hook(int button, int x, int y, t_data *rt);
+int		handle_mouse_motion(int x, int y, t_data *rt);
+int		default_hook(t_data *rt);
 
 #endif // MINIRT_HOOKS_H
