@@ -19,7 +19,7 @@ void	exit_on_err(char *err_message)
 	exit(EXIT_FAILURE);
 }
 
-double	linear_interpolation(double start, double end, double curr)
+double	lerp(double start, double end, double curr)
 {
 	if (curr == start || end == start)
 		return (0.0F);

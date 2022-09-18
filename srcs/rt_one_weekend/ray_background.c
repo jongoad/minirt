@@ -6,15 +6,15 @@
 // #pragma omp parallel for
 // https://stackoverflow.com/questions/1448318/omp-parallel-vs-omp-parallel-for
 
-static inline t_vec3    vec3(double x, double y, double z)
-{
-    t_vec3  v;
+// static inline t_vec3    vec3(double x, double y, double z)
+// {
+//     t_vec3  v;
 
-    v.x = x;
-    v.y = y;
-    v.z = z;
-    return (v);
-}
+//     v.x = x;
+//     v.y = y;
+//     v.z = z;
+//     return (v);
+// }
 
 int		ray_color(t_ray_vec3 *r)
 {

@@ -1,64 +1,26 @@
 #include "minirt.h"
 #include "hooks.h"
 
+static int	handle_key_press_hook_rt_one_weekend(int keysym, t_data *rt);
+
 int	handle_key_release_hook(int keysym, t_data *rt)
 {
 	if (keysym == KEY_ESC)
 		rt_clean_exit(rt);
-	// if (keysym == KEY_F1)
-	// {
-	// 	rt->toggle_menu = !rt->toggle_menu;
-	// 	display_menu(rt);
-	// 	return (0);
-	// }
-	// if (rt->toggle_menu)
-	// 	return (1);
-	// else if (keysym == KEY_C)
-	// 	rt->map_is_colored = !rt->map_is_colored;
-	// else if (keysym == KEY_P)
-	// 	rt->toggle_proj = !rt->toggle_proj;
-	// else if (keysym == KEY_R)
-	// 	toggle_all_rotations(rt);
-	// else if (keysym == NUMPAD9)
-	// 	rt->toggle_rot_z = !rt->toggle_rot_z;
-	// else if (keysym == NUMPAD6)
-	// 	rt->toggle_rot_y = !rt->toggle_rot_y;
-	// else if (keysym == NUMPAD3)
-	// 	rt->toggle_rot_x = !rt->toggle_rot_x;
-	// else if (keysym == NUMPAD0 || keysym == KEY_0)
-	// 	reset_proportions(rt);
 	return (0);
 }
 
 int	handle_key_press_hook(int keysym, t_data *rt)
 {
-	// if (rt->toggle_menu)
-	// 	return (1);
-	// if (keysym == NUMPAD_PLUS || keysym == KEY_PLUS)
-	// 	if (rt->square_width < 150)
-	// 		rt->square_width += 1;
-	// if (keysym == NUMPAD_MINUS || keysym == KEY_MINUS)
-	// 	if (rt->square_width > 2)
-	// 		rt->square_width -= 1;
-	// if (keysym == NUMPAD7)
-	// 	rt->theta_z -= 0.1;
-	// if (keysym == NUMPAD8)
-	// 	rt->theta_z += 0.1;
-	// if (keysym == NUMPAD4)
-	// 	rt->theta_y -= 0.1;
-	// if (keysym == NUMPAD5)
-	// 	rt->theta_y += 0.1;
-	// if (keysym == NUMPAD1)
-	// 	rt->theta_x -= 0.1;
-	// if (keysym == NUMPAD2)
-	// 	rt->theta_x += 0.1;
-	// if (rt->toggle_proj && keysym == KEY_O)
-	// 	cycle_orthographic_perspectives(rt);
-	return (handle_key_press_hook_2(keysym, rt));
+	return (handle_key_press_hook_rt_one_weekend(keysym, rt));
 }
 
-int	handle_key_press_hook_2(int keysym, t_data *rt)
+static int	handle_key_press_hook_rt_one_weekend(int keysym, t_data *rt)
 {
+	static double	y_pos;
+	static double	x_pos;
+	static double	z_pos = -1.0F;
+	t_vec3			sp_center;
 	// if (keysym == KEY_W)
 	// 	if (rt->z_offset > -1000)
 	// 		rt->z_offset -= 8;
@@ -80,9 +42,42 @@ int	handle_key_press_hook_2(int keysym, t_data *rt)
 	// if (keysym == KEY_UP || keysym == KEY_Z)
 	// 	if (rt->y_offset < rt->win_h * 0.1F * rt->square_width)
 	// 		rt->y_offset += 10;
-	// if (keysym == KEY_DOWN || keysym == KEY_X)
-	// 	if (rt->y_offset > rt->win_h * -0.1F * rt->square_width)
-	// 		rt->y_offset -= 10;
+	if (keysym == NUMPAD2)
+	{
+		z_pos	-= 0.1F;
+		sp_center = vec3(x_pos, y_pos, z_pos);
+		generate_sphere_shaded(rt, &sp_center);
+	}
+	else if (keysym == NUMPAD8)
+	{
+		z_pos	+= 0.1F;
+		sp_center = vec3(x_pos, y_pos, z_pos);
+		generate_sphere_shaded(rt, &sp_center);
+	}
+	else if (keysym == KEY_RIGHT)
+	{
+		x_pos	-= 0.1F;
+		sp_center = vec3(x_pos, y_pos, z_pos);
+		generate_sphere_shaded(rt, &sp_center);
+	}
+	else if (keysym == KEY_LEFT)
+	{
+		x_pos	+= 0.1F;
+		sp_center = vec3(x_pos, y_pos, z_pos);
+		generate_sphere_shaded(rt, &sp_center);
+	}
+	else if (keysym == KEY_UP)
+	{
+		y_pos	+= 0.1F;
+		sp_center = vec3(x_pos, y_pos, z_pos);
+		generate_sphere_shaded(rt, &sp_center);
+	}
+	else if (keysym == KEY_DOWN)
+	{
+		y_pos	-= 0.1F;
+		sp_center = vec3(x_pos, y_pos, z_pos);
+		generate_sphere_shaded(rt, &sp_center);
+	}
 	(void) keysym;
 	(void) rt;
 	return (0);

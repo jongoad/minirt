@@ -40,7 +40,8 @@ OBJ_DIR	= obj
 OBJS	= $(addprefix $(OBJ_DIR)/, $(CFILES:.c=.o))
 
 INCFILES	=	hooks.h \
-				minirt.h
+				minirt.h \
+				rt_one_weekend.h
 
 INC_DIR			= ./includes
 INCS			= $(addprefix $(INC_DIR)/, $(INCFILES))

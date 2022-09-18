@@ -3,15 +3,15 @@
 
 // https://raytracing.github.io/books/RayTracingInOneWeekend.html
 
-static inline t_vec3    vec3(double x, double y, double z)
-{
-    t_vec3  v;
+// static inline t_vec3    vec3(double x, double y, double z)
+// {
+//     t_vec3  v;
 
-    v.x = x;
-    v.y = y;
-    v.z = z;
-    return (v);
-}
+//     v.x = x;
+//     v.y = y;
+//     v.z = z;
+//     return (v);
+// }
 
 bool hit_sphere_bool(t_vec3 *center, double radius2, t_ray_vec3 *r) {
     t_vec3	oc;
