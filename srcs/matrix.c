@@ -6,7 +6,7 @@
 /*   By: ismaelyahyaouiracine <ismaelyahyaouirac    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/06 23:11:16 by jgoad             #+#    #+#             */
-/*   Updated: 2022/09/17 18:18:08 by ismaelyahya      ###   ########.fr       */
+/*   Updated: 2022/09/17 21:40:42 by ismaelyahya      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -164,7 +164,7 @@ void	matrix_free(float **mat)
 	t_i i;
 
 	i.y = 0;
-	while (i.y < 3)
+	while (i.y < 4)
 	{
 		free(mat[i.y]);
 	}

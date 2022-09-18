@@ -1,17 +1,17 @@
 #include "minirt.h"
 
-int	rt_clean_exit(t_data *cont)
+int	rt_clean_exit(t_data *rt)
 {
-	rt_cleanup(cont);
+	rt_cleanup(rt);
 	exit(EXIT_SUCCESS);
 }
 
-void	rt_cleanup(t_data *cont)
+void	rt_cleanup(t_data *rt)
 {
-	mlx_destroy_window(cont->mlx_ptr, cont->win_ptr);
-	mlx_destroy_image(cont->mlx_ptr, cont->img->img_ptr);
-	free(cont->win_name);
-	free(cont->img);
-	free(cont);
+	mlx_destroy_window(rt->mlx_ptr, rt->win_ptr);
+	mlx_destroy_image(rt->mlx_ptr, rt->img->img_ptr);
+	free(rt->win_name);
+	free(rt->img);
+	free(rt);
 	return ;
 }

@@ -2,6 +2,7 @@
 #include "hooks.h"
 
 
+void    hello_world(t_data *rt);
 
 int	main(int argc, char **argv)
 {
@@ -11,6 +12,7 @@ int	main(int argc, char **argv)
 		exit_on_err("Error: minirt only accepts a single input\n");
 	rt = ft_xalloc(sizeof(t_data));
 	rt_init(rt, argv[1]);
+	hello_world(rt);
 	set_hooks(rt);
 	mlx_loop(rt->mlx_ptr);
 	return (0);
