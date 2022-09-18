@@ -14,7 +14,6 @@ RESET_COL	=	\033[0m
 CFILES	=	cleanup.c \
 			color.c \
 			display.c \
-			hello.c \
 			hooks.c \
 			init.c \
 			key_hooks.c \
@@ -24,12 +23,14 @@ CFILES	=	cleanup.c \
 			mouse_hooks.c \
 			parse.c \
 			ray.c \
-			ray_background.c \
 			raytracer.c \
 			singleton.c \
-			simple_sphere.c \
 			utils.c \
-			vectors_copy.c
+			vectors_copy.c \
+			rt_one_weekend/hello.c \
+			rt_one_weekend/ray_background.c \
+			rt_one_weekend/shaded_sphere.c \
+			rt_one_weekend/simple_sphere.c
 
 SRC_DIR	= srcs
 SRCS	= $(addprefix $(SRC_DIR)/, $(CFILES))
@@ -79,7 +80,7 @@ COMPILE_C		=	$(CC) $(CFLAGS) $(INCLFLAGS) -o $@ -c $<
 COMPILE_C_OUT	=	$$($(COMPILE_C) 2>&1 | sed -e 's/error/\\\033[0;31merror\\\033[0m/g' -e 's/warning/\\\033[0;33mwarning\\\033[0m/g')
 
 $(OBJ_DIR)/%.o:	$(SRC_DIR)/%.c $(INCS)
-	@mkdir -p $(OBJ_DIR)
+	@mkdir -p $(@D)
 	@printf "$(CYAN)%-25s-->%25s $(RESET_COL)$(COMPILE_C_OUT)\n" $< $@
 #
 # DEBUG MACROS
@@ -92,7 +93,7 @@ RM_DBG_EXE			=	rm -rf $(DBG_EXE) $(DBG_DIR)
 RM_DBG_EXE_OUT		=	$$($(RM_DBG_EXE) 2>&1 | sed -e 's/error/\\\033[0;31merror\\\033[0m/g' -e 's/warning/\\\033[0;33mwarning\\\033[0m/g')
 
 $(DBG_DIR)/%.o: $(SRC_DIR)/%.c
-	@mkdir -p $(DBG_DIR)
+	@mkdir -p $(@D)
 	@echo -e "$(ON_RED)>\t$^\t--> $@ $(RESET_COL)$(COMPILE_DBGC_OUT)"
 
 all: $(NAME)

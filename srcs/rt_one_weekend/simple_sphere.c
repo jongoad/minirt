@@ -3,9 +3,6 @@
 
 // https://raytracing.github.io/books/RayTracingInOneWeekend.html
 
-// #pragma omp parallel for
-// https://stackoverflow.com/questions/1448318/omp-parallel-vs-omp-parallel-for
-
 static inline t_vec3    vec3(double x, double y, double z)
 {
     t_vec3  v;
@@ -16,15 +13,34 @@ static inline t_vec3    vec3(double x, double y, double z)
     return (v);
 }
 
-int		ray_color(t_ray_vec3 *r) {
+bool hit_sphere_bool(t_vec3 *center, double radius2, t_ray_vec3 *r) {
+    t_vec3	oc;
+    double	a;
+    double	b;
+    double	c;
+    double	discriminant;
+
+	oc = sub_vec3(r->orig, *center);
+	a = dot_vec3(r->dir, r->dir);
+	b = 2.0F * dot_vec3(oc, r->dir);
+	c = dot_vec3(oc, oc) - radius2;
+	discriminant = b*b - 4*a*c;
+    return (discriminant > 0);
+}
+
+int		ray_color_sphere_simple(t_ray_vec3 *r)
+{
+	t_vec3	center = vec3(0,0,-1);
+	double	radius2 = 0.5F * 0.5F;
+    if (hit_sphere_bool(&center, radius2, r))
+        return (RED);
 	static t_vec3	grad1 = { .x = 1.0, .y = 1.0, .z = 1.0 };
 	static t_vec3	grad2 = { .x = 0.5, .y = 0.7, .z = 1.0 };
     t_vec3			unit_direction;
 	t_vec3			color;
     double			t;
 
-
-	unit_direction = unit_vec3(*(r->second));
+	unit_direction = unit_vec3(r->dir);
 	t = 0.5*(unit_direction.y + 1.0F);
 	color = mult_vec3(grad1, 1.0F - t);
 	color = add_vec3(color, mult_vec3(grad2, t));
@@ -32,7 +48,8 @@ int		ray_color(t_ray_vec3 *r) {
     return vec3_to_color(&color);
 }
 
-void	generate_background(t_data *rt) {
+void	generate_sphere_simple(t_data *rt)
+{
 
     // Image
     double	aspect_ratio = 16.0 / 9.0;
@@ -66,7 +83,7 @@ void	generate_background(t_data *rt) {
 
 	double	start_time = (double)clock();
 
-	r.origin = &origin;
+	r.orig = origin;
     for (int j = 0; j < image_height; ++j) {
         for (int i = 0; i < image_width; ++i) {
             u = (double)(i) / (image_width-1);
@@ -76,15 +93,15 @@ void	generate_background(t_data *rt) {
 				mult_vec3(horizontal, u),
 				mult_vec3(vertical, v)),
 				origin);
-			r.second = &destination;
-            pixel_color = ray_color(&r);
+			r.dir = destination;
+            pixel_color = ray_color_sphere_simple(&r);
 			// printf("%d %d : %d %d %d\n", i, j, (pixel_color >> 16), (pixel_color >> 8 & 0xFF), (pixel_color & 0xFF));
             fill_pixel(rt->img, i, j, pixel_color);
         }
     }
+	double	end_time = (double)clock();
 	display_default(rt);
 
-	double	end_time = (double)clock();
 
 	double	time_elapsed = end_time - start_time;
 

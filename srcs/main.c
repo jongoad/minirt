@@ -4,6 +4,8 @@
 
 void    hello_world(t_data *rt);
 void	generate_background(t_data *rt);
+void	generate_sphere_simple(t_data *rt);
+void	generate_sphere_shaded(t_data *rt);
 
 int	main(int argc, char **argv)
 {
@@ -14,7 +16,9 @@ int	main(int argc, char **argv)
 	rt = ft_xalloc(sizeof(t_data));
 	rt_init(rt, argv[1]);
 	// hello_world(rt);
-	generate_background(rt);
+	// generate_background(rt);
+	// generate_sphere_simple(rt);
+	generate_sphere_shaded(rt);
 	set_hooks(rt);
 	mlx_loop(rt->mlx_ptr);
 	return (0);

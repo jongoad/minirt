@@ -18,6 +18,10 @@
 # define IMG_W 1000
 # define IMG_H 562
 
+/* Colors */
+# define RED 255 << 16
+# define GREEN 255 << 8
+# define BLUE 255
 
 /* Structs */
 
@@ -81,8 +85,8 @@ typedef	struct s_ray
 }	t_ray;
 typedef	struct s_ray_vec3
 {
-	t_vec3 	*origin;			/* Originating point of ray (camera focal point) */
-	t_vec3	*second;			/* Secondary point of ray (pixel on image plane) */
+	t_vec3 	orig;			/* Originating point of ray (camera focal point) */
+	t_vec3	dir;			/* Secondary point of ray (pixel on image plane) */
 	// t_vector	*vec3;				/* Vector created from origin and secondary point */
 }	t_ray_vec3;
 
