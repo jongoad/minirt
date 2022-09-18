@@ -1,6 +1,6 @@
 #include "minirt.h"
 
-static inline t_vec3    vec3(double x, double y, double z)
+t_vec3  vec3(double x, double y, double z)
 {
     t_vec3  v;
 
@@ -10,7 +10,7 @@ static inline t_vec3    vec3(double x, double y, double z)
     return (v);
 }
 
-double invsqrt_dbl(double y)
+double invsqrt(double y)
 {
     double      yhalf;
     long long   i;
@@ -18,21 +18,10 @@ double invsqrt_dbl(double y)
     yhalf = (double)0.5F * y;
     i = *(long long*)( &y );
     i = 0x5fe6ec85e7de30daLL - (i >> 1);
+    // For floats:
+    // i = 0x5f3759df - (i >> 1);
     y = *(double*)(&i);
     y = y * ((double)1.5F - yhalf * y * y);
-    return y;
-}
-
-float invsqrt_f(float y)
-{
-    float  yhalf;
-    long   i;
-
-    yhalf = 0.5F * y;
-    i = *(long*)(&y);
-    i = 0x5f3759df - (i >> 1);
-    y = *(float*)(&i);
-    y = y * (1.5F - yhalf * y * y);
     return y;
 }
 
@@ -90,7 +79,7 @@ t_vec3 div_vec3(t_vec3 v, double b)
 
 double length_vec3(t_vec3 v)
 {
-    return sqrt(
+    return sqrtf(
         (v.x) * (v.x)
         + (v.y) * (v.y)
         + (v.z) * (v.z));
@@ -100,7 +89,7 @@ t_vec3 unit_vec3(t_vec3 v)
 {
     double is;
 
-    is = invsqrt_dbl(
+    is = invsqrt(
         (v.x) * (v.x)
         + (v.y) * (v.y)
         + (v.z) * (v.z));
@@ -118,4 +107,9 @@ t_vec3 cross_vec3(t_vec3 a, t_vec3 b)
 t_vec3 negate_vec3(t_vec3 v)
 {
     return vec3(-v.x, -v.y, -v.z);
+}
+
+double cos_vec3(t_vec3 a, t_vec3 b)
+{
+    return dot_vec3(a, b) / (length_vec3(a) * length_vec3(b));
 }

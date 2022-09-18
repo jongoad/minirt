@@ -14,11 +14,26 @@
 #include "../libft/libft.h"
 
 
+#include "rt_one_weekend.h"
+
+
 /* Defines */
 # define IMG_W 1000
 # define IMG_H 562
 
-
+/* Colors */
+typedef enum e_colors
+{
+	BLACK	= 0x000000,
+	BLUE	= 0x0000FF,
+	CYAN	= 0x00FFFF,
+	GREY	= 0x222222,
+	ORANGE	= 0xFF7700,
+	PINK	= 0xFF00FF,
+	RED		= 0xFF0000,
+	WHITE	= 0xFFFFFF,
+	YELLOW	= 0xFFFF00
+}	t_colors;
 /* Structs */
 
 
@@ -78,11 +93,16 @@ typedef	struct s_ray
 	t_point 	*origin;			/* Originating point of ray (camera focal point) */
 	t_point		*second;			/* Secondary point of ray (pixel on image plane) */
 	t_vector	*vec3;				/* Vector created from origin and secondary point */
+	void		*imasdas;
+	void		*mfdff;
+	void		*iasd;
+	void		*iaaa;
+
 }	t_ray;
 typedef	struct s_ray_vec3
 {
-	t_vec3 	*origin;			/* Originating point of ray (camera focal point) */
-	t_vec3	*second;			/* Secondary point of ray (pixel on image plane) */
+	t_vec3 	orig;			/* Originating point of ray (camera focal point) */
+	t_vec3	dir;			/* Secondary point of ray (pixel on image plane) */
 	// t_vector	*vec3;				/* Vector created from origin and secondary point */
 }	t_ray_vec3;
 
@@ -115,6 +135,28 @@ typedef struct	s_object
 
 }	t_object;
 
+typedef struct s_hit_rec	t_hit_rec;
+typedef struct s_obj		t_obj;
+typedef struct s_obj
+{
+	t_vec3		center;
+	t_vec3		orientation; 	/* for cylinders */
+	t_vec3		color;			/* object initial color */
+	double		width;			/* for cylinders, spheres */
+	double		height;			/* for cylinders */
+	void		(*hit)(t_data *rt, t_ray_vec3 *r, t_obj *o, t_hit_rec *rec);	/* Function ptr for any object type */
+	char		type;
+}	t_obj;
+
+typedef struct s_hit_rec
+{
+	t_vec3	p;		/* Coords of point of collision */
+    t_vec3	normal;	/* Unit vector representing the normal to the surface at collision */
+    double	t;		/* Distance to point of collision */
+	int		obj_id;	/* ID of the object on which is point of collision */
+}	t_hit_rec;
+
+
 /* mlx image */
 typedef struct s_img
 {
@@ -130,12 +172,12 @@ typedef struct s_img
 /* Master data */
 typedef struct s_data
 {
-	t_camera	cam;
-	t_object	**objects;
 	void		*mlx_ptr;
 	void		*win_ptr;
 	char		*win_name;
 	t_img		*img;
+	t_camera	cam;
+	t_object	**objects;
 	int			nb_objs;
 	t_mlx		mlx;
 	int			win_h;
@@ -178,6 +220,7 @@ void	*ft_xalloc(size_t size);
 void	exit_on_err(char *err_message);
 void	draw_background(t_img *img, int color);
 void	fill_pixel(t_img *img, int x, int y, int color);
+double	lerp(double start, double end, double curr);
 
 /* Cleanup */
 int		rt_clean_exit(t_data *rt);
@@ -186,8 +229,9 @@ void	rt_cleanup(t_data *rt);
 
 /* Vectors */
 
-double	invsqrt_dbl(double y);
-float	invsqrt_f(float y);
+double	invsqrt(double y);
+
+t_vec3	vec3(double x, double y, double z);
 t_vec3	add_vec3(t_vec3 a, t_vec3 b);
 t_vec3	add3_vec3(t_vec3 a, t_vec3 b, t_vec3 c);
 double	dot_vec3(t_vec3 a, t_vec3 b);
