@@ -93,11 +93,6 @@ typedef	struct s_ray
 	t_point 	*origin;			/* Originating point of ray (camera focal point) */
 	t_point		*second;			/* Secondary point of ray (pixel on image plane) */
 	t_vector	*vec3;				/* Vector created from origin and secondary point */
-	void		*imasdas;
-	void		*mfdff;
-	void		*iasd;
-	void		*iaaa;
-
 }	t_ray;
 typedef	struct s_ray_vec3
 {
@@ -105,6 +100,13 @@ typedef	struct s_ray_vec3
 	t_vec3	dir;			/* Secondary point of ray (pixel on image plane) */
 	// t_vector	*vec3;				/* Vector created from origin and secondary point */
 }	t_ray_vec3;
+
+typedef	struct s_ray_vec3_ptr
+{
+	t_vec3 	*orig;			/* Originating point of ray (camera focal point) */
+	t_vec3	*dir;			/* Secondary point of ray (pixel on image plane) */
+	// t_vector	*vec3;				/* Vector created from origin and secondary point */
+}	t_ray_vec3_ptr;
 
 /* Camera data */
 typedef struct s_camera
@@ -227,7 +229,7 @@ int		rt_clean_exit(t_data *rt);
 void	rt_cleanup(t_data *rt);
 
 
-/* Vectors */
+/* Vectors by copy */
 
 double	invsqrt(double y);
 
@@ -243,5 +245,33 @@ double	length_vec3(t_vec3 v);
 t_vec3	unit_vec3(t_vec3 v);
 t_vec3	cross_vec3(t_vec3 a, t_vec3 b);
 t_vec3	negate_vec3(t_vec3 v);
+double cos_vec3(t_vec3 a, t_vec3 b)
+
+/* Vectors self-operations */
+
+void	add_vec3_self(t_vec3 *a, t_vec3 b);
+void	add3_vec3_self(t_vec3 *a, t_vec3 b, t_vec3 c);
+void	sub_vec3_self(t_vec3 *a, t_vec3 b);
+void	mult_vec3_vec3_self(t_vec3 *a, t_vec3 b);
+void	mult_vec3_self(t_vec3 *v, double b);
+void	div_vec3_self(t_vec3 *v, double b);
+void	unit_vec3_self(t_vec3 *v);
+void	cross_vec3_self(t_vec3 *a, t_vec3 b);
+void	negate_vec3_self(t_vec3 *v);
+
+// t_vec3	*new_vec3(double x, double y, double z);
+// double	invsqrt_dbl(double y);
+// float	invsqrt_f(float y);
+// t_vec3	*add_vec3(t_vec3 *a, t_vec3 *b);
+// t_vec3	*add3_vec3(t_vec3 *a, t_vec3 *b, t_vec3 *c);
+// double	dot_vec3(t_vec3 *a, t_vec3 *b);
+// t_vec3	*sub_vec3(t_vec3 *a, t_vec3 *b);
+// t_vec3	*mult_vec3_vec3(t_vec3 *a, t_vec3 *b);
+// t_vec3	*mult_vec3(t_vec3 *v, double b);
+// t_vec3	*div_vec3(t_vec3 *v, double b);
+// double	length_vec3(t_vec3 *v);
+// t_vec3	*unit_vec3(t_vec3 *v);
+// t_vec3	*cross_vec3(t_vec3 *a, t_vec3 *b);
+// t_vec3	*negate_vec3(t_vec3 *v);
 
 #endif // MINIRT_H
