@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_get_token.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iyahoui- <iyahoui-@student.42quebec.com    +#+  +:+       +#+        */
+/*   By: iyahoui- <iyahoui-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/08 19:48:46 by iyahoui-          #+#    #+#             */
-/*   Updated: 2022/02/20 18:37:29 by iyahoui-         ###   ########.fr       */
+/*   Updated: 2022/09/19 19:38:59 by iyahoui-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ char	*ft_get_last_token(char *string, char delimiter)
 	i = str_len;
 	if (!string)
 		return (NULL);
-	while (string[i] != delimiter && i >= 0)
+	while (string[i] != delimiter)
 		i--;
 	last_token = malloc(str_len - i + 1);
 	j = 0;

@@ -3,6 +3,8 @@
 
 // https://raytracing.github.io/books/RayTracingInOneWeekend.html
 
+double	g_fps;
+
 double hit_sphere_slow(t_vec3 *sp_center, double radius2, t_ray_vec3 *r) {
     t_vec3	oc;
     double	a;
