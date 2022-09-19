@@ -3,24 +3,6 @@
 
 // https://raytracing.github.io/books/RayTracingInOneWeekend.html
 
-// static inline t_vec3    vec3(double x, double y, double z)
-// {
-//     t_vec3  v;
-
-//     v.x = x;
-//     v.y = y;
-//     v.z = z;
-//     return (v);
-// }
-
-/**
- * @brief 
- * 
- * @param sp_center 
- * @param radius 
- * @param r 
- * @return double 
- */
 double hit_sphere_slow(t_vec3 *sp_center, double radius2, t_ray_vec3 *r) {
     t_vec3	oc;
     double	a;
@@ -79,7 +61,7 @@ int		ray_color_sphere_shaded(t_ray_vec3 *r, t_vec3 sp_center)
 	}
 
 	/* Black background */
-	// return (BLACK);
+	// return (WHITE);
 
 	/* Funky background */
 	static double	h_divider = 1.0f / (IMG_H - 1);
@@ -120,9 +102,11 @@ void	generate_sphere_shaded(t_data *rt, t_vec3 *sp_center)
     t_vec3 origin = vec3(0, 0, 0);
     t_vec3 horizontal = vec3(-viewport_width, 0, 0);
     t_vec3 vertical = vec3(0, -viewport_height, 0);
-    t_vec3 lower_left_corner = sub_vec3(origin, div_vec3(horizontal, 2));
-	lower_left_corner = sub_vec3(lower_left_corner, div_vec3(vertical, 2));
-	lower_left_corner = sub_vec3(lower_left_corner, vec3(0, 0, focal_length));
+    t_vec3 low_left = sub_vec3(origin, div_vec3(horizontal, 2));
+	low_left = sub_vec3(low_left, div_vec3(vertical, 2));
+	low_left = sub_vec3(low_left, vec3(0, 0, focal_length));
+
+	// low_left = origin - horizontal/2 - vertical/2 - vec3(0, 0, focal_length);
 
     // Render
 	t_ray_vec3	r;
@@ -135,12 +119,13 @@ void	generate_sphere_shaded(t_data *rt, t_vec3 *sp_center)
 	double	start_time = (double)clock();
 
 	r.orig = origin;
+
     for (int j = 0; j < image_height; ++j) {
         for (int i = 0; i < image_width; ++i) {
             u = (double)(i) / (image_width-1);
             v = (double)(j) / (image_height-1);
 			destination = sub_vec3(add3_vec3(
-				lower_left_corner,
+				low_left,
 				mult_vec3(horizontal, u),
 				mult_vec3(vertical, v)),
 				origin);
@@ -167,6 +152,13 @@ void	generate_sphere_shaded(t_data *rt, t_vec3 *sp_center)
 
 	free(fps);
 
+
+	static uint64_t	fps_tot;
+	static uint64_t	nb_inputs;
+
+	fps_tot += (int)g_fps;
+	nb_inputs++;
+	
 	printf("render time: %.2lf ms\n", time_elapsed / 1000);
-	printf("FPS: %.2lf\n", g_fps);
+	printf("FPS: %.2lf Avg = %llu\n", g_fps, fps_tot / nb_inputs);
 }

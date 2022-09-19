@@ -9,17 +9,21 @@
 # include <fcntl.h>
 
 /* User Includes */
-#include "../minilibx_opengl/mlx_opengl.h"
-#include "../minilibx_opengl/mlx.h"
-#include "../libft/libft.h"
+// # include "../minilibx_opengl/mlx_opengl.h"
+# include <mlx.h>
+# include "../libft/libft.h"
 
 
-#include "rt_one_weekend.h"
+# include "rt_one_weekend.h"
 
 
 /* Defines */
-# define IMG_W 1000
-# define IMG_H 562
+# define ASPECT_RATIO ((float)16 / (float)9)
+# define IMG_W 1200
+# define IMG_H (int)(IMG_W / ASPECT_RATIO)
+
+# define INF	1e10
+# define T_MIN	0.5F
 
 /* Colors */
 typedef enum e_colors
@@ -34,6 +38,14 @@ typedef enum e_colors
 	WHITE	= 0xFFFFFF,
 	YELLOW	= 0xFFFF00
 }	t_colors;
+
+typedef enum e_obj_types
+{
+	T_SPH	= 's',
+	T_CYL	= 'c',
+	T_PLANE	= 's',
+	T_CONE	= 's'
+}	e_obj_types;
 /* Structs */
 
 
@@ -47,9 +59,9 @@ typedef struct s_i
 
 typedef struct s_vec3
 {
-	double	x;
-	double	y;
-	double	z;
+	float	x;
+	float	y;
+	float	z;
 }	t_vec3;
 
 /* Colour data */
@@ -93,30 +105,35 @@ typedef	struct s_ray
 	t_point 	*origin;			/* Originating point of ray (camera focal point) */
 	t_point		*second;			/* Secondary point of ray (pixel on image plane) */
 	t_vector	*vec3;				/* Vector created from origin and secondary point */
-	void		*imasdas;
-	void		*mfdff;
-	void		*iasd;
-	void		*iaaa;
-
 }	t_ray;
 typedef	struct s_ray_vec3
 {
 	t_vec3 	orig;			/* Originating point of ray (camera focal point) */
 	t_vec3	dir;			/* Secondary point of ray (pixel on image plane) */
-	// t_vector	*vec3;				/* Vector created from origin and secondary point */
+	float	t_max;			/* Vector created from origin and secondary point */
 }	t_ray_vec3;
+
+typedef	struct s_ray_vec3_ptr
+{
+	t_vec3 	*orig;			/* Originating point of ray (camera focal point) */
+	t_vec3	*dir;			/* Secondary point of ray (pixel on image plane) */
+	// t_vector	*vec3;				/* Vector created from origin and secondary point */
+}	t_ray_vec3_ptr;
 
 /* Camera data */
 typedef struct s_camera
 {
-	t_point		pos;				/* Position of camera */
-	t_vector	aim;				/* Direction camera is pointing */
+	t_vec3		pos;				/* Position of camera */
+	t_vec3		aim;				/* Direction camera is pointing */
+	t_vec3		horizontal;			/* view_w vector  */
+	t_vec3		vertical;			/* view_h vector  */
+	t_vec3		low_left;			/* Vector from origin to lower left corner */
 	float		**world_to_cam;		/* World to camera coords transform */
 	float		**cam_to_world;		/* Camera to world coords transform */
 	int			img_w;				/* Width of image in pixels */
 	int			img_h;				/* Height of image in pixels */
-	float		view_w;				/* Width of the camera */
-	float		view_h;				/* Height of the camera */
+	float		view_w;				/* Width of the viewport */
+	float		view_h;				/* Height of the viewport */
 	float		z_offset;			/* Distance of focal point from image plane, this will change the FOV */
 
 }	t_camera;
@@ -142,18 +159,18 @@ typedef struct s_obj
 	t_vec3		center;
 	t_vec3		orientation; 	/* for cylinders */
 	t_vec3		color;			/* object initial color */
-	double		width;			/* for cylinders, spheres */
-	double		height;			/* for cylinders */
-	void		(*hit)(t_data *rt, t_ray_vec3 *r, t_obj *o, t_hit_rec *rec);	/* Function ptr for any object type */
+	float		width;			/* for cylinders */
+	float		radius;			/* for spheres */
+	float		height;			/* for cylinders */
+	bool		(*hit)(t_ray_vec3 *r, t_obj *o, t_hit_rec *rec, float t_min);	/* Function ptr for any object type */
 	char		type;
 }	t_obj;
 
 typedef struct s_hit_rec
 {
-	t_vec3	p;		/* Coords of point of collision */
-    t_vec3	normal;	/* Unit vector representing the normal to the surface at collision */
-    double	t;		/* Distance to point of collision */
-	int		obj_id;	/* ID of the object on which is point of collision */
+	t_vec3	p;			/* Coords of point of collision */
+    t_vec3	normal;		/* Unit vector representing the normal to the surface at collision */
+    double	t;			/* Distance to point of collision */
 }	t_hit_rec;
 
 
@@ -177,7 +194,8 @@ typedef struct s_data
 	char		*win_name;
 	t_img		*img;
 	t_camera	cam;
-	t_object	**objects;
+	t_object	**objects;	// Do we want to add objects dynamically ?
+	// t_object	*objects;	
 	int			nb_objs;
 	t_mlx		mlx;
 	int			win_h;
@@ -191,13 +209,15 @@ void	rt_init(t_data *rt, char *filepath);
 void	set_hooks(t_data *rt);
 
 /* Colors */
-int		to_color(int r, int g, int b);
+int		int_to_color(int r, int g, int b);
 void    color(t_color *c);
 int     vec3_to_color(t_vec3 *c);
+int     vec3_to_color_copy(t_vec3 c);
 
 /* Display */
 int	display_default(t_data *rt);
 int	display_img(t_data *rt, t_img *img);
+
 
 /* Ray Generation */
 t_ray		*generate_primary_ray(t_data *data, int x, int y);
@@ -227,7 +247,9 @@ int		rt_clean_exit(t_data *rt);
 void	rt_cleanup(t_data *rt);
 
 
-/* Vectors */
+
+
+/* Vectors by copy */
 
 double	invsqrt(double y);
 
@@ -243,5 +265,29 @@ double	length_vec3(t_vec3 v);
 t_vec3	unit_vec3(t_vec3 v);
 t_vec3	cross_vec3(t_vec3 a, t_vec3 b);
 t_vec3	negate_vec3(t_vec3 v);
+double	cos_vec3(t_vec3 a, t_vec3 b);
+
+/* Vectors self-operations */
+
+void	add_vec3_self(t_vec3 *a, t_vec3 b);
+void	add3_vec3_self(t_vec3 *a, t_vec3 b, t_vec3 c);
+void	sub_vec3_self(t_vec3 *a, t_vec3 b);
+void	mult_vec3_vec3_self(t_vec3 *a, t_vec3 b);
+void	mult_vec3_self(t_vec3 *v, double b);
+void	div_vec3_self(t_vec3 *v, double b);
+void	unit_vec3_self(t_vec3 *v);
+void	cross_vec3_self(t_vec3 *a, t_vec3 b);
+void	negate_vec3_self(t_vec3 *v);
+
+/* Vectors by new malloced pointer */
+t_vec3 *add_vec3_new(t_vec3 *a, t_vec3 *b);
+t_vec3 *add3_vec3_new(t_vec3 *a, t_vec3 *b, t_vec3 *c);
+t_vec3 *sub_vec3_new(t_vec3 *a, t_vec3 *b);
+t_vec3 *mult_vec3_vec3_new(t_vec3 *a, t_vec3 *b);
+t_vec3 *mult_vec3_new(t_vec3 *v, double b);
+t_vec3 *div_vec3_new(t_vec3 *v, double b);
+t_vec3 *unit_vec3_new(t_vec3 *v);
+t_vec3 *cross_vec3_new(t_vec3 *a, t_vec3 *b);
+t_vec3 *negate_vec3_new(t_vec3 *v);
 
 #endif // MINIRT_H

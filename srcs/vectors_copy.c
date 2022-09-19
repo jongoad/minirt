@@ -89,7 +89,7 @@ t_vec3 unit_vec3(t_vec3 v)
 {
     double is;
 
-    is = invsqrt(
+    is = 1 / sqrtf(
         (v.x) * (v.x)
         + (v.y) * (v.y)
         + (v.z) * (v.z));

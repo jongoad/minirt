@@ -35,10 +35,9 @@ void	draw_background(t_img *img, int color)
 
 void	fill_pixel(t_img *img, int x, int y, int color)
 {
-	char	*cast_ptr;
+	// char	*cast_ptr;
 
-	// if (x < 0 || x >= img->width || y < 0 || y >= img->height)
-	// 	return ;
-	cast_ptr = (char *)(img->data_addr + x * img->bpp / 8 + y * img->line_len);
-	*(int *)cast_ptr = color;
+	*(int *)(char *)(img->data_addr + x * img->bpp / 8 + y * img->line_len) = color;
+	// cast_ptr = (char *)(img->data_addr + x * img->bpp / 8 + y * img->line_len);
+	// *(int *)cast_ptr = color;
 }
