@@ -1,5 +1,5 @@
 NAME		=	minirt
-NAME_LINUX	=	minirt
+NAME_LINUX	=	minirt_linux
 
 # FOR TESTING PURPOSES
 RUN_ARGS = test_maps/42.fdf
@@ -116,8 +116,8 @@ linux: $(NAME_LINUX)
 $(NAME):	libft pretty_print $(OBJS)
 	@echo -e "\n$(CYAN)>>>>>>>> Compiling into executable $(UYELLOW)./$(NAME)$(RESET_COL)$(COMPILE_EXE_OUT)"
 
-$(NAME_LINUX):	libft pretty_print $(OBJS)
-	@echo -e "\n$(CYAN)>>>>>>>> Compiling into executable $(UYELLOW)./$(NAME)$(RESET_COL)$(COMPILE_EXE_LINUX_OUT)"
+# $(NAME_LINUX):	libft pretty_print $(OBJS)
+# 	@echo -e "\n$(CYAN)>>>>>>>> Compiling into executable $(UYELLOW)./$(NAME)$(RESET_COL)$(COMPILE_EXE_LINUX_OUT)"
 
 silent_libft:
 	@echo -e "---------------------- libft.a ----------------------\n"

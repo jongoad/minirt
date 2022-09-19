@@ -245,7 +245,7 @@ double	length_vec3(t_vec3 v);
 t_vec3	unit_vec3(t_vec3 v);
 t_vec3	cross_vec3(t_vec3 a, t_vec3 b);
 t_vec3	negate_vec3(t_vec3 v);
-double cos_vec3(t_vec3 a, t_vec3 b)
+double	cos_vec3(t_vec3 a, t_vec3 b);
 
 /* Vectors self-operations */
 
