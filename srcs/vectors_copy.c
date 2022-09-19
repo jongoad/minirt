@@ -33,6 +33,13 @@ t_vec3 add_vec3(t_vec3 a, t_vec3 b)
         a.z + b.z);
 }
 
+void add_vec3_self(t_vec3 *a, t_vec3 b)
+{
+    a->x += b.x;
+    a->y += b.y;
+    a->z += b.z;
+}
+
 t_vec3 add3_vec3(t_vec3 a, t_vec3 b, t_vec3 c)
 {
     return vec3(

@@ -3,24 +3,6 @@
 
 // https://raytracing.github.io/books/RayTracingInOneWeekend.html
 
-double hit_sphere_slow(t_vec3 *sp_center, double radius2, t_ray_vec3 *r) {
-    t_vec3	oc;
-    double	a;
-    double	b;
-    double	c;
-    double	discriminant;
-
-	oc = sub_vec3(r->orig, *sp_center);
-	a = dot_vec3(r->dir, r->dir);
-	b = 2.0F * dot_vec3(oc, r->dir);
-	c = dot_vec3(oc, oc) - radius2;
-	discriminant = b*b - 4*a*c;
-    if (discriminant < 0)
-        return -1.0F;
-	return (-b - sqrtf(discriminant) ) / (2.0F * a); 
-	// Only return the smallest value, i.e. the closest
-}
-
 double hit_sphere(t_vec3 *sp_center, double radius2, t_ray_vec3 *r) {
     t_vec3	oc;
     double	a;
@@ -53,10 +35,11 @@ int		ray_color_sphere_shaded(t_ray_vec3 *r, t_vec3 sp_center)
     if (t > 0.0F)
 	{
 		// ray.at(t) == orig + t * dir
-		color = add_vec3(r->orig, mult_vec3(r->dir, t) );
-		color = unit_vec3(sub_vec3(color, z_norm));
-		color = add_vec3(color, unit);
-		color = mult_vec3(color, 127.999F); // 0.5F * 255
+		color = add_vec3(r->orig, mult_vec3(r->dir, t));
+		sub_vec3_self(&color, z_norm);
+		unit_vec3_self(&color);
+		add_vec3_self(&color, unit);
+		mult_vec3_self(&color, 127.999F); // 0.5F * 255
         return (vec3_to_color(&color));
 	}
 
@@ -103,8 +86,8 @@ void	generate_sphere_shaded(t_data *rt, t_vec3 *sp_center)
     t_vec3 horizontal = vec3(-viewport_width, 0, 0);
     t_vec3 vertical = vec3(0, -viewport_height, 0);
     t_vec3 lower_left_corner = sub_vec3(origin, div_vec3(horizontal, 2));
-	lower_left_corner = sub_vec3(lower_left_corner, div_vec3(vertical, 2));
-	lower_left_corner = sub_vec3(lower_left_corner, vec3(0, 0, focal_length));
+	sub_vec3_self(&lower_left_corner, div_vec3(vertical, 2));
+	sub_vec3_self(&lower_left_corner, vec3(0, 0, focal_length));
 
 	// lower_left_corner = origin - horizontal/2 - vertical/2 - vec3(0, 0, focal_length);
 
