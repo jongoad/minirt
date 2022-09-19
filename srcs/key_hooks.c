@@ -42,25 +42,25 @@ static int	handle_key_press_hook_rt_one_weekend(int keysym, t_data *rt)
 	// if (keysym == KEY_UP || keysym == KEY_Z)
 	// 	if (rt->y_offset < rt->win_h * 0.1F * rt->square_width)
 	// 		rt->y_offset += 10;
-	if (keysym == NUMPAD2)
+	if (keysym == NUMPAD2 || keysym == KEY_S)
 	{
 		z_pos	-= 0.1F;
 		sp_center = vec3(x_pos, y_pos, z_pos);
 		generate_sphere_shaded(rt, &sp_center);
 	}
-	else if (keysym == NUMPAD8)
+	else if (keysym == NUMPAD8 || keysym == KEY_W)
 	{
 		z_pos	+= 0.1F;
 		sp_center = vec3(x_pos, y_pos, z_pos);
 		generate_sphere_shaded(rt, &sp_center);
 	}
-	else if (keysym == KEY_RIGHT)
+	else if (keysym == KEY_RIGHT || keysym == KEY_D)
 	{
 		x_pos	-= 0.1F;
 		sp_center = vec3(x_pos, y_pos, z_pos);
 		generate_sphere_shaded(rt, &sp_center);
 	}
-	else if (keysym == KEY_LEFT)
+	else if (keysym == KEY_LEFT || keysym == KEY_A)
 	{
 		x_pos	+= 0.1F;
 		sp_center = vec3(x_pos, y_pos, z_pos);
