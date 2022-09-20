@@ -60,7 +60,7 @@ LIBFT_FLAGS			= -lft -Llibft
 LIBM_FLAG	= -lm
 
 CC		= gcc
-CFLAGS	= -Wall -Wextra -Werror -Ofast
+CFLAGS	= -Wall -Wextra -Werror -O1
 
 
 LIBFT_DIR	= ./libft

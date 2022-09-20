@@ -19,7 +19,7 @@
 
 /* Defines */
 # define ASPECT_RATIO ((float)16 / (float)9)
-# define IMG_W 1000
+# define IMG_W 1200
 # define IMG_H (int)(IMG_W / ASPECT_RATIO)
 
 /* Colors */
@@ -198,6 +198,7 @@ void	set_hooks(t_data *rt);
 int		int_to_color(int r, int g, int b);
 void    color(t_color *c);
 int     vec3_to_color(t_vec3 *c);
+int     vec3_to_color_copy(t_vec3 c);
 
 /* Display */
 int	display_default(t_data *rt);
@@ -262,13 +263,13 @@ void	cross_vec3_self(t_vec3 *a, t_vec3 b);
 void	negate_vec3_self(t_vec3 *v);
 
 /* Vectors by new malloced pointer */
-t_vec3 *add_vec3_new(t_vec3 *a, t_vec3 *b){;
+t_vec3 *add_vec3_new(t_vec3 *a, t_vec3 *b);
 t_vec3 *add3_vec3_new(t_vec3 *a, t_vec3 *b, t_vec3 *c);
 t_vec3 *sub_vec3_new(t_vec3 *a, t_vec3 *b);
 t_vec3 *mult_vec3_vec3_new(t_vec3 *a, t_vec3 *b);
 t_vec3 *mult_vec3_new(t_vec3 *v, double b);
 t_vec3 *div_vec3_new(t_vec3 *v, double b);
-t_vec3 *unit_vec3_new(t_vec3 *v) {;
+t_vec3 *unit_vec3_new(t_vec3 *v);
 t_vec3 *cross_vec3_new(t_vec3 *a, t_vec3 *b);
 t_vec3 *negate_vec3_new(t_vec3 *v);
 

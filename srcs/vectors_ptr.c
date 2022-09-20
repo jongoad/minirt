@@ -11,7 +11,8 @@ t_vec3    *new_vec3(double x, double y, double z)
     return (v);
 }
 
-t_vec3 *add_vec3_new(t_vec3 *a, t_vec3 *b){
+t_vec3 *add_vec3_new(t_vec3 *a, t_vec3 *b)
+{
     return new_vec3(
         a->x + b->x,
         a->y + b->y,
@@ -55,7 +56,8 @@ t_vec3 *div_vec3_new(t_vec3 *v, double b)
     return mult_vec3_new(v, 1.0f / b);
 }
 
-t_vec3 *unit_vec3_new(t_vec3 *v) {
+t_vec3 *unit_vec3_new(t_vec3 *v)
+{
     double is;
 
     is = 1 / sqrtf(

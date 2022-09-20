@@ -1,9 +1,6 @@
 #include "minirt.h"
 #include "hooks.h"
 
-// FIXME: Bonus
-#include <stdlib.h>
-
 void	set_hooks(t_data *rt)
 {
 	mlx_do_key_autorepeaton(rt->mlx_ptr);
@@ -20,6 +17,5 @@ int	default_hook(t_data *rt)
 {
 	(void) rt;
 
-	// display_default(rt);
 	return (0);
 }

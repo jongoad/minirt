@@ -43,7 +43,7 @@ int		ray_color_sphere_shaded(t_ray_vec3 *r, t_vec3 *sp_center)
 	}
 
 	/* Black background */
-	// return (WHITE);
+	return (WHITE);
 
 	/* Funky background */
 	static double	h_divider = 1.0f / (IMG_H - 1);
@@ -72,21 +72,21 @@ void	generate_sphere_shaded(t_data *rt, t_vec3 *sp_center)
 {
 
     // Image
-    double	aspect_ratio = 16.0 / 9.0;
-    int		image_width = IMG_W;
-    int		image_height = (int)(image_width / aspect_ratio);
+    // double	aspect_ratio = 16.0 / 9.0;
+    // int		image_width = IMG_W;
+    // int		image_height = (int)(image_width / aspect_ratio);
 
-    // Camera
-    double viewport_height = 2.0F;
-    double viewport_width = aspect_ratio * viewport_height;
-    double focal_length = 1.0F;
+    // // Camera
+    // double viewport_height = 2.0F;
+    // double viewport_width = aspect_ratio * viewport_height;
+    // double focal_length = 1.0F;
 
     t_vec3 origin = vec3(0, 0, 0);
-    t_vec3 horizontal = vec3(-viewport_width, 0, 0);
-    t_vec3 vertical = vec3(0, -viewport_height, 0);
+    t_vec3 horizontal = vec3(-rt->cam.view_w, 0, 0);
+    t_vec3 vertical = vec3(0, -rt->cam.view_h, 0);
     t_vec3 lower_left_corner = sub_vec3(origin, div_vec3(horizontal, 2));
 	sub_vec3_self(&lower_left_corner, div_vec3(vertical, 2));
-	sub_vec3_self(&lower_left_corner, vec3(0, 0, focal_length));
+	sub_vec3_self(&lower_left_corner, vec3(0, 0, rt->cam.z_offset));
 
 	// lower_left_corner = origin - horizontal/2 - vertical/2 - vec3(0, 0, focal_length);
 
@@ -102,10 +102,10 @@ void	generate_sphere_shaded(t_data *rt, t_vec3 *sp_center)
 
 	r.orig = origin;
 
-    for (int j = 0; j < image_height; ++j) {
-        for (int i = 0; i < image_width; ++i) {
-            u = (double)(i) / (image_width-1);
-            v = (double)(j) / (image_height-1);
+    for (int j = 0; j < rt->img->height; ++j) {
+        for (int i = 0; i < rt->img->width; ++i) {
+            u = (double)(i) / (rt->img->width - 1);
+            v = (double)(j) / (rt->img->height - 1);
 			destination = sub_vec3(add3_vec3(
 				lower_left_corner,
 				mult_vec3(horizontal, u),

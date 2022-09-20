@@ -14,3 +14,8 @@ int     vec3_to_color(t_vec3 *c)
 {
     return ((int)c->x << 16) | ((int)c->y << 8) | (int)c->z;
 }
+
+int     vec3_to_color_copy(t_vec3 c)
+{
+    return ((int)c.x << 16) | ((int)c.y << 8) | (int)c.z;
+}
