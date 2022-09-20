@@ -11,7 +11,6 @@
 /* User Includes */
 #include "../minilibx_opengl/mlx_opengl.h"
 #include "../minilibx_opengl/mlx.h"
-#include <mlx.h>
 #include "../libft/libft.h"
 
 
@@ -246,7 +245,7 @@ double	length_vec3(t_vec3 v);
 t_vec3	unit_vec3(t_vec3 v);
 t_vec3	cross_vec3(t_vec3 a, t_vec3 b);
 t_vec3	negate_vec3(t_vec3 v);
-double	cos_vec3(t_vec3 a, t_vec3 b);
+double cos_vec3(t_vec3 a, t_vec3 b)
 
 /* Vectors self-operations */
 
@@ -274,5 +273,48 @@ void	negate_vec3_self(t_vec3 *v);
 // t_vec3	*unit_vec3(t_vec3 *v);
 // t_vec3	*cross_vec3(t_vec3 *a, t_vec3 *b);
 // t_vec3	*negate_vec3(t_vec3 *v);
+
+
+
+
+
+
+
+
+
+
+/*---------------------------------------------------------------------------------------------*/
+/*                                       NEW STUFF                                             */
+/*---------------------------------------------------------------------------------------------*/
+
+
+/* PARSE STUFF */
+
+#define READ_SIZE 100000
+#define NB_OBJ_TYPE 6
+#define BONUS 0
+
+typedef struct s_parse
+{
+	int fd;
+	char *buf;
+	char **split;
+	char ***scene;
+	char **tok;
+	int	(*f[NB_OBJ_TYPE])(char **obj);
+}	t_parse;
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 #endif // MINIRT_H

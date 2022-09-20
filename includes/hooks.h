@@ -9,6 +9,7 @@
 
 # define TWO_PI 6.28318530718
 
+
 typedef struct s_data	t_data;
 typedef enum e_keyhooks
 {
