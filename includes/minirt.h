@@ -9,16 +9,9 @@
 # include <fcntl.h>
 
 /* User Includes */
-<<<<<<< HEAD
-#include "../minilibx_opengl/mlx_opengl.h"
-#include "../minilibx_opengl/mlx.h"
-#include <mlx.h>
-#include "../libft/libft.h"
-=======
 // # include "../minilibx_opengl/mlx_opengl.h"
 # include <mlx.h>
 # include "../libft/libft.h"
->>>>>>> 88ed0f5 (Minor cosmetic changes)
 
 
 # include "rt_one_weekend.h"
@@ -268,19 +261,15 @@ void	unit_vec3_self(t_vec3 *v);
 void	cross_vec3_self(t_vec3 *a, t_vec3 b);
 void	negate_vec3_self(t_vec3 *v);
 
-// t_vec3	*new_vec3(double x, double y, double z);
-// double	invsqrt_dbl(double y);
-// float	invsqrt_f(float y);
-// t_vec3	*add_vec3(t_vec3 *a, t_vec3 *b);
-// t_vec3	*add3_vec3(t_vec3 *a, t_vec3 *b, t_vec3 *c);
-// double	dot_vec3(t_vec3 *a, t_vec3 *b);
-// t_vec3	*sub_vec3(t_vec3 *a, t_vec3 *b);
-// t_vec3	*mult_vec3_vec3(t_vec3 *a, t_vec3 *b);
-// t_vec3	*mult_vec3(t_vec3 *v, double b);
-// t_vec3	*div_vec3(t_vec3 *v, double b);
-// double	length_vec3(t_vec3 *v);
-// t_vec3	*unit_vec3(t_vec3 *v);
-// t_vec3	*cross_vec3(t_vec3 *a, t_vec3 *b);
-// t_vec3	*negate_vec3(t_vec3 *v);
+/* Vectors by new malloced pointer */
+t_vec3 *add_vec3_new(t_vec3 *a, t_vec3 *b){;
+t_vec3 *add3_vec3_new(t_vec3 *a, t_vec3 *b, t_vec3 *c);
+t_vec3 *sub_vec3_new(t_vec3 *a, t_vec3 *b);
+t_vec3 *mult_vec3_vec3_new(t_vec3 *a, t_vec3 *b);
+t_vec3 *mult_vec3_new(t_vec3 *v, double b);
+t_vec3 *div_vec3_new(t_vec3 *v, double b);
+t_vec3 *unit_vec3_new(t_vec3 *v) {;
+t_vec3 *cross_vec3_new(t_vec3 *a, t_vec3 *b);
+t_vec3 *negate_vec3_new(t_vec3 *v);
 
 #endif // MINIRT_H
