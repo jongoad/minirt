@@ -3,6 +3,8 @@
 
 // https://raytracing.github.io/books/RayTracingInOneWeekend.html
 
+
+
 double hit_sphere(t_vec3 *sp_center, double radius2, t_ray_vec3_ptr *r)
 {
     t_vec3	*oc;
@@ -66,7 +68,7 @@ int		ray_color_sphere_shaded(t_ray_vec3_ptr *r, t_vec3 sp_center)
 	// color.x = 255.0F * fabs(unit_direction->x * 255) * w_divider;
 	// color.y = 255.0F * fabs(unit_direction->y * 255) * h_divider;
 	// color.z = 64.0F;
-    return to_color(
+    return int_to_color(
 		255.0F * fabs(unit_direction->x * 255) * w_divider,
 		255.0F * fabs(unit_direction->y * 255) * h_divider,
 		64.0F);

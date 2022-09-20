@@ -21,16 +21,15 @@ double hit_sphere(t_vec3 *sp_center, double radius2, t_ray_vec3 *r) {
 	// Only return the smallest value, i.e. the closest
 }
 
-int		ray_color_sphere_shaded(t_ray_vec3 *r, t_vec3 sp_center)
+int		ray_color_sphere_shaded(t_ray_vec3 *r, t_vec3 *sp_center)
 {
-	double	radius2 = 0.5F * 0.5F;
-	double	t = hit_sphere(&sp_center, radius2, r);
-
-
 	static t_vec3	z_norm = { .x = 0.0, .y = 0.0, .z = -1.0 };
 	static t_vec3	unit = { .x = 1.0, .y = 1.0, .z = 1.0 };
     t_vec3			unit_direction;
 	t_vec3			color;
+	
+	double	radius2 = 0.5F * 0.5F;
+	double	t = hit_sphere(sp_center, radius2, r);
 
     if (t > 0.0F)
 	{
@@ -113,7 +112,7 @@ void	generate_sphere_shaded(t_data *rt, t_vec3 *sp_center)
 				mult_vec3(vertical, v)),
 				origin);
 			r.dir = destination;
-            pixel_color = ray_color_sphere_shaded(&r, *sp_center);
+            pixel_color = ray_color_sphere_shaded(&r, sp_center);
 			// printf("%d %d : %d %d %d\n", i, j, (pixel_color >> 16), (pixel_color >> 8 & 0xFF), (pixel_color & 0xFF));
             fill_pixel(rt->img, i, j, pixel_color);
         }

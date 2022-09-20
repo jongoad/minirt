@@ -20,7 +20,7 @@ void    hello_world(t_data *rt)
             t.r = 256.0f * j * t.w_divider;
             t.g = 256.0f * i * t.h_divider;
             t.b = 64;           
-            fill_pixel(rt->img, i, j, to_color(t.r, t.g, t.b));
+            fill_pixel(rt->img, i, j, int_to_color(t.r, t.g, t.b));
         }
     }
     display_default(rt);

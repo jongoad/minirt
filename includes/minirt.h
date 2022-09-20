@@ -9,18 +9,25 @@
 # include <fcntl.h>
 
 /* User Includes */
+<<<<<<< HEAD
 #include "../minilibx_opengl/mlx_opengl.h"
 #include "../minilibx_opengl/mlx.h"
 #include <mlx.h>
 #include "../libft/libft.h"
+=======
+// # include "../minilibx_opengl/mlx_opengl.h"
+# include <mlx.h>
+# include "../libft/libft.h"
+>>>>>>> 88ed0f5 (Minor cosmetic changes)
 
 
-#include "rt_one_weekend.h"
+# include "rt_one_weekend.h"
 
 
 /* Defines */
+# define ASPECT_RATIO ((float)16 / (float)9)
 # define IMG_W 1000
-# define IMG_H 562
+# define IMG_H (int)(IMG_W / ASPECT_RATIO)
 
 /* Colors */
 typedef enum e_colors
@@ -118,8 +125,8 @@ typedef struct s_camera
 	float		**cam_to_world;		/* Camera to world coords transform */
 	int			img_w;				/* Width of image in pixels */
 	int			img_h;				/* Height of image in pixels */
-	float		view_w;				/* Width of the camera */
-	float		view_h;				/* Height of the camera */
+	float		view_w;				/* Width of the viewport */
+	float		view_h;				/* Height of the viewport */
 	float		z_offset;			/* Distance of focal point from image plane, this will change the FOV */
 
 }	t_camera;
@@ -147,16 +154,16 @@ typedef struct s_obj
 	t_vec3		color;			/* object initial color */
 	double		width;			/* for cylinders, spheres */
 	double		height;			/* for cylinders */
-	void		(*hit)(t_data *rt, t_ray_vec3 *r, t_obj *o, t_hit_rec *rec);	/* Function ptr for any object type */
+	void		(*hit)(t_ray_vec3 *r, t_obj *o, t_hit_rec *rec, double t_min);	/* Function ptr for any object type */
 	char		type;
 }	t_obj;
 
 typedef struct s_hit_rec
 {
-	t_vec3	p;		/* Coords of point of collision */
-    t_vec3	normal;	/* Unit vector representing the normal to the surface at collision */
-    double	t;		/* Distance to point of collision */
-	int		obj_id;	/* ID of the object on which is point of collision */
+	t_vec3	p;			/* Coords of point of collision */
+    t_vec3	normal;		/* Unit vector representing the normal to the surface at collision */
+    double	t;			/* Distance to point of collision */
+	int		obj_id;		/* ID of the object on which is point of collision */
 }	t_hit_rec;
 
 
@@ -180,7 +187,8 @@ typedef struct s_data
 	char		*win_name;
 	t_img		*img;
 	t_camera	cam;
-	t_object	**objects;
+	t_object	**objects;	// Do we want to add objects dynamically ?
+	// t_object	*objects;	
 	int			nb_objs;
 	t_mlx		mlx;
 	int			win_h;
@@ -194,7 +202,7 @@ void	rt_init(t_data *rt, char *filepath);
 void	set_hooks(t_data *rt);
 
 /* Colors */
-int		to_color(int r, int g, int b);
+int		int_to_color(int r, int g, int b);
 void    color(t_color *c);
 int     vec3_to_color(t_vec3 *c);
 

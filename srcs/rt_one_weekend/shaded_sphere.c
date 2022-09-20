@@ -3,8 +3,6 @@
 
 // https://raytracing.github.io/books/RayTracingInOneWeekend.html
 
-double	g_fps;
-
 double hit_sphere_slow(t_vec3 *sp_center, double radius2, t_ray_vec3 *r) {
     t_vec3	oc;
     double	a;
@@ -154,6 +152,13 @@ void	generate_sphere_shaded(t_data *rt, t_vec3 *sp_center)
 
 	free(fps);
 
+
+	static uint64_t	fps_tot;
+	static uint64_t	nb_inputs;
+
+	fps_tot += (int)g_fps;
+	nb_inputs++;
+	
 	printf("render time: %.2lf ms\n", time_elapsed / 1000);
-	printf("FPS: %.2lf\n", g_fps);
+	printf("FPS: %.2lf Avg = %llu\n", g_fps, fps_tot / nb_inputs);
 }
