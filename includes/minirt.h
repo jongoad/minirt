@@ -19,11 +19,11 @@
 
 /* Defines */
 # define ASPECT_RATIO ((float)16 / (float)9)
-# define IMG_W 1200
+# define IMG_W 1800
 # define IMG_H (int)(IMG_W / ASPECT_RATIO)
 
 # define T_INF	1e10
-# define T_MIN	0.03F
+# define T_MIN	0.01F
 
 /* Colors */
 typedef enum e_colors
