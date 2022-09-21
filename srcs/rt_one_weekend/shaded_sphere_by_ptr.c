@@ -104,7 +104,7 @@ void	generate_sphere_shaded(t_data *rt, t_vec3 *sp_center)
     t_vec3 *tmp1;
     t_vec3 *tmp2;
     t_vec3 *tmp3;
-    t_vec3 *lower_left_corner;
+    t_vec3 *low_left;
 	
 	
 	tmp1 = div_vec3(horizontal, 2);
@@ -115,11 +115,11 @@ void	generate_sphere_shaded(t_data *rt, t_vec3 *sp_center)
 	free(tmp2);
 	free(tmp3);
 	tmp2 = new_vec3(0, 0, focal_length);
-	lower_left_corner = sub_vec3(tmp1, tmp2);
+	low_left = sub_vec3(tmp1, tmp2);
 	free(tmp1);
 	free(tmp2);
 
-	// lower_left_corner = origin - horizontal/2 - vertical/2 - new_vec3(0, 0, focal_length);
+	// low_left = origin - horizontal/2 - vertical/2 - new_vec3(0, 0, focal_length);
 
     // Render
 	t_ray_vec3_ptr	r;
@@ -139,7 +139,7 @@ void	generate_sphere_shaded(t_data *rt, t_vec3 *sp_center)
 
 			tmp1 = mult_vec3(horizontal, u);
 			tmp2 = mult_vec3(vertical, v);
-			tmp3 = add3_vec3( lower_left_corner, tmp1, tmp2 );
+			tmp3 = add3_vec3( low_left, tmp1, tmp2 );
 			free(tmp1);
 			free(tmp2);
 			destination = sub_vec3(tmp3, origin);

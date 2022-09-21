@@ -22,6 +22,9 @@
 # define IMG_W 1200
 # define IMG_H (int)(IMG_W / ASPECT_RATIO)
 
+# define INF	1e10
+# define T_MIN	0.5F
+
 /* Colors */
 typedef enum e_colors
 {
@@ -35,6 +38,14 @@ typedef enum e_colors
 	WHITE	= 0xFFFFFF,
 	YELLOW	= 0xFFFF00
 }	t_colors;
+
+typedef enum e_obj_types
+{
+	T_SPH	= 's',
+	T_CYL	= 'c',
+	T_PLANE	= 's',
+	T_CONE	= 's'
+}	e_obj_types;
 /* Structs */
 
 
@@ -48,9 +59,9 @@ typedef struct s_i
 
 typedef struct s_vec3
 {
-	double	x;
-	double	y;
-	double	z;
+	float	x;
+	float	y;
+	float	z;
 }	t_vec3;
 
 /* Colour data */
@@ -99,7 +110,7 @@ typedef	struct s_ray_vec3
 {
 	t_vec3 	orig;			/* Originating point of ray (camera focal point) */
 	t_vec3	dir;			/* Secondary point of ray (pixel on image plane) */
-	// t_vector	*vec3;				/* Vector created from origin and secondary point */
+	float	t_max;			/* Vector created from origin and secondary point */
 }	t_ray_vec3;
 
 typedef	struct s_ray_vec3_ptr
@@ -112,8 +123,11 @@ typedef	struct s_ray_vec3_ptr
 /* Camera data */
 typedef struct s_camera
 {
-	t_point		pos;				/* Position of camera */
-	t_vector	aim;				/* Direction camera is pointing */
+	t_vec3		pos;				/* Position of camera */
+	t_vec3		aim;				/* Direction camera is pointing */
+	t_vec3		horizontal;			/* view_w vector  */
+	t_vec3		vertical;			/* view_h vector  */
+	t_vec3		low_left;			/* Vector from origin to lower left corner */
 	float		**world_to_cam;		/* World to camera coords transform */
 	float		**cam_to_world;		/* Camera to world coords transform */
 	int			img_w;				/* Width of image in pixels */
@@ -145,9 +159,10 @@ typedef struct s_obj
 	t_vec3		center;
 	t_vec3		orientation; 	/* for cylinders */
 	t_vec3		color;			/* object initial color */
-	double		width;			/* for cylinders, spheres */
-	double		height;			/* for cylinders */
-	void		(*hit)(t_ray_vec3 *r, t_obj *o, t_hit_rec *rec, double t_min);	/* Function ptr for any object type */
+	float		width;			/* for cylinders */
+	float		radius;			/* for spheres */
+	float		height;			/* for cylinders */
+	bool		(*hit)(t_ray_vec3 *r, t_obj *o, t_hit_rec *rec, float t_min);	/* Function ptr for any object type */
 	char		type;
 }	t_obj;
 
@@ -156,7 +171,6 @@ typedef struct s_hit_rec
 	t_vec3	p;			/* Coords of point of collision */
     t_vec3	normal;		/* Unit vector representing the normal to the surface at collision */
     double	t;			/* Distance to point of collision */
-	int		obj_id;		/* ID of the object on which is point of collision */
 }	t_hit_rec;
 
 
@@ -204,6 +218,7 @@ int     vec3_to_color_copy(t_vec3 c);
 int	display_default(t_data *rt);
 int	display_img(t_data *rt, t_img *img);
 
+
 /* Ray Generation */
 t_ray		*generate_primary_ray(t_data *data, int x, int y);
 t_point		*init_pixel_point(t_data *data, int x, int y);
@@ -230,6 +245,8 @@ double	lerp(double start, double end, double curr);
 /* Cleanup */
 int		rt_clean_exit(t_data *rt);
 void	rt_cleanup(t_data *rt);
+
+
 
 
 /* Vectors by copy */

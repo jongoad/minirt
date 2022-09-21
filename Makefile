@@ -31,6 +31,7 @@ CFILES	=	cleanup.c \
 			vectors_copy.c \
 			vectors_self.c \
 			rt_one_weekend/shaded_sphere_w_self.c \
+			rt_one_weekend/benchmark.c \
 # rt_one_weekend/shaded_sphere.c \
 # rt_one_weekend/shaded_sphere_by_ptr.c \
 # rt_one_weekend/hello.c \
@@ -60,7 +61,7 @@ LIBFT_FLAGS			= -lft -Llibft
 LIBM_FLAG	= -lm
 
 CC		= gcc
-CFLAGS	= -Wall -Wextra -Werror -O1
+CFLAGS	= -Wall -Wextra -Werror -Ofast
 
 
 LIBFT_DIR	= ./libft
@@ -85,8 +86,8 @@ COMPILE_C_OUT	=	$$($(COMPILE_C) 2>&1 | sed -e 's/error/\\\033[0;31merror\\\033[0
 
 $(OBJ_DIR)/%.o:	$(SRC_DIR)/%.c $(INCS)
 	@mkdir -p $(@D)
-	$(COMPILE_C)
-# @printf "$(CYAN)%-25s-->%25s $(RESET_COL)$(COMPILE_C_OUT)\n" $< $@
+	@printf "$(CYAN)%-25s-->%25s $(RESET_COL)$(COMPILE_C_OUT)\n" $< $@
+# $(COMPILE_C)
 
 
 all: $(NAME)

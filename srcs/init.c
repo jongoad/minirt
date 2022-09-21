@@ -5,6 +5,12 @@ static void	rt_init_camera(t_data *rt)
     rt->cam.view_h = 2.0F;
     rt->cam.view_w = ASPECT_RATIO * rt->cam.view_h;
     rt->cam.z_offset = 1.0F;
+    rt->cam.pos = vec3(0, 0, 0);
+    rt->cam.horizontal = vec3(-rt->cam.view_w, 0, 0);
+    rt->cam.vertical = vec3(0, -rt->cam.view_h, 0);
+    rt->cam.low_left = sub_vec3(rt->cam.pos, div_vec3(rt->cam.horizontal, 2));
+	sub_vec3_self(&(rt->cam.low_left), div_vec3(rt->cam.vertical, 2));
+	sub_vec3_self(&(rt->cam.low_left), vec3(0, 0, rt->cam.z_offset));
 }
 
 static void	rt_init_img(t_data *rt)

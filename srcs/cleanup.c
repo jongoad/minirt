@@ -13,5 +13,9 @@ void	rt_cleanup(t_data *rt)
 	free(rt->win_name);
 	free(rt->img);
 	free(rt);
+
+	//FIXME: from rt_one_weekend
+	free(get_sphere());
+	
 	return ;
 }

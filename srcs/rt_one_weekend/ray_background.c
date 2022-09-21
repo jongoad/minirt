@@ -52,9 +52,9 @@ void	generate_background(t_data *rt)
     t_vec3 origin = vec3(0, 0, 0);
     t_vec3 horizontal = vec3(-viewport_width, 0, 0);
     t_vec3 vertical = vec3(0, -viewport_height, 0);
-    t_vec3 lower_left_corner = sub_vec3(origin, div_vec3(horizontal, 2));
-	lower_left_corner = sub_vec3(lower_left_corner, div_vec3(vertical, 2));
-	lower_left_corner = sub_vec3(lower_left_corner, vec3(0, 0, focal_length));
+    t_vec3 low_left = sub_vec3(origin, div_vec3(horizontal, 2));
+	low_left = sub_vec3(low_left, div_vec3(vertical, 2));
+	low_left = sub_vec3(low_left, vec3(0, 0, focal_length));
 
     // Render
 
@@ -74,7 +74,7 @@ void	generate_background(t_data *rt)
             u = (double)(i) / (image_width-1);
             v = (double)(j) / (image_height-1);
 			destination = sub_vec3(add3_vec3(
-				lower_left_corner,
+				low_left,
 				mult_vec3(horizontal, u),
 				mult_vec3(vertical, v)),
 				origin);
