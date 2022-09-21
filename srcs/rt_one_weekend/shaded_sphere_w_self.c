@@ -8,24 +8,6 @@ t_vec3	ray_at(t_ray_vec3 *r, float t)
 	return add_vec3(r->orig, mult_vec3(r->dir, t));
 }
 
-float hit_sphere_rt(t_vec3 *sp_center, float radius2, t_ray_vec3 *r) {
-    t_vec3	oc;
-    float	a;
-    float	half_b;
-    float	c;
-    float	discriminant;
-
-	oc = sub_vec3(r->orig, *sp_center);
-	a = dot_vec3(r->dir, r->dir);
-	half_b = dot_vec3(oc, r->dir);
-	c = dot_vec3(oc, oc) - radius2;
-	discriminant = half_b * half_b - a * c;
-    if (discriminant < 0)
-        return -1.0F;
-	return (-half_b - sqrtf(discriminant) ) / a; 
-	// Only return the smallest value, i.e. the closest
-}
-
 typedef struct s_quadratic
 {
     float	a;
@@ -55,11 +37,15 @@ bool	hit_sphere(t_ray_vec3 *r, t_obj *o, t_hit_rec *rec, float t_min)
 	{
         q.root = (-q.half_b + q.sqrtd) / q.a;
         if (q.root < t_min || q.root > r->t_max)
+		{
+			printf("\n");
             return false;
+		}
     }
     rec->t = q.root;
     rec->p = ray_at(r, rec->t);
     rec->normal = div_vec3(sub_vec3(rec->p, o->center), o->radius);
+	printf("\n");
     return true;
 }
 
