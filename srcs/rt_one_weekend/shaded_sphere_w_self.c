@@ -47,25 +47,21 @@ bool	hit_sphere(t_ray_vec3 *r, t_obj *o, t_hit_rec *rec, float t_min)
 	q.c = dot_vec3(oc, oc) - o->radius * o->radius;
 	q.discriminant = q.half_b * q.half_b - q.a * q.c;
     if (q.discriminant < 0)
-        return false;
-	
+        return false;	
     q.sqrtd = sqrtf(q.discriminant);
     q.root = (-q.half_b - q.sqrtd) / q.a;
-// Find the nearest root that lies in the acceptable range.
-    if (q.root < t_min || q.root > r->t_max) {
+// Try the other root, aka the inside of the sphere from the camera
+    if (q.root < t_min || q.root > r->t_max)
+	{
         q.root = (-q.half_b + q.sqrtd) / q.a;
         if (q.root < t_min || q.root > r->t_max)
             return false;
     }
-
     rec->t = q.root;
     rec->p = ray_at(r, rec->t);
     rec->normal = div_vec3(sub_vec3(rec->p, o->center), o->radius);
-
     return true;
 }
-
-
 
 int		ray_color_sphere(t_ray_vec3 *r, t_vec3 *sp_center)
 {
@@ -102,8 +98,7 @@ int		ray_color_sphere(t_ray_vec3 *r, t_vec3 *sp_center)
     return vec3_to_color(&color);
 }
 
-
-
+# define BG -1
 int		ray_sphere(t_ray_vec3 *r, t_obj *sp, t_hit_rec *rec)
 {
 	static t_vec3		z_norm = { .x = 0.0, .y = 0.0, .z = -1.0 };
@@ -112,6 +107,14 @@ int		ray_sphere(t_ray_vec3 *r, t_obj *sp, t_hit_rec *rec)
 	
     if (hit_sphere(r, sp, rec, T_MIN))
 	{
+		if (cos_vec3(rec->normal, r->dir) > 0)	// If in same direction, inside obj
+			return (sp->color);
+		color = mult_vec3(
+					add_vec3(
+						unit_vec3(sub_vec3(rec->p, z_norm))
+						, unit)
+				, 127.999F);
+        return (vec3_to_color( &color ));
 		color = rec->p;
 		sub_vec3_self(&color, z_norm);
 		unit_vec3_self(&color);
@@ -121,7 +124,7 @@ int		ray_sphere(t_ray_vec3 *r, t_obj *sp, t_hit_rec *rec)
 	}
 
 	/* Black background */
-	return (WHITE);
+	return (BG);
 }
 
 
@@ -132,11 +135,13 @@ void	generate_sphere_shaded(t_data *rt, t_obj *sp)
 	int			pixel_color;
 	float		u;
 	float		v;
+	
 	// Benchmarking
 	float		start_time = (float)clock();
+
+	// Hit Record
 	t_hit_rec	rec;
 	
-	rec.t = 0;
 	r.orig = rt->cam.pos;
     for (int j = 0; j < rt->img->height; ++j) {
         for (int i = 0; i < rt->img->width; ++i) {
@@ -147,8 +152,10 @@ void	generate_sphere_shaded(t_data *rt, t_obj *sp)
 				mult_vec3(rt->cam.horizontal, u),
 				mult_vec3(rt->cam.vertical, v)),
 				rt->cam.pos);
-			r.t_max = INF;
-            pixel_color = ray_sphere(&r, sp, &rec);
+			r.t_max = T_INF;
+			rec.t = 0; 
+            pixel_color = ray_sphere(&r, sp, &rec) ;
+            pixel_color = (pixel_color == BG ? rt->background : pixel_color);
             // pixel_color = ray_color_sphere(&r, &(sp->center));
             fill_pixel(rt->img, i, j, pixel_color);
         }

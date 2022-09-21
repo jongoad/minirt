@@ -45,9 +45,11 @@ static void	rt_init_mlx(t_data *rt, char *filename)
 
 void	rt_init(t_data *rt, char *filename)
 {
+	rt->background = lerp_color(WHITE, 0.2);
 	rt_init_mlx(rt, filename);
 	rt_init_img(rt);
 	rt_init_camera(rt);
 
+	
 	return ;
 }

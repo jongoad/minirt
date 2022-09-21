@@ -12,8 +12,9 @@ t_obj	*get_sphere( )
 	if (!sp) {
 		t_vec3	center = { .x = 0, .y = 0, .z = -1.0F };
 		sp = ft_xalloc(sizeof(t_obj));
-		sp->radius = 0.5F;
+		sp->radius = 0.05F;
 		sp->center = center;
+		sp->color = lerp_color(CYAN, 0.2);
 		sp->type = 's';
 		sp->hit = hit_sphere;
 	}
