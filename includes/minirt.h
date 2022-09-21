@@ -19,11 +19,11 @@
 
 /* Defines */
 # define ASPECT_RATIO ((float)16 / (float)9)
-# define IMG_W 1200
+# define IMG_W 1800
 # define IMG_H (int)(IMG_W / ASPECT_RATIO)
 
-# define INF	1e10
-# define T_MIN	0.5F
+# define T_INF	1e10
+# define T_MIN	0.01F
 
 /* Colors */
 typedef enum e_colors
@@ -158,7 +158,8 @@ typedef struct s_obj
 {
 	t_vec3		center;
 	t_vec3		orientation; 	/* for cylinders */
-	t_vec3		color;			/* object initial color */
+	t_vec3		vcolor;			/* object initial color vec3 */
+	int			color;			/* object initial color */
 	float		width;			/* for cylinders */
 	float		radius;			/* for spheres */
 	float		height;			/* for cylinders */
@@ -171,6 +172,7 @@ typedef struct s_hit_rec
 	t_vec3	p;			/* Coords of point of collision */
     t_vec3	normal;		/* Unit vector representing the normal to the surface at collision */
     double	t;			/* Distance to point of collision */
+    bool	hit;		/* Has anything been hit? */
 }	t_hit_rec;
 
 
@@ -200,6 +202,7 @@ typedef struct s_data
 	t_mlx		mlx;
 	int			win_h;
 	int			win_w;
+	int			background;
 }	t_data;
 
 /* Initialization */
@@ -241,6 +244,7 @@ void	exit_on_err(char *err_message);
 void	draw_background(t_img *img, int color);
 void	fill_pixel(t_img *img, int x, int y, int color);
 double	lerp(double start, double end, double curr);
+int		lerp_color(int start, float ratio);
 
 /* Cleanup */
 int		rt_clean_exit(t_data *rt);

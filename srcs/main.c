@@ -14,6 +14,7 @@ t_obj	*get_sphere( )
 		sp = ft_xalloc(sizeof(t_obj));
 		sp->radius = 0.5F;
 		sp->center = center;
+		sp->color = lerp_color(CYAN, 0.2);
 		sp->type = 's';
 		sp->hit = hit_sphere;
 	}

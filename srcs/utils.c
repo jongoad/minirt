@@ -19,6 +19,25 @@ void	exit_on_err(char *err_message)
 	exit(EXIT_FAILURE);
 }
 
+/**
+ * @param start value 
+ * @param ratio Between 0.0 and 1.0
+ * @return int 	interpolated color
+ */
+int	lerp_color(int start, float ratio)
+{
+	int	color;
+	
+	if (ratio <= 0.0F || ratio > 1.0F)
+		return 0;
+	else if (ratio == 1.0F)
+		return (start);
+	color = (int)((start >> 16 & 0xFF) * ratio) << 16;
+	color |= (int)((start >> 8 & 0xFF) * ratio) << 8;
+	color |= (int)((start & 0xFF) * ratio);
+	return (color);
+}
+
 double	lerp(double start, double end, double curr)
 {
 	if (curr == start || end == start)
