@@ -10,5 +10,6 @@ t_obj	*new_sphere( t_vec3 center, float radius, t_vec3 color )
 	sp->color = color;
 	sp->type = 's';
 	sp->hit = hit_sphere;
+	sp->hit_no_rec = hit_sphere_no_hit_rec;
 	return (sp);
 }

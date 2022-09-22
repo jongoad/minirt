@@ -3,7 +3,6 @@
 
 double	g_fps;
 
-bool	hit_sphere(t_ray_vec3 *r, t_obj *o, t_hit_rec *rec, float t_min);
 
 int	main(int argc, char **argv)
 {
