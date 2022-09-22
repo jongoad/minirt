@@ -67,43 +67,6 @@ bool	hit_sphere(t_ray_vec3 *r, t_obj *o, t_hit_rec *rec)
 	return false;
 }
 
-bool	hit_sphere_debug(t_ray_vec3 *r, t_obj *o, t_hit_rec *rec)
-{
-    t_vec3			oc;
-	t_quadratic		q;
-
-	oc = sub_vec3(r->orig, o->center);
-	q.a = dot_vec3(r->dir, r->dir);
-	q.half_b = dot_vec3(oc, r->dir);
-	q.c = dot_vec3(oc, oc) - o->radius * o->radius;
-	q.discriminant = q.half_b * q.half_b - q.a * q.c;
-	printf("discriminant = %.6f, ", q.discriminant);
-    if (q.discriminant < 0)
-	{
-		printf("\n");
-        return false;	
-	}
-    q.sqrtd = sqrtf(q.discriminant);
-	printf("sqrtd = %.6f, ", q.sqrtd);
-    q.root = (-q.half_b - q.sqrtd) / q.a;
-	printf("root = %.6f, ", q.sqrtd);
-// Try the other root, aka the inside of the sphere from the camera
-    if (q.root < T_MIN || q.root > r->t_max)
-	{
-        q.root = (-q.half_b + q.sqrtd) / q.a;
-        if (q.root < T_MIN || q.root > r->t_max)
-		{
-			printf("\n");
-            return false;
-		}
-    }
-    rec->t = q.root;
-    rec->p = ray_at(r, rec->t);
-    rec->normal = div_vec3(sub_vec3(rec->p, o->center), o->radius);
-	printf("\n");
-    return true;
-}
-
 # define BG -1
 int		ray_sphere(t_ray_vec3 *r, t_obj *sp, t_hit_rec *rec)
 {
@@ -117,34 +80,6 @@ int		ray_sphere(t_ray_vec3 *r, t_obj *sp, t_hit_rec *rec)
 	{
 		// if (cos_vec3(rec->normal, r->dir) > 0)	// If in same direction, inside obj
 			return ( vec3_to_color(sp->color));
-		color = mult_vec3(
-					add_vec3(
-						unit_vec3(sub_vec3(rec->p, z_norm))
-						, unit)
-				, 127.999F);
-        return (vec3_to_color(color));
-		color = rec->p;
-		sub_vec3_self(&color, z_norm);
-		unit_vec3_self(&color);
-		add_vec3_self(&color, unit);
-		mult_vec3_self(&color, 127.999F); // 0.5F * 255
-        return (vec3_to_color(color));
-	}
-
-	/* Black background */
-	return (BG);
-}
-
-int		ray_sphere_debug(t_ray_vec3 *r, t_obj *sp, t_hit_rec *rec)
-{
-	static t_vec3		z_norm = { .x = 0.0, .y = 0.0, .z = -1.0 };
-	static t_vec3		unit = { .x = 1.0, .y = 1.0, .z = 1.0 };
-	t_vec3				color;
-	
-    if (hit_sphere_debug(r, sp, rec))
-	{
-		if (cos_vec3(rec->normal, r->dir) > 0)	// If in same direction, inside obj
-			return ( vec3_to_color(sp->color) );
 		color = mult_vec3(
 					add_vec3(
 						unit_vec3(sub_vec3(rec->p, z_norm))
@@ -183,8 +118,6 @@ int	apply_single_point_light(t_data *rt, t_hit_rec *rec, int color)
 
 int	apply_point_lights(t_data *rt, t_obj *o, t_hit_rec *rec, int color)
 {
-	// Apply light point's contribution to perceived color
-
 	t_vec3		vcolor;
 	t_ray_vec3	pt_to_light;
 	t_hit_rec	rec2;
@@ -258,12 +191,12 @@ void	generate_sphere_shaded(t_data *rt, t_obj *sp)
             // pixel_color = ray_sphere(&r, sp, &rec) ;
             // pixel_color = ray_sphere(&r, rt->objs[1], &rec) ;
 			if (rec.hit_anything)
-				pixel_color = vec3_to_color(rec.color);
+            	pixel_color = apply_point_lights(rt, rt->objs[rec.obj_id], &rec, vec3_to_color(rec.color));
+				// pixel_color = vec3_to_color(rec.color);
 			// if (pixel_color == BG)
 			// 	pixel_color = rt->background;
 			// else 
-			if (pixel_color != rt->background)
-            	pixel_color = apply_point_lights(rt, rt->objs[rec.obj_id], &rec, pixel_color);
+			// if (pixel_color != rt->background)
             	// pixel_color = apply_single_point_light(rt, &rec, pixel_color);
             fill_pixel(rt->img, i, j, pixel_color);
         }
