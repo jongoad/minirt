@@ -5,22 +5,6 @@ double	g_fps;
 
 bool	hit_sphere(t_ray_vec3 *r, t_obj *o, t_hit_rec *rec, float t_min);
 
-t_obj	*get_sphere( )
-{
-	static t_obj	*sp;
-
-	if (!sp) {
-		t_vec3	center = { .x = 0, .y = 0, .z = -1.0F };
-		sp = ft_xalloc(sizeof(t_obj));
-		sp->radius = 0.5F;
-		sp->center = center;
-		sp->color = lerp_color(CYAN, 0.2);
-		sp->type = 's';
-		sp->hit = hit_sphere;
-	}
-	return (sp);
-}
-
 int	main(int argc, char **argv)
 {
 	t_data	*rt;
@@ -33,9 +17,7 @@ int	main(int argc, char **argv)
 	// generate_background(rt);
 	// generate_sphere_simple(rt);
 
-	t_obj		*sp = get_sphere();
-	
-	generate_sphere_shaded(rt, sp);
+	generate_sphere_shaded(rt, rt->objs[0]);
 
 	set_hooks(rt);
 	mlx_loop(rt->mlx_ptr);

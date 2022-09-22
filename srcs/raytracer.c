@@ -28,7 +28,7 @@ void	raytracer(t_data *data)
 			i.z = 0;
 			while (i.z < data->nb_objs) //This loop is to go through each object in the scene
 			{
-				if (intersect(ray, data->objects[i.z]))
+				// if (intersect(ray, data->objs[i.z]))
 					(void) ray;
 					//Check if dist is shorted than prev, if it is update object
 

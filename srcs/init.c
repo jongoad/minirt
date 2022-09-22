@@ -2,7 +2,7 @@
 
 static void	rt_init_camera(t_data *rt)
 {
-    rt->cam.view_h = 2.0F;
+    rt->cam.view_h = 1.0F;
     rt->cam.view_w = ASPECT_RATIO * rt->cam.view_h;
     rt->cam.z_offset = 1.0F;
     rt->cam.pos = vec3(0, 0, 0);
@@ -11,6 +11,23 @@ static void	rt_init_camera(t_data *rt)
     rt->cam.low_left = sub_vec3(rt->cam.pos, div_vec3(rt->cam.horizontal, 2));
 	sub_vec3_self(&(rt->cam.low_left), div_vec3(rt->cam.vertical, 2));
 	sub_vec3_self(&(rt->cam.low_left), vec3(0, 0, rt->cam.z_offset));
+}
+
+static void	rt_init_lights(t_data *rt) {
+	rt->ambt_light = mult_vec3(vec3(255, 255, 255), 0.2F);
+
+	rt->nb_lights = 1;
+	rt->lights = ft_xalloc(sizeof(t_light_pt) * rt->nb_lights);
+	rt->lights[0].color = color_to_vec3(WHITE);
+	rt->lights[0].pos = vec3(0.0F, 1.0F, -1.0F);
+}
+
+static void	rt_init_objs(t_data *rt)
+{
+	rt->nb_objs = 1;
+	rt->objs = ft_xalloc(sizeof(t_obj *) * (rt->nb_objs + 1));
+	rt->objs[0] = new_sphere(vec3(0, 0, -1.0F), 0.5F, color_to_vec3(CYAN));
+	rt->objs[0]->color = lerp_vec3(rt->objs[0]->color, rt->ambt_light, 0.5F);
 }
 
 static void	rt_init_img(t_data *rt)
@@ -48,7 +65,9 @@ void	rt_init(t_data *rt, char *filename)
 	rt->background = lerp_color(WHITE, 0.2);
 	rt_init_mlx(rt, filename);
 	rt_init_img(rt);
+	rt_init_lights(rt);
 	rt_init_camera(rt);
+	rt_init_objs(rt);
 
 	
 	return ;
