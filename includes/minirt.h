@@ -7,6 +7,7 @@
 # include <stdlib.h>
 # include <unistd.h>
 # include <fcntl.h>
+# include <time.h>
 
 /* User Includes */
 // # include "../minilibx_opengl/mlx_opengl.h"
@@ -23,7 +24,9 @@
 # define IMG_H (int)(IMG_W / ASPECT_RATIO)
 
 # define T_INF	1e10
-# define T_MIN	0.01F
+# define T_MIN	0.2F
+
+# define NO_HIT -1
 
 /* Colors */
 typedef enum e_colors
@@ -162,16 +165,20 @@ typedef struct s_obj
 	float		width;			/* for cylinders */
 	float		radius;			/* for spheres */
 	float		height;			/* for cylinders */
-	bool		(*hit)(t_ray_vec3 *r, t_obj *o, t_hit_rec *rec, float t_min);	/* Function ptr for any object type */
+	bool		(*hit)(t_ray_vec3 *r, t_obj *o, t_hit_rec *rec);	/* Function ptr for any object type */
+	bool		(*hit_no_rec)(t_ray_vec3 *r, t_obj *o);	/* Function ptr for any object type */
 	char		type;
 }	t_obj;
 
 typedef struct s_hit_rec
 {
-	t_vec3	p;			/* Coords of point of collision */
-    t_vec3	normal;		/* Unit vector representing the normal to the surface at collision */
-    double	t;			/* Distance to point of collision */
-    bool	antialias;	/* If thew point is near an edge, use antialiasing */
+	t_vec3	p;				/* Coords of point of collision */
+    t_vec3	normal;			/* Unit vector representing the normal to the surface at collision */
+    t_vec3	color;			/* Color vector at collision */
+    double	t;				/* Distance to point of collision */
+    int		obj_id;			/* ID of the object with which collision happened */
+    bool	antialias;		/* If thew point is near an edge, use antialiasing */
+    bool	hit_anything;	/* FIXME: not sure if will be needed, but useful for debugging */
 }	t_hit_rec;
 
 
@@ -206,6 +213,7 @@ typedef struct s_data
 	int			nb_lights;
 	t_vec3		ambt_light;
 	int			nb_objs;
+	int			selected_obj_id;	/* For dynamic resizing/translation */
 	t_mlx		mlx;
 	int			win_h;
 	int			win_w;
@@ -220,8 +228,10 @@ void	set_hooks(t_data *rt);
 
 /* Objects */
 t_obj	*new_sphere( t_vec3 center, float radius, t_vec3 color );
+
 	/* temp hit_obj structure */
-bool	hit_sphere(t_ray_vec3 *r, t_obj *o, t_hit_rec *rec, float t_min);
+bool	hit_sphere(t_ray_vec3 *r, t_obj *o, t_hit_rec *rec);
+bool	hit_sphere_no_hit_rec(t_ray_vec3 *r, t_obj *o);
 
 
 /* Colors */
@@ -243,6 +253,9 @@ t_point		*init_pixel_point(t_data *data, int x, int y);
 
 t_data		*get_data(void);
 t_vector	*get_vector(t_point *origin, t_point *second);
+
+int	cast_ray_to_obj(t_data *rt, int x, int y); //FIXME: added by ismael
+
 
 /* Matrix functions */
 float	**matrix_identity(int fill, int fill_diagonal);

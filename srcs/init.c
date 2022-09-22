@@ -19,15 +19,17 @@ static void	rt_init_lights(t_data *rt) {
 	rt->nb_lights = 1;
 	rt->lights = ft_xalloc(sizeof(t_light_pt) * rt->nb_lights);
 	rt->lights[0].color = color_to_vec3(WHITE);
-	rt->lights[0].pos = vec3(2.0F, 3.0F, -1.0F);
+	rt->lights[0].pos = vec3(0.0F, 3.0F, -1.0F);
 }
 
 static void	rt_init_objs(t_data *rt)
 {
-	rt->nb_objs = 1;
+	rt->nb_objs = 2;
 	rt->objs = ft_xalloc(sizeof(t_obj *) * (rt->nb_objs + 1));
-	rt->objs[0] = new_sphere(vec3(0, 0, -1.0F), 0.5F, color_to_vec3(CYAN));
+	rt->objs[0] = new_sphere(vec3(0, -0.7F, -1.0F), 0.4F, color_to_vec3(PINK));
 	rt->objs[0]->color = lerp_vec3(rt->objs[0]->color, rt->ambt_light, 0.5F);
+	rt->objs[1] = new_sphere(vec3(0.0F, 0.0F, -1.0F), 0.2F, color_to_vec3(YELLOW));
+	rt->objs[1]->color = lerp_vec3(rt->objs[1]->color, rt->ambt_light, 0.5F);
 }
 
 static void	rt_init_img(t_data *rt)
@@ -68,6 +70,9 @@ void	rt_init(t_data *rt, char *filename)
 	rt_init_lights(rt);
 	rt_init_camera(rt);
 	rt_init_objs(rt);
+
+	// FIXME: temporarily, the default item selected is the first sphere
+	rt->selected_obj_id = 0;
 
 	
 	return ;

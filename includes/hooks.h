@@ -51,15 +51,24 @@ typedef enum e_keyhooks
 typedef enum e_mlx_events
 {
 	KEYPRESS = 2,
+	MOUSE_RELEASE = 5,
 	MOTION_NOTIFY = 6,
 	DESTROY_NOTIFY = 17
 }	t_mlx_events;
+
+typedef enum e_mlx_event_masks
+{
+	KEYPRESS_MASK = (1L << 0),
+	MOUSE_RELEASE_MASK = (1L << 3),
+	MOTION_NOTIFY_MASK = (1L << 3),
+}	t_mlx_event_masks;
 
 //FUNCTIONS
 int		handle_key_release_hook(int keysym, t_data *rt);
 int		handle_key_press_hook(int keysym, t_data *rt);
 int		handle_key_press_hook_2(int keysym, t_data *rt);
 int		handle_mouse_hook(int button, int x, int y, t_data *rt);
+int		handle_mouse_btn_release(int button, int x, int y, t_data *rt);
 int		handle_mouse_motion(int x, int y, t_data *rt);
 int		default_hook(t_data *rt);
 

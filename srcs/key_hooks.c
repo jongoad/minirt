@@ -17,46 +17,96 @@ int	handle_key_press_hook(int keysym, t_data *rt)
 
 static int	handle_key_press_hook_rt_one_weekend(int keysym, t_data *rt)
 {
-	static double	y_pos;
-	static double	x_pos;
-	static double	z_pos = -1.0F;
-
 	if (keysym == NUMPAD2 || keysym == KEY_S)
 	{
-		z_pos	-= 0.05F;
-		rt->objs[0]->center = vec3(x_pos, y_pos, z_pos);
+		if (rt->selected_obj_id == NO_HIT)
+		{
+			rt->cam.pos.z -= 0.05F;
+		}
+		else
+		{
+			rt->objs[rt->selected_obj_id]->center.z -= 0.05F;
+		}
 		generate_sphere_shaded(rt, rt->objs[0]);
 	}
 	else if (keysym == NUMPAD8 || keysym == KEY_W)
 	{
-		z_pos	+= 0.05F;
-		rt->objs[0]->center = vec3(x_pos, y_pos, z_pos);
+		if (rt->selected_obj_id == NO_HIT)
+		{
+			rt->cam.pos.z += 0.05F;
+		}
+		else
+		{
+			rt->objs[rt->selected_obj_id]->center.z += 0.05F;
+		}
 		generate_sphere_shaded(rt, rt->objs[0]);
 	}
 	else if (keysym == KEY_RIGHT || keysym == KEY_D)
 	{
-		x_pos	-= 0.1F;
-		rt->objs[0]->center = vec3(x_pos, y_pos, z_pos);
+		if (rt->selected_obj_id == NO_HIT)
+		{
+			rt->cam.pos.x -= 0.1F;
+		}
+		else
+		{
+			rt->objs[rt->selected_obj_id]->center.x -= 0.1F;
+		}
 		generate_sphere_shaded(rt, rt->objs[0]);
 	}
 	else if (keysym == KEY_LEFT || keysym == KEY_A)
 	{
-		x_pos	+= 0.1F;
-		rt->objs[0]->center = vec3(x_pos, y_pos, z_pos);
+		if (rt->selected_obj_id == NO_HIT)
+		{
+			rt->cam.pos.x += 0.1F;
+		}
+		else
+		{
+			rt->objs[rt->selected_obj_id]->center.x += 0.1F;
+		}
 		generate_sphere_shaded(rt, rt->objs[0]);
 	}
-	else if (keysym == KEY_UP)
+	else if (keysym == KEY_UP || keysym == KEY_X)
 	{
-		y_pos	+= 0.1F;
-		rt->objs[0]->center = vec3(x_pos, y_pos, z_pos);
+		if (rt->selected_obj_id == NO_HIT)
+		{
+			rt->cam.pos.y += 0.1F;
+		}
+		else
+		{
+			rt->objs[rt->selected_obj_id]->center.y += 0.1F;
+		}
 		generate_sphere_shaded(rt, rt->objs[0]);
 	}
-	else if (keysym == KEY_DOWN)
+	else if (keysym == KEY_DOWN || keysym == KEY_Z)
 	{
-		y_pos	-= 0.1F;
-		rt->objs[0]->center = vec3(x_pos, y_pos, z_pos);
+		if (rt->selected_obj_id == NO_HIT)
+		{
+			rt->cam.pos.y -= 0.1F;
+		}
+		else
+		{
+			rt->objs[rt->selected_obj_id]->center.y -= 0.1F;
+		}
 		generate_sphere_shaded(rt, rt->objs[0]);
 	}
+	else if (keysym == KEY_PLUS || keysym == NUMPAD_PLUS)
+	{
+		if (rt->selected_obj_id != NO_HIT)
+		{
+			rt->objs[rt->selected_obj_id]->radius += 0.01;
+			generate_sphere_shaded(rt, rt->objs[0]);
+		}
+	}
+	else if (keysym == KEY_MINUS || keysym == NUMPAD_MINUS)
+	{
+		if (rt->selected_obj_id != NO_HIT)
+		{
+			if (rt->objs[0]->radius > 0.05F)
+				rt->objs[rt->selected_obj_id]->radius -= 0.01;
+			generate_sphere_shaded(rt, rt->objs[0]);
+		}
+	}
+
 	(void) keysym;
 	(void) rt;
 	return (0);

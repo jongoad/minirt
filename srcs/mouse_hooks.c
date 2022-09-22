@@ -1,6 +1,23 @@
 #include "minirt.h"
 #include "hooks.h"
 
+int	handle_mouse_btn_release(int button, int x, int y, t_data *rt)
+{
+	if (button == 1)
+	{
+
+		(void)rt;
+		(void)x;
+		(void)y;
+		printf("mouse btn1 released at [%d, %d]\n", x, y);
+		rt->selected_obj_id = cast_ray_to_obj(rt, x, y);
+	}
+	return (0);
+
+}
+
+
+
 int	handle_mouse_hook(int button, int x, int y, t_data *rt)
 {
 	if (button == 1)
