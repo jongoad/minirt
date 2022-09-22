@@ -16,6 +16,7 @@ RESET_COL	=	\033[0m
 CFILES	=	cleanup.c \
 			color.c \
 			display.c \
+			generate_objs.c \
 			hooks.c \
 			init.c \
 			key_hooks.c \

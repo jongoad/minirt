@@ -38,14 +38,14 @@ bool	hit_sphere(t_ray_vec3 *r, t_obj *o, t_hit_rec *rec, float t_min)
         q.root = (-q.half_b + q.sqrtd) / q.a;
         if (q.root < t_min || q.root > r->t_max)
 		{
-			printf("\n");
-            return false;
+			return false;
 		}
     }
-    rec->t = q.root;
-    rec->p = ray_at(r, rec->t);
-    rec->normal = div_vec3(sub_vec3(rec->p, o->center), o->radius);
-	printf("\n");
+	if (q.root < rec->t) {
+		rec->t = q.root;
+		rec->p = ray_at(r, rec->t);
+		rec->normal = div_vec3(sub_vec3(rec->p, o->center), o->radius);
+	}
     return true;
 }
 
@@ -86,41 +86,6 @@ bool	hit_sphere_debug(t_ray_vec3 *r, t_obj *o, t_hit_rec *rec, float t_min)
     return true;
 }
 
-int		ray_color_sphere(t_ray_vec3 *r, t_vec3 *sp_center)
-{
-	static t_vec3		z_norm = { .x = 0.0, .y = 0.0, .z = -1.0 };
-	static t_vec3		unit = { .x = 1.0, .y = 1.0, .z = 1.0 };
-    t_vec3			unit_direction;
-	t_vec3			color;
-	
-	float	radius2 = 0.5F * 0.5F;
-	float	t = hit_sphere_rt(sp_center, radius2, r);
-
-    if (t > 0.0F)
-	{
-		color = add_vec3(r->orig, mult_vec3(r->dir, t));
-		sub_vec3_self(&color, z_norm);
-		unit_vec3_self(&color);
-		add_vec3_self(&color, unit);
-		mult_vec3_self(&color, 127.999F); // 0.5F * 255
-        return (vec3_to_color(&color));
-	}
-
-	/* Black background */
-	return (WHITE);
-
-	/* Funky background */
-	static float	h_divider = 1.0f / (IMG_H - 1);
-    static float	w_divider = 1.0f / (IMG_W - 1);
-
-
-	unit_direction = unit_vec3(r->dir);
-	color.x = 255.0F * fabs(unit_direction.x * 255) * w_divider;
-	color.y = 255.0F * fabs(unit_direction.y * 255) * h_divider;
-	color.z = 64.0F;
-    return vec3_to_color(&color);
-}
-
 # define BG -1
 int		ray_sphere(t_ray_vec3 *r, t_obj *sp, t_hit_rec *rec)
 {
@@ -130,20 +95,20 @@ int		ray_sphere(t_ray_vec3 *r, t_obj *sp, t_hit_rec *rec)
 	
     if (hit_sphere(r, sp, rec, T_MIN))
 	{
-		if (cos_vec3(rec->normal, r->dir) > 0)	// If in same direction, inside obj
-			return (sp->color);
+		// if (cos_vec3(rec->normal, r->dir) > 0)	// If in same direction, inside obj
+			return ( vec3_to_color(sp->color));
 		color = mult_vec3(
 					add_vec3(
 						unit_vec3(sub_vec3(rec->p, z_norm))
 						, unit)
 				, 127.999F);
-        return (vec3_to_color( &color ));
+        return (vec3_to_color(color));
 		color = rec->p;
 		sub_vec3_self(&color, z_norm);
 		unit_vec3_self(&color);
 		add_vec3_self(&color, unit);
 		mult_vec3_self(&color, 127.999F); // 0.5F * 255
-        return (vec3_to_color(&color));
+        return (vec3_to_color(color));
 	}
 
 	/* Black background */
@@ -159,23 +124,41 @@ int		ray_sphere_debug(t_ray_vec3 *r, t_obj *sp, t_hit_rec *rec)
     if (hit_sphere_debug(r, sp, rec, T_MIN))
 	{
 		if (cos_vec3(rec->normal, r->dir) > 0)	// If in same direction, inside obj
-			return (sp->color);
+			return ( vec3_to_color(sp->color) );
 		color = mult_vec3(
 					add_vec3(
 						unit_vec3(sub_vec3(rec->p, z_norm))
 						, unit)
 				, 127.999F);
-        return (vec3_to_color( &color ));
+        return (vec3_to_color(color));
 		color = rec->p;
 		sub_vec3_self(&color, z_norm);
 		unit_vec3_self(&color);
 		add_vec3_self(&color, unit);
 		mult_vec3_self(&color, 127.999F); // 0.5F * 255
-        return (vec3_to_color(&color));
+        return (vec3_to_color(color));
 	}
 
 	/* Black background */
 	return (BG);
+}
+
+int	apply_point_lights(t_data *rt, t_hit_rec *rec, int color)
+{
+	// Apply light point's contribution to perceived color
+
+	t_vec3	vcolor;
+	t_vec3	pt_to_light;
+	float	dot;
+
+	// pt_to_light = sub_vec3(rt->objs[0]->center, rt->lights[0].pos);
+	pt_to_light = sub_vec3(rt->lights[0].pos, rt->objs[0]->center);
+	dot = cos_vec3(rec->normal, pt_to_light);
+	if (dot <= 0.0F)
+		return color;
+	vcolor = color_to_vec3(color);
+	color = vec3_to_color(lerp_vec3(vcolor, rt->lights[0].color, dot));
+	return color;
 }
 
 
@@ -204,13 +187,16 @@ void	generate_sphere_shaded(t_data *rt, t_obj *sp)
 				mult_vec3(rt->cam.vertical, v)),
 				rt->cam.pos);
 			r.t_max = T_INF;
-			rec.t = 0; 
+			rec.t = T_INF;
             pixel_color = ray_sphere(&r, sp, &rec) ;
-            pixel_color = (pixel_color == BG ? rt->background : pixel_color);
-            // pixel_color = ray_color_sphere(&r, &(sp->center));
+			if (pixel_color == BG)
+				pixel_color = rt->background;
+			else 
+            	pixel_color = apply_point_lights(rt, &rec, pixel_color);
             fill_pixel(rt->img, i, j, pixel_color);
         }
     }
+	/* To test epsilon values for sphere antialiasing */
 	// int j = IMG_H / 2;
 	// for (int i = 0; i < rt->img->width; ++i) {
 	// 	u = (float)(i) / (rt->img->width - 1);

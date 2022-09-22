@@ -14,10 +14,8 @@ void	generate_sphere_simple(t_data *rt);
 
 void	generate_sphere_shaded(t_data *rt, t_obj *sp);
 
-/* Objects */
-t_obj	*get_sphere( );
-
 /* Benchmarking */
 void	display_fps(t_data *rt, double start_time);
+
 
 #endif // MINIRT_RT_ONE_WEEKEND_H

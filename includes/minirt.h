@@ -19,7 +19,7 @@
 
 /* Defines */
 # define ASPECT_RATIO ((float)16 / (float)9)
-# define IMG_W 1800
+# define IMG_W 1200
 # define IMG_H (int)(IMG_W / ASPECT_RATIO)
 
 # define T_INF	1e10
@@ -43,8 +43,8 @@ typedef enum e_obj_types
 {
 	T_SPH	= 's',
 	T_CYL	= 'c',
-	T_PLANE	= 's',
-	T_CONE	= 's'
+	T_PLANE	= 'p',
+	T_CONE	= 'o'
 }	e_obj_types;
 /* Structs */
 
@@ -158,8 +158,7 @@ typedef struct s_obj
 {
 	t_vec3		center;
 	t_vec3		orientation; 	/* for cylinders */
-	t_vec3		vcolor;			/* object initial color vec3 */
-	int			color;			/* object initial color */
+	t_vec3		color;			/* object initial color vec3 */
 	float		width;			/* for cylinders */
 	float		radius;			/* for spheres */
 	float		height;			/* for cylinders */
@@ -172,7 +171,7 @@ typedef struct s_hit_rec
 	t_vec3	p;			/* Coords of point of collision */
     t_vec3	normal;		/* Unit vector representing the normal to the surface at collision */
     double	t;			/* Distance to point of collision */
-    bool	hit;		/* Has anything been hit? */
+    bool	antialias;	/* If thew point is near an edge, use antialiasing */
 }	t_hit_rec;
 
 
@@ -188,6 +187,12 @@ typedef struct s_img
 	int		height;
 }	t_img;
 
+typedef struct s_light_pt
+{
+	t_vec3	pos;
+	t_vec3	color;
+}	t_light_pt;
+
 /* Master data */
 typedef struct s_data
 {
@@ -196,8 +201,10 @@ typedef struct s_data
 	char		*win_name;
 	t_img		*img;
 	t_camera	cam;
-	t_object	**objects;	// Do we want to add objects dynamically ?
-	// t_object	*objects;	
+	t_obj		**objs;	// Do we want to add objects dynamically ?
+	t_light_pt	*lights;
+	int			nb_lights;
+	t_vec3		ambt_light;
 	int			nb_objs;
 	t_mlx		mlx;
 	int			win_h;
@@ -211,11 +218,19 @@ void	rt_init(t_data *rt, char *filepath);
 /* Hooks */
 void	set_hooks(t_data *rt);
 
+/* Objects */
+t_obj	*new_sphere( t_vec3 center, float radius, t_vec3 color );
+	/* temp hit_obj structure */
+bool	hit_sphere(t_ray_vec3 *r, t_obj *o, t_hit_rec *rec, float t_min);
+
+
 /* Colors */
 int		int_to_color(int r, int g, int b);
 void    color(t_color *c);
-int     vec3_to_color(t_vec3 *c);
+int     vec3_to_color(t_vec3 c);
 int     vec3_to_color_copy(t_vec3 c);
+t_vec3	color_to_vec3(int c);
+
 
 /* Display */
 int	display_default(t_data *rt);
@@ -269,6 +284,8 @@ double	length_vec3(t_vec3 v);
 t_vec3	unit_vec3(t_vec3 v);
 t_vec3	cross_vec3(t_vec3 a, t_vec3 b);
 t_vec3	negate_vec3(t_vec3 v);
+t_vec3	lerp_vec3( t_vec3 a, t_vec3 b, float factor );
+t_vec3  mean_vec3( t_vec3 a, t_vec3 b );
 double	cos_vec3(t_vec3 a, t_vec3 b);
 
 /* Vectors self-operations */
