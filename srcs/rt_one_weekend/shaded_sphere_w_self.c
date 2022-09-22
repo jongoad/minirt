@@ -41,7 +41,7 @@ bool	hit_sphere(t_ray_vec3 *r, t_obj *o, t_hit_rec *rec, float t_min)
 			return false;
 		}
     }
-	if (t < rec->t) {
+	if (q.root < rec->t) {
 		rec->t = q.root;
 		rec->p = ray_at(r, rec->t);
 		rec->normal = div_vec3(sub_vec3(rec->p, o->center), o->radius);
@@ -187,7 +187,7 @@ void	generate_sphere_shaded(t_data *rt, t_obj *sp)
 				mult_vec3(rt->cam.vertical, v)),
 				rt->cam.pos);
 			r.t_max = T_INF;
-			rec.t = 0; 
+			rec.t = T_INF;
             pixel_color = ray_sphere(&r, sp, &rec) ;
 			if (pixel_color == BG)
 				pixel_color = rt->background;

@@ -19,7 +19,7 @@ static void	rt_init_lights(t_data *rt) {
 	rt->nb_lights = 1;
 	rt->lights = ft_xalloc(sizeof(t_light_pt) * rt->nb_lights);
 	rt->lights[0].color = color_to_vec3(WHITE);
-	rt->lights[0].pos = vec3(0.0F, 1.0F, -1.0F);
+	rt->lights[0].pos = vec3(2.0F, 3.0F, -1.0F);
 }
 
 static void	rt_init_objs(t_data *rt)
