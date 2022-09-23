@@ -29,7 +29,7 @@ bool	hit_sphere_no_hit_rec(t_ray_vec3 *r, t_obj *o)
 	q.c = dot_vec3(oc, oc) - o->radius * o->radius;
 	q.discriminant = q.half_b * q.half_b - q.a * q.c;
     if (q.discriminant < 0)
-        return false;	
+        return false;
 	return true;
 }
 
@@ -116,6 +116,25 @@ int	apply_single_point_light(t_data *rt, t_hit_rec *rec, int color)
 	return color;
 }
 
+int	apply_single_point_light_any_obj(t_data *rt, t_obj *o, t_hit_rec *rec, int color)
+{
+	// Apply light point's contribution to perceived color
+
+	t_vec3	vcolor;
+	t_vec3	pt_to_light;
+	double	t;
+
+	// pt_to_light = sub_vec3(rt->objs[0]->center, rt->lights[0].pos);
+	(void)o;
+	pt_to_light = sub_vec3(rt->lights[0].pos, rec->p);
+	t = cos_vec3(rec->normal, pt_to_light);
+	if (t <= 0.0F)
+		return color;
+	vcolor = color_to_vec3(color);
+	color = vec3_to_color(lerp_vec3(vcolor, rt->lights[0].color, t));
+	return color;
+}
+
 int	apply_point_lights(t_data *rt, t_obj *o, t_hit_rec *rec, int color)
 {
 	t_vec3		vcolor;
@@ -129,6 +148,9 @@ int	apply_point_lights(t_data *rt, t_obj *o, t_hit_rec *rec, int color)
 	(void) o;
 	pt_to_light.dir = rec->p;
 	pt_to_light.orig = rt->lights[0].pos;
+	unit_vec3_self(&(pt_to_light.dir));
+	diff = sub_vec3(pt_to_light.orig, pt_to_light.dir);
+	unit_vec3_self(&diff);
 
 	// Test for hard shadows
 	rec2.t = T_INF;
@@ -137,10 +159,11 @@ int	apply_point_lights(t_data *rt, t_obj *o, t_hit_rec *rec, int color)
 	{
 		// if (rt->objs[i]->hit(&pt_to_light, rt->objs[i], &rec2))
 		if (rt->objs[i]->hit_no_rec(&pt_to_light, rt->objs[i]))
-			return WHITE;
+		{
+			return color;
+		}
 		i++;
 	}
-	diff = sub_vec3(pt_to_light.dir, pt_to_light.orig);
 	t = cos_vec3(rec->normal, diff);
 	if (t <= 0.0F)
 		return color;
@@ -192,6 +215,8 @@ void	generate_sphere_shaded(t_data *rt, t_obj *sp)
             // pixel_color = ray_sphere(&r, rt->objs[1], &rec) ;
 			if (rec.hit_anything)
             	pixel_color = apply_point_lights(rt, rt->objs[rec.obj_id], &rec, vec3_to_color(rec.color));
+            	// pixel_color = apply_single_point_light_any_obj(rt, rt->objs[rec.obj_id], &rec, vec3_to_color(rec.color));
+            	// pixel_color = apply_point_lights(rt, rt->objs[rec.obj_id], &rec, vec3_to_color(rec.color));
 				// pixel_color = vec3_to_color(rec.color);
 			// if (pixel_color == BG)
 			// 	pixel_color = rt->background;
