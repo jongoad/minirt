@@ -1,6 +1,10 @@
 #ifndef MINIRT_H
 # define MINIRT_H
 
+/****************************/
+/*         Includes         */
+/****************************/
+
 /* System Includes */
 # include <stdio.h>
 # include <math.h>
@@ -9,216 +13,23 @@
 # include <fcntl.h>
 # include <time.h>
 
-/* User Includes */
+
+/* Library Includes */
 // # include "../minilibx_opengl/mlx_opengl.h"
 # include <mlx.h>
 # include "../libft/libft.h"
 
-
+/* Local File Includes */
 # include "rt_one_weekend.h"
+# include "structs.h"
+# include "defines_enums.h"
+# include "error.h"
 
 
-/* Defines */
-# define ASPECT_RATIO ((float)16 / (float)9)
-# define IMG_W 1200
-# define IMG_H (int)(IMG_W / ASPECT_RATIO)
+/*******************************/
+/*    Function Declarations    */
+/*******************************/
 
-# define T_INF	1e10
-# define T_MIN	0.2F
-
-# define NO_HIT -1
-
-/* Colors */
-typedef enum e_colors
-{
-	BLACK	= 0x000000,
-	BLUE	= 0x0000FF,
-	CYAN	= 0x00FFFF,
-	GREY	= 0x222222,
-	ORANGE	= 0xFF7700,
-	PINK	= 0xFF00FF,
-	RED		= 0xFF0000,
-	WHITE	= 0xFFFFFF,
-	YELLOW	= 0xFFFF00
-}	t_colors;
-
-typedef enum e_obj_types
-{
-	T_SPH	= 's',
-	T_CYL	= 'c',
-	T_PLANE	= 'p',
-	T_CONE	= 'o'
-}	e_obj_types;
-/* Structs */
-
-
-/* Iterator */
-typedef struct s_i
-{
-	int x;
-	int y;
-	int z;
-}	t_i;
-
-typedef struct s_vec3
-{
-	float	x;
-	float	y;
-	float	z;
-}	t_vec3;
-
-/* Colour data */
-typedef	struct s_color
-{
-	int	r;
-	int	g;
-	int	b;
-	int	color; /* (r << 16) | (g << 8) | (b) */
-}	t_color;
-
-/* Point data */
-typedef struct s_point
-{
-	float	x;
-	float	y;
-	float	z;
-	float	w;
-}	t_point;
-
-/* Vector data */
-typedef struct s_vector
-{
-	float	x;
-	float	y;
-	float	z;
-	float	w;
-
-}	t_vector;
-
-/* Vertex data */
-typedef	struct s_vertex
-{
-	t_point		pos;
-	t_color 	clr;
-}	t_vertex;
-
-/* Ray data */
-typedef	struct s_ray
-{
-	t_point 	*origin;			/* Originating point of ray (camera focal point) */
-	t_point		*second;			/* Secondary point of ray (pixel on image plane) */
-	t_vector	*vec3;				/* Vector created from origin and secondary point */
-}	t_ray;
-typedef	struct s_ray_vec3
-{
-	t_vec3 	orig;			/* Originating point of ray (camera focal point) */
-	t_vec3	dir;			/* Secondary point of ray (pixel on image plane) */
-	float	t_max;			/* Vector created from origin and secondary point */
-}	t_ray_vec3;
-
-typedef	struct s_ray_vec3_ptr
-{
-	t_vec3 	*orig;			/* Originating point of ray (camera focal point) */
-	t_vec3	*dir;			/* Secondary point of ray (pixel on image plane) */
-	// t_vector	*vec3;				/* Vector created from origin and secondary point */
-}	t_ray_vec3_ptr;
-
-/* Camera data */
-typedef struct s_camera
-{
-	t_vec3		pos;				/* Position of camera */
-	t_vec3		aim;				/* Direction camera is pointing */
-	t_vec3		horizontal;			/* view_w vector  */
-	t_vec3		vertical;			/* view_h vector  */
-	t_vec3		low_left;			/* Vector from origin to lower left corner */
-	float		**world_to_cam;		/* World to camera coords transform */
-	float		**cam_to_world;		/* Camera to world coords transform */
-	int			img_w;				/* Width of image in pixels */
-	int			img_h;				/* Height of image in pixels */
-	float		view_w;				/* Width of the viewport */
-	float		view_h;				/* Height of the viewport */
-	float		z_offset;			/* Distance of focal point from image plane, this will change the FOV */
-
-}	t_camera;
-
-/* 3D Object */
-
-typedef struct s_mlx
-{
-}	t_mlx;
-
-typedef struct	s_object
-{
-	char		type;
-	t_point		pos;
-	t_color		clr;
-
-}	t_object;
-
-typedef struct s_hit_rec	t_hit_rec;
-typedef struct s_obj		t_obj;
-typedef struct s_obj
-{
-	t_vec3		center;
-	t_vec3		orientation; 	/* for cylinders */
-	t_vec3		color;			/* object initial color vec3 */
-	float		width;			/* for cylinders */
-	float		radius;			/* for spheres */
-	float		height;			/* for cylinders */
-	bool		(*hit)(t_ray_vec3 *r, t_obj *o, t_hit_rec *rec);	/* Function ptr for any object type */
-	bool		(*hit_no_rec)(t_ray_vec3 *r, t_obj *o);	/* Function ptr for any object type */
-	char		type;
-}	t_obj;
-
-typedef struct s_hit_rec
-{
-	t_vec3	p;				/* Coords of point of collision */
-    t_vec3	normal;			/* Unit vector representing the normal to the surface at collision */
-    t_vec3	color;			/* Color vector at collision */
-    double	t;				/* Distance to point of collision */
-    int		obj_id;			/* ID of the object with which collision happened */
-    bool	antialias;		/* If thew point is near an edge, use antialiasing */
-    bool	hit_anything;	/* FIXME: not sure if will be needed, but useful for debugging */
-}	t_hit_rec;
-
-
-/* mlx image */
-typedef struct s_img
-{
-	void	*img_ptr;
-	char	*data_addr;
-	int		bpp;
-	int		line_len;
-	int		endian;
-	int		width;
-	int		height;
-}	t_img;
-
-typedef struct s_light_pt
-{
-	t_vec3	pos;
-	t_vec3	color;
-}	t_light_pt;
-
-/* Master data */
-typedef struct s_data
-{
-	void		*mlx_ptr;
-	void		*win_ptr;
-	char		*win_name;
-	t_img		*img;
-	t_camera	cam;
-	t_obj		**objs;	// Do we want to add objects dynamically ?
-	t_light_pt	*lights;
-	int			nb_lights;
-	t_vec3		ambt_light;
-	int			nb_objs;
-	int			selected_obj_id;	/* For dynamic resizing/translation */
-	t_mlx		mlx;
-	int			win_h;
-	int			win_w;
-	int			background;
-}	t_data;
 
 /* Initialization */
 void	rt_init(t_data *rt, char *filepath);
@@ -228,10 +39,12 @@ void	set_hooks(t_data *rt);
 
 /* Objects */
 t_obj	*new_sphere( t_vec3 center, float radius, t_vec3 color );
+t_obj	*new_plane(t_vec3 center, t_vec3 orientation, t_vec3 color);
 
-	/* temp hit_obj structure */
+/* Object intersection functions */
 bool	hit_sphere(t_ray_vec3 *r, t_obj *o, t_hit_rec *rec);
 bool	hit_sphere_no_hit_rec(t_ray_vec3 *r, t_obj *o);
+bool	hit_plane(t_ray_vec3 *r, t_obj *o, t_hit_rec *rec);
 
 
 /* Colors */
@@ -248,22 +61,22 @@ int	display_img(t_data *rt, t_img *img);
 
 
 /* Ray Generation */
-t_ray		*generate_primary_ray(t_data *data, int x, int y);
-t_point		*init_pixel_point(t_data *data, int x, int y);
+t_vec3		*init_pixel_point(t_data *data, int x, int y);
+
+
 
 t_data		*get_data(void);
-t_vector	*get_vector(t_point *origin, t_point *second);
 
-int	cast_ray_to_obj(t_data *rt, int x, int y); //FIXME: added by ismael
+int	cast_ray_at_pixel(t_data *rt, int x, int y); //FIXME: added by ismael
 
 
 /* Matrix functions */
 float	**matrix_identity(int fill, int fill_diagonal);
 float	**matrix_rotation(float x, char axis);
-float	**matrix_scale(t_point scale);
-float	**matrix_translate(t_point translate);
+float	**matrix_scale(t_vec3 scale);
+float	**matrix_translate(t_vec3 translate);
 float	**matrix_mult_mat(float **m1, float **m2);
-void	matrix_mult_point(t_point *v, float **mat);
+void	matrix_mult_point(t_vec3 *v, float **mat);
 void	matrix_free(float **mat);
 
 /* Utils */
@@ -282,9 +95,6 @@ void	rt_cleanup(t_data *rt);
 
 
 /* Vectors by copy */
-
-double	invsqrt(double y);
-
 t_vec3	vec3(double x, double y, double z);
 t_vec3	add_vec3(t_vec3 a, t_vec3 b);
 t_vec3	add3_vec3(t_vec3 a, t_vec3 b, t_vec3 c);
@@ -302,7 +112,6 @@ t_vec3  mean_vec3( t_vec3 a, t_vec3 b );
 double	cos_vec3(t_vec3 a, t_vec3 b);
 
 /* Vectors self-operations */
-
 void	add_vec3_self(t_vec3 *a, t_vec3 b);
 void	add3_vec3_self(t_vec3 *a, t_vec3 b, t_vec3 c);
 void	sub_vec3_self(t_vec3 *a, t_vec3 b);
@@ -313,15 +122,56 @@ void	unit_vec3_self(t_vec3 *v);
 void	cross_vec3_self(t_vec3 *a, t_vec3 b);
 void	negate_vec3_self(t_vec3 *v);
 
-/* Vectors by new malloced pointer */
-t_vec3 *add_vec3_new(t_vec3 *a, t_vec3 *b);
-t_vec3 *add3_vec3_new(t_vec3 *a, t_vec3 *b, t_vec3 *c);
-t_vec3 *sub_vec3_new(t_vec3 *a, t_vec3 *b);
-t_vec3 *mult_vec3_vec3_new(t_vec3 *a, t_vec3 *b);
-t_vec3 *mult_vec3_new(t_vec3 *v, double b);
-t_vec3 *div_vec3_new(t_vec3 *v, double b);
-t_vec3 *unit_vec3_new(t_vec3 *v);
-t_vec3 *cross_vec3_new(t_vec3 *a, t_vec3 *b);
-t_vec3 *negate_vec3_new(t_vec3 *v);
+
+
+
+// Camera testing
+t_vec3	mat_mult_vec3(t_vec3 *v, float **mat);
+
+
+
+
+
+
+
+
+
+
+
+/* Matrix functions MOVED FROM RT */
+// float	**mat_id(int fill, int fill_diagonal);
+// float	**mat_rot(float x, char axis);
+// float	**mat_scale(t_point scale);
+// float	**mat_trans(t_point translate);
+// float	**mat_mult_mat(float **m1, float **m2);
+// void	mat_mult_vec4(t_point *v, float **mat);
+// void	mat_free(float **mat);
+
+
+
+
+/* Parsing Functions */
+void	init_parse(t_parse *dat);
+int		open_scene(t_parse *dat, char *path);
+int		check_tok(char *input, char** tok);
+int		check_scene(t_parse *dat);
+int		parse(t_data *rt, char *path);
+
+/* Individual Object Parsing Functions */
+int		parse_ambient(char **obj);
+int		parse_camera(char **obj);
+int		parse_light(char **obj);
+int		parse_plane(char **obj);
+int		parse_sphere(char **obj);
+int		parse_cylinder(char **obj);
+
+/* Parsing Utils */
+int 	check_rgb(char *rgb);
+int		check_float(char *val, float lim1, float lim2);
+int		check_int(char *val, int lim1, int lim2);
+int		check_orientation(char *orient);
+int		check_coords(char *coord);
+void	replace_whitespace(t_parse *dat);
+
 
 #endif // MINIRT_H

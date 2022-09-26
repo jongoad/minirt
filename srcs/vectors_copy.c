@@ -10,21 +10,6 @@ t_vec3  vec3(double x, double y, double z)
     return (v);
 }
 
-double  invsqrt(double y)
-{
-    double      yhalf;
-    long long   i;
-
-    yhalf = (double)0.5F * y;
-    i = *(long long*)( &y );
-    i = 0x5fe6ec85e7de30daLL - (i >> 1);
-    // For floats:
-    // i = 0x5f3759df - (i >> 1);
-    y = *(double*)(&i);
-    y = y * ((double)1.5F - yhalf * y * y);
-    return y;
-}
-
 t_vec3  add_vec3(t_vec3 a, t_vec3 b)
 {
     return vec3(

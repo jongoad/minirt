@@ -8,20 +8,10 @@ t_vec3	ray_at(t_ray_vec3 *r, float t)
 	return add_vec3(r->orig, mult_vec3(r->dir, t));
 }
 
-typedef struct s_quadratic
-{
-    float	a;
-    float	half_b;
-    float	c;
-    float	discriminant;
-	float	sqrtd;
-	float	root;
-}	t_quadratic;
-
 bool	hit_sphere_no_hit_rec(t_ray_vec3 *r, t_obj *o)
 {
     t_vec3			oc;
-	t_quadratic		q;
+	static t_quadratic		q;
 
 	oc = sub_vec3(r->orig, o->center);
 	q.a = dot_vec3(r->dir, r->dir);
@@ -30,13 +20,42 @@ bool	hit_sphere_no_hit_rec(t_ray_vec3 *r, t_obj *o)
 	q.discriminant = q.half_b * q.half_b - q.a * q.c;
     if (q.discriminant < 0)
         return false;
+	q.sqrtd = sqrtf(q.discriminant);
+    q.root = (-q.half_b - q.sqrtd) / q.a;
+	// Try the other root, aka the furthest side of the sphere
+    if (q.root < T_MIN || q.root > T_INF)
+	{
+        q.root = (-q.half_b + q.sqrtd) / q.a;
+        if (q.root < T_MIN || q.root > T_INF)
+			return false;
+    }
 	return true;
+}
+
+bool	hit_plane(t_ray_vec3 *r, t_obj *o, t_hit_rec *rec)
+{
+	float	discriminant;
+
+	discriminant = dot_vec3(o->orientation, r->dir);
+    if (discriminant > T_MIN)
+	{
+		rec->t = dot_vec3(sub_vec3(o->center, r->orig), o->orientation) / discriminant;
+		if (rec->t >= 0 && rec->t < T_INF)
+		{
+			rec->hit_anything = true;
+			rec->color = o->color;
+			rec->normal = o->orientation;
+			rec->p = ray_at(r, rec->t);
+			return (true);
+		}
+	}
+	return false;
 }
 
 bool	hit_sphere(t_ray_vec3 *r, t_obj *o, t_hit_rec *rec)
 {
     t_vec3			oc;
-	t_quadratic		q;
+	static t_quadratic		q;
 
 	oc = sub_vec3(r->orig, o->center);
 	q.a = dot_vec3(r->dir, r->dir);
@@ -47,14 +66,12 @@ bool	hit_sphere(t_ray_vec3 *r, t_obj *o, t_hit_rec *rec)
         return false;	
     q.sqrtd = sqrtf(q.discriminant);
     q.root = (-q.half_b - q.sqrtd) / q.a;
-// Try the other root, aka the inside of the sphere from the camera
-    if (q.root < T_MIN || q.root > r->t_max)
+	// Try the other root, aka the furthest side of the sphere
+    if (q.root < T_MIN || q.root > T_INF)
 	{
         q.root = (-q.half_b + q.sqrtd) / q.a;
-        if (q.root < T_MIN || q.root > r->t_max)
-		{
+        if (q.root < T_MIN || q.root > T_INF)
 			return false;
-		}
     }
 	if (q.root < rec->t) {
 		rec->hit_anything = true;
@@ -135,6 +152,25 @@ int	apply_single_point_light_any_obj(t_data *rt, t_obj *o, t_hit_rec *rec, int c
 	return color;
 }
 
+static inline bool	hit_anything(t_data *rt, t_ray_vec3 *pt_to_light, t_hit_rec *rec, t_hit_rec *rec2)
+{
+	int		i;
+
+	i = -1;
+	(void) rec2;
+	while (++i < rt->nb_objs)
+	{
+		if (rec->obj_id == i)
+			continue ;
+		// if (rt->objs[i]->hit_no_rec(pt_to_light, rt->objs[i]))
+		if (rt->objs[i]->hit(pt_to_light, rt->objs[i], rec2))
+		{
+			return (true);
+		}
+	}
+	return (false);
+}
+
 int	apply_point_lights(t_data *rt, t_obj *o, t_hit_rec *rec, int color)
 {
 	t_vec3		vcolor;
@@ -142,33 +178,31 @@ int	apply_point_lights(t_data *rt, t_obj *o, t_hit_rec *rec, int color)
 	t_hit_rec	rec2;
 	t_vec3		diff;
 	float		t;
-	int			i;
+	int			j;
 
-	// FIXME: to remove
+	//FIXME: to remove
 	(void) o;
-	pt_to_light.dir = rec->p;
-	pt_to_light.orig = rt->lights[0].pos;
-	unit_vec3_self(&(pt_to_light.dir));
-	diff = sub_vec3(pt_to_light.orig, pt_to_light.dir);
-	unit_vec3_self(&diff);
-
-	// Test for hard shadows
-	rec2.t = T_INF;
-	i = 0;
-	while (i < rt->nb_objs)
+	j = -1;
+	while (++j < rt->nb_lights)
 	{
-		// if (rt->objs[i]->hit(&pt_to_light, rt->objs[i], &rec2))
-		if (rt->objs[i]->hit_no_rec(&pt_to_light, rt->objs[i]))
-		{
-			return color;
-		}
-		i++;
+	
+		pt_to_light.orig = rec->p;
+		// pt_to_light.dir = rt->lights[j].pos;
+		// diff = sub_vec3(rec->p, rt->lights[j].pos);
+		diff = sub_vec3(rt->lights[j].pos, rec->p);
+		// pt_to_light.dir = unit_vec3(rec->normal);
+		pt_to_light.dir = diff;
+
+		// Test for hard shadows
+		rec2.t = T_INF;
+		if (hit_anything(rt, &pt_to_light, rec, &rec2))
+			continue;
+		t = cos_vec3(rec->normal, diff);
+		if (t <= 0.0F)
+			continue;
+		vcolor = color_to_vec3(color);
+		color = vec3_to_color(lerp_vec3(vcolor, rt->lights[j].color, t));
 	}
-	t = cos_vec3(rec->normal, diff);
-	if (t <= 0.0F)
-		return color;
-	vcolor = color_to_vec3(color);
-	color = vec3_to_color(lerp_vec3(vcolor, rt->lights[0].color, t));
 	return color;
 }
 
@@ -199,7 +233,6 @@ void	generate_sphere_shaded(t_data *rt, t_obj *sp)
 				mult_vec3(rt->cam.horizontal, u),
 				mult_vec3(rt->cam.vertical, v)),
 				rt->cam.pos);
-			r.t_max = T_INF;
 			rec.color = color_to_vec3(rt->background);
 			rec.t = T_INF;
 			rec.hit_anything = false;
@@ -236,7 +269,6 @@ void	generate_sphere_shaded(t_data *rt, t_obj *sp)
 	// 		mult_vec3(rt->cam.horizontal, u),
 	// 		mult_vec3(rt->cam.vertical, v)),
 	// 		rt->cam.pos);
-	// 	r.t_max = T_INF;
 	// 	printf("x = %d: ", i);
 	// 	pixel_color = ray_sphere_debug(&r, sp, &rec);
 	// 	rec.t = 0;

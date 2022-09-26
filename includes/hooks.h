@@ -11,6 +11,9 @@
 
 
 typedef struct s_data	t_data;
+
+
+/* macOS Key Codes */
 typedef enum e_keyhooks
 {
 	KEY_0 = 29,
@@ -48,6 +51,7 @@ typedef enum e_keyhooks
 	NUMPAD_PLUS = 69
 }	t_keyhooks;
 
+/* X11 Event Define Codes */
 typedef enum e_mlx_events
 {
 	KEYPRESS = 2,

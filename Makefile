@@ -20,19 +20,16 @@ CFILES	=	cleanup.c \
 			hooks.c \
 			init.c \
 			key_hooks.c \
-			matrix.c \
 			main.c \
-			mlx.c \
 			mouse_hooks.c \
-			parse.c \
 			ray.c \
-			raytracer.c \
 			singleton.c \
 			utils.c \
-			vectors_copy.c \
+			vectors.c \
 			vectors_self.c \
 			rt_one_weekend/shaded_sphere_w_self.c \
 			rt_one_weekend/benchmark.c \
+			parse/parse.c parse/parse_objects.c parse/parse_utils.c \
 # rt_one_weekend/shaded_sphere.c \
 # rt_one_weekend/shaded_sphere_by_ptr.c \
 # rt_one_weekend/hello.c \

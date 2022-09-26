@@ -3,14 +3,19 @@
 
 double	g_fps;
 
-
 int	main(int argc, char **argv)
 {
 	t_data	*rt;
 
 	if (argc != 2)
-		exit_on_err("Error: minirt only accepts a single input\n");
+		exit_on_err(BAD_ARG_ERR);
 	rt = get_data();
+
+	
+	// if (!parse(rt, argv[1]))
+	// 	exit_on_err(PARSE_ERR);
+
+
 	rt_init(rt, argv[1]);
 	// hello_world(rt);
 	// generate_background(rt);

@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <math.h>
-#include "../libft/libft.h"
+#include "../../libft/libft.h"
 
 unsigned int	ft_atox(char *str)
 {
