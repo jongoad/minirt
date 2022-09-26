@@ -3,14 +3,19 @@
 
 
 
+STEPS FOR BASIC RAYTRACER
+
+1. Create primary ray for each pixel.
+2. Calculate intersection with each object in scene (track the minimum distance)
+	- If the minimum distance is the distance limit, nothing was intersected
+3. Calculate the secondary(shadow) ray
 
 
 
 
-1. Parse scene
-2. Create objects
-3. Define scene bounds based on objects
-4. 
+
+
+
 
 
 

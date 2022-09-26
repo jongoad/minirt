@@ -6,16 +6,21 @@ int	parse_ambient(char **obj)
 	t_i i;
 
 	i.x = 0;
+	printf("Entering ambient parser\n");
 	if (ft_strcmp(obj[0], "A"))
 		return (0);
 	while (obj[i.x])
+	{
+		printf("Element #%i: %s\n", i.x, obj[i.x]);
 		i.x++;
-	if (i.x != 2)
+	}
+	if (i.x != 3)
 		return (0);
-	else if (!check_float(obj[1], 0, 1)) //Check lighting ratio
+	if (!check_float(obj[1], 0, 1)) //Check lighting ratio
 		return (0);
-	else if (!check_rgb(obj[2])) // Check RGB
+	if (!check_rgb(obj[2])) // Check RGB
 		return (0);
+	printf("Ambient parse success\n");
 	return (1);
 
 }
@@ -24,20 +29,23 @@ int	parse_ambient(char **obj)
 int	parse_camera(char **obj)
 {
 	t_i i;
-
+	printf("Entering camera parser\n");
 	i.x = 0;
-	if (ft_strcmp(obj[0], "C"))
-		return (0);
+
 	while (obj[i.x])
+	{
+		printf("%s\n", obj[i.x]);
 		i.x++;
-	if (i.x != 2)
+	}
+	if (i.x != 4)
 		return (0);
 	if (!check_coords(obj[1])) //Check xyz coords
 		return (0);
-	else if (!check_orientation(obj[2])) //Check orientation vector
+	if (!check_orientation(obj[2])) //Check orientation vector
 		return (0);
-	else if (!check_int(obj[2], 0, 180))  //Check FOV range
+	if (!check_int(obj[3], 0, 180))  //Check FOV range
 		return (0);
+	printf("Camera parse success\n");
 	return (1);
 }
 
@@ -46,21 +54,31 @@ int	parse_light(char **obj)
 {
 	t_i i;
 
+	printf("Entering light parser\n");
 	i.x = 0;
-	if (ft_strcmp(obj[0], "L"))
-		return (0);
 	while (obj[i.x])
+	{
+		printf("%s\n", obj[i.x]);
 		i.x++;
-	if (BONUS == 1 && i.x != 3)
+	}
+	if (BONUS == 1 && i.x != 4)
 		return (0);
-	else if (BONUS == 0 && i.x != 2)
+	if (BONUS == 0 && i.x != 3)
+		return (0);
+	printf("Entering coords check\n");
 	if (!check_coords(obj[1])) // Check coords
 		return (0);
-	else if (!check_float(obj[3], 0, 1)) //Check lighting ratio
+	printf("Entering float check\n");
+	if (!check_float(obj[2], 0, 1)) //Check lighting ratio
 		return (0);
+	
 	if (BONUS == 1)
-		if (!check_rgb(obj[5])) // Check RGB
+	{
+		printf("Entering RGB check\n");
+		if (!check_rgb(obj[3])) // Check RGB
 		return (0);
+	}
+	printf("Light parse success\n");
 	return (1);
 }
 
@@ -69,19 +87,22 @@ int parse_plane(char **obj)
 {
 	t_i i;
 
+	printf("Entering plane parser\n");
 	i.x = 0;
-	if (ft_strcmp(obj[0], "pl"))
-		return (0);
 	while (obj[i.x])
+	{
+		printf("%s\n", obj[i.x]);
 		i.x++;
-	if (i.x != 3)
+	}
+	if (i.x != 4)
 		return (0);
 	if (!check_coords(obj[1])) //Check xyz coords
 		return (0);
-	else if (!check_orientation(obj[2])) //Check orientation vector
+	if (!check_orientation(obj[2])) //Check orientation vector
 		return (0);
-	else if (!check_rgb(obj[3])) //Check RBG colours
+	if (!check_rgb(obj[3])) //Check RBG colours
 		return (0);
+	printf("Plane parse success\n");
 	return (1);
 }
 
@@ -90,19 +111,23 @@ int	parse_sphere(char **obj)
 {
 	t_i i;
 
+	printf("Entering sphere parser\n");
 	i.x = 0;
-	if (ft_strcmp(obj[0], "sp"))
-		return (0);
+
 	while (obj[i.x])
+	{
+		printf("%s\n", obj[i.x]);
 		i.x++;
-	if (i.x != 3)
+	}
+	if (i.x != 4)
 		return (0);
 	if (!check_coords(obj[1])) //Check xyz coords
 		return (0);
-	else if (!check_float(obj[2], 0, 0)) //Check diameter
+	if (!check_float(obj[2], 0, 0)) //Check diameter
 		return (0);
-	else if (!check_rgb(obj[3])) //Check RBG colours
+	if (!check_rgb(obj[3])) //Check RBG colours
 		return (0);
+	printf("Sphere parse success\n");
 	return (1);
 }
 
@@ -111,136 +136,25 @@ int	parse_cylinder(char **obj)
 {
 	t_i i;
 
+	printf("Entering cylinder parser\n");
 	i.x = 0;
-	if (ft_strcmp(obj[0], "cy"))
-		return (0);
 	while (obj[i.x])
-		i.x++;
-	if (i.x != 5)
-		return (0);
-	if (!check_coords(obj[2]))
-		return (0);
-	else if (!check_orientation(obj[3])) //Check orientation vector
-		return (0);
-	else if (!check_float(obj[3], 0, 0)) //Check diameter
-		return (0);
-	else if (!check_float(obj[3], 0, 0)) //Check height
-		return (0);
-	else if (!check_rgb(obj[5]))
-		return (0);
-	return (1);
-}
-
-/* Check if coordinate values are valid */
-int	check_coords(char *coord)
-{
-	char **split;
-	float res;
-	t_i i;
-
-	i.x = 0;
-	split = ft_split(coord, ",");
-	while (split[i.x])
 	{
-		res = ft_atof(split[i.x]); //Need to write atof function
-		if (i.x == 3) // Need to check not NAN or INF etc.
-		{
-			ft_free_split(split);
-			return(0);
-		}
-		ft_free_split(split);
+		printf("%s\n", obj[i.x]);
 		i.x++;
 	}
-	if (i.x < 2)
+	if (i.x != 6)
 		return (0);
+	if (!check_coords(obj[1]))
+		return (0);
+	if (!check_orientation(obj[2])) //Check orientation vector
+		return (0);
+	if (!check_float(obj[3], 0, 0)) //Check diameter
+		return (0);
+	if (!check_float(obj[4], 0, 0)) //Check height
+		return (0);
+	if (!check_rgb(obj[5]))
+		return (0);
+	printf("Cylinder parse success\n");
 	return (1);
-}
-
-/* Check if orientation vector is valid */
-int	check_orientation(char *orient)
-{
-	char **split;
-	float res;
-	t_i i;
-
-	i.x = 0;
-	split = ft_split(orient, ",");
-	while (split[i.x])
-	{
-		res = ft_atof(split[i.x]); //Need to write atof function
-		if (i.x == 3 || (res < -1 || res > 1))
-		{
-			ft_free_split(split);
-			return(0);
-		}
-		ft_free_split(split);
-		i.x++;
-	}
-	if (i.x < 2)
-		return (0);
-	return (1);
-}
-
-/* Check if RGB values are valid */
-int check_rgb(char *rgb)
-{
-	char **split;
-	int res;
-	t_i i;
-
-	i.x = 0;
-	split = ft_split(rgb, ",");
-	while (split[i.x])
-	{
-		res = ft_atoi(split[i.x]);
-		if (i.x == 3 || (res < 0 || res > 255))
-		{
-			ft_free_split(split);
-			return(0);
-		}
-		ft_free_split(split);
-		i.x++;
-	}
-	if (i.x < 2)
-		return (0);
-	return (1);
-}
-
-/* Check if float is valid, and if applicable if it falls in range*/
-int	check_float(char *val, float lim1, float lim2)
-{
-	float res;
-
-	res = ft_atof(val);  //Need to write atof function
-
-	//Need to check NAN or inf etc.
-	if (lim1 != 0 && lim2 != 0)
-		if (res < lim1 || res > lim2)
-			return (0);
-
-	return (1);		
-}
-
-int check_int(char *val, int lim1, int lim2)
-{
-	char **split;
-	float res;
-	t_i i;
-
-	i.x = 0;
-	split = ft_split(val, ",");
-	while (split[i.x])
-		i.x++;
-	if (i.x != 1)
-		return (0);
-	res = ft_atoi(split[0]);
-	if (lim1 != 0 && lim2 != 0)
-		if (res < lim1 || res > lim2)
-			return (0);
-	res = ft_atoi(split[1]);
-	if (lim1 != 0 && lim2 != 0)
-		if (res < lim1 || res > lim2)
-			return (0);
-	
-	return (1);	
 }
