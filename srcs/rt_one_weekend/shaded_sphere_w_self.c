@@ -36,7 +36,7 @@ bool	hit_sphere_no_hit_rec(t_ray_vec3 *r, t_obj *o)
 bool	hit_sphere(t_ray_vec3 *r, t_obj *o, t_hit_rec *rec)
 {
     t_vec3			oc;
-	t_quadratic		q;
+	static t_quadratic		q;
 
 	oc = sub_vec3(r->orig, o->center);
 	q.a = dot_vec3(r->dir, r->dir);
@@ -143,32 +143,53 @@ int	apply_point_lights(t_data *rt, t_obj *o, t_hit_rec *rec, int color)
 	t_vec3		diff;
 	float		t;
 	int			i;
+	int			j;
 
 	// FIXME: to remove
 	(void) o;
-	pt_to_light.dir = rec->p;
-	pt_to_light.orig = rt->lights[0].pos;
-	unit_vec3_self(&(pt_to_light.dir));
-	diff = sub_vec3(pt_to_light.orig, pt_to_light.dir);
-	unit_vec3_self(&diff);
-
-	// Test for hard shadows
-	rec2.t = T_INF;
-	i = 0;
-	while (i < rt->nb_objs)
+	j = 0;
+	while (j < rt->nb_lights)
 	{
-		// if (rt->objs[i]->hit(&pt_to_light, rt->objs[i], &rec2))
-		if (rt->objs[i]->hit_no_rec(&pt_to_light, rt->objs[i]))
+	
+		pt_to_light.orig = rec->p;
+		pt_to_light.dir = rt->lights[j].pos;
+		// unit_vec3_self(&(pt_to_light.dir));
+		diff = sub_vec3(rt->lights[j].pos, rec->p);
+		// unit_vec3_self(&diff);
+		// pt_to_light.orig = unit_vec3(diff);
+		pt_to_light.dir = unit_vec3(rec->normal);
+		// unit_vec3_self(&(pt_to_light.orig));
+		// unit_vec3_self(&(pt_to_light.dir));
+
+		// Test for hard shadows
+		rec2.t = T_INF;
+		i = 0;
+		while (i < rt->nb_objs)
 		{
-			return color;
+			// if (rt->objs[i]->hit(&pt_to_light, rt->objs[i], &rec2))
+			if (rec->obj_id == i)
+			{
+				i++;
+				continue ;
+			}
+			if (rt->objs[i]->hit_no_rec(&pt_to_light, rt->objs[i]))
+			{
+				return color;
+			}
+			i++;
 		}
-		i++;
+		t = cos_vec3(rec->normal, diff);
+		// if (t <= 0.0F)
+		// 	return color;
+		if (t <= 0.0F) {
+			j++;
+			continue;
+		}
+		vcolor = color_to_vec3(color);
+		color = vec3_to_color(lerp_vec3(vcolor, rt->lights[j].color, t));
+
+		j++;
 	}
-	t = cos_vec3(rec->normal, diff);
-	if (t <= 0.0F)
-		return color;
-	vcolor = color_to_vec3(color);
-	color = vec3_to_color(lerp_vec3(vcolor, rt->lights[0].color, t));
 	return color;
 }
 

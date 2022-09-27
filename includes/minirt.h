@@ -24,7 +24,7 @@
 # define IMG_H (int)(IMG_W / ASPECT_RATIO)
 
 # define T_INF	1e10
-# define T_MIN	0.2F
+# define T_MIN	0.01F
 
 # define NO_HIT -1
 
@@ -160,7 +160,7 @@ typedef struct s_obj		t_obj;
 typedef struct s_obj
 {
 	t_vec3		center;
-	t_vec3		orientation; 	/* for cylinders */
+	t_vec3		orientation; 	/* for cylinders, planes */
 	t_vec3		color;			/* object initial color vec3 */
 	float		width;			/* for cylinders */
 	float		radius;			/* for spheres */
