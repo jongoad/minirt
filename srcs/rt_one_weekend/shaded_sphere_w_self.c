@@ -31,43 +31,23 @@ bool	hit_sphere_no_hit_rec(t_ray_vec3 *r, t_obj *o)
     }
 	return true;
 }
-bool intersectPlane(const Vec3f &n, const Vec3f &p0, const Vec3f &l0, const Vec3f &l, float &t) 
-{ 
-    // assuming vectors are all normalized
-    float denom = dotProduct(n, l); 
-    if (denom > 1e-6) { 
-        Vec3f p0l0 = p0 - l0; 
-        t = dotProduct(p0l0, n) / denom; 
-        return (t >= 0); 
-    } 
- 
-    return false; 
-}
 
 bool	hit_plane(t_ray_vec3 *r, t_obj *o, t_hit_rec *rec)
 {
-    t_vec3			oc;
-	static t_quadratic		q;
+	float	discriminant;
 
-	q.discriminant = q.half_b * q.half_b - q.a * q.c;
-    if (q.discriminant < 0)
-        return false;	
-    q.sqrtd = sqrtf(q.discriminant);
-    q.root = (-q.half_b - q.sqrtd) / q.a;
-	// Try the other root, aka the furthest side of the sphere
-    if (q.root < T_MIN || q.root > T_INF)
+	discriminant = dot_vec3(o->orientation, r->dir);
+    if (discriminant > T_MIN)
 	{
-        q.root = (-q.half_b + q.sqrtd) / q.a;
-        if (q.root < T_MIN || q.root > T_INF)
-			return false;
-    }
-	if (q.root < rec->t) {
-		rec->hit_anything = true;
-		rec->t = q.root;
-		rec->p = ray_at(r, rec->t);
-		rec->normal = div_vec3(sub_vec3(rec->p, o->center), o->radius);
-		rec->color = o->color;
-    	return true;
+		rec->t = dot_vec3(sub_vec3(o->center, r->orig), o->orientation) / discriminant;
+		if (rec->t >= 0 && rec->t < T_INF)
+		{
+			rec->hit_anything = true;
+			rec->color = o->color;
+			rec->normal = o->orientation;
+			rec->p = ray_at(r, rec->t);
+			return (true);
+		}
 	}
 	return false;
 }
@@ -182,8 +162,8 @@ static inline bool	hit_anything(t_data *rt, t_ray_vec3 *pt_to_light, t_hit_rec *
 	{
 		if (rec->obj_id == i)
 			continue ;
-		// if (rt->objs[i]->hit(pt_to_light, rt->objs[i], rec2))
-		if (rt->objs[i]->hit_no_rec(pt_to_light, rt->objs[i]))
+		// if (rt->objs[i]->hit_no_rec(pt_to_light, rt->objs[i]))
+		if (rt->objs[i]->hit(pt_to_light, rt->objs[i], rec2))
 		{
 			return (true);
 		}

@@ -39,10 +39,12 @@ void	set_hooks(t_data *rt);
 
 /* Objects */
 t_obj	*new_sphere( t_vec3 center, float radius, t_vec3 color );
+t_obj	*new_plane(t_vec3 center, t_vec3 orientation, t_vec3 color);
 
-	/* temp hit_obj structure */
+/* Object intersection functions */
 bool	hit_sphere(t_ray_vec3 *r, t_obj *o, t_hit_rec *rec);
 bool	hit_sphere_no_hit_rec(t_ray_vec3 *r, t_obj *o);
+bool	hit_plane(t_ray_vec3 *r, t_obj *o, t_hit_rec *rec);
 
 
 /* Colors */

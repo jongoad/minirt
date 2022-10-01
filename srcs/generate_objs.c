@@ -23,7 +23,7 @@ t_obj	*new_plane(t_vec3 center, t_vec3 orientation, t_vec3 color)
 	plane->color = color;
 	plane->orientation = orientation;
 	plane->type = T_PLANE;
-	// plane->hit = hit_plane;
+	plane->hit = hit_plane;
 	// plane->hit_no_rec = hit_plane_no_hit_rec;
 	return (plane);
 }

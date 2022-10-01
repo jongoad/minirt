@@ -3,7 +3,6 @@
 
 double	g_fps;
 
-
 int	main(int argc, char **argv)
 {
 	t_data	*rt;
