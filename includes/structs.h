@@ -1,6 +1,8 @@
 #ifndef STRUCTS_H_
 # define STRUCTS_H_
 
+#include "defines_enums.h"
+
 /*******************************/
 /*       Utility Structs       */
 /*******************************/
@@ -13,27 +15,6 @@ typedef struct s_i
 	int z;
 }	t_i;
 
-/* Vector and Point Data */
-typedef struct s_vec3
-{
-	float	x;
-	float	y;
-	float	z;
-}	t_vec3;
-
-typedef t_vec3	t_point;
-typedef t_vec3	t_color;
-
-/* Vector with four components */
-typedef struct s_vec4
-{
-	float	x;
-	float	y;
-	float	z;
-	float	w;
-
-}	t_vec4;
-
 typedef struct s_quadratic
 {
     float	a;
@@ -44,13 +25,55 @@ typedef struct s_quadratic
 	float	root;
 }	t_quadratic;
 
+
+/*******************************/
+/*        3D Data Structs      */
+/*******************************/
+
+/* Vector/vertex with 3 components */
+typedef struct s_vec3
+{
+	float	x;
+	float	y;
+	float	z;
+}	t_vec3;
+
+typedef t_vec3	t_point;
+typedef t_vec3	t_color;
+
+/* Vector/vertex with four components */
+typedef struct s_vec4
+{
+	float	x;
+	float	y;
+	float	z;
+	float	w;
+
+}	t_vec4;
+
+
+/* Ray vector */
 typedef	struct s_ray_vec3
 {
-	t_vec3 	orig;			/* Originating point of ray (camera focal point) */
-	t_vec3	dir;			/* Secondary point of ray (pixel on image plane) */
+	t_vec3 	orig;					/* Originating point of ray (camera focal point) */
+	t_vec3	dir;					/* Secondary point of ray (pixel on image plane) */
 }	t_ray_vec3;
 
-/* Camera data */
+
+
+
+/*******************************/
+/*        Objects Structs      */
+/*******************************/
+
+/* Point light object */
+typedef struct s_light_pt
+{
+	t_vec3	pos;
+	t_vec3	color;
+}	t_light_pt;
+
+/* Camera object */
 typedef struct s_camera
 {
 	t_vec3		pos;				/* Position of camera */
@@ -71,6 +94,8 @@ typedef struct s_camera
 
 typedef struct s_hit_rec	t_hit_rec;
 typedef struct s_obj		t_obj;
+
+/* Generic scene object */
 typedef struct s_obj
 {
 	/* Object reference data*/
@@ -97,10 +122,12 @@ typedef struct s_obj
 	bool		(*hit)(t_ray_vec3 *r, t_obj *o, t_hit_rec *rec);	/* Function ptr for any object type */
 	bool		(*hit_no_rec)(t_ray_vec3 *r, t_obj *o);	/* Function ptr for any object type */
 	char		type;
-
-
-
 }	t_obj;
+
+
+/******************************************/
+/*        Raytracing Utility Structs      */
+/******************************************/
 
 typedef struct s_hit_rec
 {
@@ -114,6 +141,24 @@ typedef struct s_hit_rec
 }	t_hit_rec;
 
 
+/*******************************/
+/*       Parse Data Struct     */
+/*******************************/
+typedef struct s_parse
+{
+	int fd;
+	char *buf;
+	char **split;
+	char ***scene;
+	char **tok;
+	int	(*f[NB_OBJ_TYPE])(char **obj);
+}	t_parse;
+
+
+/******************************************/
+/*      Main Data Structs & MLX Data      */
+/******************************************/
+
 /* mlx image */
 typedef struct s_img
 {
@@ -125,12 +170,6 @@ typedef struct s_img
 	int		width;
 	int		height;
 }	t_img;
-
-typedef struct s_light_pt
-{
-	t_vec3	pos;
-	t_vec3	color;
-}	t_light_pt;
 
 /* Master data */
 typedef struct s_data

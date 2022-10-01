@@ -136,12 +136,3 @@ int	parse(t_data *rt, char *path)
 	// init_scene(rt, &dat);
 }
 
-// /* Create objects based on parse data */
-// void	init_scene(t_data *rt, t_parse *dat)
-// {
-// 	//Count number of objects
-
-// 	//Allocate space for objects
-
-// 	//Populate data
-// }

@@ -31,16 +31,24 @@ bool	hit_sphere_no_hit_rec(t_ray_vec3 *r, t_obj *o)
     }
 	return true;
 }
+bool intersectPlane(const Vec3f &n, const Vec3f &p0, const Vec3f &l0, const Vec3f &l, float &t) 
+{ 
+    // assuming vectors are all normalized
+    float denom = dotProduct(n, l); 
+    if (denom > 1e-6) { 
+        Vec3f p0l0 = p0 - l0; 
+        t = dotProduct(p0l0, n) / denom; 
+        return (t >= 0); 
+    } 
+ 
+    return false; 
+}
 
 bool	hit_plane(t_ray_vec3 *r, t_obj *o, t_hit_rec *rec)
 {
     t_vec3			oc;
 	static t_quadratic		q;
 
-	oc = sub_vec3(r->orig, o->center);
-	q.a = dot_vec3(r->dir, r->dir);
-	q.half_b = dot_vec3(oc, r->dir);
-	q.c = dot_vec3(oc, oc) - o->radius * o->radius;
 	q.discriminant = q.half_b * q.half_b - q.a * q.c;
     if (q.discriminant < 0)
         return false;	
@@ -63,6 +71,7 @@ bool	hit_plane(t_ray_vec3 *r, t_obj *o, t_hit_rec *rec)
 	}
 	return false;
 }
+
 bool	hit_sphere(t_ray_vec3 *r, t_obj *o, t_hit_rec *rec)
 {
     t_vec3			oc;

@@ -29,6 +29,7 @@ CFILES	=	cleanup.c \
 			vectors_self.c \
 			rt_one_weekend/shaded_sphere_w_self.c \
 			rt_one_weekend/benchmark.c \
+			parse/parse.c parse/parse_objects.c parse/parse_utils.c \
 # rt_one_weekend/shaded_sphere.c \
 # rt_one_weekend/shaded_sphere_by_ptr.c \
 # rt_one_weekend/hello.c \

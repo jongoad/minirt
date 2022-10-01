@@ -133,15 +133,7 @@ t_vec3	mat_mult_vec3(t_vec3 *v, float **mat);
 
 
 
-typedef struct s_parse
-{
-	int fd;
-	char *buf;
-	char **split;
-	char ***scene;
-	char **tok;
-	int	(*f[NB_OBJ_TYPE])(char **obj);
-}	t_parse;
+
 
 
 /* Matrix functions MOVED FROM RT */
