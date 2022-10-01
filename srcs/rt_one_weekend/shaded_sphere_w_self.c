@@ -60,6 +60,7 @@ bool	hit_sphere(t_ray_vec3 *r, t_obj *o, t_hit_rec *rec)
 		rec->hit_anything = true;
 		rec->t = q.root;
 		rec->p = ray_at(r, rec->t);
+		// printf("rec->p = [%f, %f, %f]\n", rec->p.x, rec->p.y, rec->p.z);
 		rec->normal = div_vec3(sub_vec3(rec->p, o->center), o->radius);
 		rec->color = o->color;
     	return true;
@@ -135,6 +136,25 @@ int	apply_single_point_light_any_obj(t_data *rt, t_obj *o, t_hit_rec *rec, int c
 	return color;
 }
 
+static inline bool	hit_anything(t_data *rt, t_ray_vec3 *pt_to_light, t_hit_rec *rec, t_hit_rec *rec2)
+{
+	int		i;
+
+	i = -1;
+	(void) rec2;
+	while (++i < rt->nb_objs)
+	{
+		if (rec->obj_id == i)
+			continue ;
+		// if (rt->objs[i]->hit_no_rec(pt_to_light, rt->objs[i]))
+		if (rt->objs[i]->hit(pt_to_light, rt->objs[i], rec2))
+		{
+			return (true);
+		}
+	}
+	return (false);
+}
+
 int	apply_point_lights(t_data *rt, t_obj *o, t_hit_rec *rec, int color)
 {
 	t_vec3		vcolor;
@@ -142,53 +162,31 @@ int	apply_point_lights(t_data *rt, t_obj *o, t_hit_rec *rec, int color)
 	t_hit_rec	rec2;
 	t_vec3		diff;
 	float		t;
-	int			i;
 	int			j;
 
-	// FIXME: to remove
+	//FIXME: to remove
 	(void) o;
-	j = 0;
-	while (j < rt->nb_lights)
+	pt_to_light.t_max = T_INF;
+	j = -1;
+	while (++j < rt->nb_lights)
 	{
 	
 		pt_to_light.orig = rec->p;
-		pt_to_light.dir = rt->lights[j].pos;
-		// unit_vec3_self(&(pt_to_light.dir));
+		// pt_to_light.dir = rt->lights[j].pos;
+		// diff = sub_vec3(rec->p, rt->lights[j].pos);
 		diff = sub_vec3(rt->lights[j].pos, rec->p);
-		// unit_vec3_self(&diff);
-		// pt_to_light.orig = unit_vec3(diff);
-		pt_to_light.dir = unit_vec3(rec->normal);
-		// unit_vec3_self(&(pt_to_light.orig));
-		// unit_vec3_self(&(pt_to_light.dir));
+		// pt_to_light.dir = unit_vec3(rec->normal);
+		pt_to_light.dir = diff;
 
 		// Test for hard shadows
 		rec2.t = T_INF;
-		i = 0;
-		while (i < rt->nb_objs)
-		{
-			// if (rt->objs[i]->hit(&pt_to_light, rt->objs[i], &rec2))
-			if (rec->obj_id == i)
-			{
-				i++;
-				continue ;
-			}
-			if (rt->objs[i]->hit_no_rec(&pt_to_light, rt->objs[i]))
-			{
-				return color;
-			}
-			i++;
-		}
-		t = cos_vec3(rec->normal, diff);
-		// if (t <= 0.0F)
-		// 	return color;
-		if (t <= 0.0F) {
-			j++;
+		if (hit_anything(rt, &pt_to_light, rec, &rec2))
 			continue;
-		}
+		t = cos_vec3(rec->normal, diff);
+		if (t <= 0.0F)
+			continue;
 		vcolor = color_to_vec3(color);
 		color = vec3_to_color(lerp_vec3(vcolor, rt->lights[j].color, t));
-
-		j++;
 	}
 	return color;
 }

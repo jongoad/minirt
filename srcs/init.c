@@ -16,12 +16,14 @@ static void	rt_init_camera(t_data *rt)
 static void	rt_init_lights(t_data *rt) {
 	rt->ambt_light = mult_vec3(vec3(255, 255, 255), 0.2F);
 
-	rt->nb_lights = 2;
+	rt->nb_lights = 3;
 	rt->lights = ft_xalloc(sizeof(t_light_pt) * rt->nb_lights);
 	rt->lights[0].color = color_to_vec3(WHITE);
 	rt->lights[0].pos = vec3(0.0F, 3.0F, -1.0F);
 	rt->lights[1].color = color_to_vec3(RED);
 	rt->lights[1].pos = vec3(0.0F, -3.0F, -1.0F);
+	rt->lights[2].color = color_to_vec3(BLUE);
+	rt->lights[2].pos = vec3(0.0F, 0.0F, -2.0F);
 }
 
 static void	rt_init_objs(t_data *rt)
