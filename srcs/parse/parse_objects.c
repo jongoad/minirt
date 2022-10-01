@@ -1,4 +1,4 @@
-#include "../../includes/minirt.h"
+#include "minirt.h"
 
 /* Parse ambient light (A) */
 int	parse_ambient(char **obj)

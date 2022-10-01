@@ -21,62 +21,34 @@ typedef struct s_vec3
 	float	z;
 }	t_vec3;
 
-/* Colour data */
-typedef	struct s_color
-{
-	int	r;
-	int	g;
-	int	b;
-	int	color; /* (r << 16) | (g << 8) | (b) */
-	//Color should be an unsigned int??
-}	t_color;
+typedef t_vec3	t_point;
+typedef t_vec3	t_color;
 
-/* Point data */
-// typedef struct s_point
-// {
-// 	float	x;
-// 	float	y;
-// 	float	z;
-// 	float	w;
-// }	t_point;
-
-/* Vector data */
-typedef struct s_vector
+/* Vector with four components */
+typedef struct s_vec4
 {
 	float	x;
 	float	y;
 	float	z;
 	float	w;
 
-}	t_vector;
+}	t_vec4;
 
-/* Vertex data */
-typedef	struct s_vertex
+typedef struct s_quadratic
 {
-	// t_point		pos;
-	t_color 	clr;
-}	t_vertex;
+    float	a;
+    float	half_b;
+    float	c;
+    float	discriminant;
+	float	sqrtd;
+	float	root;
+}	t_quadratic;
 
-/* Ray data */
-typedef	struct s_ray
-{
-	// t_point 	*origin;			/* Originating point of ray (camera focal point) */
-	// t_point		*second;			/* Secondary point of ray (pixel on image plane) */
-	t_vector	*vec3;				/* Vector created from origin and secondary point */
-}	t_ray;
 typedef	struct s_ray_vec3
 {
 	t_vec3 	orig;			/* Originating point of ray (camera focal point) */
 	t_vec3	dir;			/* Secondary point of ray (pixel on image plane) */
-	float	t_max;			/* Vector created from origin and secondary point */
 }	t_ray_vec3;
-
-typedef	struct s_ray_vec3_ptr
-{
-	t_vec3 	*orig;			/* Originating point of ray (camera focal point) */
-	t_vec3	*dir;			/* Secondary point of ray (pixel on image plane) */
-	// t_vector	*vec3;				/* Vector created from origin and secondary point */
-}	t_ray_vec3_ptr;
 
 /* Camera data */
 typedef struct s_camera
@@ -96,19 +68,6 @@ typedef struct s_camera
 
 }	t_camera;
 
-/* 3D Object */
-
-typedef struct s_mlx
-{
-}	t_mlx;
-
-typedef struct	s_object
-{
-	char		type;
-	// t_point		pos;
-	t_color		clr;
-
-}	t_object;
 
 typedef struct s_hit_rec	t_hit_rec;
 typedef struct s_obj		t_obj;
@@ -187,7 +146,6 @@ typedef struct s_data
 	t_vec3		ambt_light;
 	int			nb_objs;
 	int			selected_obj_id;	/* For dynamic resizing/translation */
-	t_mlx		mlx;
 	int			win_h;
 	int			win_w;
 	int			background;

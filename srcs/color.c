@@ -5,11 +5,6 @@ int     int_to_color(int r, int g, int b)
     return ((r << 16) | (g << 8) | b);
 }
 
-void    color(t_color *c)
-{
-    c->color = (c->r << 16) | (c->g << 8) | c->b;
-}
-
 t_vec3  color_to_vec3(int c)
 {
     return (vec3(

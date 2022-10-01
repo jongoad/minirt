@@ -8,20 +8,10 @@ t_vec3	ray_at(t_ray_vec3 *r, float t)
 	return add_vec3(r->orig, mult_vec3(r->dir, t));
 }
 
-typedef struct s_quadratic
-{
-    float	a;
-    float	half_b;
-    float	c;
-    float	discriminant;
-	float	sqrtd;
-	float	root;
-}	t_quadratic;
-
 bool	hit_sphere_no_hit_rec(t_ray_vec3 *r, t_obj *o)
 {
     t_vec3			oc;
-	t_quadratic		q;
+	static t_quadratic		q;
 
 	oc = sub_vec3(r->orig, o->center);
 	q.a = dot_vec3(r->dir, r->dir);
@@ -30,9 +20,49 @@ bool	hit_sphere_no_hit_rec(t_ray_vec3 *r, t_obj *o)
 	q.discriminant = q.half_b * q.half_b - q.a * q.c;
     if (q.discriminant < 0)
         return false;
+	q.sqrtd = sqrtf(q.discriminant);
+    q.root = (-q.half_b - q.sqrtd) / q.a;
+	// Try the other root, aka the furthest side of the sphere
+    if (q.root < T_MIN || q.root > T_INF)
+	{
+        q.root = (-q.half_b + q.sqrtd) / q.a;
+        if (q.root < T_MIN || q.root > T_INF)
+			return false;
+    }
 	return true;
 }
 
+bool	hit_plane(t_ray_vec3 *r, t_obj *o, t_hit_rec *rec)
+{
+    t_vec3			oc;
+	static t_quadratic		q;
+
+	oc = sub_vec3(r->orig, o->center);
+	q.a = dot_vec3(r->dir, r->dir);
+	q.half_b = dot_vec3(oc, r->dir);
+	q.c = dot_vec3(oc, oc) - o->radius * o->radius;
+	q.discriminant = q.half_b * q.half_b - q.a * q.c;
+    if (q.discriminant < 0)
+        return false;	
+    q.sqrtd = sqrtf(q.discriminant);
+    q.root = (-q.half_b - q.sqrtd) / q.a;
+	// Try the other root, aka the furthest side of the sphere
+    if (q.root < T_MIN || q.root > T_INF)
+	{
+        q.root = (-q.half_b + q.sqrtd) / q.a;
+        if (q.root < T_MIN || q.root > T_INF)
+			return false;
+    }
+	if (q.root < rec->t) {
+		rec->hit_anything = true;
+		rec->t = q.root;
+		rec->p = ray_at(r, rec->t);
+		rec->normal = div_vec3(sub_vec3(rec->p, o->center), o->radius);
+		rec->color = o->color;
+    	return true;
+	}
+	return false;
+}
 bool	hit_sphere(t_ray_vec3 *r, t_obj *o, t_hit_rec *rec)
 {
     t_vec3			oc;
@@ -47,20 +77,17 @@ bool	hit_sphere(t_ray_vec3 *r, t_obj *o, t_hit_rec *rec)
         return false;	
     q.sqrtd = sqrtf(q.discriminant);
     q.root = (-q.half_b - q.sqrtd) / q.a;
-// Try the other root, aka the inside of the sphere from the camera
-    if (q.root < T_MIN || q.root > r->t_max)
+	// Try the other root, aka the furthest side of the sphere
+    if (q.root < T_MIN || q.root > T_INF)
 	{
         q.root = (-q.half_b + q.sqrtd) / q.a;
-        if (q.root < T_MIN || q.root > r->t_max)
-		{
+        if (q.root < T_MIN || q.root > T_INF)
 			return false;
-		}
     }
 	if (q.root < rec->t) {
 		rec->hit_anything = true;
 		rec->t = q.root;
 		rec->p = ray_at(r, rec->t);
-		// printf("rec->p = [%f, %f, %f]\n", rec->p.x, rec->p.y, rec->p.z);
 		rec->normal = div_vec3(sub_vec3(rec->p, o->center), o->radius);
 		rec->color = o->color;
     	return true;
@@ -146,8 +173,8 @@ static inline bool	hit_anything(t_data *rt, t_ray_vec3 *pt_to_light, t_hit_rec *
 	{
 		if (rec->obj_id == i)
 			continue ;
-		// if (rt->objs[i]->hit_no_rec(pt_to_light, rt->objs[i]))
-		if (rt->objs[i]->hit(pt_to_light, rt->objs[i], rec2))
+		// if (rt->objs[i]->hit(pt_to_light, rt->objs[i], rec2))
+		if (rt->objs[i]->hit_no_rec(pt_to_light, rt->objs[i]))
 		{
 			return (true);
 		}
@@ -166,7 +193,6 @@ int	apply_point_lights(t_data *rt, t_obj *o, t_hit_rec *rec, int color)
 
 	//FIXME: to remove
 	(void) o;
-	pt_to_light.t_max = T_INF;
 	j = -1;
 	while (++j < rt->nb_lights)
 	{
@@ -218,7 +244,6 @@ void	generate_sphere_shaded(t_data *rt, t_obj *sp)
 				mult_vec3(rt->cam.horizontal, u),
 				mult_vec3(rt->cam.vertical, v)),
 				rt->cam.pos);
-			r.t_max = T_INF;
 			rec.color = color_to_vec3(rt->background);
 			rec.t = T_INF;
 			rec.hit_anything = false;
@@ -255,7 +280,6 @@ void	generate_sphere_shaded(t_data *rt, t_obj *sp)
 	// 		mult_vec3(rt->cam.horizontal, u),
 	// 		mult_vec3(rt->cam.vertical, v)),
 	// 		rt->cam.pos);
-	// 	r.t_max = T_INF;
 	// 	printf("x = %d: ", i);
 	// 	pixel_color = ray_sphere_debug(&r, sp, &rec);
 	// 	rec.t = 0;

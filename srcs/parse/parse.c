@@ -1,4 +1,4 @@
-#include "../../includes/minirt.h"
+#include "minirt.h"
 
 /* Split individual scene lines by space */
 void	split_scene(t_parse *dat)

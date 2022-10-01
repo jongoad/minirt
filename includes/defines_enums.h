@@ -10,7 +10,10 @@
 # define IMG_W 1200
 # define IMG_H (int)(IMG_W / ASPECT_RATIO)
 
-
+/* Parse Defines */
+#define READ_SIZE 100000
+#define NB_OBJ_TYPE 6
+#define BONUS 1
 
 /* Math Defines */
 # define T_INF	1e10

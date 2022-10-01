@@ -1,4 +1,4 @@
-#include "../../includes/minirt.h"
+#include "minirt.h"
 
 /* Check if RGB values are valid */
 int check_rgb(char *rgb)
