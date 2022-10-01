@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   matrix.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ismaelyahyaouiracine <ismaelyahyaouirac    +#+  +:+       +#+        */
+/*   By: jgoad <jgoad@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/06 23:11:16 by jgoad             #+#    #+#             */
-/*   Updated: 2022/09/17 21:40:42 by ismaelyahya      ###   ########.fr       */
+/*   Updated: 2022/09/29 14:50:36 by jgoad            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ float	**matrix_rotation(float x, char axis)
 }
 
 /* Create scale matrix */
-float	**matrix_scale(t_point scale)
+float	**matrix_scale(t_vec3 scale)
 {
 	float	**m;
 
@@ -85,7 +85,7 @@ float	**matrix_scale(t_point scale)
 }
 
 /* Create translation matrix */
-float	**matrix_translate(t_point translate)
+float	**matrix_translate(t_vec3 translate)
 {
 	float	**m;
 
@@ -123,9 +123,9 @@ float	**matrix_mult_mat(float **m1, float **m2)
 }
 
 /* Multiply a point by a matrix */
-void	matrix_mult_point(t_point *v, float **mat)
+void	matrix_mult_point(t_vec3 *v, float **mat)
 {
-	t_point tmp;
+	t_vec3 tmp;
 
 	//Hold temp values
 	tmp.x = (*v).x;
@@ -140,23 +140,27 @@ void	matrix_mult_point(t_point *v, float **mat)
 	v->w = (tmp.x * mat[3][0]) + (tmp.y * mat[3][1]) + (tmp.z * mat[3][2]) + (tmp.w * mat[3][3]);
 }
 
-// //Apply a matrix to all vertices in model (add free function here?)
-// void	apply_matrix(t_data *d, float **mat)
-// {
-// 	t_i i;
+/* Multiply a vector by a matrix */
+t_vec3	mat_mult_vec3(t_vec3 *v, float **mat)
+{
+	t_vec3	tmp;
+	t_vec3	ret;
 
-// 	i.y = 0;
-// 	while (i.y < d->model.max.y)
-// 	{
-// 		i.x = 0;
-// 		while (i.x < d->model.max.x)
-// 		{
-// 			matrix_mult_vertex(&d->model.m[i.y][i.x], mat);
-// 			i.x++;
-// 		}
-// 		i.y++;
-// 	}
-// }
+	//Hold temp values
+	tmp.x = (*v).x;
+	tmp.y = (*v).y;
+	tmp.z = (*v).z;
+	tmp.w = (*v).w;
+
+	//Multiply vertex by matrix
+	ret.x = (tmp.x * mat[0][0]) + (tmp.y * mat[0][1]) + (tmp.z * mat[0][2]) + (tmp.w * mat[0][3]);
+	ret.y = (tmp.x * mat[1][0]) + (tmp.y * mat[1][1]) + (tmp.z * mat[1][2]) + (tmp.w * mat[1][3]);
+	ret.z = (tmp.x * mat[2][0]) + (tmp.y * mat[2][1]) + (tmp.z * mat[2][2]) + (tmp.w * mat[2][3]);
+	ret.w = (tmp.x * mat[3][0]) + (tmp.y * mat[3][1]) + (tmp.z * mat[3][2]) + (tmp.w * mat[3][3]);
+
+	return (ret);
+}
+
 
 /* Free a matrix */
 void	matrix_free(float **mat)

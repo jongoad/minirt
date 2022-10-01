@@ -38,8 +38,15 @@ void	matrix_test(void)
 	b.y = 10;
 	b.z = 0;
 	b.w = 1;
+
+	t_point t;
+
+	t.x = 5;
+	t.y = 5;
+	t.z = -3;
+	t.w = 1;
 	
-	mat = mat_rot(1.5708, 'z');
+	mat = mat_trans(t);
 
 	mat_mult_vec4(&a, mat);
 	mat_mult_vec4(&b, mat);
