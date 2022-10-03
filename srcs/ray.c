@@ -22,7 +22,7 @@ int	cast_ray_at_pixel(t_data *rt, int x, int y)
 		mult_vec3(rt->cam.vertical, v)),
 		rt->cam.pos);
 	rec.color = color_to_vec3(rt->background);
-	rec.t = T_INF;
+	rec.t = T_MAX;
 	rec.hit_anything = false;
 	i_obj = -1;
 	while (++i_obj < rt->nb_objs)
