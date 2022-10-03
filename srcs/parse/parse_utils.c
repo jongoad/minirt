@@ -48,7 +48,7 @@ int check_int(char *val, int lim1, int lim2)
 	return (1);	
 }
 
-/* Check if orientation vector is valid */
+/* Check if normal vector is valid */
 int	check_orientation(char *orient)
 {
 	char **split;
@@ -82,6 +82,7 @@ int	check_coords(char *coord)
 	while (split[i.x])
 	{
 		res = atof(split[i.x]); //Need to write atof function
+		(void) res;	// to remove, just so it compiles
 		if (i.x == 3) // Need to check not NAN or INF etc.
 			return(0);
 		i.x++;

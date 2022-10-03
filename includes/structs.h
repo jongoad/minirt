@@ -100,7 +100,7 @@ typedef struct s_obj
 {
 	/* Object reference data*/
 	t_vec3		center;
-	t_vec3		orientation; 	/* for cylinders, planes */
+	t_vec3		normal; 	/* for cylinders, planes */
 	t_vec3		color;			/* object initial color vec3 */
 	float		width;			/* for cylinders */
 	float		radius;			/* for spheres */

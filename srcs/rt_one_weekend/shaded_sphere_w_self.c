@@ -22,11 +22,10 @@ bool	hit_sphere_no_hit_rec(t_ray_vec3 *r, t_obj *o)
         return false;
 	q.sqrtd = sqrtf(q.discriminant);
     q.root = (-q.half_b - q.sqrtd) / q.a;
-	// Try the other root, aka the furthest side of the sphere
-    if (q.root < T_MIN || q.root > T_INF)
+    if (q.root < T_MIN || q.root > T_MAX)
 	{
         q.root = (-q.half_b + q.sqrtd) / q.a;
-        if (q.root < T_MIN || q.root > T_INF)
+        if (q.root < T_MIN || q.root > T_MAX)
 			return false;
     }
 	return true;
@@ -35,16 +34,20 @@ bool	hit_sphere_no_hit_rec(t_ray_vec3 *r, t_obj *o)
 bool	hit_plane(t_ray_vec3 *r, t_obj *o, t_hit_rec *rec)
 {
 	float	discriminant;
+	float	t;
 
-	discriminant = dot_vec3(o->orientation, r->dir);
-    if (discriminant > T_MIN)
+	discriminant = dot_vec3(o->normal, r->dir);
+    if (fabs(discriminant) > T_MIN)
 	{
-		rec->t = dot_vec3(sub_vec3(o->center, r->orig), o->orientation) / discriminant;
-		if (rec->t >= 0 && rec->t < T_INF)
+		// rec->t = -(P0 * N + d)
+		// rec->t = (-1) * (dot_vec3(o->normal, r->orig) + o->normal) / discriminant;
+		t = dot_vec3(sub_vec3(o->center, r->orig), o->normal) / discriminant;
+		if (t >= T_MIN && t < rec->t)
 		{
+			rec->t = t;
 			rec->hit_anything = true;
 			rec->color = o->color;
-			rec->normal = o->orientation;
+			rec->normal = o->normal;
 			rec->p = ray_at(r, rec->t);
 			return (true);
 		}
@@ -66,11 +69,10 @@ bool	hit_sphere(t_ray_vec3 *r, t_obj *o, t_hit_rec *rec)
         return false;	
     q.sqrtd = sqrtf(q.discriminant);
     q.root = (-q.half_b - q.sqrtd) / q.a;
-	// Try the other root, aka the furthest side of the sphere
-    if (q.root < T_MIN || q.root > T_INF)
+    if (q.root < T_MIN || q.root > T_MAX)
 	{
         q.root = (-q.half_b + q.sqrtd) / q.a;
-        if (q.root < T_MIN || q.root > T_INF)
+        if (q.root < T_MIN || q.root > T_MAX)
 			return false;
     }
 	if (q.root < rec->t) {
@@ -82,37 +84,6 @@ bool	hit_sphere(t_ray_vec3 *r, t_obj *o, t_hit_rec *rec)
     	return true;
 	}
 	return false;
-}
-
-# define BG -1
-int		ray_sphere(t_ray_vec3 *r, t_obj *sp, t_hit_rec *rec)
-{
-	static t_vec3		z_norm = { .x = 0.0, .y = 0.0, .z = -1.0 };
-	static t_vec3		unit = { .x = 1.0, .y = 1.0, .z = 1.0 };
-	t_vec3				color;
-	float				tmp;
-	
-	tmp = rec->t;
-    if (hit_sphere(r, sp, rec) && rec->t != tmp)
-	{
-		// if (cos_vec3(rec->normal, r->dir) > 0)	// If in same direction, inside obj
-			return ( vec3_to_color(sp->color));
-		color = mult_vec3(
-					add_vec3(
-						unit_vec3(sub_vec3(rec->p, z_norm))
-						, unit)
-				, 127.999F);
-        return (vec3_to_color(color));
-		color = rec->p;
-		sub_vec3_self(&color, z_norm);
-		unit_vec3_self(&color);
-		add_vec3_self(&color, unit);
-		mult_vec3_self(&color, 127.999F); // 0.5F * 255
-        return (vec3_to_color(color));
-	}
-
-	/* Black background */
-	return (BG);
 }
 
 int	apply_single_point_light(t_data *rt, t_hit_rec *rec, int color)
@@ -171,7 +142,7 @@ static inline bool	hit_anything(t_data *rt, t_ray_vec3 *pt_to_light, t_hit_rec *
 	return (false);
 }
 
-int	apply_point_lights(t_data *rt, t_obj *o, t_hit_rec *rec, int color)
+int	apply_point_lights(t_data *rt, t_hit_rec *rec, int color)
 {
 	t_vec3		vcolor;
 	t_ray_vec3	pt_to_light;
@@ -181,20 +152,16 @@ int	apply_point_lights(t_data *rt, t_obj *o, t_hit_rec *rec, int color)
 	int			j;
 
 	//FIXME: to remove
-	(void) o;
 	j = -1;
 	while (++j < rt->nb_lights)
 	{
 	
 		pt_to_light.orig = rec->p;
-		// pt_to_light.dir = rt->lights[j].pos;
-		// diff = sub_vec3(rec->p, rt->lights[j].pos);
 		diff = sub_vec3(rt->lights[j].pos, rec->p);
-		// pt_to_light.dir = unit_vec3(rec->normal);
 		pt_to_light.dir = diff;
 
 		// Test for hard shadows
-		rec2.t = T_INF;
+		rec2.t = length_vec3(diff);
 		if (hit_anything(rt, &pt_to_light, rec, &rec2))
 			continue;
 		t = cos_vec3(rec->normal, diff);
@@ -234,45 +201,21 @@ void	generate_sphere_shaded(t_data *rt, t_obj *sp)
 				mult_vec3(rt->cam.vertical, v)),
 				rt->cam.pos);
 			rec.color = color_to_vec3(rt->background);
-			rec.t = T_INF;
+			rec.t = T_MAX;
 			rec.hit_anything = false;
-			i_obj = 0;
 			pixel_color = rt->background;
+			i_obj = 0;
 			while (i_obj < rt->nb_objs)
 			{
 				if (rt->objs[i_obj]->hit(&r, rt->objs[i_obj], &rec))
 					rec.obj_id = i_obj;
 				i_obj++;
 			}
-            // pixel_color = ray_sphere(&r, sp, &rec) ;
-            // pixel_color = ray_sphere(&r, rt->objs[1], &rec) ;
 			if (rec.hit_anything)
-            	pixel_color = apply_point_lights(rt, rt->objs[rec.obj_id], &rec, vec3_to_color(rec.color));
-            	// pixel_color = apply_single_point_light_any_obj(rt, rt->objs[rec.obj_id], &rec, vec3_to_color(rec.color));
-            	// pixel_color = apply_point_lights(rt, rt->objs[rec.obj_id], &rec, vec3_to_color(rec.color));
-				// pixel_color = vec3_to_color(rec.color);
-			// if (pixel_color == BG)
-			// 	pixel_color = rt->background;
-			// else 
-			// if (pixel_color != rt->background)
-            	// pixel_color = apply_single_point_light(rt, &rec, pixel_color);
+            	pixel_color = apply_point_lights(rt, &rec, vec3_to_color(rec.color));
             fill_pixel(rt->img, i, j, pixel_color);
         }
     }
-	/* To test epsilon values for sphere antialiasing */
-	// int j = IMG_H / 2;
-	// for (int i = 0; i < rt->img->width; ++i) {
-	// 	u = (float)(i) / (rt->img->width - 1);
-	// 	v = (float)(j) / (rt->img->height - 1);
-	// 	r.dir = sub_vec3(add3_vec3(
-	// 		rt->cam.low_left,
-	// 		mult_vec3(rt->cam.horizontal, u),
-	// 		mult_vec3(rt->cam.vertical, v)),
-	// 		rt->cam.pos);
-	// 	printf("x = %d: ", i);
-	// 	pixel_color = ray_sphere_debug(&r, sp, &rec);
-	// 	rec.t = 0;
-	// }
 	(void)sp;
 	display_default(rt);
 	display_fps(rt, start_time);

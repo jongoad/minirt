@@ -14,14 +14,14 @@ t_obj	*new_sphere(t_vec3 center, float radius, t_vec3 color)
 	return (sp);
 }
 
-t_obj	*new_plane(t_vec3 center, t_vec3 orientation, t_vec3 color)
+t_obj	*new_plane(t_vec3 center, t_vec3 normal, t_vec3 color)
 {
 	t_obj	*plane;
 
 	plane = ft_xalloc(sizeof(t_obj));
 	plane->center = center;
 	plane->color = color;
-	plane->orientation = orientation;
+	plane->normal = normal;
 	plane->type = T_PLANE;
 	plane->hit = hit_plane;
 	// plane->hit_no_rec = hit_plane_no_hit_rec;
