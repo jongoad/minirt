@@ -39,8 +39,6 @@ bool	hit_plane(t_ray_vec3 *r, t_obj *o, t_hit_rec *rec)
 	discriminant = dot_vec3(o->normal, r->dir);
     if (fabs(discriminant) > T_MIN)
 	{
-		// rec->t = -(P0 * N + d)
-		// rec->t = (-1) * (dot_vec3(o->normal, r->orig) + o->normal) / discriminant;
 		t = dot_vec3(sub_vec3(o->center, r->orig), o->normal) / discriminant;
 		if (t >= T_MIN && t < rec->t)
 		{
@@ -51,6 +49,44 @@ bool	hit_plane(t_ray_vec3 *r, t_obj *o, t_hit_rec *rec)
 			rec->p = ray_at(r, rec->t);
 			return (true);
 		}
+	}
+	return false;
+}
+
+bool	hit_cylinder(t_ray_vec3 *r, t_obj *o, t_hit_rec *rec)
+{
+    t_vec3			oc;
+    t_vec3			point;
+	static t_quadratic		q;
+
+	oc = sub_vec3(r->orig, o->center);
+	q.a = (r->dir.x * r->dir.x) + (r->dir.z * r->dir.z);
+	q.half_b = (oc.x * r->dir.x) + (oc.z * r->dir.z);
+	q.c = (oc.x * oc.x) + (oc.z * oc.z) - o->radius * o->radius;
+	q.discriminant = q.half_b * q.half_b - q.a * q.c;
+    if (q.discriminant < 0)
+        return false;	
+    q.sqrtd = sqrtf(q.discriminant);
+    q.root = (-q.half_b - q.sqrtd) / q.a;
+    // if (q.root < T_MIN || q.root > T_MAX)
+	// {
+    //     q.root = (-q.half_b + q.sqrtd) / q.a;
+    //     if (q.root < T_MIN || q.root > T_MAX)
+	// 		return false;
+    // }
+
+	point = ray_at(r, q.root);
+	// if (fabs(point.y) > o->height)
+	if (point.y > -0.2F || -point.y > (o->height + 0.2F))
+		return false;
+
+	if (q.root < rec->t) {
+		rec->hit_anything = true;
+		rec->t = q.root;
+		rec->p = point;
+		rec->normal = div_vec3(sub_vec3(rec->p, o->center), o->radius);
+		rec->color = o->color;
+    	return true;
 	}
 	return false;
 }
