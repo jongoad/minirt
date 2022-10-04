@@ -27,7 +27,7 @@ int	check_float(char *val, float lim1, float lim2)
 {
 	float res;
 
-	res = atof(val);  //Need to write atof function
+	res = atof(val);  //FIXME - Need to write atof function
 
 	//Need to check NAN or inf etc.
 	if (lim1 != 0 && lim2 != 0)
