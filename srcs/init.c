@@ -14,16 +14,20 @@ static void	rt_init_camera(t_data *rt)
 }
 
 static void	rt_init_lights(t_data *rt) {
-	rt->ambt_light = mult_vec3(vec3(255, 255, 255), 0.0F);
+	int	i = 0;
 
-	rt->nb_lights = 1;
+	rt->ambt_light = mult_vec3(vec3(255, 255, 255), 0.0F);
 	rt->lights = ft_xalloc(sizeof(t_light_pt) * rt->nb_lights);
-	rt->lights[0].color = color_to_vec3(WHITE);
-	rt->lights[0].pos = vec3(0.0F, 3.0F, -1.0F);
-	// rt->lights[1].color = color_to_vec3(RED);
-	// rt->lights[1].pos = vec3(0.0F, -3.0F, -1.0F);
-	// rt->lights[2].color = color_to_vec3(BLUE);
-	// rt->lights[2].pos = vec3(0.0F, 0.0F, -2.0F);
+	rt->lights[i].color = color_to_vec3(WHITE);
+	rt->lights[i].pos = vec3(0.0F, 3.0F, -1.0F);
+	i++;
+	// rt->lights[i].color = color_to_vec3(RED);
+	// rt->lights[i].pos = vec3(0.0F, -3.0F, -1.0F);
+	// i++;
+	// rt->lights[i].color = color_to_vec3(BLUE);
+	// rt->lights[i].pos = vec3(0.0F, 0.0F, -2.0F);
+	// i++;
+	rt->nb_lights = i;
 }
 
 static void	rt_init_objs(t_data *rt)
@@ -92,7 +96,6 @@ void	rt_init(t_data *rt, char *filename)
 
 	// FIXME: temporarily, the default item selected is the first sphere
 	rt->selected_obj_id = 0;
-
 	
 	return ;
 }

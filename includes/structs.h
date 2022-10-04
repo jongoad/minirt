@@ -141,6 +141,10 @@ typedef struct s_obj
 	t_vec3		rot;
 	t_vec3		trans;
 
+	// FIXME: TEMP obj attributes for cylinders
+	// TODO: remove once we have the inverse matrices set up
+	float		cyl_offset;
+
 	/* Function pointers for ray collision per object */
 	bool		(*hit)(t_ray_vec3 *r, t_obj *o, t_hit_rec *rec);	/* Function ptr for any object type */
 	bool		(*hit_no_rec)(t_ray_vec3 *r, t_obj *o);	/* Function ptr for any object type */
