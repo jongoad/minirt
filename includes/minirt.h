@@ -16,7 +16,7 @@
 
 /* Library Includes */
 // # include "../minilibx_opengl/mlx_opengl.h"
-# include <mlx.h>
+# include "../minilibx_macos/mlx.h"
 # include "../libft/libft.h"
 
 /* Local File Includes */
@@ -174,6 +174,19 @@ int		check_int(char *val, int lim1, int lim2);
 int		check_orientation(char *orient);
 int		check_coords(char *coord);
 void	replace_whitespace(t_parse *dat);
+
+/* Scene Initialization Functions */
+void	init_scene(t_data *rt);
+void	init_scene_init(t_data *rt);
+void	count_objects(t_data *rt);
+void	init_color(t_color *clr, char *input);
+void	init_float_triplet(t_vec3 *vec, char *input);
+void	init_ambient(t_data *rt, char **input, int obj_nb);
+void	init_camera(t_data *rt, char **input, int obj_nb);
+void	init_light(t_data *rt, char **input, int obj_nb);
+void	init_plane(t_data *rt, char **input, int obj_nb);
+void	init_sphere(t_data *rt, char **input, int obj_nb);
+void	init_cylinder(t_data *rt, char **input, int obj_nb);
 
 
 #endif // MINIRT_H

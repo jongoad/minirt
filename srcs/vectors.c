@@ -59,6 +59,8 @@ t_vec3  mult_vec3(t_vec3 v, double b)
 
 t_vec3  div_vec3(t_vec3 v, double b)
 {
+    if (b == 0)
+        return (v);
     return mult_vec3(v, 1.0f / b);
 }
 

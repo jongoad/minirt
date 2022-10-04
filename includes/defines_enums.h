@@ -17,7 +17,7 @@
 
 /* Math Defines */
 # define T_MAX	1e10
-# define T_MIN	0.0001F
+# define T_MIN	0.01F
 
 
 /* Flag Defines */
@@ -48,8 +48,9 @@ typedef enum e_obj_types
 {
 	T_SPH	= 's',
 	T_CYL	= 'c',
+	T_CONE	= 'o',
 	T_PLANE	= 'p',
-	T_CONE	= 'o'
+	T_LIGHT = 'l'
 }	e_obj_types;
 
 #endif	//DEFINES_ENUMS_H_

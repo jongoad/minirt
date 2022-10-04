@@ -25,6 +25,14 @@ typedef struct s_quadratic
 	float	root;
 }	t_quadratic;
 
+typedef	struct s_color
+{
+	u_int32_t	r;
+	u_int32_t	g;
+	u_int32_t	b;
+	float		weight;
+}	t_color;
+
 
 /*******************************/
 /*        3D Data Structs      */
@@ -39,7 +47,6 @@ typedef struct s_vec3
 }	t_vec3;
 
 typedef t_vec3	t_point;
-typedef t_vec3	t_color;
 
 /* Vector/vertex with four components */
 typedef struct s_vec4
@@ -66,6 +73,13 @@ typedef	struct s_ray_vec3
 /*        Objects Structs      */
 /*******************************/
 
+/* Ambient light object */
+typedef struct	s_ambient
+{
+	t_color	clr;
+	float	ratio;
+}	t_ambient;
+
 /* Point light object */
 typedef struct s_light_pt
 {
@@ -76,8 +90,15 @@ typedef struct s_light_pt
 /* Camera object */
 typedef struct s_camera
 {
+	
+	/* Currently used */
 	t_vec3		pos;				/* Position of camera */
 	t_vec3		aim;				/* Direction camera is pointing */
+	int			fov;				/* Field of view in degrees */
+
+
+
+	/* T0 be checked */
 	t_vec3		horizontal;			/* view_w vector  */
 	t_vec3		vertical;			/* view_h vector  */
 	t_vec3		low_left;			/* Vector from origin to lower left corner */
@@ -100,8 +121,10 @@ typedef struct s_obj
 {
 	/* Object reference data*/
 	t_vec3		center;
-	t_vec3		normal; 	/* for cylinders, planes */
+	t_vec3		normal; 		/* for cylinders, planes */
 	t_vec3		color;			/* object initial color vec3 */
+	t_color		clr;			/* Colour data for object */
+	float		ratio;			/* Brightness ratio for light objects */
 	float		width;			/* for cylinders */
 	float		radius;			/* for spheres */
 	float		height;			/* for cylinders */
@@ -117,6 +140,10 @@ typedef struct s_obj
 	float		scale;
 	t_vec3		rot;
 	t_vec3		trans;
+
+	// FIXME: TEMP obj attributes for cylinders
+	// TODO: remove once we have the inverse matrices set up
+	float		cyl_offset;
 
 	/* Function pointers for ray collision per object */
 	bool		(*hit)(t_ray_vec3 *r, t_obj *o, t_hit_rec *rec);	/* Function ptr for any object type */
@@ -146,12 +173,15 @@ typedef struct s_hit_rec
 /*******************************/
 typedef struct s_parse
 {
-	int fd;
-	char *buf;
-	char **split;
-	char ***scene;
-	char **tok;
-	int	(*f[NB_OBJ_TYPE])(char **obj);
+	bool	has_camera;
+	bool	has_ambient;
+	int		fd;
+	char	*buf;
+	char	**split;
+	char	***scene;
+	char	**tok;
+	int		(*f[NB_OBJ_TYPE])(char **obj);
+	void	(*f2[NB_OBJ_TYPE])(t_data *rt, char **obj, int obj_nb);
 }	t_parse;
 
 
@@ -171,9 +201,13 @@ typedef struct s_img
 	int		height;
 }	t_img;
 
+ 
+
 /* Master data */
 typedef struct s_data
 {
+	t_ambient	ambient;		/* Ambient light data */
+	t_parse		parse;			/* Parse data */
 	void		*mlx_ptr;
 	void		*win_ptr;
 	char		*win_name;

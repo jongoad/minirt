@@ -57,10 +57,14 @@ bool	hit_cylinder(t_ray_vec3 *r, t_obj *o, t_hit_rec *rec)
 {
     t_vec3			oc;
     t_vec3			point;
+    t_vec3			color;
 	static t_quadratic		q;
 
+	color = o->color;
 	oc = sub_vec3(r->orig, o->center);
 	q.a = (r->dir.x * r->dir.x) + (r->dir.z * r->dir.z);
+	if (q.a == 0)
+		return (false);
 	q.half_b = (oc.x * r->dir.x) + (oc.z * r->dir.z);
 	q.c = (oc.x * oc.x) + (oc.z * oc.z) - o->radius * o->radius;
 	q.discriminant = q.half_b * q.half_b - q.a * q.c;
@@ -68,24 +72,26 @@ bool	hit_cylinder(t_ray_vec3 *r, t_obj *o, t_hit_rec *rec)
         return false;	
     q.sqrtd = sqrtf(q.discriminant);
     q.root = (-q.half_b - q.sqrtd) / q.a;
-    // if (q.root < T_MIN || q.root > T_MAX)
-	// {
-    //     q.root = (-q.half_b + q.sqrtd) / q.a;
-    //     if (q.root < T_MIN || q.root > T_MAX)
-	// 		return false;
-    // }
 
 	point = ray_at(r, q.root);
 	// if (fabs(point.y) > o->height)
-	if (point.y > -0.2F || -point.y > (o->height + 0.2F))
-		return false;
+	// if (q.root < T_MIN || q.root > rec->t || point.y > -0.2F || -point.y > (o->height + 0.2F))
+	if (q.root < T_MIN || q.root > rec->t || point.y > o->cyl_offset || -point.y > (o->height - o->cyl_offset))
+	{
+        q.root = (-q.half_b + q.sqrtd) / q.a;
+		point = ray_at(r, q.root);
+		color = color_to_vec3(BLACK);
+		// if (q.root < T_MIN || q.root > rec->t || point.y > -0.2F || -point.y > (o->height + 0.2F))
+	if (q.root < T_MIN || q.root > rec->t || point.y > o->cyl_offset || -point.y > (o->height - o->cyl_offset))
+			return false;
+	}
 
 	if (q.root < rec->t) {
 		rec->hit_anything = true;
 		rec->t = q.root;
 		rec->p = point;
 		rec->normal = div_vec3(sub_vec3(rec->p, o->center), o->radius);
-		rec->color = o->color;
+		rec->color = color;
     	return true;
 	}
 	return false;
@@ -98,6 +104,8 @@ bool	hit_sphere(t_ray_vec3 *r, t_obj *o, t_hit_rec *rec)
 
 	oc = sub_vec3(r->orig, o->center);
 	q.a = dot_vec3(r->dir, r->dir);
+	if (q.a == 0)
+		return (false);
 	q.half_b = dot_vec3(oc, r->dir);
 	q.c = dot_vec3(oc, oc) - o->radius * o->radius;
 	q.discriminant = q.half_b * q.half_b - q.a * q.c;
@@ -170,6 +178,8 @@ static inline bool	hit_anything(t_data *rt, t_ray_vec3 *pt_to_light, t_hit_rec *
 		if (rec->obj_id == i)
 			continue ;
 		// if (rt->objs[i]->hit_no_rec(pt_to_light, rt->objs[i]))
+		// if (dot_vec3(rt->objs[i]->normal, pt_to_light->dir) <= 0.0F)
+		// 	continue;
 		if (rt->objs[i]->hit(pt_to_light, rt->objs[i], rec2))
 		{
 			return (true);
@@ -180,7 +190,7 @@ static inline bool	hit_anything(t_data *rt, t_ray_vec3 *pt_to_light, t_hit_rec *
 
 int	apply_point_lights(t_data *rt, t_hit_rec *rec, int color)
 {
-	t_vec3		vcolor;
+	t_vec3		vcolor; 
 	t_ray_vec3	pt_to_light;
 	t_hit_rec	rec2;
 	t_vec3		diff;
@@ -196,8 +206,9 @@ int	apply_point_lights(t_data *rt, t_hit_rec *rec, int color)
 		diff = sub_vec3(rt->lights[j].pos, rec->p);
 		pt_to_light.dir = diff;
 
-		// Test for hard shadows
+		// To make sure hits are happening between light and obj
 		rec2.t = length_vec3(diff);
+		// Test for hard shadows
 		if (hit_anything(rt, &pt_to_light, rec, &rec2))
 			continue;
 		t = cos_vec3(rec->normal, diff);

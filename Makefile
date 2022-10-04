@@ -30,6 +30,7 @@ CFILES	=	cleanup.c \
 			rt_one_weekend/shaded_sphere_w_self.c \
 			rt_one_weekend/benchmark.c \
 			parse/parse.c parse/parse_objects.c parse/parse_utils.c \
+			init/init_objects.c \
 # rt_one_weekend/shaded_sphere.c \
 # rt_one_weekend/shaded_sphere_by_ptr.c \
 # rt_one_weekend/hello.c \
@@ -59,7 +60,7 @@ LIBFT_FLAGS			= -lft -Llibft
 LIBM_FLAG	= -lm
 
 CC		= gcc
-CFLAGS	= -Wall -Wextra -Werror -Ofast -g
+CFLAGS	= -Wall -Wextra -Werror -Ofast -g  -funsafe-math-optimizations
 
 
 LIBFT_DIR	= ./libft

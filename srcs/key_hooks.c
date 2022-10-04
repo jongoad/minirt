@@ -68,6 +68,7 @@ static int	handle_key_press_hook_rt_one_weekend(int keysym, t_data *rt)
 		else
 		{
 			rt->objs[rt->selected_obj_id]->center.y += 0.1F;
+			rt->objs[rt->selected_obj_id]->cyl_offset += 0.1F;
 			printf("center.y = %f\n", rt->objs[rt->selected_obj_id]->center.y);
 		}
 		generate_sphere_shaded(rt, rt->objs[0]);
@@ -79,6 +80,7 @@ static int	handle_key_press_hook_rt_one_weekend(int keysym, t_data *rt)
 		else
 		{
 			rt->objs[rt->selected_obj_id]->center.y -= 0.1F;
+			rt->objs[rt->selected_obj_id]->cyl_offset -= 0.1F;
 			printf("center.y = %f\n", rt->objs[rt->selected_obj_id]->center.y);
 		}
 		generate_sphere_shaded(rt, rt->objs[0]);
