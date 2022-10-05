@@ -70,15 +70,12 @@ int	main(int argc, char **argv)
 	// 	exit_on_err(PARSE_ERR);
 
 
-	// rt_init(rt, argv[1]);
-	// hello_world(rt);
-	// generate_background(rt);
-	// generate_sphere_simple(rt);
+	rt_init(rt, argv[1]);
 
-	// generate_sphere_shaded(rt, rt->objs[0]);
+	render_scene(rt, rt->objs[0]);
 
-	// set_hooks(rt);
-	// mlx_loop(rt->mlx_ptr);
+	set_hooks(rt);
+	mlx_loop(rt->mlx_ptr);
 
 	return (0);
 }

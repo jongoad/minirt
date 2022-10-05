@@ -26,7 +26,7 @@ static int	handle_key_press_hook_rt_one_weekend(int keysym, t_data *rt)
 			rt->objs[rt->selected_obj_id]->center.z -= 0.05F;
 			printf("center.z = %f\n", rt->objs[rt->selected_obj_id]->center.z);
 		}
-		generate_sphere_shaded(rt, rt->objs[0]);
+		render_scene(rt, rt->objs[0]);
 	}
 	else if (keysym == NUMPAD8 || keysym == KEY_W)
 	{
@@ -37,7 +37,7 @@ static int	handle_key_press_hook_rt_one_weekend(int keysym, t_data *rt)
 			rt->objs[rt->selected_obj_id]->center.z += 0.05F;
 			printf("center.z = %f\n", rt->objs[rt->selected_obj_id]->center.z);
 		}
-		generate_sphere_shaded(rt, rt->objs[0]);
+		render_scene(rt, rt->objs[0]);
 	}
 	else if (keysym == KEY_RIGHT || keysym == KEY_D)
 	{
@@ -48,7 +48,7 @@ static int	handle_key_press_hook_rt_one_weekend(int keysym, t_data *rt)
 			rt->objs[rt->selected_obj_id]->center.x -= 0.1F;
 			printf("center.x = %f\n", rt->objs[rt->selected_obj_id]->center.x);
 		}
-		generate_sphere_shaded(rt, rt->objs[0]);
+		render_scene(rt, rt->objs[0]);
 	}
 	else if (keysym == KEY_LEFT || keysym == KEY_A)
 	{
@@ -59,7 +59,7 @@ static int	handle_key_press_hook_rt_one_weekend(int keysym, t_data *rt)
 			rt->objs[rt->selected_obj_id]->center.x += 0.1F;
 			printf("center.x = %f\n", rt->objs[rt->selected_obj_id]->center.x);
 		}
-		generate_sphere_shaded(rt, rt->objs[0]);
+		render_scene(rt, rt->objs[0]);
 	}
 	else if (keysym == KEY_UP || keysym == KEY_X)
 	{
@@ -71,7 +71,7 @@ static int	handle_key_press_hook_rt_one_weekend(int keysym, t_data *rt)
 			rt->objs[rt->selected_obj_id]->cyl_offset += 0.1F;
 			printf("center.y = %f\n", rt->objs[rt->selected_obj_id]->center.y);
 		}
-		generate_sphere_shaded(rt, rt->objs[0]);
+		render_scene(rt, rt->objs[0]);
 	}
 	else if (keysym == KEY_DOWN || keysym == KEY_Z)
 	{
@@ -83,14 +83,14 @@ static int	handle_key_press_hook_rt_one_weekend(int keysym, t_data *rt)
 			rt->objs[rt->selected_obj_id]->cyl_offset -= 0.1F;
 			printf("center.y = %f\n", rt->objs[rt->selected_obj_id]->center.y);
 		}
-		generate_sphere_shaded(rt, rt->objs[0]);
+		render_scene(rt, rt->objs[0]);
 	}
 	else if (keysym == KEY_PLUS || keysym == NUMPAD_PLUS)
 	{
 		if (rt->selected_obj_id != NO_HIT)
 		{
 			rt->objs[rt->selected_obj_id]->radius += 0.01;
-			generate_sphere_shaded(rt, rt->objs[0]);
+			render_scene(rt, rt->objs[0]);
 		}
 	}
 	else if (keysym == KEY_MINUS || keysym == NUMPAD_MINUS)
@@ -99,7 +99,7 @@ static int	handle_key_press_hook_rt_one_weekend(int keysym, t_data *rt)
 		{
 			if (rt->objs[0]->radius > 0.05F)
 				rt->objs[rt->selected_obj_id]->radius -= 0.01;
-			generate_sphere_shaded(rt, rt->objs[0]);
+			render_scene(rt, rt->objs[0]);
 		}
 	}
 

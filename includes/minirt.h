@@ -97,7 +97,8 @@ void	rt_cleanup(t_data *rt);
 
 
 /* Vectors by copy */
-t_vec3	vec3(double x, double y, double z);
+t_vec3  point(float x, float y, float z);		// FIXME: might remove, sets w to 1
+t_vec3	vec3(float x, float y, float z);
 t_vec3	add_vec3(t_vec3 a, t_vec3 b);
 t_vec3	add3_vec3(t_vec3 a, t_vec3 b, t_vec3 c);
 double	dot_vec3(t_vec3 a, t_vec3 b);
@@ -127,16 +128,11 @@ void	negate_vec3_self(t_vec3 *v);
 
 
 
+
+
+
 // Camera testing
 t_vec3	mat_mult_vec3(t_vec3 *v, float **mat);
-
-
-
-
-
-
-
-
 
 
 

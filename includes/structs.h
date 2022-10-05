@@ -44,6 +44,7 @@ typedef struct s_vec3
 	float	x;
 	float	y;
 	float	z;
+	float	w;
 }	t_vec3;
 
 typedef t_vec3	t_point;
@@ -83,7 +84,7 @@ typedef struct	s_ambient
 /* Point light object */
 typedef struct s_light_pt
 {
-	t_vec3	pos;
+	t_vec3	center;
 	t_vec3	color;
 }	t_light_pt;
 
@@ -147,7 +148,6 @@ typedef struct s_obj
 
 	/* Function pointers for ray collision per object */
 	bool		(*hit)(t_ray_vec3 *r, t_obj *o, t_hit_rec *rec);	/* Function ptr for any object type */
-	bool		(*hit_no_rec)(t_ray_vec3 *r, t_obj *o);	/* Function ptr for any object type */
 	char		type;
 }	t_obj;
 
