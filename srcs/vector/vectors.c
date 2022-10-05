@@ -1,12 +1,24 @@
 #include "minirt.h"
 
-t_vec3  vec3(double x, double y, double z)
+t_vec3  point(float x, float y, float z)
 {
     t_vec3  v;
 
     v.x = x;
     v.y = y;
     v.z = z;
+    v.w = 1;
+    return (v);
+}
+
+t_vec3  vec3(float x, float y, float z)
+{
+    t_vec3  v;
+
+    v.x = x;
+    v.y = y;
+    v.z = z;
+    v.w = 0;
     return (v);
 }
 

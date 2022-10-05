@@ -1,93 +1,51 @@
 #include "minirt.h"
 
 
-/* Steps for applying transforms and camera position:
+void	cam_calc_transforms(t_data *rt)
+{
+	/* Create world to camera matrix */
+	rt->cam.w_to_c = orient_to_rot(rt->cam.aim);						/* Create axis vectors */
+	rt->cam.w_to_c.m[0][3] = rt->cam.pos.x;
+	rt->cam.w_to_c.m[1][3] = rt->cam.pos.y;
+	rt->cam.w_to_c.m[2][3] = rt->cam.pos.z;
+	rt->cam.w_to_c.m[3][3] = 1;
 
-1. Apply scale, rotation and translation to each object
-	- Scale is applied directly to the object values (radius, width, height)
-		- Scale does not apply to planes (they are infinite is size)
-	- Rotation is applied to orientation vectors
-		- If the object is a sphere, do not apply rotation as it is irrelevant (there is no orientation vector)
-	- Translation is applied to the origin point of each object.
+	//Set the camera to world matrix as invers of world to cam
+	rt->cam.c_to_w = mat_inv(rt->cam.w_to_c, 4);
+}
 
-2. 	Create inverse matrix for camera, then apply to all objects in scene to create final setup for raytracing
-	- Cannot use a compound matrix, must create for rotation, translation and scale seperately
+
+//FOV is the "scale" value of the camera??
+/*
+Changing the dimensions of the viewing plane while keeping the distance from the viewing point
+to the plane the same will change the angle, and thus the amount of the scene that can be created.
+
+The actual pixel size of the screen remains the same, but there is either more or less of the scene squeezed
+into the same space.
+
+This also will increases or decreases the distance between each ray that is cast, resulting in a change in 
+distortion as the angle between each ray changes.
+
+
+
+FOV Coord Examples:
+
+Assuming that z-offset of camera is always 1:
+
+z-offset = 1;
+view plane size = 2;
+FOV = 90;
+
+
+
+
+To calculate focal legth
+
+for non normalized view plane:
+f = (w/2) / tan(FOV/2) = (h/2) / tan(FOV/2)
+
+for normalized view plane:
+f = 1/tan(FOV/2)
+
 
 */
-
-
-/* Apply transforms to sphere */
-void apply_transform_sp(t_data *rt, t_obj *cur)
-{
-	float **mat;
-	t_vec3 res;
-
-	cur->c_radius = cur->radius * cur->scale;			/* Apply scale to radius */
-	mat = matrix_translate(cur->trans);					/* Apply translation to origin point */
-	res = mat_mult_vec3(&cur->center, mat);
-
-	cur->c_center.x = res.x;
-	cur->c_center.y = res.y;
-	cur->c_center.z = res.z;
-	cur->c_center.w = res.w;
-	
-}
-
-
-/* Apply current transforms to each object */
-void	apply_transform_obj(t_data *rt)
-{
-	t_i i;
-
-	i.x = 0;
-	while (i.x < rt->nb_objs)
-	{
-		//Call correct transform function to apply transform to avoid using if/else statements
-		i.x++;
-	}
-}
-
-/* Apply camera transform to each object in scene */
-void	apply_transform_cam()
-{
-
-}
-
-/* Calculate inverse matrices to apply camera transform to scene */
-void	calculate_transform_cam()
-{
-
-}
-
-
-
-
- 
-void	mat_inverse()
-{
-	int mat[3][3], i, j;
-	float determinant = 0;
-	printf("Enter elements of matrix row wise:\n");
-	for(i = 0; i < 3; i++)
-		for(j = 0; j < 3; j++)
-			scanf("%d", &mat[i][j]);
-	printf("\nGiven matrix is:");
-	for(i = 0; i < 3; i++){
-	printf("\n");
-	for(j = 0; j < 3; j++)
-	printf("%d\t", mat[i][j]);
-	}
-	//finding determinant
-	for(i = 0; i < 3; i++)
-		determinant = determinant + (mat[0][i] * (mat[1][(i+1)%3] * mat[2][(i+2)%3] - mat[1][(i+2)%3] * mat[2][(i+1)%3]));
-	printf("\n\ndeterminant: %f\n", determinant);
-	printf("\nInverse of matrix is: \n");
-	for(i = 0; i < 3; i++){
-	for(j = 0; j < 3; j++)
-	printf("%.2f\t",((mat[(j+1)%3][(i+1)%3] * mat[(j+2)%3][(i+2)%3]) - (mat[(j+1)%3][(i+2)%3] * mat[(j+2)%3][(i+1)%3]))/ determinant);
-	printf("\n");
-
-	
-	return 0;
-	}
-}

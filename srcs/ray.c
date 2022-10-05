@@ -26,8 +26,12 @@ int	cast_ray_at_pixel(t_data *rt, int x, int y)
 	rec.hit_anything = false;
 	i_obj = -1;
 	while (++i_obj < rt->nb_objs)
+	{
+		if (rt->objs[i_obj]->type == T_LIGHT)
+			continue ;
 		if (rt->objs[i_obj]->hit(&r, rt->objs[i_obj], &rec))
 			rec.obj_id = i_obj;
+	}
 	if (rec.hit_anything)
 		return (rec.obj_id);
 	return (NO_HIT);

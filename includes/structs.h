@@ -4,6 +4,30 @@
 #include "defines_enums.h"
 
 /*******************************/
+/*      Structs Prototypes     */
+/*******************************/
+typedef struct s_hit_rec	t_hit_rec;
+typedef struct s_obj		t_obj;
+typedef struct s_i			t_i;
+typedef struct s_quadratic	t_quadratic;
+typedef	struct s_color		t_color;
+typedef struct s_vec3		t_vec3;
+typedef struct s_vec4		t_vec4;
+typedef	struct s_ray_vec3	t_ray_vec3;
+typedef struct s_ambient	t_ambient;
+typedef struct s_light_pt	t_light_pt;
+typedef struct s_camera		t_camera;
+typedef struct s_parse		t_parse;
+typedef struct s_img		t_img;
+typedef struct s_data		t_data;
+
+/*******************************/
+/*         QoL Typedefs        */
+/*******************************/
+typedef t_vec3	t_point;
+
+
+/*******************************/
 /*       Utility Structs       */
 /*******************************/
 
@@ -13,6 +37,10 @@ typedef struct s_i
 	int x;
 	int y;
 	int z;
+
+	int i;
+	int j;
+	int k;
 }	t_i;
 
 typedef struct s_quadratic
@@ -33,10 +61,15 @@ typedef	struct s_color
 	float		weight;
 }	t_color;
 
-
 /*******************************/
 /*        3D Data Structs      */
 /*******************************/
+
+/* 4x4 Matrix */
+typedef struct s_mat4
+{
+	double	m[4][4];
+}	t_mat4;
 
 /* Vector/vertex with 3 components */
 typedef struct s_vec3
@@ -44,9 +77,8 @@ typedef struct s_vec3
 	float	x;
 	float	y;
 	float	z;
+	float	w;
 }	t_vec3;
-
-typedef t_vec3	t_point;
 
 /* Vector/vertex with four components */
 typedef struct s_vec4
@@ -67,43 +99,37 @@ typedef	struct s_ray_vec3
 }	t_ray_vec3;
 
 
-
-
 /*******************************/
 /*        Objects Structs      */
 /*******************************/
 
 /* Ambient light object */
-typedef struct	s_ambient
+typedef struct s_ambient
 {
 	t_color	clr;
 	float	ratio;
 }	t_ambient;
-
-/* Point light object */
-typedef struct s_light_pt
-{
-	t_vec3	pos;
-	t_vec3	color;
-}	t_light_pt;
 
 /* Camera object */
 typedef struct s_camera
 {
 	
 	/* Currently used */
-	t_vec3		pos;				/* Position of camera */
+	t_vec4		pos4;				/* Position of camera */
+	t_vec3		pos;
 	t_vec3		aim;				/* Direction camera is pointing */
+
+	t_mat4		p;					/* Matrix for object position and orientation */ 
 	int			fov;				/* Field of view in degrees */
 
+	t_mat4		w_to_c;		/* World to camera transform */ 
+	t_mat4		c_to_w;		/* Camera to world transform (inverse of world_to_camera); */
 
 
 	/* T0 be checked */
 	t_vec3		horizontal;			/* view_w vector  */
 	t_vec3		vertical;			/* view_h vector  */
 	t_vec3		low_left;			/* Vector from origin to lower left corner */
-	float		**world_to_cam;		/* World to camera coords transform */
-	float		**cam_to_world;		/* Camera to world coords transform */
 	int			img_w;				/* Width of image in pixels */
 	int			img_h;				/* Height of image in pixels */
 	float		view_w;				/* Width of the viewport */
@@ -111,10 +137,6 @@ typedef struct s_camera
 	float		z_offset;			/* Distance of focal point from image plane, this will change the FOV */
 
 }	t_camera;
-
-
-typedef struct s_hit_rec	t_hit_rec;
-typedef struct s_obj		t_obj;
 
 /* Generic scene object */
 typedef struct s_obj
@@ -128,7 +150,8 @@ typedef struct s_obj
 	float		width;			/* for cylinders */
 	float		radius;			/* for spheres */
 	float		height;			/* for cylinders */
-
+	t_mat4		p;				/* Matrix for object position and orientation */ 
+	
 	/* Object current data */
 	t_vec3		c_center;
 	t_vec3		c_orient;
@@ -147,10 +170,16 @@ typedef struct s_obj
 
 	/* Function pointers for ray collision per object */
 	bool		(*hit)(t_ray_vec3 *r, t_obj *o, t_hit_rec *rec);	/* Function ptr for any object type */
-	bool		(*hit_no_rec)(t_ray_vec3 *r, t_obj *o);	/* Function ptr for any object type */
 	char		type;
 }	t_obj;
 
+/* Point light object */
+typedef struct s_light_pt
+{
+	t_vec3	center;
+	t_vec3	color;
+	t_obj	plane;
+}	t_light_pt;
 
 /******************************************/
 /*        Raytracing Utility Structs      */

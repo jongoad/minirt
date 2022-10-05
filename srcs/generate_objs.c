@@ -10,7 +10,6 @@ t_obj	*new_sphere(t_vec3 center, float radius, t_vec3 color)
 	obj->color = color;
 	obj->type = T_SPH;
 	obj->hit = hit_sphere;
-	obj->hit_no_rec = hit_sphere_no_hit_rec;
 	return (obj);
 }
 
@@ -24,7 +23,6 @@ t_obj	*new_plane(t_vec3 center, t_vec3 normal, t_vec3 color)
 	obj->normal = normal;
 	obj->type = T_PLANE;
 	obj->hit = hit_plane;
-	// obj->hit_no_rec = hit_plane_no_hit_rec;
 	return (obj);
 }
 
@@ -41,6 +39,5 @@ t_obj	*new_cylinder(t_vec3 center, t_vec3 normal, float diameter, float height, 
 	obj->type = T_CYL;
 	obj->hit = hit_cylinder;
 	obj->cyl_offset = -0.2F;
-	// obj->hit_no_rec = hit_plane_no_hit_rec;
 	return (obj);
 }

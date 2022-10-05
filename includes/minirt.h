@@ -72,16 +72,10 @@ t_data		*get_data(void);
 int	cast_ray_at_pixel(t_data *rt, int x, int y); //FIXME: added by ismael
 
 
-/* Matrix functions */
-float	**matrix_identity(int fill, int fill_diagonal);
-float	**matrix_rotation(float x, char axis);
-float	**matrix_scale(t_vec3 scale);
-float	**matrix_translate(t_vec3 translate);
-float	**matrix_mult_mat(float **m1, float **m2);
-void	matrix_mult_point(t_vec3 *v, float **mat);
-void	matrix_free(float **mat);
+/****************************************/
+/*          Utility Functions           */
+/****************************************/
 
-/* Utils */
 void	*ft_xalloc(size_t size);
 void	exit_on_err(char *err_message);
 void	draw_background(t_img *img, int color);
@@ -89,15 +83,38 @@ void	fill_pixel(t_img *img, int x, int y, int color);
 double	lerp(double start, double end, double curr);
 int		lerp_color(int start, float ratio);
 
-/* Cleanup */
+
+/****************************************/
+/*         Cleaning Functions           */
+/****************************************/
+
 int		rt_clean_exit(t_data *rt);
 void	rt_cleanup(t_data *rt);
 
 
+/****************************************/
+/*       Matrix & Vector Functions      */
+/****************************************/
 
+/* Matrix functions */
+void	mat_id(t_mat4 *m);
+t_mat4	mat_scale(t_vec4 scale);
+t_mat4	mat_rot(float x, char axis);
+t_mat4	mat_trans(t_vec4 trans);
+t_mat4	mat_mult_mat(t_mat4 m1, t_mat4 m2);
+t_vec4	mat_mult_vec4(t_vec4 v, t_mat4 m);
+
+/* Inverse matrix functions */
+t_mat4	mat_inv(t_mat4 a, double f);
+double	determinant(t_mat4 a, double k);
+t_mat4	transpose(t_mat4 a, t_mat4 fac, double r);
+
+/* Matrix Utilities */
+t_mat4	orient_to_rot(t_vec3 direct);
 
 /* Vectors by copy */
-t_vec3	vec3(double x, double y, double z);
+t_vec3  point(float x, float y, float z);		// FIXME: might remove, sets w to 1
+t_vec3	vec3(float x, float y, float z);
 t_vec3	add_vec3(t_vec3 a, t_vec3 b);
 t_vec3	add3_vec3(t_vec3 a, t_vec3 b, t_vec3 c);
 double	dot_vec3(t_vec3 a, t_vec3 b);
@@ -124,33 +141,21 @@ void	unit_vec3_self(t_vec3 *v);
 void	cross_vec3_self(t_vec3 *a, t_vec3 b);
 void	negate_vec3_self(t_vec3 *v);
 
+/* Vector Utilities */
+t_vec4	vec3_to_vec4(t_vec3 input, char type);
+t_vec3	vec4_to_vec3(t_vec4 input);
 
 
+/****************************************/
+/*          Camera Functions            */
+/****************************************/
 
-// Camera testing
-t_vec3	mat_mult_vec3(t_vec3 *v, float **mat);
-
-
-
-
+void	cam_calc_transforms(t_data *rt);
 
 
-
-
-
-
-
-/* Matrix functions MOVED FROM RT */
-// float	**mat_id(int fill, int fill_diagonal);
-// float	**mat_rot(float x, char axis);
-// float	**mat_scale(t_point scale);
-// float	**mat_trans(t_point translate);
-// float	**mat_mult_mat(float **m1, float **m2);
-// void	mat_mult_vec4(t_point *v, float **mat);
-// void	mat_free(float **mat);
-
-
-
+/****************************************/
+/*    Parsing & Scene Initialization    */
+/****************************************/
 
 /* Parsing Functions */
 void	init_parse(t_parse *dat);
@@ -187,6 +192,13 @@ void	init_light(t_data *rt, char **input, int obj_nb);
 void	init_plane(t_data *rt, char **input, int obj_nb);
 void	init_sphere(t_data *rt, char **input, int obj_nb);
 void	init_cylinder(t_data *rt, char **input, int obj_nb);
+
+
+/****************************************/
+/*           Debug Utilities            */
+/****************************************/
+
+void	print_scene_after_init(t_data *rt);
 
 
 #endif // MINIRT_H
