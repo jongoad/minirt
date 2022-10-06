@@ -4,6 +4,30 @@
 #include "defines_enums.h"
 
 /*******************************/
+/*      Structs Prototypes     */
+/*******************************/
+typedef struct s_hit_rec	t_hit_rec;
+typedef struct s_obj		t_obj;
+typedef struct s_i			t_i;
+typedef struct s_quadratic	t_quadratic;
+typedef	struct s_color		t_color;
+typedef struct s_vec3		t_vec3;
+typedef struct s_vec4		t_vec4;
+typedef	struct s_ray_vec3	t_ray_vec3;
+typedef struct s_ambient	t_ambient;
+typedef struct s_light_pt	t_light_pt;
+typedef struct s_camera		t_camera;
+typedef struct s_parse		t_parse;
+typedef struct s_img		t_img;
+typedef struct s_data		t_data;
+
+/*******************************/
+/*         QoL Typedefs        */
+/*******************************/
+typedef t_vec3	t_point;
+
+
+/*******************************/
 /*       Utility Structs       */
 /*******************************/
 
@@ -60,8 +84,6 @@ typedef struct s_vec3
 	float	w;
 }	t_vec3;
 
-typedef t_vec3	t_point;
-
 /* Vector/vertex with four components */
 typedef struct s_vec4
 {
@@ -86,18 +108,13 @@ typedef	struct s_ray_vec3
 /*******************************/
 
 /* Ambient light object */
-typedef struct	s_ambient
+typedef struct s_ambient
 {
 	t_color	clr;
 	float	ratio;
 }	t_ambient;
 
-/* Point light object */
-typedef struct s_light_pt
-{
-	t_vec3	center;
-	t_vec3	color;
-}	t_light_pt;
+
 
 /* Camera object */
 typedef struct s_camera
@@ -126,10 +143,6 @@ typedef struct s_camera
 	float		z_offset;			/* Distance of focal point from image plane, this will change the FOV */
 
 }	t_camera;
-
-
-typedef struct s_hit_rec	t_hit_rec;
-typedef struct s_obj		t_obj;
 
 /* Generic scene object */
 typedef struct s_obj
@@ -166,6 +179,13 @@ typedef struct s_obj
 	char		type;
 }	t_obj;
 
+/* Point light object */
+typedef struct s_light_pt
+{
+	t_vec3	center;
+	t_vec3	color;
+	t_obj	plane;
+}	t_light_pt;
 
 /******************************************/
 /*        Raytracing Utility Structs      */

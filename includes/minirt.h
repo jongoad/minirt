@@ -133,17 +133,6 @@ void	negate_vec3_self(t_vec3 *v);
 
 
 
-
-
-
-
-
-
-
-
-
-
-
 /* Parsing Functions */
 void	init_parse(t_parse *dat);
 int		open_scene(t_parse *dat, char *path);

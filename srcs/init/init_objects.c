@@ -126,7 +126,7 @@ void	init_cylinder(t_data *rt, char **input, int obj_nb)
 	init_float_triplet(&rt->objs[obj_nb]->center, input[1]);	/* Init cylinder position */
 	init_float_triplet(&rt->objs[obj_nb]->normal, input[2]);	/* Init cylinder orientation */
 	rt->objs[obj_nb]->radius = atof(input[3]) / 2;				/* Init cylinder radius */
-	rt->objs[obj_nb]->radius = atof(input[4]);				/* Init cylinder height */
+	rt->objs[obj_nb]->height = atof(input[4]);				/* Init cylinder height */
 	init_color(&rt->objs[obj_nb]->clr, input[5]);				/* Init cylinder color */
 }
 

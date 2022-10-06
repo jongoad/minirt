@@ -160,4 +160,3 @@ int	parse(t_data *rt, char *path)
 	parse_free(&rt->parse);
 	return (1);
 }
-

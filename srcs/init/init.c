@@ -20,13 +20,14 @@ static void	rt_init_lights(t_data *rt) {
 	rt->ambt_light = mult_vec3(vec3(255, 255, 255), 0.0F);
 	rt->lights = ft_xalloc(sizeof(t_light_pt) * rt->nb_lights);
 	rt->lights[i].color = color_to_vec3(WHITE);
-	rt->lights[i].center = vec3(0.0F, 2.0F, -1.0F);
+	rt->lights[i].center = vec3(-0.5F, 0.5F, -1.0F);
+	rt->lights[i].plane.center = rt->lights[i].center;
 	i++;
 	// rt->lights[i].color = color_to_vec3(RED);
 	// rt->lights[i].center = vec3(0.0F, -3.0F, -1.0F);
 	// i++;
 	// rt->lights[i].color = color_to_vec3(BLUE);
-	// rt->lights[i].pos = vec3(0.0F, 0.0F, -2.0F);
+	// rt->lights[i].center = vec3(0.0F, 0.0F, -2.0F);
 	// i++;
 }
 
@@ -36,8 +37,6 @@ static void	rt_init_objs(t_data *rt)
 	
 	rt->nb_objs = 5;
 	rt->objs = ft_xalloc(sizeof(t_obj *) * (rt->nb_objs + 1));
-	// rt->objs[0] = new_cylinder(vec3(0.0F, 0.0F, -3.0F), vec3(0, 1, 1), 0.5F, 2.0F, color_to_vec3(ORANGE));
-	// rt->objs[0]->color = lerp_vec3(rt->objs[0]->color, rt->ambt_light, 0.5F);	
 	rt->objs[i] = new_sphere(vec3(0, -0.7F, -1.0F), 0.4F, color_to_vec3(PINK));
 	rt->objs[i]->color = lerp_vec3(rt->objs[i]->color, rt->ambt_light, 0.5F);
 	i++;
@@ -47,11 +46,11 @@ static void	rt_init_objs(t_data *rt)
 	rt->objs[i] = new_sphere(vec3(0.5F, -0.5F, -1.0F), 0.3F, color_to_vec3(CYAN));
 	rt->objs[i]->color = lerp_vec3(rt->objs[i]->color, rt->ambt_light, 0.5F);
 	i++;
-	rt->objs[i] = new_plane(vec3(0.0F, 3.0F, 0.0F), vec3(0, 1, 0), color_to_vec3(GREEN));
+	rt->objs[i] = new_plane(vec3(0.0F, 2.0F, 0.0F), vec3(0, 1, 0), color_to_vec3(GREEN));
 	rt->objs[i]->color = lerp_vec3(rt->objs[i]->color, rt->ambt_light, 0.5F);
 	i++;
 	rt->objs[i] = new_cylinder(vec3(0.0F, -0.2F, -3.0F), vec3(0, 1, 1), 0.5F, 0.5F, color_to_vec3(ORANGE));
-	rt->objs[i]->color = lerp_vec3(rt->objs[i]->color, rt->ambt_light, 0.5F);	
+	rt->objs[i]->color = lerp_vec3(rt->objs[i]->color, rt->ambt_light, 0.5F);
 	i++;
 }
 

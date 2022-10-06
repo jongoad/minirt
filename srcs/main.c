@@ -16,7 +16,7 @@ int	main(int argc, char **argv)
 
 	if (!parse(rt, argv[1]))
 		return (0);
-	print_scene_after_init(rt);
+	print_after_init(rt);
 
 
 
