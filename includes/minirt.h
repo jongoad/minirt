@@ -33,6 +33,8 @@
 
 /* Initialization */
 void	rt_init(t_data *rt, char *filepath);
+void	rt_init_img(t_data *rt);
+void	rt_init_mlx(t_data *rt, char *filename);
 
 /* Hooks */
 void	set_hooks(t_data *rt);
@@ -162,6 +164,7 @@ void	init_parse(t_parse *dat);
 int		open_scene(t_parse *dat, char *path);
 int		check_tok(char *input, char** tok);
 int		check_scene(t_parse *dat);
+void	parse_free(t_parse *dat);
 int		parse(t_data *rt, char *path);
 
 /* Individual Object Parsing Functions */
@@ -182,7 +185,7 @@ void	replace_whitespace(t_parse *dat);
 
 /* Scene Initialization Functions */
 void	init_scene(t_data *rt);
-void	init_scene_init(t_data *rt);
+void	init_parse_fct_ptrs(t_data *rt);
 void	count_objects(t_data *rt);
 void	init_color(t_color *clr, char *input);
 void	init_float_triplet(t_vec3 *vec, char *input);

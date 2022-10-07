@@ -243,7 +243,8 @@ typedef struct s_data
 	t_img		*img;
 	t_camera	cam;
 	t_obj		**objs;
-	t_light_pt	*lights;
+	t_light_pt	*lights_struct;
+	t_obj		**lights;
 	int			nb_lights;
 	t_vec3		ambt_light;
 	int			nb_objs;

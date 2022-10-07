@@ -54,4 +54,10 @@ typedef enum e_obj_types
 	T_LIGHT = 'l'
 }	e_obj_types;
 
+typedef enum e_vec_types
+{
+	T_VEC	= 'v',
+	T_POINT	= 'p'
+}	e_vec_types;
+
 #endif	//DEFINES_ENUMS_H_

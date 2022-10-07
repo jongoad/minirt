@@ -19,9 +19,7 @@ static int	handle_key_press_hook_rt_one_weekend(int keysym, t_data *rt)
 {
 	if (keysym == NUMPAD2 || keysym == KEY_S)
 	{
-		if (rt->selected_obj_id == NO_HIT)
-			rt->cam.pos.z -= 0.05F;
-		else
+		if (rt->selected_obj_id != NO_HIT)
 		{
 			rt->objs[rt->selected_obj_id]->center.z -= 0.05F;
 			printf("center.z = %f\n", rt->objs[rt->selected_obj_id]->center.z);
@@ -30,9 +28,7 @@ static int	handle_key_press_hook_rt_one_weekend(int keysym, t_data *rt)
 	}
 	else if (keysym == NUMPAD8 || keysym == KEY_W)
 	{
-		if (rt->selected_obj_id == NO_HIT)
-			rt->cam.pos.z += 0.05F;
-		else
+		if (rt->selected_obj_id != NO_HIT)
 		{
 			rt->objs[rt->selected_obj_id]->center.z += 0.05F;
 			printf("center.z = %f\n", rt->objs[rt->selected_obj_id]->center.z);
@@ -41,9 +37,7 @@ static int	handle_key_press_hook_rt_one_weekend(int keysym, t_data *rt)
 	}
 	else if (keysym == KEY_RIGHT || keysym == KEY_D)
 	{
-		if (rt->selected_obj_id == NO_HIT)
-			rt->cam.pos.x -= 0.1F;
-		else
+		if (rt->selected_obj_id != NO_HIT)
 		{
 			rt->objs[rt->selected_obj_id]->center.x -= 0.1F;
 			printf("center.x = %f\n", rt->objs[rt->selected_obj_id]->center.x);
@@ -52,9 +46,7 @@ static int	handle_key_press_hook_rt_one_weekend(int keysym, t_data *rt)
 	}
 	else if (keysym == KEY_LEFT || keysym == KEY_A)
 	{
-		if (rt->selected_obj_id == NO_HIT)
-			rt->cam.pos.x += 0.1F;
-		else
+		if (rt->selected_obj_id != NO_HIT)
 		{
 			rt->objs[rt->selected_obj_id]->center.x += 0.1F;
 			printf("center.x = %f\n", rt->objs[rt->selected_obj_id]->center.x);
@@ -63,9 +55,7 @@ static int	handle_key_press_hook_rt_one_weekend(int keysym, t_data *rt)
 	}
 	else if (keysym == KEY_UP || keysym == KEY_X)
 	{
-		if (rt->selected_obj_id == NO_HIT)
-			rt->cam.pos.y += 0.1F;
-		else
+		if (rt->selected_obj_id != NO_HIT)
 		{
 			rt->objs[rt->selected_obj_id]->center.y += 0.1F;
 			rt->objs[rt->selected_obj_id]->cyl_offset += 0.1F;
@@ -75,9 +65,7 @@ static int	handle_key_press_hook_rt_one_weekend(int keysym, t_data *rt)
 	}
 	else if (keysym == KEY_DOWN || keysym == KEY_Z)
 	{
-		if (rt->selected_obj_id == NO_HIT)
-			rt->cam.pos.y -= 0.1F;
-		else
+		if (rt->selected_obj_id != NO_HIT)
 		{
 			rt->objs[rt->selected_obj_id]->center.y -= 0.1F;
 			rt->objs[rt->selected_obj_id]->cyl_offset -= 0.1F;

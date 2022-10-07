@@ -9,9 +9,9 @@ t_vec4	vec3_to_vec4(t_vec3 input, char type)
 	res.y = input.y;
 	res.z = input.z;
 
-	if (type == 'v')
+	if (type == T_VEC)
 		res.w = 0;
-	else if (type == 'p')
+	else if (type == T_POINT)
 		res.w = 1;
 	
 	return (res);

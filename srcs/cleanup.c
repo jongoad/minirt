@@ -20,7 +20,6 @@ void	rt_cleanup(t_data *rt)
 	free(rt->objs);
 	
 	free(rt->lights);
-	
 	free(rt->win_name);
 	free(rt->img);
 	free(rt);

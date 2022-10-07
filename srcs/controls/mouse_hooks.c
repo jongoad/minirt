@@ -44,10 +44,11 @@ int	handle_mouse_motion(int x, int y, t_data *rt)
 	double	x_percent;
 	double	y_percent;
 
-	x_percent = (double)x / (double)rt->win_w;
+	x_percent = (double)x / (double)IMG_W;
 	(void)x_percent;
-	y_percent = (double)y / (double)rt->win_h;
+	y_percent = (double)y / (double)IMG_H;
 	(void)y_percent;
+	// printf("[%f,%f]\n", x_percent, y_percent);
 	// printf("x_percent = %f\ny_percent = %f]\n", x_percent, y_percent);
 	(void) rt;
 	return (0);

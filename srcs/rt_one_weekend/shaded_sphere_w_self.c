@@ -51,15 +51,12 @@ bool	hit_cylinder(t_ray_vec3 *r, t_obj *o, t_hit_rec *rec)
     q.root = (-q.half_b - q.sqrtd) / q.a;
 
 	point = ray_at(r, q.root);
-	// if (fabs(point.y) > o->height)
-	// if (q.root < T_MIN || q.root > rec->t || point.y > -0.2F || -point.y > (o->height + 0.2F))
 	if (q.root < T_MIN || q.root > rec->t || point.y > o->cyl_offset || -point.y > (o->height - o->cyl_offset))
 	{
         q.root = (-q.half_b + q.sqrtd) / q.a;
 		point = ray_at(r, q.root);
 		color = color_to_vec3(BLACK);
-		// if (q.root < T_MIN || q.root > rec->t || point.y > -0.2F || -point.y > (o->height + 0.2F))
-	if (q.root < T_MIN || q.root > rec->t || point.y > o->cyl_offset || -point.y > (o->height - o->cyl_offset))
+		if (q.root < T_MIN || q.root > rec->t || point.y > o->cyl_offset || -point.y > (o->height - o->cyl_offset))
 			return false;
 	}
 
@@ -113,10 +110,9 @@ static inline bool	hit_anything(t_data *rt, t_ray_vec3 *pt_to_light, t_hit_rec *
 
 	i = -1;
 	(void) rec2;
+	(void) rec;
 	while (++i < rt->nb_objs)
 	{
-		if (rec->obj_id == i || rt->objs[i]->type == T_LIGHT)
-			continue ;
 		if (rt->objs[i]->hit(pt_to_light, rt->objs[i], rec2))
 		{
 			return (true);
@@ -136,12 +132,10 @@ int	apply_point_lights(t_data *rt, t_hit_rec *rec, int color)
 
 	//FIXME: to remove
 	j = -1;
-	while (++j < rt->nb_objs)
+	while (++j < rt->nb_lights)
 	{
-		if (rt->objs[j]->type != T_LIGHT)
-			continue ;
 		pt_to_light.orig = rec->p;
-		diff = sub_vec3(rt->objs[j]->center, rec->p);
+		diff = sub_vec3(rt->lights[j]->center, rec->p);
 		pt_to_light.dir = diff;
 
 		// To make sure hits are happening between light and obj
@@ -154,8 +148,9 @@ int	apply_point_lights(t_data *rt, t_hit_rec *rec, int color)
 		if (t < 0.01F)
 			continue;
 		vcolor = color_to_vec3(color);
-		color = vec3_to_color(lerp_vec3(vcolor, rt->objs[j]->color, t * t));
+		color = vec3_to_color(lerp_vec3(vcolor, rt->lights[j]->color, t * t));
 	}
+	apply_specular();
 	return color;
 }
 // int	apply_point_lights(t_data *rt, t_hit_rec *rec, int color)
@@ -192,11 +187,11 @@ int	apply_point_lights(t_data *rt, t_hit_rec *rec, int color)
 // }
 
 
-bool	hit_light(t_ray_vec3 *r, t_light_pt *l, t_hit_rec *rec)
+bool	hit_light(t_ray_vec3 *r, t_obj *l, t_hit_rec *rec)
 {	
 	// FIXME: the light points now have an object type inside of them to store a plane orthogonal to the ray
-	l->plane.normal = r->dir;
-	return (hit_plane(r, &l->plane, rec));
+	l->normal = r->dir;
+	return (hit_plane(r, l, rec));
 }
 
 int	apply_light_halos(t_data *rt, t_ray_vec3 *r, t_hit_rec *rec, int color, int x, int y)
@@ -214,9 +209,9 @@ int	apply_light_halos(t_data *rt, t_ray_vec3 *r, t_hit_rec *rec, int color, int 
 		// else
 			rec2.t = T_MAX;
 		rec2.hit_anything = false;
-		if (hit_light(r, &rt->lights[i], &rec2))
+		if (hit_light(r, rt->lights[i], &rec2))
 		{
-			dist = length_vec3(sub_vec3(rt->lights[i].center, rec2.p));
+			dist = length_vec3(sub_vec3(rt->lights[i]->center, rec2.p));
 			dist += 1.0F;
 			dist *= dist;
 			// printf("dist = %f\n", dist);
@@ -224,12 +219,12 @@ int	apply_light_halos(t_data *rt, t_ray_vec3 *r, t_hit_rec *rec, int color, int 
 			// printf("(%d, %d) = %f\n", x, y, dist);
 			(void)x;
 			(void)y;
-			if (dist > 5.0F)
-				continue ;
-			else if (dist < LIGHT_RADIUS)
-				color = vec3_to_color(rt->lights[i].color);
-			else
-				color = vec3_to_color(lerp_vec3(color_to_vec3(color), rt->lights[i].color, 1 / dist));
+			// if (dist > 5.0F)
+			// 	continue ;
+			if (dist < LIGHT_RADIUS && rec2.t < rec->t)
+				color = vec3_to_color(rt->lights[i]->color);
+			else if (rec2.t < rec->t)
+				color = vec3_to_color(lerp_vec3(color_to_vec3(color), rt->lights[i]->color, 1 / dist));
 
 		}
 	}
@@ -281,11 +276,10 @@ void	render_scene(t_data *rt, t_obj *sp)
 			}
 			
 			if (rec.hit_anything)
-            	pixel_color = vec3_to_color(rec.color);
-            	// pixel_color = apply_point_lights(rt, &rec, vec3_to_color(rec.color));
+            	pixel_color = apply_point_lights(rt, &rec, vec3_to_color(rec.color));
 			
 			// Apply light halos
-			// pixel_color = apply_light_halos(rt, &r, &rec, pixel_color, i, j);
+			pixel_color = apply_light_halos(rt, &r, &rec, pixel_color, i, j);
 			
             fill_pixel(rt->img, i, j, pixel_color);
         }
