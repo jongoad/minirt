@@ -72,6 +72,30 @@ t_data		*get_data(void);
 int	cast_ray_at_pixel(t_data *rt, int x, int y); //FIXME: added by ismael
 
 
+/****************************************/
+/*          Utility Functions           */
+/****************************************/
+
+void	*ft_xalloc(size_t size);
+void	exit_on_err(char *err_message);
+void	draw_background(t_img *img, int color);
+void	fill_pixel(t_img *img, int x, int y, int color);
+double	lerp(double start, double end, double curr);
+int		lerp_color(int start, float ratio);
+
+
+/****************************************/
+/*         Cleaning Functions           */
+/****************************************/
+
+int		rt_clean_exit(t_data *rt);
+void	rt_cleanup(t_data *rt);
+
+
+/****************************************/
+/*       Matrix & Vector Functions      */
+/****************************************/
+
 /* Matrix functions */
 void	mat_id(t_mat4 *m);
 t_mat4	mat_scale(t_vec4 scale);
@@ -85,21 +109,8 @@ t_mat4	mat_inv(t_mat4 a, double f);
 double	determinant(t_mat4 a, double k);
 t_mat4	transpose(t_mat4 a, t_mat4 fac, double r);
 
-
-/* Utils */
-void	*ft_xalloc(size_t size);
-void	exit_on_err(char *err_message);
-void	draw_background(t_img *img, int color);
-void	fill_pixel(t_img *img, int x, int y, int color);
-double	lerp(double start, double end, double curr);
-int		lerp_color(int start, float ratio);
-
-/* Cleanup */
-int		rt_clean_exit(t_data *rt);
-void	rt_cleanup(t_data *rt);
-
-
-
+/* Matrix Utilities */
+t_mat4	orient_to_rot(t_vec3 direct);
 
 /* Vectors by copy */
 t_vec3  point(float x, float y, float z);		// FIXME: might remove, sets w to 1
@@ -130,8 +141,21 @@ void	unit_vec3_self(t_vec3 *v);
 void	cross_vec3_self(t_vec3 *a, t_vec3 b);
 void	negate_vec3_self(t_vec3 *v);
 
+/* Vector Utilities */
+t_vec4	vec3_to_vec4(t_vec3 input, char type);
+t_vec3	vec4_to_vec3(t_vec4 input);
 
 
+/****************************************/
+/*          Camera Functions            */
+/****************************************/
+
+void	cam_calc_transforms(t_data *rt);
+
+
+/****************************************/
+/*    Parsing & Scene Initialization    */
+/****************************************/
 
 /* Parsing Functions */
 void	init_parse(t_parse *dat);
@@ -168,8 +192,6 @@ void	init_light(t_data *rt, char **input, int obj_nb);
 void	init_plane(t_data *rt, char **input, int obj_nb);
 void	init_sphere(t_data *rt, char **input, int obj_nb);
 void	init_cylinder(t_data *rt, char **input, int obj_nb);
-
-
 
 
 /****************************************/

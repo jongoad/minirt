@@ -90,7 +90,7 @@ void	init_camera(t_data *rt, char **input, int obj_nb)
 void	init_light(t_data *rt, char **input, int obj_nb)
 {
 	rt->objs[obj_nb] = ft_xalloc(sizeof(t_obj));				/* Allocate object */
-	rt->objs[obj_nb]->type = 'L';
+	rt->objs[obj_nb]->type = T_LIGHT;
 	init_float_triplet(&rt->objs[obj_nb]->center, input[1]);	/* Init light position */
 	rt->objs[obj_nb]->ratio = atof(input[2]);					/* Init brightness ratio */
 	if (BONUS)
@@ -101,10 +101,11 @@ void	init_light(t_data *rt, char **input, int obj_nb)
 void	init_plane(t_data *rt, char **input, int obj_nb)	
 {
 	rt->objs[obj_nb] = ft_xalloc(sizeof(t_obj));				/* Allocate object */
-	rt->objs[obj_nb]->type = 'p';
+	rt->objs[obj_nb]->type = T_PLANE;
 	init_float_triplet(&rt->objs[obj_nb]->center, input[1]);	/* Init plane position */
 	init_float_triplet(&rt->objs[obj_nb]->normal, input[2]);	/* Init plane orientation */
 	init_color(&rt->objs[obj_nb]->clr, input[3]);				/* Init plane color */
+	rt->objs[obj_nb]->hit = hit_plane;
 }
 
 /* Initialize sphere object using parsed input data */
@@ -112,22 +113,24 @@ void	init_sphere(t_data *rt, char **input, int obj_nb)
 {
 	/*FIXME - Replace with non library string to float function */
 	rt->objs[obj_nb] = ft_xalloc(sizeof(t_obj));				/* Allocate object */
-	rt->objs[obj_nb]->type = 's';
+	rt->objs[obj_nb]->type = T_SPH;
 	init_float_triplet(&rt->objs[obj_nb]->center, input[1]);	/* Init sphere position */
 	rt->objs[obj_nb]->radius = atof(input[2]) / 2;				/* Init sphere radius */
 	init_color(&rt->objs[obj_nb]->clr, input[3]);				/* Init sphere color */
+	rt->objs[obj_nb]->hit = hit_sphere;
 }
 
 /* Initialize cylinder object using parsed input data */
 void	init_cylinder(t_data *rt, char **input, int obj_nb)
 {
 	rt->objs[obj_nb] = ft_xalloc(sizeof(t_obj));				/* Allocate object */
-	rt->objs[obj_nb]->type = 'c';
+	rt->objs[obj_nb]->type = T_CYL;
 	init_float_triplet(&rt->objs[obj_nb]->center, input[1]);	/* Init cylinder position */
 	init_float_triplet(&rt->objs[obj_nb]->normal, input[2]);	/* Init cylinder orientation */
 	rt->objs[obj_nb]->radius = atof(input[3]) / 2;				/* Init cylinder radius */
 	rt->objs[obj_nb]->height = atof(input[4]);				/* Init cylinder height */
 	init_color(&rt->objs[obj_nb]->clr, input[5]);				/* Init cylinder color */
+	rt->objs[obj_nb]->hit = hit_cylinder;
 }
 
 /* Count objects for allocation and final parse step */

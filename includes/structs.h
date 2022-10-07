@@ -61,19 +61,15 @@ typedef	struct s_color
 	float		weight;
 }	t_color;
 
+/*******************************/
+/*        3D Data Structs      */
+/*******************************/
+
+/* 4x4 Matrix */
 typedef struct s_mat4
 {
 	double	m[4][4];
 }	t_mat4;
-
-typedef double** mat4;
-
-
-
-
-/*******************************/
-/*        3D Data Structs      */
-/*******************************/
 
 /* Vector/vertex with 3 components */
 typedef struct s_vec3
@@ -114,8 +110,6 @@ typedef struct s_ambient
 	float	ratio;
 }	t_ambient;
 
-
-
 /* Camera object */
 typedef struct s_camera
 {
@@ -128,14 +122,14 @@ typedef struct s_camera
 	t_mat4		p;					/* Matrix for object position and orientation */ 
 	int			fov;				/* Field of view in degrees */
 
+	t_mat4		w_to_c;		/* World to camera transform */ 
+	t_mat4		c_to_w;		/* Camera to world transform (inverse of world_to_camera); */
 
 
 	/* T0 be checked */
 	t_vec3		horizontal;			/* view_w vector  */
 	t_vec3		vertical;			/* view_h vector  */
 	t_vec3		low_left;			/* Vector from origin to lower left corner */
-	float		**world_to_cam;		/* World to camera coords transform */
-	float		**cam_to_world;		/* Camera to world coords transform */
 	int			img_w;				/* Width of image in pixels */
 	int			img_h;				/* Height of image in pixels */
 	float		view_w;				/* Width of the viewport */

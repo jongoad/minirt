@@ -115,6 +115,8 @@ int	check_tok(char *input, char **tok)
 
 	i.x = 0;
 
+	if (input[0] == '#')
+		return (-2);
 	while (tok[i.x])
 	{
 		if (!ft_strcmp(input, tok[i.x]))
@@ -130,10 +132,12 @@ int check_scene(t_parse *dat)
 	t_i		i;
 	int		res;
 
-	i.x = 0;
-	while (dat->scene[i.x])
+	i.x = -1;
+	while (dat->scene[++i.x])
 	{
 		res = check_tok(dat->scene[i.x][0], dat->tok);
+		if (res == -2)
+			continue;
 		if (res == -1)
 			return (parse_error(dat, PARSE_ERR_OBJ));
 		if ((res == 0 && dat->has_ambient) || (res == 1 && dat->has_camera))
@@ -144,7 +148,6 @@ int check_scene(t_parse *dat)
 			dat->has_camera = true;
 		if (!dat->f[res](dat->scene[i.x]))
 			return (parse_error(dat, PARSE_ERR_BAD_DATA));
-		i.x++;
 	}
 	return (1);
 }

@@ -1,53 +1,51 @@
 #include "minirt.h"
 
 
-
-
-
-
-
-
-
-
-
-
-/* Apply transforms to sphere */
-void apply_transform_sp(t_data *rt, t_obj *cur)
+void	cam_calc_transforms(t_data *rt)
 {
-	float **mat;
-	t_vec3 res;
+	/* Create world to camera matrix */
+	rt->cam.w_to_c = orient_to_rot(rt->cam.aim);						/* Create axis vectors */
+	rt->cam.w_to_c.m[0][3] = rt->cam.pos.x;
+	rt->cam.w_to_c.m[1][3] = rt->cam.pos.y;
+	rt->cam.w_to_c.m[2][3] = rt->cam.pos.z;
+	rt->cam.w_to_c.m[3][3] = 1;
 
-	cur->c_radius = cur->radius * cur->scale;			/* Apply scale to radius */
-	mat = matrix_translate(cur->trans);					/* Apply translation to origin point */
-	res = mat_mult_vec3(&cur->center, mat);
-
-	cur->c_center.x = res.x;
-	cur->c_center.y = res.y;
-	cur->c_center.z = res.z;
+	//Set the camera to world matrix as invers of world to cam
+	rt->cam.c_to_w = mat_inv(rt->cam.w_to_c, 4);
 }
 
 
-/* Apply current transforms to each object */
-void	apply_transform_obj(t_data *rt)
-{
-	t_i i;
+//FOV is the "scale" value of the camera??
+/*
+Changing the dimensions of the viewing plane while keeping the distance from the viewing point
+to the plane the same will change the angle, and thus the amount of the scene that can be created.
 
-	i.x = 0;
-	while (i.x < rt->nb_objs)
-	{
-		//Call correct transform function to apply transform to avoid using if/else statements
-		i.x++;
-	}
-}
+The actual pixel size of the screen remains the same, but there is either more or less of the scene squeezed
+into the same space.
 
-/* Apply camera transform to each object in scene */
-void	apply_transform_cam()
-{
+This also will increases or decreases the distance between each ray that is cast, resulting in a change in 
+distortion as the angle between each ray changes.
 
-}
 
-/* Calculate inverse matrices to apply camera transform to scene */
-void	calculate_transform_cam()
-{
 
-}
+FOV Coord Examples:
+
+Assuming that z-offset of camera is always 1:
+
+z-offset = 1;
+view plane size = 2;
+FOV = 90;
+
+
+
+
+To calculate focal legth
+
+for non normalized view plane:
+f = (w/2) / tan(FOV/2) = (h/2) / tan(FOV/2)
+
+for normalized view plane:
+f = 1/tan(FOV/2)
+
+
+*/

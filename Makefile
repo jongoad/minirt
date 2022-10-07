@@ -58,7 +58,7 @@ LIBFT_FLAGS			= -lft -Llibft
 LIBM_FLAG	= -lm
 
 CC		= gcc
-CFLAGS	= -Wall -Wextra -Werror -Ofast -g  -funsafe-math-optimizations
+CFLAGS	= -Wall -Werror -Wextra -Ofast -g  -funsafe-math-optimizations
 
 
 LIBFT_DIR	= ./libft
