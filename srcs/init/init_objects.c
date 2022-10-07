@@ -38,9 +38,6 @@ void	init_mat_obj(t_obj *obj)
 void	init_mat_cam(t_camera *cam)
 {
 	mat_id(&cam->p);
-
-
-
 }
 
 /* Split a colour input into components */
@@ -86,7 +83,7 @@ void	init_camera(t_data *rt, char **input, int obj_nb)
 	init_float_triplet(&rt->cam.aim, input[2]);					/* Init camera orientation */
 	rt->cam.fov = ft_atoi(input[3]);							/* Init camera FOV */
 
-	init_mat_obj(&rt->cam.p); /* Init matrix containing position and orientation data */
+	init_mat_cam(&rt->cam); /* Init matrix containing position and orientation data */
 }
 
 /* Initialize light object using parsed input data */

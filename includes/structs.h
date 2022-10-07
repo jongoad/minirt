@@ -104,8 +104,9 @@ typedef struct s_camera
 {
 	
 	/* Currently used */
-	t_vec4		pos;				/* Position of camera */
-	t_vec4		aim;				/* Direction camera is pointing */
+	t_vec4		pos4;				/* Position of camera */
+	t_vec3		pos;
+	t_vec3		aim;				/* Direction camera is pointing */
 
 	t_mat4		p;					/* Matrix for object position and orientation */ 
 	int			fov;				/* Field of view in degrees */

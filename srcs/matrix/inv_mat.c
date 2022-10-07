@@ -65,6 +65,7 @@ t_mat4	mat_inv(t_mat4 a, double f)
 	if (determinant(a, 4) == 0)
 	{
 		printf("Since the determinant is zerp (0), therefor inverse is not possible.");
+		mat_id(&b);	//Temp FIXME
 		return (b);
 	}
 	i.i = 0;

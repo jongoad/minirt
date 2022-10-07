@@ -136,8 +136,6 @@ void	negate_vec3_self(t_vec3 *v);
 
 
 
-// Camera testing
-t_vec3	mat_mult_vec3(t_vec3 *v, float **mat);
 
 
 
@@ -181,6 +179,15 @@ void	init_light(t_data *rt, char **input, int obj_nb);
 void	init_plane(t_data *rt, char **input, int obj_nb);
 void	init_sphere(t_data *rt, char **input, int obj_nb);
 void	init_cylinder(t_data *rt, char **input, int obj_nb);
+
+
+
+
+/****************************************/
+/*           Debug Utilities            */
+/****************************************/
+
+void	print_scene_after_init(t_data *rt);
 
 
 #endif // MINIRT_H
