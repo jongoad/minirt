@@ -73,13 +73,18 @@ int	cast_ray_at_pixel(t_data *rt, int x, int y); //FIXME: added by ismael
 
 
 /* Matrix functions */
-float	**matrix_identity(int fill, int fill_diagonal);
-float	**matrix_rotation(float x, char axis);
-float	**matrix_scale(t_vec3 scale);
-float	**matrix_translate(t_vec3 translate);
-float	**matrix_mult_mat(float **m1, float **m2);
-void	matrix_mult_point(t_vec3 *v, float **mat);
-void	matrix_free(float **mat);
+void	mat_id(t_mat4 *m);
+t_mat4	mat_scale(t_vec4 scale);
+t_mat4	mat_rot(float x, char axis);
+t_mat4	mat_trans(t_vec4 trans);
+t_mat4	mat_mult_mat(t_mat4 m1, t_mat4 m2);
+t_vec4	mat_mult_vec4(t_vec4 v, t_mat4 m);
+
+/* Inverse matrix functions */
+t_mat4	mat_inv(t_mat4 a, double f);
+double	determinant(t_mat4 a, double k);
+t_mat4	transpose(t_mat4 a, t_mat4 fac, double r);
+
 
 /* Utils */
 void	*ft_xalloc(size_t size);
@@ -136,14 +141,7 @@ t_vec3	mat_mult_vec3(t_vec3 *v, float **mat);
 
 
 
-/* Matrix functions MOVED FROM RT */
-// float	**mat_id(int fill, int fill_diagonal);
-// float	**mat_rot(float x, char axis);
-// float	**mat_scale(t_point scale);
-// float	**mat_trans(t_point translate);
-// float	**mat_mult_mat(float **m1, float **m2);
-// void	mat_mult_vec4(t_point *v, float **mat);
-// void	mat_free(float **mat);
+
 
 
 

@@ -13,6 +13,10 @@ typedef struct s_i
 	int x;
 	int y;
 	int z;
+
+	int i;
+	int j;
+	int k;
 }	t_i;
 
 typedef struct s_quadratic
@@ -32,6 +36,15 @@ typedef	struct s_color
 	u_int32_t	b;
 	float		weight;
 }	t_color;
+
+typedef struct s_mat4
+{
+	double	m[4][4];
+}	t_mat4;
+
+typedef double** mat4;
+
+
 
 
 /*******************************/
@@ -68,8 +81,6 @@ typedef	struct s_ray_vec3
 }	t_ray_vec3;
 
 
-
-
 /*******************************/
 /*        Objects Structs      */
 /*******************************/
@@ -93,8 +104,10 @@ typedef struct s_camera
 {
 	
 	/* Currently used */
-	t_vec3		pos;				/* Position of camera */
-	t_vec3		aim;				/* Direction camera is pointing */
+	t_vec4		pos;				/* Position of camera */
+	t_vec4		aim;				/* Direction camera is pointing */
+
+	t_mat4		p;					/* Matrix for object position and orientation */ 
 	int			fov;				/* Field of view in degrees */
 
 
@@ -129,7 +142,8 @@ typedef struct s_obj
 	float		width;			/* for cylinders */
 	float		radius;			/* for spheres */
 	float		height;			/* for cylinders */
-
+	t_mat4		p;				/* Matrix for object position and orientation */ 
+	
 	/* Object current data */
 	t_vec3		c_center;
 	t_vec3		c_orient;
