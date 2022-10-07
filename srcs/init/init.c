@@ -1,6 +1,6 @@
 #include "minirt.h"
 
-// static void	rt_init_camera(t_data *rt)
+// static vo]id	rt_init_camera(t_data *rt)
 // {
 //     rt->cam.view_h = 1.0F;
 //     rt->cam.view_w = ASPECT_RATIO * rt->cam.view_h;
@@ -58,20 +58,7 @@
 // 	i++;
 // }
 
-static void	rt_init_img(t_data *rt)
-{
-	t_img	*img;
-	
-	rt->img = ft_xalloc(sizeof(t_img));
-	img = rt->img;
-	img->width = IMG_W;
-	img->height = IMG_H;
-	img->img_ptr = mlx_new_image(rt->mlx_ptr, img->width, img->height);
-	img->data_addr = mlx_get_data_addr(
-			img->img_ptr, &img->bpp, &img->line_len, &img->endian);
-}
-
-static void	rt_init_mlx(t_data *rt, char *filename)
+void	rt_init_mlx(t_data *rt, char *filename)
 {
 	rt->mlx_ptr = mlx_init();
 	if (!rt->mlx_ptr)
@@ -88,17 +75,77 @@ static void	rt_init_mlx(t_data *rt, char *filename)
 	}
 }
 
-void	rt_init(t_data *rt, char *filename)
+void	rt_init_img(t_data *rt)
 {
-	rt->background = lerp_color(WHITE, 0.2);
-	rt_init_mlx(rt, filename);
-	rt_init_img(rt);
-	// rt_init_lights(rt);
-	// rt_init_camera(rt);
-	// rt_init_objs(rt);
-
-	// FIXME: temporarily, the default item selected is the first sphere
-	rt->selected_obj_id = 0;
+	t_img	*img;
 	
-	return ;
+	rt->img = ft_xalloc(sizeof(t_img));
+	img = rt->img;
+	img->width = IMG_W;
+	img->height = IMG_H;
+	img->img_ptr = mlx_new_image(rt->mlx_ptr, img->width, img->height);
+	img->data_addr = mlx_get_data_addr(
+			img->img_ptr, &img->bpp, &img->line_len, &img->endian);
 }
+
+/* Split input and initialize objects */
+void	init_scene(t_data *rt)
+{
+	int i;
+	int obj_nb;
+	int light_nb;
+	int res;
+
+	i = 0;
+	obj_nb = 0;
+	light_nb = 0;
+	init_parse_fct_ptrs(rt);
+	count_objects(rt);
+	printf("nb_objs = %d\n", rt->nb_objs);
+	printf("nb_lights = %d\n", rt->nb_lights);
+	rt->objs = ft_xalloc(sizeof(t_obj *) * (rt->nb_objs + 1));
+	rt->lights = ft_xalloc(sizeof(t_obj *) * (rt->nb_lights + 1));
+	while (rt->parse.scene[i])
+	{
+		res = check_tok(rt->parse.scene[i][0], rt->parse.tok);
+		if (res == 2)
+		{
+			rt->parse.f2[res](rt, rt->parse.scene[i], light_nb);
+			light_nb++;
+		}
+		else
+		{
+			rt->parse.f2[res](rt, rt->parse.scene[i], obj_nb);
+			if (res > 2)
+				obj_nb++;
+		}
+		i++;
+	}
+}
+
+/* Split input and initialize objects */
+void	rt_init(t_data *rt, char *filepath)
+{
+	// FIXME: to remove, for testing purposes
+	rt->background = lerp_color(WHITE, 0.2);
+	rt->selected_obj_id = 0;
+	rt_init_mlx(rt, filepath);
+	rt_init_img(rt);
+	init_scene(rt);
+	parse_free(&rt->parse);
+}
+
+// void	rt_init(t_data *rt, char *filename)
+// {
+// 	rt->background = lerp_color(WHITE, 0.2);
+// 	rt_init_mlx(rt, filename);
+// 	rt_init_img(rt);
+// 	// rt_init_lights(rt);
+// 	// rt_init_camera(rt);
+// 	// rt_init_objs(rt);
+
+// 	// FIXME: temporarily, the default item selected is the first sphere
+// 	rt->selected_obj_id = 0;
+	
+// 	return ;
+// }

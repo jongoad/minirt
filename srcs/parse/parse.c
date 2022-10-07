@@ -1,6 +1,5 @@
 #include "minirt.h"
 
-
 /* Free all allocated memory used for parsing */
 void	parse_free(t_parse *dat)
 {
@@ -109,7 +108,7 @@ int	open_scene(t_parse *dat, char *path)
 }
 
 /* Attempt to match token for object type */
-int	check_tok(char *input, char **tok)
+int	check_tok(char *input, char **types)
 {
 	t_i i;
 
@@ -117,9 +116,9 @@ int	check_tok(char *input, char **tok)
 
 	if (input[0] == '#')
 		return (-2);
-	while (tok[i.x])
+	while (types[i.x])
 	{
-		if (!ft_strcmp(input, tok[i.x]))
+		if (!ft_strcmp(input, types[i.x]))
 			return (i.x);
 		i.x++;
 	}
@@ -159,7 +158,6 @@ int	parse(t_data *rt, char *path)
 	init_parse(&rt->parse);
 	if (!open_scene(&rt->parse, path) || !check_scene(&rt->parse))
 		return (0);
-	init_scene(rt);
-	parse_free(&rt->parse);
+	
 	return (1);
 }

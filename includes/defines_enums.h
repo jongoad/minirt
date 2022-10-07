@@ -18,7 +18,7 @@
 /* Math Defines */
 # define T_MAX	1e10
 # define T_MIN	0.01F
-# define LIGHT_RADIUS	1.1F
+# define LIGHT_RADIUS	1.05F
 
 
 /* Flag Defines */
@@ -53,5 +53,11 @@ typedef enum e_obj_types
 	T_PLANE	= 'p',
 	T_LIGHT = 'l'
 }	e_obj_types;
+
+typedef enum e_vec_types
+{
+	T_VEC	= 'v',
+	T_POINT	= 'p'
+}	e_vec_types;
 
 #endif	//DEFINES_ENUMS_H_

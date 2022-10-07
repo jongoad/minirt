@@ -80,21 +80,37 @@ void	init_camera(t_data *rt, char **input, int obj_nb)
 {
 	(void)obj_nb;
 	init_float_triplet(&rt->cam.pos, input[1]);					/* Init camera position */
-	init_float_triplet(&rt->cam.aim, input[2]);					/* Init camera orientation */
+	// init_float_triplet(&rt->cam.aim, input[2]);					/* Init camera orientation */
+	init_float_triplet(&rt->cam.forward, input[2]);					/* Init camera orientation */
 	rt->cam.fov = ft_atoi(input[3]);							/* Init camera FOV */
 
+	// FIXME: Ish's crumpled up mess of a camera init
+    rt->cam.view_h = 1.0F;
+    rt->cam.view_w = ASPECT_RATIO * rt->cam.view_h;
+    rt->cam.z_offset = 1.0F;
+    rt->cam.pos = vec3(0, 0, 0);
+    rt->cam.horizontal = vec3(-rt->cam.view_w, 0, 0);
+    rt->cam.vertical = vec3(0, -rt->cam.view_h, 0);
+    rt->cam.low_left = sub_vec3(rt->cam.pos, div_vec3(rt->cam.horizontal, 2));
+	sub_vec3_self(&(rt->cam.low_left), div_vec3(rt->cam.vertical, 2));
+	sub_vec3_self(&(rt->cam.low_left), vec3(0, 0, rt->cam.z_offset));
 	init_mat_cam(&rt->cam); /* Init matrix containing position and orientation data */
 }
 
 /* Initialize light object using parsed input data */
 void	init_light(t_data *rt, char **input, int obj_nb)
 {
-	rt->objs[obj_nb] = ft_xalloc(sizeof(t_obj));				/* Allocate object */
-	rt->objs[obj_nb]->type = T_LIGHT;
-	init_float_triplet(&rt->objs[obj_nb]->center, input[1]);	/* Init light position */
-	rt->objs[obj_nb]->ratio = atof(input[2]);					/* Init brightness ratio */
-	if (BONUS)
-		init_color(&rt->objs[obj_nb]->clr, input[3]); 			/* Init light colour for bonus */
+	rt->lights[obj_nb] = ft_xalloc(sizeof(t_obj));				/* Allocate object */
+	rt->lights[obj_nb]->type = T_LIGHT;
+	init_float_triplet(&rt->lights[obj_nb]->center, input[1]);	/* Init light position */
+	rt->lights[obj_nb]->ratio = atof(input[2]);					/* Init brightness ratio */
+	if (BONUS == 0)
+		init_color(&rt->lights[obj_nb]->clr, "255,255,255"); 			/* Init light colour for bonus */
+	else
+		init_color(&rt->lights[obj_nb]->clr, input[3]); 			/* Init light colour for bonus */
+	rt->lights[obj_nb]->color.x = rt->lights[obj_nb]->clr.r;
+	rt->lights[obj_nb]->color.y = rt->lights[obj_nb]->clr.g;
+	rt->lights[obj_nb]->color.z = rt->lights[obj_nb]->clr.b;
 }
 
 /* Initialize plane object using parsed input data */
@@ -105,6 +121,11 @@ void	init_plane(t_data *rt, char **input, int obj_nb)
 	init_float_triplet(&rt->objs[obj_nb]->center, input[1]);	/* Init plane position */
 	init_float_triplet(&rt->objs[obj_nb]->normal, input[2]);	/* Init plane orientation */
 	init_color(&rt->objs[obj_nb]->clr, input[3]);				/* Init plane color */
+
+	//FIXME: TO REMOVE. For refactoring purposes
+	rt->objs[obj_nb]->color.x = rt->objs[obj_nb]->clr.r;
+	rt->objs[obj_nb]->color.y = rt->objs[obj_nb]->clr.g;
+	rt->objs[obj_nb]->color.z = rt->objs[obj_nb]->clr.b;
 	rt->objs[obj_nb]->hit = hit_plane;
 }
 
@@ -117,6 +138,11 @@ void	init_sphere(t_data *rt, char **input, int obj_nb)
 	init_float_triplet(&rt->objs[obj_nb]->center, input[1]);	/* Init sphere position */
 	rt->objs[obj_nb]->radius = atof(input[2]) / 2;				/* Init sphere radius */
 	init_color(&rt->objs[obj_nb]->clr, input[3]);				/* Init sphere color */
+
+	//FIXME: TO REMOVE. For refactoring purposes
+	rt->objs[obj_nb]->color.x = rt->objs[obj_nb]->clr.r;
+	rt->objs[obj_nb]->color.y = rt->objs[obj_nb]->clr.g;
+	rt->objs[obj_nb]->color.z = rt->objs[obj_nb]->clr.b;
 	rt->objs[obj_nb]->hit = hit_sphere;
 }
 
@@ -130,6 +156,11 @@ void	init_cylinder(t_data *rt, char **input, int obj_nb)
 	rt->objs[obj_nb]->radius = atof(input[3]) / 2;				/* Init cylinder radius */
 	rt->objs[obj_nb]->height = atof(input[4]);				/* Init cylinder height */
 	init_color(&rt->objs[obj_nb]->clr, input[5]);				/* Init cylinder color */
+
+	//FIXME: TO REMOVE. For refactoring purposes
+	rt->objs[obj_nb]->color.x = rt->objs[obj_nb]->clr.r;
+	rt->objs[obj_nb]->color.y = rt->objs[obj_nb]->clr.g;
+	rt->objs[obj_nb]->color.z = rt->objs[obj_nb]->clr.b;
 	rt->objs[obj_nb]->hit = hit_cylinder;
 }
 
@@ -146,16 +177,16 @@ void	count_objects(t_data *rt)
 	while (rt->parse.scene[i.x])
 	{
 		res = check_tok(rt->parse.scene[i.x][0], rt->parse.tok);
-		if (res > 1)
+		if (res > 2)
 			rt->nb_objs++;
-		if (res == 1)
+		else if (res == 2)
 			rt->nb_lights++;
 		i.x++;
 	}
 }
 
 /* Setup for scene initialization */
-void	init_scene_init(t_data *rt)
+void	init_parse_fct_ptrs(t_data *rt)
 {
 	rt->parse.f2[0] = init_ambient;
 	rt->parse.f2[1] = init_camera;
@@ -164,25 +195,4 @@ void	init_scene_init(t_data *rt)
 	rt->parse.f2[4] = init_sphere;
 	rt->parse.f2[5] = init_cylinder;
 
-}
-/* Split input and initialize objects */
-void	init_scene(t_data *rt)
-{
-	t_i i;
-	int obj_nb;
-	int res;
-
-	i.x = 0;
-	obj_nb = 0;
-	init_scene_init(rt);
-	count_objects(rt);
-	rt->objs = ft_xalloc(sizeof(t_obj *) * (rt->nb_objs + 1));
-	while (rt->parse.scene[i.x])
-	{
-		res = check_tok(rt->parse.scene[i.x][0], rt->parse.tok);
-		rt->parse.f2[res](rt, rt->parse.scene[i.x], obj_nb);
-		if (res > 1)
-			obj_nb++;
-		i.x++;
-	}
 }

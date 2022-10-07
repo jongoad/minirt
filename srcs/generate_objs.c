@@ -38,6 +38,6 @@ t_obj	*new_cylinder(t_vec3 center, t_vec3 normal, float diameter, float height, 
 	obj->radius = diameter / 2.0F;
 	obj->type = T_CYL;
 	obj->hit = hit_cylinder;
-	obj->cyl_offset = -0.2F;
+	obj->cyl_offset = 0.0F;
 	return (obj);
 }

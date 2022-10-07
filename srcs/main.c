@@ -13,11 +13,10 @@ int	main(int argc, char **argv)
 
 	if (!parse(rt, argv[1]))
 		return (0);
-	print_scene_after_init(rt);
-
-
-
 	rt_init(rt, argv[1]);
+
+
+	print_scene_after_init(rt);
 
 	render_scene(rt, rt->objs[0]);
 

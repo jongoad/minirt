@@ -14,6 +14,7 @@ UYELLOW		=	\033[4;33m
 RESET_COL	=	\033[0m
 
 CFILES	=	cleanup.c \
+			camera_dev.c \
 			color.c \
 			display.c \
 			generate_objs.c \
@@ -22,7 +23,7 @@ CFILES	=	cleanup.c \
 			ray.c \
 			singleton.c \
 			utils.c \
-			vector/vectors.c vector/vectors_self.c \
+			vector/vectors.c vector/vectors_self.c vector/vectors_utils.c \
 			rt_one_weekend/shaded_sphere_w_self.c \
 			rt_one_weekend/benchmark.c \
 			parse/parse.c parse/parse_objects.c parse/parse_utils.c \
@@ -58,7 +59,7 @@ LIBFT_FLAGS			= -lft -Llibft
 LIBM_FLAG	= -lm
 
 CC		= gcc
-CFLAGS	= -Wall -Werror -Wextra -Ofast -g  -funsafe-math-optimizations
+CFLAGS	= -Wall -Werror -Wextra -Ofast -g -funsafe-math-optimizations
 
 
 LIBFT_DIR	= ./libft
