@@ -213,7 +213,7 @@ typedef struct s_hit_rec
     t_vec3	color;			/* Color vector at collision */
     double	t;				/* Distance to point of collision */
     int		obj_id;			/* ID of the object with which collision happened */
-    bool	antialias;		/* If thew point is near an edge, use antialiasing */
+    bool	inside_surface;		/* If thew point is near an edge, use antialiasing */
     bool	hit_anything;	/* FIXME: not sure if will be needed, but useful for debugging */
 }	t_hit_rec;
 
@@ -269,6 +269,7 @@ typedef struct s_data
 	t_vec3		ambt_light;
 	int			nb_objs;
 	int			selected_obj_id;	/* For dynamic resizing/translation */
+	bool		apply_light_halos;		/* To activate/deactivate with a key hook */
 	int			win_h;
 	int			win_w;
 	int			background;
