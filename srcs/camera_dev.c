@@ -18,25 +18,25 @@ t_mat4	mat4(t_vec4 a, t_vec4 b, t_vec4 c, t_vec4 d)
 {
 	t_mat4 res;
 
-	res[0][0] = a.x;
-	res[1][0] = a.y;
-	res[2][0] = a.z;
-	res[3][0] = a.w;
+	res.m[0][0] = a.x;
+	res.m[1][0] = a.y;
+	res.m[2][0] = a.z;
+	res.m[3][0] = a.w;
 
-	res[0][1] = b.x;
-	res[1][1] = b.y;
-	res[2][1] = b.z;
-	res[3][1] = b.w;
+	res.m[0][1] = b.x;
+	res.m[1][1] = b.y;
+	res.m[2][1] = b.z;
+	res.m[3][1] = b.w;
 
-	res[0][2] = c.x;
-	res[1][2] = c.y;
-	res[2][2] = c.z;
-	res[3][2] = c.w;
+	res.m[0][2] = c.x;
+	res.m[1][2] = c.y;
+	res.m[2][2] = c.z;
+	res.m[3][2] = c.w;
 
-	res[0][3] = d.x;
-	res[1][3] = d.y;
-	res[2][3] = d.z;
-	res[3][3] = d.w;
+	res.m[0][3] = d.x;
+	res.m[1][3] = d.y;
+	res.m[2][3] = d.z;
+	res.m[3][3] = d.w;
 
 	return (res);
 }
@@ -70,31 +70,31 @@ void	cam_calc_project(t_data *rt)
 
 	aspect_ratio = (float)IMG_W / (float)IMG_H;
 	top = tan(rt->cam.fov / 2) * rt->cam.near;
-	bottom = -top;
+	bot = -top;
 	right = top * aspect_ratio;
 	left = -top * aspect_ratio;
 
-	rt->cam.project.m[0][0] = (2 * rt->cam.near) \ (right - left);
+	rt->cam.project.m[0][0] = (2 * rt->cam.near) / (right - left);
 	rt->cam.project.m[0][1] = 0;
 	rt->cam.project.m[0][2] = (right + left) / (right - left);
 	rt->cam.project.m[0][3] = 0;
 
 	rt->cam.project.m[1][0] = 0;
-	rt->cam.project.m[1][1] = (2 * near) / (top - bottom);
-	rt->cam.project.m[1][2] = (top + bottom) / (top - bottom);
+	rt->cam.project.m[1][1] = (2 * rt->cam.near) / (top - bot);
+	rt->cam.project.m[1][2] = (top + bot) / (top - bot);
 	rt->cam.project.m[1][3] = 0;
 
 	rt->cam.project.m[2][0] = 0;
 	rt->cam.project.m[2][1] = 0;
-	rt->cam.project.m[2][2] = ((far + near) / (far - near)) * -1;
-	rt->cam.project.m[2][3] = ((2 * far * near) / (far - near)) * -1;
+	rt->cam.project.m[2][2] = ((rt->cam.far + rt->cam.near) / (rt->cam.far - rt->cam.near)) * -1;
+	rt->cam.project.m[2][3] = ((2 * rt->cam.far * rt->cam.near) / (rt->cam.far - rt->cam.near)) * -1;
 
 	rt->cam.project.m[3][0] = 0;
 	rt->cam.project.m[3][1] = 0;
 	rt->cam.project.m[3][2] = -1;
 	rt->cam.project.m[3][3] = 0;
 
-	rt->cam.inv_project = mat_inv(rt->cam.project);
+	rt->cam.inv_project = mat_inv(rt->cam.project, 4);
 }
 
 /* Generate and pre-cache camera rays */
@@ -120,10 +120,7 @@ void	cam_generate_rays(t_data *rt)
 			target = mat_mult_vec4(vec4(coord.x, coord.y, 1, 1), rt->cam.inv_project);
 			t_vec4 normed = vec3_to_vec4(unit_vec3(div_vec3(vec4_to_vec3(target), target.w)), T_VEC);
 			t_vec4 invert = mat_mult_vec4(normed, rt->cam.inv_view);
-			ray =  vec4_to_vec3(invert);
-
-
-			rt->cam.rays[i.y][i.x] = vec4_to_vec3(ray);
+			rt->cam.rays[i.y][i.x] = vec4_to_vec3(invert);
 			i.x++;
 		}
 		i.y++;

@@ -155,6 +155,14 @@ t_vec3	vec4_to_vec3(t_vec4 input);
 void	cam_calc_transforms(t_data *rt);
 
 
+t_vec4	vec4(float x, float y, float z, float w);
+t_mat4	mat4(t_vec4 a, t_vec4 b, t_vec4 c, t_vec4 d);
+void	cam_init(t_data *rt);
+void	cam_calc_view(t_data *rt);
+void	cam_calc_project(t_data *rt);
+void	cam_generate_rays(t_data *rt);
+
+
 /****************************************/
 /*    Parsing & Scene Initialization    */
 /****************************************/
