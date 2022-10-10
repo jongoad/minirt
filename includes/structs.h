@@ -61,15 +61,19 @@ typedef	struct s_color
 	float		weight;
 }	t_color;
 
-/*******************************/
-/*        3D Data Structs      */
-/*******************************/
-
-/* 4x4 Matrix */
 typedef struct s_mat4
 {
 	double	m[4][4];
 }	t_mat4;
+
+typedef double** mat4;
+
+
+
+
+/*******************************/
+/*        3D Data Structs      */
+/*******************************/
 
 /* Vector/vertex with 3 components */
 typedef struct s_vec3
@@ -110,26 +114,43 @@ typedef struct s_ambient
 	float	ratio;
 }	t_ambient;
 
+
+
 /* Camera object */
 typedef struct s_camera
 {
+	/* New camera data */
+
+	float		near;
+	float		far;
+	t_vec3		forward;				/* Direction camera is pointing */
+	t_vec3		up;						/* Default up vector (0, 1, 0) */
+	t_vec3		right;
+
+	t_mat4		project;
+	t_mat4		inv_project;
+	t_mat4		view;
+	t_mat4		inv_view;
+
+	t_vec3		rays[IMG_H][IMG_W];
+
 	
 	/* Currently used */
 	t_vec4		pos4;				/* Position of camera */
 	t_vec3		pos;
-	t_vec3		aim;				/* Direction camera is pointing */
+	
 
 	t_mat4		p;					/* Matrix for object position and orientation */ 
 	int			fov;				/* Field of view in degrees */
 
-	t_mat4		w_to_c;		/* World to camera transform */ 
-	t_mat4		c_to_w;		/* Camera to world transform (inverse of world_to_camera); */
 
 
 	/* T0 be checked */
 	t_vec3		horizontal;			/* view_w vector  */
 	t_vec3		vertical;			/* view_h vector  */
 	t_vec3		low_left;			/* Vector from origin to lower left corner */
+	float		**world_to_cam;		/* World to camera coords transform */
+	float		**cam_to_world;		/* Camera to world coords transform */
 	int			img_w;				/* Width of image in pixels */
 	int			img_h;				/* Height of image in pixels */
 	float		view_w;				/* Width of the viewport */
@@ -243,8 +264,7 @@ typedef struct s_data
 	t_img		*img;
 	t_camera	cam;
 	t_obj		**objs;
-	t_light_pt	*lights_struct;
-	t_obj		**lights;
+	t_light_pt	*lights;
 	int			nb_lights;
 	t_vec3		ambt_light;
 	int			nb_objs;
