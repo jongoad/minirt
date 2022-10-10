@@ -245,13 +245,28 @@ int	apply_light_halos(t_data *rt, t_ray_vec3 *r, t_hit_rec *rec, int color, int 
 	return color;
 }
 
+void	objects_apply_inverse_view_matrix(t_data *rt)
+{
+	t_obj	*o;
+	int		i;
+
+	i = 0;
+	while (i < rt->nb_objs)
+	{
+		o = rt->objs[i];
+		o->c_center = o->center;
+		o->center = vec4_to_vec3(mat_mult_vec4(vec3_to_vec4(o->center, T_POINT), rt->cam.view));
+		i++;
+	}
+}
+
 void	render_scene(t_data *rt, t_obj *sp)
 {
     // Render
 	t_ray_vec3	r;
 	int			pixel_color;
-	float		u;
-	float		v;
+	// float		u;
+	// float		v;
 	
 	// Benchmarking
 	float		start_time = (float)clock();
@@ -261,24 +276,38 @@ void	render_scene(t_data *rt, t_obj *sp)
 
 	// To traverse objs array
 	int		i_obj;
-	
+
+	cam_init(rt);
+	cam_calc_view(rt);
+	cam_calc_project(rt);
+	cam_generate_rays(rt);
+
+	// FIXME: might be broken ? question mark
+	// objects_apply_inverse_view_matrix(rt);
+
 	r.orig = rt->cam.pos;
     for (int j = 0; j < rt->img->height; ++j) {
         for (int i = 0; i < rt->img->width; ++i) {
-            u = (float)(i) / (rt->img->width - 1);
-            v = (float)(j) / (rt->img->height - 1);
-			r.dir = sub_vec3(add3_vec3(
-				rt->cam.low_left,
-				mult_vec3(rt->cam.horizontal, u),
-				mult_vec3(rt->cam.vertical, v)),
-				rt->cam.pos);
+            // u = (float)(i) / (rt->img->width - 1);
+            // v = (float)(j) / (rt->img->height - 1);
+			// r.dir = sub_vec3(add3_vec3(
+			// 	rt->cam.low_left,
+			// 	mult_vec3(rt->cam.horizontal, u),
+			// 	mult_vec3(rt->cam.vertical, v)),
+			// 	rt->cam.pos);
 
+			r.dir = rt->cam.rays[j][i];
+			// unit_vec3_self(&r.dir);
+			// if (j == IMG_H / 2)
+			// {
+			// 	printf("ray[%d][%d]: (%f, %f, %f)\n", i, j, rt->cam.rays[j][i].x, rt->cam.rays[j][i].y, rt->cam.rays[j][i].z);
+			// 	printf("ray[%d][%d]: (%f, %f, %f)\n", i, j, r.dir.x, r.dir.y, r.dir.z);
+			// }
 			rec.color = color_to_vec3(rt->background);
 			rec.t = T_MAX;
 			rec.hit_anything = false;
 
 			pixel_color = rt->background;
-			unit_vec3_self(&r.dir);
 
 			i_obj = -1;
 			while (++i_obj < rt->nb_objs)
@@ -293,16 +322,19 @@ void	render_scene(t_data *rt, t_obj *sp)
 				// 	rec.obj_id = i_obj;
 			}
 			
+			// if (rec.hit_anything)
+            // 	pixel_color = apply_point_lights(rt, &rec, vec3_to_color(rec.color));
 			if (rec.hit_anything)
-            	pixel_color = apply_point_lights(rt, &rec, vec3_to_color(rec.color));
+            	pixel_color = vec3_to_color(rec.color);
 			
-			if (rt->apply_light_halos == true)
-				pixel_color = apply_light_halos(rt, &r, &rec, pixel_color, i, j);
+			// if (rt->apply_light_halos == true)
+			// 	pixel_color = apply_light_halos(rt, &r, &rec, pixel_color, i, j);
 			
             fill_pixel(rt->img, i, j, pixel_color);
         }
     }
 	(void)sp;
+
 	display_default(rt);
 	display_fps(rt, start_time);
 }

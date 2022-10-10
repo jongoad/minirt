@@ -66,8 +66,6 @@ typedef struct s_mat4
 	double	m[4][4];
 }	t_mat4;
 
-typedef double** mat4;
-
 
 
 
@@ -124,6 +122,7 @@ typedef struct s_camera
 	float		near;
 	float		far;
 	t_vec3		forward;				/* Direction camera is pointing */
+	t_vec3		aim;					/* FIXME: to compile */
 	t_vec3		up;						/* Default up vector (0, 1, 0) */
 	t_vec3		right;
 
@@ -264,7 +263,8 @@ typedef struct s_data
 	t_img		*img;
 	t_camera	cam;
 	t_obj		**objs;
-	t_light_pt	*lights;
+	t_light_pt	*lights_struct;
+	t_obj		**lights;
 	int			nb_lights;
 	t_vec3		ambt_light;
 	int			nb_objs;

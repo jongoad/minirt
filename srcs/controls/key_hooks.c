@@ -9,7 +9,7 @@ int	handle_key_release_hook(int keysym, t_data *rt)
 		rt_clean_exit(rt);
 	if (keysym == KEY_L)
 		rt->apply_light_halos = !(rt->apply_light_halos);
-	render_scene(rt, rt->objs[0]);
+	// render_scene(rt, rt->objs[0]);
 	return (0);
 }
 

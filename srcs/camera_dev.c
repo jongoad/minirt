@@ -45,7 +45,7 @@ void	cam_init(t_data *rt)
 {
 	rt->cam.up = vec3(0, 1, 0);
 	rt->cam.near = 1.0f;
-	rt->cam.far = 1e2;
+	rt->cam.far = 1e10;
 
 }
 
@@ -103,7 +103,6 @@ void	cam_generate_rays(t_data *rt)
 	t_i i;
 	t_vec3 coord;
 	t_vec4 target;
-	t_vec3 ray;
 
 	i.y = 0;
 	while (i.y < IMG_H)
@@ -114,8 +113,8 @@ void	cam_generate_rays(t_data *rt)
 			coord.x = (float)i.x / (float)IMG_W;
 			coord.y = (float)i.y / (float)IMG_H;
 			
-			coord.x = coord.x * 2.0f + 1.0f;
-			coord.y = coord.y * 2.0f + 1.0f;
+			coord.x = coord.x * 2.0f - 1.0f;
+			coord.y = coord.y * 2.0f - 1.0f;
 
 			target = mat_mult_vec4(vec4(coord.x, coord.y, 1, 1), rt->cam.inv_project);
 			t_vec4 normed = vec3_to_vec4(unit_vec3(div_vec3(vec4_to_vec3(target), target.w)), T_VEC);
@@ -190,7 +189,6 @@ if (keypress == W_KEY)
 */
 
 
-/*
 
 /* Steps for mouse camera control:
 
