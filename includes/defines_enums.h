@@ -18,7 +18,7 @@
 /* Math Defines */
 # define T_MAX	1e10
 # define T_MIN	0.01F
-# define LIGHT_RADIUS	1.1F
+# define LIGHT_RADIUS	1.05F
 
 
 /* Flag Defines */

@@ -150,7 +150,6 @@ int	apply_point_lights(t_data *rt, t_hit_rec *rec, int color)
 		vcolor = color_to_vec3(color);
 		color = vec3_to_color(lerp_vec3(vcolor, rt->lights[j]->color, t * t));
 	}
-	apply_specular();
 	return color;
 }
 // int	apply_point_lights(t_data *rt, t_hit_rec *rec, int color)
@@ -198,34 +197,34 @@ int	apply_light_halos(t_data *rt, t_ray_vec3 *r, t_hit_rec *rec, int color, int 
 {
 	t_hit_rec		rec2;
 	int				i;
+	// int				i_obj;
 	float			dist;
 	
 	(void)rec;
 	i = -1;
 	while (++i < rt->nb_lights)
 	{
-		// if (rec->hit_anything)
-		// 	rec2.t = rec->t;
-		// else
-			rec2.t = T_MAX;
+		rec2.t = T_MAX;
 		rec2.hit_anything = false;
 		if (hit_light(r, rt->lights[i], &rec2))
 		{
 			dist = length_vec3(sub_vec3(rt->lights[i]->center, rec2.p));
 			dist += 1.0F;
 			dist *= dist;
+			// dist *= dist;
 			// printf("dist = %f\n", dist);
-			// FIXME: temporary arbitrary value
 			// printf("(%d, %d) = %f\n", x, y, dist);
 			(void)x;
 			(void)y;
-			// if (dist > 5.0F)
-			// 	continue ;
-			if (dist < LIGHT_RADIUS && rec2.t < rec->t)
+			// if (dist < LIGHT_RADIUS && rec2.t < rec->t)
+			// 	color = vec3_to_color(rt->lights[i]->color);
+			// else if (dist < LIGHT_RADIUS)
+			// 	return color;
+			if (dist * dist < LIGHT_RADIUS
+				&& (!rec->hit_anything || (rec->hit_anything && rec2.t < rec->t)))
 				color = vec3_to_color(rt->lights[i]->color);
-			else if (rec2.t < rec->t)
+			else if (rec->hit_anything == false || (dist * dist < LIGHT_RADIUS && rec2.t < rec->t))
 				color = vec3_to_color(lerp_vec3(color_to_vec3(color), rt->lights[i]->color, 1 / dist));
-
 		}
 	}
 	return color;

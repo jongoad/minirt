@@ -34,6 +34,7 @@ void	print_scene_after_init(t_data *rt)
 	while (i < rt->nb_objs)
 	{
 		printf(RED"--- Object #: %d ---\n"CLEAR, i);
+		printf("Type: %c\n", rt->objs[i]->type);
 		printf("Position:\n");
 		printf("\tx: %f\n", rt->objs[i]->center.x);
 		printf("\ty: %f\n", rt->objs[i]->center.y);
