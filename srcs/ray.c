@@ -24,3 +24,8 @@ int	cast_ray_at_pixel(t_data *rt, int x, int y)
 		return (rec.obj_id);
 	return (NO_HIT);
 }
+
+t_vec3	ray_at(t_ray_vec3 *r, float t)
+{
+	return add_vec3(r->orig, mult_vec3(r->dir, t));
+}

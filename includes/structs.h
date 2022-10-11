@@ -121,7 +121,7 @@ typedef struct s_camera
 	
 	/* Reference data */
 	int			fov;					/* Field of view in degrees */
-	t_vec3		pos_ref;
+	t_vec3		pos_ref;				/* Initial camera position */
 
 	/* Camera direction vectors */
 	t_vec3		forward;				/* Direction camera is pointing */
@@ -161,22 +161,21 @@ typedef struct s_camera
 typedef struct s_obj
 {
 	/* Object reference data*/
-	t_vec3		center;
-	t_vec3		normal; 		/* for cylinders, planes */
+	t_vec3		pos;
+	t_vec3		fwd; 		/* for cylinders, planes */
 	t_vec3		color;			/* object initial color vec3 */
 	t_color		clr;			/* Colour data for object */
 	float		ratio;			/* Brightness ratio for light objects */
 	float		width;			/* for cylinders */
 	float		radius;			/* for spheres */
 	float		height;			/* for cylinders */
-	t_mat4		p;				/* Matrix for object position and orientation */ 
 	
 	/* Object current data */
-	t_vec3		c_center;
-	t_vec3		c_orient;
-	float		c_width;
-	float		c_radius;
-	float		c_height;
+	t_vec3		pos_ref; //c_center
+	t_vec3		fwd_ref;
+	float		width_ref;
+	float		radius_ref;
+	float		height_ref;
 
 	/* Transformation data */
 	float		scale;
@@ -184,16 +183,10 @@ typedef struct s_obj
 	t_vec3		trans;
 
 	/* Object transformation */
-	t_vec3		pos;
-	t_vec3		forward;
 	t_vec3		up;
 	t_vec3		right;
-	t_mat4		view;
-	t_mat4		inv_view;
-
-	// FIXME: TEMP obj attributes for cylinders
-	// TODO: remove once we have the inverse matrices set up
-	float		cyl_offset;
+	t_mat4		l_to_w;
+	t_mat4		w_to_l;
 
 	/* Function pointers for ray collision per object */
 	bool		(*hit)(t_ray_vec3 *r, t_obj *o, t_hit_rec *rec);	/* Function ptr for any object type */
@@ -203,7 +196,7 @@ typedef struct s_obj
 /* Point light object */
 typedef struct s_light_pt
 {
-	t_vec3	center;
+	t_vec3	pos;
 	t_vec3	color;
 	t_obj	plane;
 }	t_light_pt;

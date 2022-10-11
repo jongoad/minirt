@@ -3,7 +3,7 @@
 #define RED "\033[1;31m"
 #define CLEAR "\033[0m"
 
-
+/* Print out all objects in scene */
 void	print_scene_after_init(t_data *rt)
 {
 	int i;
@@ -36,13 +36,13 @@ void	print_scene_after_init(t_data *rt)
 		printf(RED"--- Object #: %d ---\n"CLEAR, i);
 		printf("Type: %c\n", rt->objs[i]->type);
 		printf("Position:\n");
-		printf("\tx: %f\n", rt->objs[i]->center.x);
-		printf("\ty: %f\n", rt->objs[i]->center.y);
-		printf("\tz: %f\n", rt->objs[i]->center.z);
+		printf("\tx: %f\n", rt->objs[i]->pos.x);
+		printf("\ty: %f\n", rt->objs[i]->pos.y);
+		printf("\tz: %f\n", rt->objs[i]->pos.z);
 		printf("Orientation:\n");
-		printf("\tx: %f\n", rt->objs[i]->normal.x);
-		printf("\ty: %f\n", rt->objs[i]->normal.y);
-		printf("\tz: %f\n", rt->objs[i]->normal.z);
+		printf("\tx: %f\n", rt->objs[i]->fwd.x);
+		printf("\ty: %f\n", rt->objs[i]->fwd.y);
+		printf("\tz: %f\n", rt->objs[i]->fwd.z);
 		printf("Colour:\n");
 		printf("\tr: %d\n", rt->objs[i]->clr.r);
 		printf("\tg: %d\n", rt->objs[i]->clr.g);
@@ -62,13 +62,13 @@ void	print_scene_after_init(t_data *rt)
 	{
 		printf(RED"--- Lights #: %d ---\n"CLEAR, i);
 		printf("Position:\n");
-		printf("\tx: %f\n", rt->lights[i]->center.x);
-		printf("\ty: %f\n", rt->lights[i]->center.y);
-		printf("\tz: %f\n", rt->lights[i]->center.z);
+		printf("\tx: %f\n", rt->lights[i]->pos.x);
+		printf("\ty: %f\n", rt->lights[i]->pos.y);
+		printf("\tz: %f\n", rt->lights[i]->pos.z);
 		printf("Orientation:\n");
-		printf("\tx: %f\n", rt->lights[i]->normal.x);
-		printf("\ty: %f\n", rt->lights[i]->normal.y);
-		printf("\tz: %f\n", rt->lights[i]->normal.z);
+		printf("\tx: %f\n", rt->lights[i]->fwd.x);
+		printf("\ty: %f\n", rt->lights[i]->fwd.y);
+		printf("\tz: %f\n", rt->lights[i]->fwd.z);
 		printf("Colour:\n");
 		printf("\tr: %d\n", rt->lights[i]->clr.r);
 		printf("\tg: %d\n", rt->lights[i]->clr.g);
@@ -85,7 +85,32 @@ void	print_scene_after_init(t_data *rt)
 	}
 }
 
-// void	print_cam_data(t_data *rt)
-// {
-// 	printf(RED"------- Current Camera  -------\n\n"CLEAR);
-// }
+/* Print out current data for camera */
+void	print_cam_data(t_data *rt)
+{
+	printf(RED"------- Current Camera  -------\n\n"CLEAR);
+	printf(RED"--- Position ---\n"CLEAR);
+	printf("x: %f\ny: %f\nz: %f\n\n", rt->cam.pos.x, rt->cam.pos.y, rt->cam.pos.z);
+	printf(RED"--- Orientation ---\n"CLEAR);
+	printf("x: %f\ny: %f\nz: %f\n\n", rt->cam.forward.x, rt->cam.forward.y, rt->cam.forward.z);
+	printf(RED"--- Other ---\n"CLEAR);
+	printf("FOV: %d\n", rt->cam.fov);
+	printf("Near Clip: %f\n", rt->cam.near);
+	printf("Far Clip: %f\n\n", rt->cam.far);
+}
+
+/* Print out current data for an individual object */
+void	print_obj_data(t_obj *obj)
+{
+	printf(RED"------- Selected Object Data -------\n\n"CLEAR);
+	printf ("\tType: %c\n", obj->type);
+	printf("\tRadius: %f\n", obj->radius);
+	printf("\tWidth: %f\n", obj->width);
+	printf("\tHeight: %f\n\n", obj->height); 
+	printf(RED"--- Position ---\n"CLEAR);
+	printf("\tx: %f\n\ty: %f\n\tz: %f\n\n", obj->pos.x, obj->pos.y, obj->pos.z);
+	printf(RED"--- Orientation ---\n"CLEAR);
+	printf("\tx: %f\n\ty: %f\n\tz: %f\n\n", obj->fwd.x, obj->fwd.y, obj->fwd.z);
+	printf(RED"--- Color ---\n"CLEAR);
+	printf("\tr: %d\n\tg: %d\n\tb: %d\n\n", obj->clr.r, obj->clr.g, obj->clr.b);
+}

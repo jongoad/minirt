@@ -22,11 +22,10 @@ void	exit_on_err(char *err_message)
 }
 
 /**
- * @param start value 
+ * @param start initial color value
  * @param ratio Between 0.0 and 1.0
  * @return int 	interpolated color
  */
-
 /* Linear interpolation for color */
 int	lerp_color(int start, float ratio)
 {
@@ -60,9 +59,5 @@ void	draw_background(t_img *img, int color)
 
 void	fill_pixel(t_img *img, int x, int y, int color)
 {
-	// char	*cast_ptr;
-
 	*(int *)(char *)(img->data_addr + x * img->bpp / 8 + y * img->line_len) = color;
-	// cast_ptr = (char *)(img->data_addr + x * img->bpp / 8 + y * img->line_len);
-	// *(int *)cast_ptr = color;
 }

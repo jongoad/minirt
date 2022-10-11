@@ -60,7 +60,7 @@ void	init_light(t_data *rt, char **input, int obj_nb)
 {
 	rt->lights[obj_nb] = ft_xalloc(sizeof(t_obj));				/* Allocate object */
 	rt->lights[obj_nb]->type = T_LIGHT;
-	init_float_triplet(&rt->lights[obj_nb]->center, input[1]);	/* Init light position */
+	init_float_triplet(&rt->lights[obj_nb]->pos, input[1]);	/* Init light position */
 	rt->lights[obj_nb]->ratio = atof(input[2]);					/* Init brightness ratio */
 	if (BONUS == 0)
 		init_color(&rt->lights[obj_nb]->clr, "255,255,255"); 			/* Init light colour for bonus */
@@ -76,8 +76,9 @@ void	init_plane(t_data *rt, char **input, int obj_nb)
 {
 	rt->objs[obj_nb] = ft_xalloc(sizeof(t_obj));				/* Allocate object */
 	rt->objs[obj_nb]->type = T_PLANE;
-	init_float_triplet(&rt->objs[obj_nb]->center, input[1]);	/* Init plane position */
-	init_float_triplet(&rt->objs[obj_nb]->normal, input[2]);	/* Init plane orientation */
+	init_float_triplet(&rt->objs[obj_nb]->pos, input[1]);	/* Init plane position */
+	rt->objs[obj_nb]->pos_ref = rt->objs[obj_nb]->pos;
+	init_float_triplet(&rt->objs[obj_nb]->fwd, input[2]);	/* Init plane orientation */
 	init_color(&rt->objs[obj_nb]->clr, input[3]);				/* Init plane color */
 
 	//FIXME: TO REMOVE. For refactoring purposes
@@ -93,7 +94,8 @@ void	init_sphere(t_data *rt, char **input, int obj_nb)
 	/*FIXME - Replace with non library string to float function */
 	rt->objs[obj_nb] = ft_xalloc(sizeof(t_obj));				/* Allocate object */
 	rt->objs[obj_nb]->type = T_SPH;
-	init_float_triplet(&rt->objs[obj_nb]->center, input[1]);	/* Init sphere position */
+	init_float_triplet(&rt->objs[obj_nb]->pos, input[1]);	/* Init sphere position */
+	rt->objs[obj_nb]->pos_ref = rt->objs[obj_nb]->pos;
 	rt->objs[obj_nb]->radius = atof(input[2]) / 2;				/* Init sphere radius */
 	init_color(&rt->objs[obj_nb]->clr, input[3]);				/* Init sphere color */
 
@@ -109,10 +111,11 @@ void	init_cylinder(t_data *rt, char **input, int obj_nb)
 {
 	rt->objs[obj_nb] = ft_xalloc(sizeof(t_obj));				/* Allocate object */
 	rt->objs[obj_nb]->type = T_CYL;
-	init_float_triplet(&rt->objs[obj_nb]->center, input[1]);	/* Init cylinder position */
-	init_float_triplet(&rt->objs[obj_nb]->normal, input[2]);	/* Init cylinder orientation */
+	init_float_triplet(&rt->objs[obj_nb]->pos, input[1]);	/* Init cylinder position */
+	rt->objs[obj_nb]->pos_ref = rt->objs[obj_nb]->pos;
+	init_float_triplet(&rt->objs[obj_nb]->fwd, input[2]);	/* Init cylinder orientation */
 	rt->objs[obj_nb]->radius = atof(input[3]) / 2;				/* Init cylinder radius */
-	rt->objs[obj_nb]->height = atof(input[4]);				/* Init cylinder height */
+	rt->objs[obj_nb]->height = atof(input[4]);					/* Init cylinder height */
 	init_color(&rt->objs[obj_nb]->clr, input[5]);				/* Init cylinder color */
 
 	//FIXME: TO REMOVE. For refactoring purposes
@@ -152,5 +155,4 @@ void	init_parse_fct_ptrs(t_data *rt)
 	rt->parse.f2[3] = init_plane;
 	rt->parse.f2[4] = init_sphere;
 	rt->parse.f2[5] = init_cylinder;
-
 }

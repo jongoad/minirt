@@ -32,6 +32,7 @@
 
 
 /* Initialization */
+t_data	*get_data(void);
 void	rt_init(t_data *rt, char *filepath);
 void	rt_init_img(t_data *rt);
 void	rt_init_mlx(t_data *rt, char *filename);
@@ -40,9 +41,9 @@ void	rt_init_mlx(t_data *rt, char *filename);
 void	set_hooks(t_data *rt);
 
 /* Objects */
-t_obj	*new_sphere( t_vec3 center, float radius, t_vec3 color );
-t_obj	*new_plane(t_vec3 center, t_vec3 normal, t_vec3 color);
-t_obj	*new_cylinder(t_vec3 center, t_vec3 normal, float diameter, float height, t_vec3 color);
+t_obj	*new_sphere( t_vec3 pos, float radius, t_vec3 color );
+t_obj	*new_plane(t_vec3 pos, t_vec3 normal, t_vec3 color);
+t_obj	*new_cylinder(t_vec3 pos, t_vec3 normal, float diameter, float height, t_vec3 color);
 
 /* Object intersection functions */
 bool	hit_sphere(t_ray_vec3 *r, t_obj *o, t_hit_rec *rec);
@@ -65,13 +66,19 @@ int	display_img(t_data *rt, t_img *img);
 
 
 /* Ray Generation */
-t_vec3		*init_pixel_point(t_data *data, int x, int y);
+int		cast_ray_at_pixel(t_data *rt, int x, int y);
+t_vec3	ray_at(t_ray_vec3 *r, float t);
 
+/* Rendering */
+bool	hit_anything(t_data *rt, t_ray_vec3 *pt_to_light, t_hit_rec *rec);
+void	render_scene(t_data *rt, t_obj *sp);
 
+/* Rendering - Lights */
+int		apply_point_lights(t_data *rt, t_hit_rec *rec, int color);
+int		apply_light_halos(t_data *rt, t_ray_vec3 *r, t_hit_rec *rec, int color, int x, int y);
 
-t_data		*get_data(void);
-
-int	cast_ray_at_pixel(t_data *rt, int x, int y); //FIXME: added by ismael
+/* Benchmarking FIXME: to remove for mandatory part */
+void	display_fps(t_data *rt, double start_time);
 
 
 /****************************************/

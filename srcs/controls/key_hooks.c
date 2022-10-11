@@ -50,74 +50,78 @@ static int	handle_key_press_hook_rt_one_weekend(int keysym, t_data *rt)
 	{
 		if (rt->selected_obj_id != NO_HIT)
 		{
-			rt->objs[rt->selected_obj_id]->center.z -= 0.05F;
-			printf("center.z = %f\n", rt->objs[rt->selected_obj_id]->center.z);
+			rt->objs[rt->selected_obj_id]->pos_ref.z -= 0.05F;
+			printf("pos.z = %f\n", rt->objs[rt->selected_obj_id]->pos_ref.z);
 		}
 		else
 		{
 			rt->cam.pos.z -= 0.05F;
+			printf("rt->cam.pos.z = %f\n", rt->cam.pos.z);
 		}
 	}
 	else if (keysym == NUMPAD8 || keysym == KEY_W)
 	{
 		if (rt->selected_obj_id != NO_HIT)
 		{
-			rt->objs[rt->selected_obj_id]->center.z += 0.05F;
-			printf("center.z = %f\n", rt->objs[rt->selected_obj_id]->center.z);
+			rt->objs[rt->selected_obj_id]->pos_ref.z += 0.05F;
+			printf("pos.z = %f\n", rt->objs[rt->selected_obj_id]->pos_ref.z);
 		}
 		else
 		{
 			rt->cam.pos.z += 0.05F;
+			printf("rt->cam.pos.z = %f\n", rt->cam.pos.z);
 		}
 	}
 	else if (keysym == KEY_RIGHT || keysym == KEY_D)
 	{
 		if (rt->selected_obj_id != NO_HIT)
 		{
-			rt->objs[rt->selected_obj_id]->center.x -= 0.1F;
-			printf("center.x = %f\n", rt->objs[rt->selected_obj_id]->center.x);
+			rt->objs[rt->selected_obj_id]->pos_ref.x -= 0.1F;
+			printf("pos.x = %f\n", rt->objs[rt->selected_obj_id]->pos_ref.x);
 		}
 		else
 		{
 			rt->cam.pos.x -= 0.1F;
+			printf("rt->cam.pos.x = %f\n", rt->cam.pos.x);
 		}
 	}
 	else if (keysym == KEY_LEFT || keysym == KEY_A)
 	{
 		if (rt->selected_obj_id != NO_HIT)
 		{
-			rt->objs[rt->selected_obj_id]->center.x += 0.1F;
-			printf("center.x = %f\n", rt->objs[rt->selected_obj_id]->center.x);
+			rt->objs[rt->selected_obj_id]->pos_ref.x += 0.1F;
+			printf("pos.x = %f\n", rt->objs[rt->selected_obj_id]->pos_ref.x);
 		}
 		else
 		{
 			rt->cam.pos.x += 0.1F;
+			printf("rt->cam.pos.x = %f\n", rt->cam.pos.x);
 		}
 	}
 	else if (keysym == KEY_UP || keysym == KEY_X)
 	{
 		if (rt->selected_obj_id != NO_HIT)
 		{
-			rt->objs[rt->selected_obj_id]->center.y += 0.1F;
-			rt->objs[rt->selected_obj_id]->cyl_offset += 0.1F;
-			printf("center.y = %f\n", rt->objs[rt->selected_obj_id]->center.y);
+			rt->objs[rt->selected_obj_id]->pos_ref.y += 0.1F;
+			printf("pos.y = %f\n", rt->objs[rt->selected_obj_id]->pos_ref.y);
 		}
 		else
 		{
 			rt->cam.pos.y += 0.1F;
+			printf("rt->cam.pos.y = %f\n", rt->cam.pos.y);
 		}
 	}
 	else if (keysym == KEY_DOWN || keysym == KEY_Z)
 	{
 		if (rt->selected_obj_id != NO_HIT)
 		{
-			rt->objs[rt->selected_obj_id]->center.y -= 0.1F;
-			rt->objs[rt->selected_obj_id]->cyl_offset -= 0.1F;
-			printf("center.y = %f\n", rt->objs[rt->selected_obj_id]->center.y);
+			rt->objs[rt->selected_obj_id]->pos_ref.y -= 0.1F;
+			printf("pos.y = %f\n", rt->objs[rt->selected_obj_id]->pos_ref.y);
 		}
 		else
 		{
 			rt->cam.pos.y -= 0.1F;
+			printf("rt->cam.pos.y = %f\n", rt->cam.pos.y);
 		}
 	}
 	else if (keysym == KEY_PLUS || keysym == NUMPAD_PLUS)
