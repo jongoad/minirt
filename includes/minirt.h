@@ -84,6 +84,7 @@ void	draw_background(t_img *img, int color);
 void	fill_pixel(t_img *img, int x, int y, int color);
 double	lerp(double start, double end, double curr);
 int		lerp_color(int start, float ratio);
+float	deg_to_rad(float deg);
 
 
 /****************************************/
@@ -113,6 +114,7 @@ t_mat4	transpose(t_mat4 a, t_mat4 fac, double r);
 
 /* Matrix Utilities */
 t_mat4	orient_to_rot(t_vec3 direct);
+t_mat4	mat_rot_compound(float x, float y, float z);
 
 /* Vectors by copy */
 t_vec3  point(float x, float y, float z);		// FIXME: might remove, sets w to 1

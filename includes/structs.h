@@ -43,6 +43,7 @@ typedef struct s_i
 	int k;
 }	t_i;
 
+/* Quadratic solver */
 typedef struct s_quadratic
 {
     float	a;
@@ -53,6 +54,7 @@ typedef struct s_quadratic
 	float	root;
 }	t_quadratic;
 
+/* Color data */
 typedef	struct s_color
 {
 	u_int32_t	r;
@@ -61,12 +63,11 @@ typedef	struct s_color
 	float		weight;
 }	t_color;
 
+/* 4x4 matrix */
 typedef struct s_mat4
 {
 	double	m[4][4];
 }	t_mat4;
-
-
 
 
 /*******************************/
@@ -92,7 +93,6 @@ typedef struct s_vec4
 
 }	t_vec4;
 
-
 /* Ray vector */
 typedef	struct s_ray_vec3
 {
@@ -111,8 +111,6 @@ typedef struct s_ambient
 	t_color	clr;
 	float	ratio;
 }	t_ambient;
-
-
 
 /* Camera object */
 typedef struct s_camera
@@ -140,44 +138,23 @@ typedef struct s_camera
 	/* Pre-cached vector array */
 	t_vec3		rays[IMG_H][IMG_W];
 
-	bool		is_move;
-
 	/* Camera movement vectors */
-
 	t_vec3	rotate;
 	t_vec3	translate;
-
-
-
-
-
-
-
-
-
-
-	/* Currently used */
-	t_vec4		pos4;				/* Position of camera */
+	
+	/* Current camera data */
 	t_vec3		pos;
-	
-
-	t_mat4		p;					/* Matrix for object position and orientation */ 
-	
+	bool		is_move;
 
 
-
-	/* T0 be checked */
+	/* FIXME - Check with Ismael what is still needed from this section */
 	t_vec3		horizontal;			/* view_w vector  */
 	t_vec3		vertical;			/* view_h vector  */
 	t_vec3		low_left;			/* Vector from origin to lower left corner */
-	float		**world_to_cam;		/* World to camera coords transform */
-	float		**cam_to_world;		/* Camera to world coords transform */
 	int			img_w;				/* Width of image in pixels */
 	int			img_h;				/* Height of image in pixels */
 	float		view_w;				/* Width of the viewport */
 	float		view_h;				/* Height of the viewport */
-	float		z_offset;			/* Distance of focal point from image plane, this will change the FOV */
-
 }	t_camera;
 
 /* Generic scene object */
@@ -206,6 +183,14 @@ typedef struct s_obj
 	t_vec3		rot;
 	t_vec3		trans;
 
+	/* Object transformation */
+	t_vec3		pos;
+	t_vec3		forward;
+	t_vec3		up;
+	t_vec3		right;
+	t_mat4		view;
+	t_mat4		inv_view;
+
 	// FIXME: TEMP obj attributes for cylinders
 	// TODO: remove once we have the inverse matrices set up
 	float		cyl_offset;
@@ -226,7 +211,7 @@ typedef struct s_light_pt
 /******************************************/
 /*        Raytracing Utility Structs      */
 /******************************************/
-
+/* Ray/object intersection data */
 typedef struct s_hit_rec
 {
 	t_vec3	p;				/* Coords of point of collision */
@@ -277,8 +262,8 @@ typedef struct s_img
 /* Master data */
 typedef struct s_data
 {
-	t_ambient	ambient;		/* Ambient light data */
-	t_parse		parse;			/* Parse data */
+	t_ambient	ambient;				/* Ambient light data */
+	t_parse		parse;					/* Parse data */
 	void		*mlx_ptr;
 	void		*win_ptr;
 	char		*win_name;
@@ -290,7 +275,7 @@ typedef struct s_data
 	int			nb_lights;
 	t_vec3		ambt_light;
 	int			nb_objs;
-	int			selected_obj_id;	/* For dynamic resizing/translation */
+	int			selected_obj_id;		/* For dynamic resizing/translation */
 	bool		apply_light_halos;		/* To activate/deactivate with a key hook */
 	int			win_h;
 	int			win_w;

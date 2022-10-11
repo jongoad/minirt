@@ -14,7 +14,7 @@ UYELLOW		=	\033[4;33m
 RESET_COL	=	\033[0m
 
 CFILES	=	cleanup.c \
-			camera_dev.c \
+			camera.c \
 			color.c \
 			display.c \
 			generate_objs.c \

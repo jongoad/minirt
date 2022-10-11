@@ -1,45 +1,5 @@
 #include "minirt.h"
 
-/*	Position matrix init steps:
-
-	Assume provided orientation vector points down the z axis for the object in local space 
-
-	Given a vector:
-
-		Tv = {1, 1, -1}
-	
-	Need to find how much the object needs to be rotated on each axis to make its z unit vector equal to this?
-
-	mat3 rotation_matrix(vec3 v)
-
-   // Find cosφ and sinφ 
-    float c1 = sqrt(v.x * v.x + v.y * v.y);
-    float s1 = v.z;
-   // Find cosθ and sinθ; if gimbal lock, choose (1,0) arbitrarily
-    float c2 = c1 ? v1.x / c1 : 1.0;
-    float s2 = c1 ? v1.y / c1 : 0.0;
-
-    return mat3(v.x, -s2, -s1*c2,
-                v.y,  c2, -s1*s2,
-                v.z,   0,     c1);
-
-
-*/
-
-
-/* Initilize coord/orientation matrix for object */
-void	init_mat_obj(t_obj *obj)
-{
-	mat_id(&obj->p);
-
-}
-
-/* Initilize coord/orientation matrix for camera */
-void	init_mat_cam(t_camera *cam)
-{
-	mat_id(&cam->p);
-}
-
 /* Split a colour input into components */
 void	init_color(t_color *clr, char *input)
 {
@@ -87,14 +47,12 @@ void	init_camera(t_data *rt, char **input, int obj_nb)
 	// FIXME: Ish's crumpled up mess of a camera init
     rt->cam.view_h = 1.0F;
     rt->cam.view_w = ASPECT_RATIO * rt->cam.view_h;
-    rt->cam.z_offset = 1.0F;
     rt->cam.pos = vec3(0, 0, 0);
     rt->cam.horizontal = vec3(-rt->cam.view_w, 0, 0);
     rt->cam.vertical = vec3(0, -rt->cam.view_h, 0);
     rt->cam.low_left = sub_vec3(rt->cam.pos, div_vec3(rt->cam.horizontal, 2));
 	sub_vec3_self(&(rt->cam.low_left), div_vec3(rt->cam.vertical, 2));
-	sub_vec3_self(&(rt->cam.low_left), vec3(0, 0, rt->cam.z_offset));
-	init_mat_cam(&rt->cam); /* Init matrix containing position and orientation data */
+	sub_vec3_self(&(rt->cam.low_left), vec3(0, 0, 1.0f));
 }
 
 /* Initialize light object using parsed input data */

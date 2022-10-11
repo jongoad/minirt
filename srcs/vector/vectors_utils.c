@@ -28,3 +28,16 @@ t_vec3	vec4_to_vec3(t_vec4 input)
 
 	return (res);
 }
+
+/* Build a vec4 from four component float values */
+t_vec4	vec4(float x, float y, float z, float w)
+{
+	t_vec4 res;
+
+	res.x = x;
+	res.y = y;
+	res.z = z;
+	res.w = w;
+
+	return(res);
+}

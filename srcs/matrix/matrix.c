@@ -6,7 +6,7 @@
 /*   By: jgoad <jgoad@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/06 23:11:16 by jgoad             #+#    #+#             */
-/*   Updated: 2022/10/07 14:09:14 by jgoad            ###   ########.fr       */
+/*   Updated: 2022/10/11 14:32:54 by jgoad            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,18 @@ t_mat4	mat_scale(t_vec4 scale)
 	m.m[1][1] = scale.y;
 	m.m[2][2] = scale.z;
 	m.m[3][3] = scale.w;
+	return (m);
+}
+
+t_mat4	mat_rot_compound(float x, float y, float z)
+{
+	t_mat4	m;
+
+	mat_id(&m);
+	m = mat_mult_mat(m, mat_rot(x, 'x'));
+	m = mat_mult_mat(m, mat_rot(y, 'y'));
+	m = mat_mult_mat(m, mat_rot(z, 'z'));
+
 	return (m);
 }
 

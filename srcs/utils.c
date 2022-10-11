@@ -1,5 +1,6 @@
 #include "minirt.h"
 
+/* Memory safe allocation */
 void	*ft_xalloc(size_t size)
 {
 	void	*mem_space;
@@ -13,6 +14,7 @@ void	*ft_xalloc(size_t size)
 	return (mem_space);
 }
 
+/* Error messaging & exit */
 void	exit_on_err(char *err_message)
 {
 	write(STDERR_FILENO, err_message, ft_strlen(err_message));
@@ -24,6 +26,8 @@ void	exit_on_err(char *err_message)
  * @param ratio Between 0.0 and 1.0
  * @return int 	interpolated color
  */
+
+/* Linear interpolation for color */
 int	lerp_color(int start, float ratio)
 {
 	int	color;
@@ -38,6 +42,7 @@ int	lerp_color(int start, float ratio)
 	return (color);
 }
 
+/* Linear interpolation */
 double	lerp(double start, double end, double curr)
 {
 	if (curr == start || end == start)
@@ -46,6 +51,7 @@ double	lerp(double start, double end, double curr)
 		return (1.0F);
 	return ((curr - start) / (end - start));
 }
+
 
 void	draw_background(t_img *img, int color)
 {

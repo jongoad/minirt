@@ -255,7 +255,7 @@ void	objects_apply_inverse_view_matrix(t_data *rt)
 	{
 		o = rt->objs[i];
 		o->c_center = o->center;
-		o->center = vec4_to_vec3(mat_mult_vec4(vec3_to_vec4(o->center, T_POINT), rt->cam.inv_view));
+		o->center = vec4_to_vec3(mat_mult_vec4(vec3_to_vec4(o->center, T_POINT), rt->cam.inv_project));
 		i++;
 	}
 	i = 0;
@@ -263,7 +263,7 @@ void	objects_apply_inverse_view_matrix(t_data *rt)
 	{
 		o = rt->lights[i];
 		o->c_center = o->center;
-		o->center = vec4_to_vec3(mat_mult_vec4(vec3_to_vec4(o->center, T_POINT), rt->cam.inv_view));
+		o->center = vec4_to_vec3(mat_mult_vec4(vec3_to_vec4(o->center, T_POINT), rt->cam.inv_project));
 		i++;
 	}
 }

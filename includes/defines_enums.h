@@ -19,10 +19,11 @@
 # define T_MAX	1e10
 # define T_MIN	0.01F
 # define LIGHT_RADIUS	1.05F
-
+# define PI 3.14159265359f
 
 /* Flag Defines */
 # define NO_HIT -1
+
 
 
 /****************************/
