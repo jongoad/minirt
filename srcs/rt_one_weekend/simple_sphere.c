@@ -13,14 +13,14 @@
 //     return (v);
 // }
 
-bool hit_sphere_bool(t_vec3 *center, double radius2, t_ray_vec3 *r) {
+bool hit_sphere_bool(t_vec3 *pos, double radius2, t_ray_vec3 *r) {
     t_vec3	oc;
     double	a;
     double	b;
     double	c;
     double	discriminant;
 
-	oc = sub_vec3(r->orig, *center);
+	oc = sub_vec3(r->orig, *pos);
 	a = dot_vec3(r->dir, r->dir);
 	b = 2.0F * dot_vec3(oc, r->dir);
 	c = dot_vec3(oc, oc) - radius2;
@@ -30,9 +30,9 @@ bool hit_sphere_bool(t_vec3 *center, double radius2, t_ray_vec3 *r) {
 
 int		ray_color_sphere_simple(t_ray_vec3 *r)
 {
-	t_vec3	center = vec3(0,0,-1);
+	t_vec3	pos = vec3(0,0,-1);
 	double	radius2 = 0.5F * 0.5F;
-    if (hit_sphere_bool(&center, radius2, r))
+    if (hit_sphere_bool(&pos, radius2, r))
         return (RED);
 	static t_vec3	grad1 = { .x = 1.0, .y = 1.0, .z = 1.0 };
 	static t_vec3	grad2 = { .x = 0.5, .y = 0.7, .z = 1.0 };

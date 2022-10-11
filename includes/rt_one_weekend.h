@@ -12,10 +12,8 @@ void    hello_world(t_data *rt);
 void	generate_background(t_data *rt);
 void	generate_sphere_simple(t_data *rt);
 
-void	render_scene(t_data *rt, t_obj *sp);
 
 /* Benchmarking */
-void	display_fps(t_data *rt, double start_time);
 
 
 #endif // MINIRT_RT_ONE_WEEKEND_H

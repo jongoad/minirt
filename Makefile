@@ -14,17 +14,17 @@ UYELLOW		=	\033[4;33m
 RESET_COL	=	\033[0m
 
 CFILES	=	cleanup.c \
-			camera_dev.c \
+			camera.c \
 			color.c \
 			display.c \
-			generate_objs.c \
-			controls/hooks.c controls/key_hooks.c controls/mouse_hooks.c \
 			main.c \
 			ray.c \
-			singleton.c \
 			utils.c \
+			controls/hooks.c controls/key_hooks.c controls/mouse_hooks.c \
 			vector/vectors.c vector/vectors_self.c vector/vectors_utils.c \
 			rt_one_weekend/shaded_sphere_w_self.c \
+			render/render.c \
+			render/light.c \
 			rt_one_weekend/benchmark.c \
 			parse/parse.c parse/parse_objects.c parse/parse_utils.c \
 			init/init_objects.c init/init.c \
