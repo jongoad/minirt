@@ -277,10 +277,10 @@ void	render_scene(t_data *rt, t_obj *sp)
 	// To traverse objs array
 	int		i_obj;
 
-	cam_init(rt);
-	cam_calc_view(rt);
-	cam_calc_project(rt);
-	cam_generate_rays(rt);
+	// cam_init(rt);
+	// cam_calc_view(rt);
+	// cam_calc_project(rt);
+	// cam_generate_rays(rt);
 
 	// FIXME: might be broken ? question mark
 	// objects_apply_inverse_view_matrix(rt);

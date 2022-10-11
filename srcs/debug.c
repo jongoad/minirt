@@ -84,3 +84,8 @@ void	print_scene_after_init(t_data *rt)
 		i++;
 	}
 }
+
+// void	print_cam_data(t_data *rt)
+// {
+// 	printf(RED"------- Current Camera  -------\n\n"CLEAR);
+// }

@@ -41,11 +41,14 @@ t_mat4	mat4(t_vec4 a, t_vec4 b, t_vec4 c, t_vec4 d)
 	return (res);
 }
 
+/* Setup constant variables for camera */
 void	cam_init(t_data *rt)
 {
+	rt->cam.pos_ref = rt->cam.pos;
 	rt->cam.up = vec3(0, 1, 0);
 	rt->cam.near = 1.0f;
 	rt->cam.far = 1e10;
+	rt->cam.is_move = false;
 
 }
 
@@ -126,12 +129,21 @@ void	cam_generate_rays(t_data *rt)
 	}
 }
 
+/* Recalculate view & projection matrices and regenerate rays */
+void	cam_recalc(t_data *rt)
+{
+	/* Apply any movement vectors */
+	if (rt->cam.is_move)
+	{
+		//rt->cam.forward = ; Create rotation matrix and apply to forward vector
+		rt->cam.pos = add_vec3(rt->cam.pos_ref, rt->cam.translate);
+	}
 
-/*
-	All vertices must be normalized between -1 and 1 in both the x and y axis in order to make the camera work??
-
-
-*/
+	/* Recalc everything */
+	cam_calc_view(rt);
+	cam_calc_project(rt);
+	cam_generate_rays(rt);
+}
 
 
 

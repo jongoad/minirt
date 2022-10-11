@@ -161,6 +161,7 @@ void	cam_init(t_data *rt);
 void	cam_calc_view(t_data *rt);
 void	cam_calc_project(t_data *rt);
 void	cam_generate_rays(t_data *rt);
+void	cam_recalc(t_data *rt);
 
 
 /****************************************/

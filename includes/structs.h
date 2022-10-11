@@ -117,30 +117,52 @@ typedef struct s_ambient
 /* Camera object */
 typedef struct s_camera
 {
-	/* New camera data */
-
+	/* Clipping planes */
 	float		near;
 	float		far;
+	
+	/* Reference data */
+	int			fov;					/* Field of view in degrees */
+	t_vec3		pos_ref;
+
+	/* Camera direction vectors */
 	t_vec3		forward;				/* Direction camera is pointing */
 	t_vec3		aim;					/* FIXME: to compile */
 	t_vec3		up;						/* Default up vector (0, 1, 0) */
 	t_vec3		right;
 
+	/* Camera transformation matrices */
 	t_mat4		project;
 	t_mat4		inv_project;
 	t_mat4		view;
 	t_mat4		inv_view;
 
+	/* Pre-cached vector array */
 	t_vec3		rays[IMG_H][IMG_W];
 
-	
+	bool		is_move;
+
+	/* Camera movement vectors */
+
+	t_vec3	rotate;
+	t_vec3	translate;
+
+
+
+
+
+
+
+
+
+
 	/* Currently used */
 	t_vec4		pos4;				/* Position of camera */
 	t_vec3		pos;
 	
 
 	t_mat4		p;					/* Matrix for object position and orientation */ 
-	int			fov;				/* Field of view in degrees */
+	
 
 
 

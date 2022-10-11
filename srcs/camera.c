@@ -1,19 +1,6 @@
 #include "minirt.h"
 
 
-void	cam_calc_transforms(t_data *rt)
-{
-	/* Create world to camera matrix */
-	rt->cam.w_to_c = orient_to_rot(rt->cam.aim);						/* Create axis vectors */
-	rt->cam.w_to_c.m[0][3] = rt->cam.pos.x;
-	rt->cam.w_to_c.m[1][3] = rt->cam.pos.y;
-	rt->cam.w_to_c.m[2][3] = rt->cam.pos.z;
-	rt->cam.w_to_c.m[3][3] = 1;
-
-	//Set the camera to world matrix as invers of world to cam
-	rt->cam.c_to_w = mat_inv(rt->cam.w_to_c, 4);
-}
-
 
 //FOV is the "scale" value of the camera??
 /*
