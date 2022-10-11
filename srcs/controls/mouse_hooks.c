@@ -11,6 +11,7 @@ int	handle_mouse_btn_release(int button, int x, int y, t_data *rt)
 		(void)y;
 		printf("mouse btn1 released at [%d, %d]\n", x, y);
 		rt->selected_obj_id = cast_ray_at_pixel(rt, x, y);
+		printf("selected_obj_id = %d\n", rt->selected_obj_id);
 	}
 	if (button == 2)
 		rt->cam.is_move = false;

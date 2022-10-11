@@ -8,19 +8,11 @@
 int	cast_ray_at_pixel(t_data *rt, int x, int y)
 {
 	t_ray_vec3	r;
-	float		u;
-	float		v;
 	t_hit_rec	rec;
 	int			i_obj;	// To traverse objs array
 	
-	r.orig = rt->cam.pos;
-	u = (float)(x) / (rt->img->width - 1);
-	v = (float)(y) / (rt->img->height - 1);
-	r.dir = sub_vec3(add3_vec3(
-		rt->cam.low_left,
-		mult_vec3(rt->cam.horizontal, u),
-		mult_vec3(rt->cam.vertical, v)),
-		rt->cam.pos);
+	r.orig = vec3(0,0,0);
+	r.dir = rt->cam.rays[y][x];
 	rec.color = color_to_vec3(rt->background);
 	rec.t = T_MAX;
 	rec.hit_anything = false;

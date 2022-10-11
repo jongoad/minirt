@@ -255,7 +255,36 @@ void	objects_apply_inverse_view_matrix(t_data *rt)
 	{
 		o = rt->objs[i];
 		o->c_center = o->center;
-		o->center = vec4_to_vec3(mat_mult_vec4(vec3_to_vec4(o->center, T_POINT), rt->cam.view));
+		o->center = vec4_to_vec3(mat_mult_vec4(vec3_to_vec4(o->center, T_POINT), rt->cam.inv_view));
+		i++;
+	}
+	i = 0;
+	while (i < rt->nb_lights)
+	{
+		o = rt->lights[i];
+		o->c_center = o->center;
+		o->center = vec4_to_vec3(mat_mult_vec4(vec3_to_vec4(o->center, T_POINT), rt->cam.inv_view));
+		i++;
+	}
+}
+
+void	objects_revert_to_default(t_data *rt)
+{
+	t_obj	*o;
+	int		i;
+	
+	i = 0;
+	while (i < rt->nb_objs)
+	{
+		o = rt->objs[i];
+		o->center = o->c_center;
+		i++;
+	}
+	i = 0;
+	while (i < rt->nb_lights)
+	{
+		o = rt->lights[i];
+		o->center = o->c_center;
 		i++;
 	}
 }
@@ -283,9 +312,10 @@ void	render_scene(t_data *rt, t_obj *sp)
 	// cam_generate_rays(rt);
 
 	// FIXME: might be broken ? question mark
-	// objects_apply_inverse_view_matrix(rt);
+	objects_apply_inverse_view_matrix(rt);
 
-	r.orig = rt->cam.pos;
+	// r.orig = rt->cam.pos;
+	r.orig = vec3(0,0,0);
     for (int j = 0; j < rt->img->height; ++j) {
         for (int i = 0; i < rt->img->width; ++i) {
             // u = (float)(i) / (rt->img->width - 1);
@@ -322,19 +352,20 @@ void	render_scene(t_data *rt, t_obj *sp)
 				// 	rec.obj_id = i_obj;
 			}
 			
-			// if (rec.hit_anything)
-            // 	pixel_color = apply_point_lights(rt, &rec, vec3_to_color(rec.color));
 			if (rec.hit_anything)
-            	pixel_color = vec3_to_color(rec.color);
+            	pixel_color = apply_point_lights(rt, &rec, vec3_to_color(rec.color));
+			// if (rec.hit_anything)
+            	// pixel_color = vec3_to_color(rec.color);
 			
-			// if (rt->apply_light_halos == true)
-			// 	pixel_color = apply_light_halos(rt, &r, &rec, pixel_color, i, j);
+			if (rt->apply_light_halos == true)
+				pixel_color = apply_light_halos(rt, &r, &rec, pixel_color, i, j);
 			
             fill_pixel(rt->img, i, j, pixel_color);
         }
     }
 	(void)sp;
 
+	objects_revert_to_default(rt);
 	display_default(rt);
 	display_fps(rt, start_time);
 }
