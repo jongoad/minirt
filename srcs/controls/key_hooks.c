@@ -29,7 +29,6 @@ int	handle_key_press_hook(int keysym, t_data *rt)
 			rt->cam.pos = sub_vec3(rt->cam.pos, mult_vec3(rt->cam.up, CAM_TRANS_RATE));
 		if (keysym == KEY_E)			/* Move camera up */
 			rt->cam.pos = add_vec3(rt->cam.pos, mult_vec3(rt->cam.up, CAM_TRANS_RATE));
-
 		cam_recalc(rt);
 		render_scene(rt, rt->objs[0]);
 	}

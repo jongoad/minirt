@@ -56,7 +56,7 @@ int	handle_mouse_motion(int x, int y, t_data *rt)
 	float pcnt_x = (float)delta_x / (float)IMG_W;
 	float pcnt_y = (float)delta_y / (float)IMG_H;
 
-	if (rt->cam.is_move)
+	if (rt->cam.is_move && (delta_x != 0 && delta_y != 0))
 	{
 		/* Apply tilt */
 		tilt = mat_rot(deg_to_rad(pcnt_y * CAM_ROT_RATE), 'x');
@@ -68,9 +68,8 @@ int	handle_mouse_motion(int x, int y, t_data *rt)
 
 		printf("cam aim:\n\tx: %f\n\ty: %f\n\tz: %f\n\n", rt->cam.aim.x, rt->cam.aim.y, rt->cam.aim.z);
 		rt->cam.prev_mouse = cur_mouse;
+		cam_recalc(rt);
+		render_scene(rt, rt->objs[0]);
 	}
-
-	cam_recalc(rt);
-	render_scene(rt, rt->objs[0]);
 	return (0);
 }
