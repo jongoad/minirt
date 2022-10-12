@@ -24,6 +24,10 @@
 /* Flag Defines */
 # define NO_HIT -1
 
+/* Camera Defines */
+#define CAM_ROT_RATE 0.15f
+#define CAM_TRANS_RATE 0.15f
+
 
 
 /****************************/

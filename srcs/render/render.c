@@ -41,7 +41,7 @@ void	render_scene(t_data *rt, t_obj *sp)
 	// To traverse objs array
 	int		i_obj;
 	// FIXME: might be broken ? question mark
-	objects_apply_inverse_view_matrix(rt);
+	// objects_apply_inverse_view_matrix(rt);
 
 	r.orig = rt->cam.pos;
 	// r.orig = vec3(0,0,0);
@@ -76,4 +76,5 @@ void	render_scene(t_data *rt, t_obj *sp)
 
 	display_default(rt);
 	display_fps(rt, start_time);
+	print_data_to_screen(rt);
 }

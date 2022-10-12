@@ -220,6 +220,8 @@ void	init_cylinder(t_data *rt, char **input, int obj_nb);
 /****************************************/
 
 void	print_scene_after_init(t_data *rt);
-
+void	print_cam_data(t_data *rt);
+void	print_obj_data(t_obj *obj);
+void	print_data_to_screen(t_data *rt);
 
 #endif // MINIRT_H
