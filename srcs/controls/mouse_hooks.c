@@ -32,19 +32,45 @@ int	handle_mouse_hook(int button, int x, int y, t_data *rt)
 		printf("mouse btn1 clicked at [%d, %d]\n", x, y);
 	}
 	if (button == 2)
+	{
+		rt->cam.prev_mouse = vec3((float)x, (float)y, 0);
 		rt->cam.is_move = true;
+	}
 	return (0);
 }
 
 int	handle_mouse_motion(int x, int y, t_data *rt)
 {
-	double	x_pcnt;
-	double	y_pcnt;
+	t_mat4	tilt;
+	t_mat4	pan;
+	t_vec3	cur_mouse;
+	
+	cur_mouse = vec3((float)x, (float)y, 0);
 
-	x_pcnt = (double)x / (double)IMG_W;
-	y_pcnt = (double)y / (double)IMG_H;
-	// printf("[%f,%f]\n", x_percent, y_percent);
-	// printf("x_percent = %f\ny_percent = %f]\n", x_percent, y_percent);
-	(void) rt;
+
+	/* Get magnitude and direction of movement */
+	int delta_x = cur_mouse.x - rt->cam.prev_mouse.x;
+	int delta_y = cur_mouse.y - rt->cam.prev_mouse.y;
+
+	/* Convert to % of screen so movement does not change with different resolutions */
+	float pcnt_x = (float)delta_x / (float)IMG_W;
+	float pcnt_y = (float)delta_y / (float)IMG_H;
+
+	if (rt->cam.is_move)
+	{
+		/* Apply tilt */
+		tilt = mat_rot(deg_to_rad(pcnt_y * CAM_ROT_RATE), 'x');
+		rt->cam.forward = vec4_to_vec3(mat_mult_vec4(vec3_to_vec4(rt->cam.forward, T_VEC), tilt));
+		/* Apply pan */
+
+		pan = mat_rot(deg_to_rad(pcnt_x * CAM_ROT_RATE), 'y');
+		rt->cam.forward = vec4_to_vec3(mat_mult_vec4(vec3_to_vec4(rt->cam.forward, T_VEC), pan));
+
+		printf("cam aim:\n\tx: %f\n\ty: %f\n\tz: %f\n\n", rt->cam.aim.x, rt->cam.aim.y, rt->cam.aim.z);
+		rt->cam.prev_mouse = cur_mouse;
+	}
+
+	cam_recalc(rt);
+	render_scene(rt, rt->objs[0]);
 	return (0);
 }

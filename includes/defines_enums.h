@@ -6,7 +6,7 @@
 /****************************/
 
 /* Image Controls */
-# define ASPECT_RATIO ((float)16 / (float)9)
+# define ASPECT_RATIO ((float)16 / (float)16)
 # define IMG_W 1200
 # define IMG_H (int)(IMG_W / ASPECT_RATIO)
 
@@ -25,7 +25,7 @@
 # define NO_HIT -1
 
 /* Camera Defines */
-#define CAM_ROT_RATE 0.15f
+#define CAM_ROT_RATE 45.0f
 #define CAM_TRANS_RATE 0.15f
 
 

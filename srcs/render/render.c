@@ -33,7 +33,7 @@ void	render_scene(t_data *rt, t_obj *sp)
 	int			pixel_color;
 	
 	// Benchmarking
-	float		start_time = (float)clock();
+	// float		start_time = (float)clock();
 
 	// Hit Record
 	t_hit_rec	rec;
@@ -75,6 +75,6 @@ void	render_scene(t_data *rt, t_obj *sp)
 	(void)sp;
 
 	display_default(rt);
-	display_fps(rt, start_time);
+	// display_fps(rt, start_time);
 	print_data_to_screen(rt);
 }

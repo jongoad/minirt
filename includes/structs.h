@@ -122,6 +122,7 @@ typedef struct s_camera
 	/* Reference data */
 	int			fov;					/* Field of view in degrees */
 	t_vec3		pos_ref;				/* Initial camera position */
+	t_vec3		prev_mouse;
 
 	/* Camera direction vectors */
 	t_vec3		forward;				/* Direction camera is pointing */
