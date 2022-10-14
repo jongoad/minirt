@@ -66,7 +66,7 @@ int	handle_mouse_motion(int x, int y, t_data *rt)
 		pan = mat_rot(deg_to_rad(pcnt_x * CAM_ROT_RATE), 'y');
 		rt->cam.forward = vec4_to_vec3(mat_mult_vec4(vec3_to_vec4(rt->cam.forward, T_VEC), pan));
 
-		printf("cam aim:\n\tx: %f\n\ty: %f\n\tz: %f\n\n", rt->cam.aim.x, rt->cam.aim.y, rt->cam.aim.z);
+		// printf("cam aim:\n\tx: %f\n\ty: %f\n\tz: %f\n\n", rt->cam.aim.x, rt->cam.aim.y, rt->cam.aim.z);
 		rt->cam.prev_mouse = cur_mouse;
 		cam_recalc(rt);
 		render_scene(rt, rt->objs[0]);

@@ -14,7 +14,7 @@ void	cam_init(t_data *rt)
 void	cam_calc_view(t_data *rt)
 {
 
-	rt->cam.right = unit_vec3(cross_vec3(rt->cam.forward, rt->cam.up));
+	rt->cam.right = unit_vec3(cross_vec3(rt->cam.forward, vec3(0, 1, 0)));
 	rt->cam.up = unit_vec3(cross_vec3(rt->cam.forward, rt->cam.right));
 	rt->cam.view = mat4(vec3_to_vec4(rt->cam.right, T_VEC), vec3_to_vec4(rt->cam.up, T_VEC),
 		vec3_to_vec4(rt->cam.forward, T_VEC), vec3_to_vec4(rt->cam.pos, T_POINT));
@@ -87,7 +87,7 @@ void	cam_generate_rays(t_data *rt)
 			// target = mat_mult_vec4(vec4(coord.x, coord.y, 1, 1), rt->cam.inv_project);
 			// t_vec4 normed = vec3_to_vec4(unit_vec3(div_vec3(vec4_to_vec3(target), target.w)), T_VEC);
 			// t_vec4 invert = mat_mult_vec4(normed, rt->cam.inv_view);
-			rt->cam.rays[i.y][i.x] = vec4_to_vec3(mat_mult_vec4(vec3_to_vec4(target, T_VEC), rt->cam.view));
+			rt->cam.rays[i.y][i.x] = unit_vec3(vec4_to_vec3(mat_mult_vec4(vec3_to_vec4(target, T_VEC), rt->cam.view)));
 			
 			
 			// rt->cam.rays[i.y][i.x] = unit_vec3(vec3(coord.x, coord.y, 1));

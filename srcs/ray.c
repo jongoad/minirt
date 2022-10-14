@@ -11,7 +11,7 @@ int	cast_ray_at_pixel(t_data *rt, int x, int y)
 	t_hit_rec	rec;
 	int			i_obj;	// To traverse objs array
 	
-	r.orig = vec3(0,0,0);
+	r.orig = rt->cam.pos;
 	r.dir = rt->cam.rays[y][x];
 	rec.color = color_to_vec3(rt->background);
 	rec.t = T_MAX;
