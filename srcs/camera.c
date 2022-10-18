@@ -4,6 +4,7 @@
 void	cam_init(t_data *rt)
 {
 	rt->cam.pos_ref = rt->cam.pos;
+	rt->cam.fwd_ref = rt->cam.forward;
 	rt->cam.up = vec3(0, 1, 0);
 	rt->cam.near = 1.0f;
 	rt->cam.far = 1e10;
@@ -101,10 +102,39 @@ void	cam_generate_rays(t_data *rt)
 /* Recalculate view & projection matrices and regenerate rays */
 void	cam_recalc(t_data *rt)
 {
-	// rt->cam.pos = mult_vec3_vec3(rt->cam.pos_ref, rt->cam.translate);
 
 	/* Recalc everything */
 	cam_calc_view(rt);
 	cam_calc_project(rt);
 	cam_generate_rays(rt);
 }
+
+
+
+// struct Mat3x3
+// {
+//     t_vec3 column1;
+//     t_vec3 column2;
+//     t_vec3 column3;
+// };
+
+// void makeRotationDir(t_vec3 direction, const Vec3& up = Vec3(0,1,0))
+// {
+// 	Vec3 xaxis = Vec3::Cross(up, direction);
+// 	xaxis.normalizeFast();
+
+// 	Vec3 yaxis = Vec3::Cross(direction, xaxis);
+// 	yaxis.normalizeFast();
+
+// 	column1.x = xaxis.x;
+// 	column1.y = yaxis.x;
+// 	column1.z = direction.x;
+
+// 	column2.x = xaxis.y;
+// 	column2.y = yaxis.y;
+// 	column2.z = direction.y;
+
+// 	column3.x = xaxis.z;
+// 	column3.y = yaxis.z;
+// 	column3.z = direction.z;
+// }

@@ -115,6 +115,9 @@ typedef struct s_ambient
 /* Camera object */
 typedef struct s_camera
 {
+
+	float		tilt;
+	float		pan;
 	/* Clipping planes */
 	float		near;
 	float		far;
@@ -129,6 +132,8 @@ typedef struct s_camera
 	t_vec3		aim;					/* FIXME: to compile */
 	t_vec3		up;						/* Default up vector (0, 1, 0) */
 	t_vec3		right;
+
+	t_vec3		fwd_ref;
 
 	/* Camera transformation matrices */
 	t_mat4		project;

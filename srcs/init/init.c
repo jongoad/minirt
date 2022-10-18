@@ -67,6 +67,22 @@ void	init_scene(t_data *rt)
 	}
 }
 
+void	init_cam_angles(t_data *rt, t_vec3 up, t_vec3 right)
+{
+	double dprod = (rt->cam.forward.y * up.y) + (rt->cam.forward.z * up.z);
+	double mag_fwd = sqrt(pow(rt->cam.forward.y, 2) + pow(rt->cam.forward.z, 2));
+	double mag_up = sqrt(pow(up.y, 2) + pow(up.z, 2));
+
+	rt->cam.tilt = 90 - (acos(dprod / (mag_fwd * mag_up)) * (180 / PI));
+
+	dprod = (rt->cam.forward.x * right.x) + (rt->cam.forward.z * right.z);
+	mag_fwd = sqrt(pow(rt->cam.forward.x, 2) + pow(rt->cam.forward.z, 2));
+	double mag_right = sqrt(pow(right.x, 2) + pow(right.z, 2));
+
+	rt->cam.pan = 90 - (acos(dprod / (mag_fwd * mag_right)) * (180 / PI));
+}
+
+
 /* Split input and initialize objects */
 void	rt_init(t_data *rt, char *filepath)
 {
@@ -77,4 +93,5 @@ void	rt_init(t_data *rt, char *filepath)
 	rt_init_img(rt);
 	init_scene(rt);
 	parse_free(&rt->parse);
+	init_cam_angles(rt, vec3(0,1,0), vec3(1,0,0));
 }

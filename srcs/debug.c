@@ -118,7 +118,7 @@
 void	print_data_to_screen(t_data *rt)
 {
 
-	char o[150], c[150], ca[150], r[150], r2[150];
+	char o[150], c[150], ca[150], cb[150], cc[150], r[150], r2[150];
 
 	int x = 600;
 	int y = 400;
@@ -134,14 +134,20 @@ void	print_data_to_screen(t_data *rt)
 	mlx_string_put(rt->mlx_ptr, rt->win_ptr, 10, 155, RED, c);
 	sprintf(ca, "aim: x: %f y: %f z: %f", rt->cam.forward.x, rt->cam.forward.y, rt->cam.forward.z);
 	mlx_string_put(rt->mlx_ptr, rt->win_ptr, 10, 170, RED, ca);
+	sprintf(cb, "tilt: %f", rt->cam.tilt);
+	mlx_string_put(rt->mlx_ptr, rt->win_ptr, 10, 185, RED, cb);
+	sprintf(cc, "pan: %f", rt->cam.pan);
+	mlx_string_put(rt->mlx_ptr, rt->win_ptr, 10, 200, RED, cc);
+
 
 	/* Ray */
 	sprintf(r, "aim: x: %f y: %f z: %f", rt->cam.rays[y][x].x, rt->cam.rays[y][x].y, rt->cam.rays[y][x].z);
 	sprintf(r2, "ray[%i][%i]", y, x);
 
-	mlx_string_put(rt->mlx_ptr, rt->win_ptr, 10, 195, RED, "Ray Data:");
-	mlx_string_put(rt->mlx_ptr, rt->win_ptr, 10, 210, RED, r2);
-	mlx_string_put(rt->mlx_ptr, rt->win_ptr, 10, 225, RED, r);
+	mlx_string_put(rt->mlx_ptr, rt->win_ptr, 10, 225, RED, "Ray Data:");
+	mlx_string_put(rt->mlx_ptr, rt->win_ptr, 10, 240, RED, r2);
+	mlx_string_put(rt->mlx_ptr, rt->win_ptr, 10, 255, RED, r);
+
 
 
 }
