@@ -6,7 +6,7 @@
 /*   By: jgoad <jgoad@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/06 23:11:16 by jgoad             #+#    #+#             */
-/*   Updated: 2022/10/11 14:32:54 by jgoad            ###   ########.fr       */
+/*   Updated: 2022/10/19 12:25:58 by jgoad            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,31 +59,31 @@ t_mat4	mat_rot_compound(float x, float y, float z)
 }
 
 /* Create rotation matrix */
-t_mat4	mat_rot(float x, char axis)
+t_mat4	mat_rot(float rad, char axis)
 {
 	t_mat4	m;
 
 	mat_id(&m);
 	if (axis == 'x') //If rotation axis is x
 	{
-		m.m[1][1] = cos(x);
-		m.m[1][2] = sin(x);
-		m.m[2][1] = -sin(x);
-		m.m[2][2] = cos(x);
+		m.m[1][1] = cos(rad);
+		m.m[1][2] = sin(rad);
+		m.m[2][1] = -sin(rad);
+		m.m[2][2] = cos(rad);
 	}
 	else if (axis == 'y') //If rotation axis is y
 	{
-		m.m[0][0] = cos(x);
-		m.m[0][2] = -sin(x);
-		m.m[2][0] = sin(x);
-		m.m[2][2] = cos(x);
+		m.m[0][0] = cos(rad);
+		m.m[0][2] = -sin(rad);
+		m.m[2][0] = sin(rad);
+		m.m[2][2] = cos(rad);
 	}
 	else if (axis == 'z') //If rotation axis is x
 	{
-		m.m[0][0] = cos(x);
-		m.m[0][1] = sin(x);
-		m.m[1][0] = -sin(x);
-		m.m[1][1] = cos(x);
+		m.m[0][0] = cos(rad);
+		m.m[0][1] = sin(rad);
+		m.m[1][0] = -sin(rad);
+		m.m[1][1] = cos(rad);
 	}
 	return (m);	
 }

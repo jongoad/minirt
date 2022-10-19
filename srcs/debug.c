@@ -121,7 +121,7 @@ void	print_data_to_screen(t_data *rt)
 	char o[150], c[150], ca[150], cb[150], cc[150], r[150], r2[150];
 
 	int x = 600;
-	int y = 400;
+	int y = 600;
 
 	/* Object 0 */
 	sprintf(o, "pos: x: %f y: %f z: %f", rt->objs[0]->pos.x, rt->objs[0]->pos.y, rt->objs[0]->pos.z);

@@ -27,7 +27,7 @@
 /* Camera Defines */
 #define CAM_ROT_RATE 45.0f
 #define CAM_TRANS_RATE 0.15f
-#define CAM_MAX_TILT 30.0f
+#define CAM_MAX_TILT 90.0f
 
 
 
