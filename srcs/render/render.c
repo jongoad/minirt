@@ -86,6 +86,7 @@ void	render_scene(t_data *rt, t_obj *sp)
 				printf("\n(%d,%d)\n", i, j);
 				printf("rec->obj_id = %d\n", rec.obj_id);
 				printf("rec->t = %f\n", rec.t);
+				printf("rec->inside_surface? %d\n", rec.inside_surface);
 				printf("cam.pos: (%f, %f, %f)\n", rt->cam.pos.x, rt->cam.pos.y, rt->cam.pos.z);
 				print_pixel--;
 			}

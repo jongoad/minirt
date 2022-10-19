@@ -108,14 +108,27 @@ void	init_sphere(t_data *rt, char **input, int obj_nb)
 /* Initialize cylinder object using parsed input data */
 void	init_cylinder(t_data *rt, char **input, int obj_nb)
 {
-	rt->objs[obj_nb] = ft_xalloc(sizeof(t_obj));				/* Allocate object */
+	t_obj	*o;
+
+	rt->objs[obj_nb] = ft_xalloc(sizeof(t_obj));			/* Allocate object */
 	rt->objs[obj_nb]->type = T_CYL;
 	init_float_triplet(&rt->objs[obj_nb]->pos, input[1]);	/* Init cylinder position */
 	rt->objs[obj_nb]->pos_ref = rt->objs[obj_nb]->pos;
 	init_float_triplet(&rt->objs[obj_nb]->fwd, input[2]);	/* Init cylinder orientation */
-	rt->objs[obj_nb]->radius = atof(input[3]) / 2;				/* Init cylinder radius */
-	rt->objs[obj_nb]->height = atof(input[4]);					/* Init cylinder height */
-	init_color(&rt->objs[obj_nb]->clr, input[5]);				/* Init cylinder color */
+	unit_vec3_self(&rt->objs[obj_nb]->fwd);					/* Normalize cylinder orientation */
+	rt->objs[obj_nb]->radius = atof(input[3]) / 2;			/* Init cylinder radius */
+	rt->objs[obj_nb]->height = atof(input[4]);				/* Init cylinder height */
+	init_color(&rt->objs[obj_nb]->clr, input[5]);			/* Init cylinder color */
+
+	// Added by Ismael, to test local_to_world matrices;
+	o = rt->objs[obj_nb];
+	o->right = unit_vec3(cross_vec3(o->fwd, vec3(0, 0, 1)));
+	o->up = unit_vec3(cross_vec3(o->fwd, o->right));
+	o->l_to_w = mat4(vec3_to_vec4(o->right, T_VEC), vec3_to_vec4(o->up, T_VEC),
+		vec3_to_vec4(o->fwd, T_VEC), vec3_to_vec4(o->pos, T_POINT));
+	o->w_to_l = mat_inv(o->w_to_l, 4);
+
+
 
 	//FIXME: TO REMOVE. For refactoring purposes
 	rt->objs[obj_nb]->color.x = rt->objs[obj_nb]->clr.r;

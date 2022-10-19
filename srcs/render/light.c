@@ -24,10 +24,10 @@ int	apply_point_lights(t_data *rt, t_hit_rec *rec, int color)
 		if (hit_anything(rt, &pt_to_light, &rec2))
 			continue;
 		t = cos_vec3(rec->normal, diff);
-		if (t < 0.01F)
+		if (t < 0.0001F)
 			continue;
 		vcolor = color_to_vec3(color);
-		color = vec3_to_color(lerp_vec3(vcolor, rt->lights[j]->color, t * t));
+		color = vec3_to_color(lerp_vec3(vcolor, rt->lights[j]->color, t));
 	}
 	return color;
 }
