@@ -9,17 +9,25 @@ int	cast_ray_at_pixel(t_data *rt, int x, int y)
 {
 	t_ray_vec3	r;
 	t_hit_rec	rec;
-	int			i_obj;	// To traverse objs array
+	int			i;	// To traverse objs array
 	
 	r.orig = rt->cam.pos;
 	r.dir = rt->cam.rays[y][x];
-	rec.color = color_to_vec3(rt->background);
+	rec.color = int_to_color(rt->background);
 	rec.t = T_MAX;
 	rec.hit_anything = false;
-	i_obj = -1;
-	while (++i_obj < rt->nb_objs)
-		if (rt->objs[i_obj]->hit(&r, rt->objs[i_obj], &rec))
-			rec.obj_id = i_obj;
+	i = -1;
+	rec.obj_id = i;
+	while (++i < rt->nb_objs)
+	{
+		printf("i = %d\n", i);
+		if (rt->objs[i]->hit(&r, rt->objs[i], &rec))
+		{
+			rec.obj_id = i;
+			printf("Hit ! rec.obj_id = %d\n", rec.obj_id);
+		}
+		printf("rec.obj_id = %d\n", rec.obj_id);
+	}
 	if (rec.hit_anything)
 		return (rec.obj_id);
 	return (NO_HIT);

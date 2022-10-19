@@ -1,0 +1,18 @@
+
+
+/*****************************************************/
+				       TO-DO LIST:
+/*****************************************************/
+
+
+1. Replace system string to float (atof) with our own version.
+2. Change the nomenclature for camera matrices
+	- View is the inverse matrix of the world_to_camera matrix
+
+
+
+
+
+RESOURCES:
+
+https://www.3dgep.com/understanding-the-view-matrix/
