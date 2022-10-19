@@ -73,7 +73,7 @@ int	handle_mouse_motion(int x, int y, t_data *rt)
 		rt->cam.forward = unit_vec3(vec4_to_vec3(mat_mult_vec4(vec3_to_vec4(rt->cam.fwd_ref, T_VEC), pan)));
 		
 		/* Apply tilt */
-		rt->cam.tilt += pcnt_y * CAM_ROT_RATE;
+		rt->cam.tilt -= pcnt_y * CAM_ROT_RATE;
 		if (rt->cam.tilt > CAM_MAX_TILT)
 			rt->cam.tilt = CAM_MAX_TILT;
 		else if (rt->cam.tilt < -CAM_MAX_TILT)
