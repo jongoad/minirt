@@ -27,9 +27,10 @@ int	main(int argc, char **argv)
 
 	/* Initialize renderer after succesful parse */
 	rt_init(rt, argv[1]);
-	// print_scene_after_init(rt);
+	
 	set_hooks(rt);
 	cam_init(rt);
+	// print_scene_after_init(rt);
 	cam_calc_view(rt);
 	cam_calc_project(rt);
 	cam_generate_rays(rt);

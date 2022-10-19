@@ -47,7 +47,6 @@ void	init_camera(t_data *rt, char **input, int obj_nb)
 	// FIXME: Ish's crumpled up mess of a camera init
     rt->cam.view_h = 1.0F;
     rt->cam.view_w = ASPECT_RATIO * rt->cam.view_h;
-    rt->cam.pos = vec3(0, 0, 0);
     rt->cam.horizontal = vec3(-rt->cam.view_w, 0, 0);
     rt->cam.vertical = vec3(0, -rt->cam.view_h, 0);
     rt->cam.low_left = sub_vec3(rt->cam.pos, div_vec3(rt->cam.horizontal, 2));

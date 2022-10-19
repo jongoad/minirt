@@ -87,7 +87,7 @@ int	handle_mouse_motion(int x, int y, t_data *rt)
 		// rt->cam.forward = unit_vec3(cross_vec3(new_right, new_up));
 
 		// t_mat4 rot = mat_mult_mat(tilt, pan);
-		rt->cam.forward = unit_vec3(vec4_to_vec3(mat_mult_vec4(vec3_to_vec4(rt->cam.fwd_ref, T_VEC), tilt)));
+		rt->cam.forward = unit_vec3(vec4_to_vec3(mat_mult_vec4(vec4(0,0,-1,0), tilt)));
 		rt->cam.forward = unit_vec3(vec4_to_vec3(mat_mult_vec4(vec3_to_vec4(rt->cam.forward, T_VEC), pan)));
 
 		rt->cam.prev_mouse = cur_mouse;

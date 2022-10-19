@@ -39,23 +39,23 @@ void	cam_calc_project(t_data *rt)
 	left = -top * aspect_ratio;
 
 	rt->cam.project.m[0][0] = (2 * rt->cam.near) / (right - left);
-	rt->cam.project.m[0][1] = 0;
-	rt->cam.project.m[0][2] = (right + left) / (right - left);
-	rt->cam.project.m[0][3] = 0;
-
 	rt->cam.project.m[1][0] = 0;
-	rt->cam.project.m[1][1] = (2 * rt->cam.near) / (top - bot);
-	rt->cam.project.m[1][2] = (top + bot) / (top - bot);
-	rt->cam.project.m[1][3] = 0;
-
-	rt->cam.project.m[2][0] = 0;
-	rt->cam.project.m[2][1] = 0;
-	rt->cam.project.m[2][2] = ((rt->cam.far + rt->cam.near) / (rt->cam.far - rt->cam.near)) * -1;
-	rt->cam.project.m[2][3] = ((2 * rt->cam.far * rt->cam.near) / (rt->cam.far - rt->cam.near)) * -1;
-
+	rt->cam.project.m[2][0] = (right + left) / (right - left);
 	rt->cam.project.m[3][0] = 0;
+
+	rt->cam.project.m[0][1] = 0;
+	rt->cam.project.m[1][1] = (2 * rt->cam.near) / (top - bot);
+	rt->cam.project.m[2][1] = (top + bot) / (top - bot);
 	rt->cam.project.m[3][1] = 0;
-	rt->cam.project.m[3][2] = -1;
+
+	rt->cam.project.m[0][2] = 0;
+	rt->cam.project.m[1][2] = 0;
+	rt->cam.project.m[2][2] = ((rt->cam.far + rt->cam.near) / (rt->cam.far - rt->cam.near)) * -1;
+	rt->cam.project.m[3][2] = ((2 * rt->cam.far * rt->cam.near) / (rt->cam.far - rt->cam.near)) * -1;
+
+	rt->cam.project.m[0][3] = 0;
+	rt->cam.project.m[1][3] = 0;
+	rt->cam.project.m[2][3] = -1;
 	rt->cam.project.m[3][3] = 0;
 
 	rt->cam.inv_project = mat_inv(rt->cam.project, 4);
@@ -65,8 +65,10 @@ void	cam_calc_project(t_data *rt)
 void	cam_generate_rays(t_data *rt)
 {
 	t_i i;
-	t_vec3 coord;
-	t_vec3 target;
+	t_vec4 coord;
+	t_vec4 target;
+
+	t_vec4 norm;
 
 	i.y = 0;
 	while (i.y < IMG_H)
@@ -74,24 +76,20 @@ void	cam_generate_rays(t_data *rt)
 		i.x = 0;
 		while (i.x < IMG_W)
 		{
-			
-			coord.x = (float)i.x / (float)IMG_W;
-			coord.y = (float)i.y / (float)IMG_H;
-			
+			coord = vec4((float)i.x / (float)IMG_W, (float)i.y / (float)IMG_H, 1, 1);
 			coord.x = coord.x * 2.0f - 1.0f;
 			coord.y = coord.y * 2.0f - 1.0f;
 			
-			target = vec3(coord.x, coord.y, 1);
+			target = mat_mult_vec4(vec4(coord.x, coord.y, 1, 1), rt->cam.inv_project);
+			norm = vec3_to_vec4(unit_vec3(mult_vec3(vec4_to_vec3(target), target.w)), 0);
 
-
-
-			// target = mat_mult_vec4(vec4(coord.x, coord.y, 1, 1), rt->cam.inv_project);
-			// t_vec4 normed = vec3_to_vec4(unit_vec3(div_vec3(vec4_to_vec3(target), target.w)), T_VEC);
-			// t_vec4 invert = mat_mult_vec4(normed, rt->cam.inv_view);
-			rt->cam.rays[i.y][i.x] = unit_vec3(vec4_to_vec3(mat_mult_vec4(vec3_to_vec4(target, T_VEC), rt->cam.view)));
+			rt->cam.rays[i.y][i.x] = unit_vec3(vec4_to_vec3(mat_mult_vec4(norm, rt->cam.inv_view)));
 			
-			
-			// rt->cam.rays[i.y][i.x] = unit_vec3(vec3(coord.x, coord.y, 1));
+
+			// target = vec3(coord.x, coord.y, 1);
+			// rt->cam.rays[i.y][i.x] = unit_vec3(vec4_to_vec3(mat_mult_vec4(vec3_to_vec4(target, T_VEC), rt->cam.view)));
+
+
 			i.x++;
 		}
 		i.y++;

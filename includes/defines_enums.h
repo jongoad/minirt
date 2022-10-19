@@ -6,7 +6,7 @@
 /****************************/
 
 /* Image Controls */
-# define ASPECT_RATIO ((float)16 / (float)16)
+# define ASPECT_RATIO ((float)16 / (float)9)
 # define IMG_W 1200
 # define IMG_H (int)(IMG_W / ASPECT_RATIO)
 
