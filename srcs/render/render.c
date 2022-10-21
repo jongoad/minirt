@@ -20,10 +20,10 @@ void	objects_apply_inverse_view_matrix(t_data *rt)
 
 	i = -1;
 	while (++i < rt->nb_objs)
-		rt->objs[i]->pos = vec4_to_vec3(mat_mult_vec4(vec3_to_vec4(rt->objs[i]->pos_ref, T_POINT), rt->cam.inv_project));
+		rt->objs[i]->pos = vec4_to_vec3(mat_mult_vec4(vec3_to_vec4(rt->objs[i]->pos_ref, T_POINT), rt->cam.view));
 	i = -1;
 	while (++i < rt->nb_lights)
-		rt->lights[i]->pos = vec4_to_vec3(mat_mult_vec4(vec3_to_vec4(rt->lights[i]->pos_ref, T_POINT), rt->cam.inv_project));
+		rt->lights[i]->pos = vec4_to_vec3(mat_mult_vec4(vec3_to_vec4(rt->lights[i]->pos_ref, T_POINT), rt->cam.view));
 }
 
 void	render_scene(t_data *rt, t_obj *sp)
