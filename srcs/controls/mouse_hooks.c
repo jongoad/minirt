@@ -62,21 +62,27 @@ int	handle_mouse_motion(int x, int y, t_data *rt)
 	if (rt->cam.is_move && (delta_x != 0 && delta_y != 0))											/* Only apply changes if there is movement */
 	{
 		/* Calculate tilt */
-		rt->cam.tilt += pcnt_y * CAM_ROT_RATE;
-		if (rt->cam.tilt > CAM_MAX_TILT)
-			rt->cam.tilt = CAM_MAX_TILT;
-		else if (rt->cam.tilt < -CAM_MAX_TILT)
-			rt->cam.tilt = -CAM_MAX_TILT;
+		if (CAM_TOGGLE_PITCH)
+		{
+			rt->cam.tilt += pcnt_y * CAM_ROT_RATE;
+			if (rt->cam.tilt > CAM_MAX_TILT)
+				rt->cam.tilt = CAM_MAX_TILT;
+			else if (rt->cam.tilt < -CAM_MAX_TILT)
+				rt->cam.tilt = -CAM_MAX_TILT;
+		}
 		tilt = mat_rot(deg_to_rad(rt->cam.tilt), 'x');
 
 		/* Calculate new up vector */
 
 		/* Calculate pan */
-		rt->cam.pan += pcnt_x * CAM_ROT_RATE;
-		if (rt->cam.pan < 0)
-			rt->cam.pan = (int)rt->cam.pan % 360;
-		else if (rt->cam.pan > 0)
-			rt->cam.pan = (int)rt->cam.pan % -360;
+		if (CAM_TOGGLE_YAW)
+		{
+			rt->cam.pan += pcnt_x * CAM_ROT_RATE;
+			if (rt->cam.pan < 0)
+				rt->cam.pan = (int)rt->cam.pan % 360;
+			else if (rt->cam.pan > 0)
+				rt->cam.pan = (int)rt->cam.pan % -360;
+		}
 		pan = mat_rot(deg_to_rad(rt->cam.pan), 'y');
 
 		// /* Calculate new right vector */
@@ -87,6 +93,9 @@ int	handle_mouse_motion(int x, int y, t_data *rt)
 		// rt->cam.forward = unit_vec3(cross_vec3(new_right, new_up));
 
 		// t_mat4 rot = mat_mult_mat(tilt, pan);
+
+
+		
 		rt->cam.forward = unit_vec3(vec4_to_vec3(mat_mult_vec4(vec4(0,0,-1,0), tilt)));
 		rt->cam.forward = unit_vec3(vec4_to_vec3(mat_mult_vec4(vec3_to_vec4(rt->cam.forward, T_VEC), pan)));
 

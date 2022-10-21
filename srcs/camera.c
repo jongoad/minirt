@@ -67,7 +67,6 @@ void	cam_generate_rays(t_data *rt)
 	t_i i;
 	t_vec4 coord;
 	t_vec4 target;
-
 	t_vec4 norm;
 
 	i.y = 0;
@@ -82,14 +81,9 @@ void	cam_generate_rays(t_data *rt)
 			
 			target = mat_mult_vec4(vec4(coord.x, coord.y, 1, 1), rt->cam.inv_project);
 			norm = vec3_to_vec4(unit_vec3(mult_vec3(vec4_to_vec3(target), target.w)), 0);
-
 			rt->cam.rays[i.y][i.x] = unit_vec3(vec4_to_vec3(mat_mult_vec4(norm, rt->cam.inv_view)));
-			
-
 			// target = vec3(coord.x, coord.y, 1);
 			// rt->cam.rays[i.y][i.x] = unit_vec3(vec4_to_vec3(mat_mult_vec4(vec3_to_vec4(target, T_VEC), rt->cam.view)));
-
-
 			i.x++;
 		}
 		i.y++;
@@ -100,39 +94,7 @@ void	cam_generate_rays(t_data *rt)
 /* Recalculate view & projection matrices and regenerate rays */
 void	cam_recalc(t_data *rt)
 {
-
-	/* Recalc everything */
 	cam_calc_view(rt);
 	cam_calc_project(rt);
 	cam_generate_rays(rt);
 }
-
-
-
-// struct Mat3x3
-// {
-//     t_vec3 column1;
-//     t_vec3 column2;
-//     t_vec3 column3;
-// };
-
-// void makeRotationDir(t_vec3 direction, const Vec3& up = Vec3(0,1,0))
-// {
-// 	Vec3 xaxis = Vec3::Cross(up, direction);
-// 	xaxis.normalizeFast();
-
-// 	Vec3 yaxis = Vec3::Cross(direction, xaxis);
-// 	yaxis.normalizeFast();
-
-// 	column1.x = xaxis.x;
-// 	column1.y = yaxis.x;
-// 	column1.z = direction.x;
-
-// 	column2.x = xaxis.y;
-// 	column2.y = yaxis.y;
-// 	column2.z = direction.y;
-
-// 	column3.x = xaxis.z;
-// 	column3.y = yaxis.z;
-// 	column3.z = direction.z;
-// }
