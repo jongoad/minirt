@@ -79,14 +79,15 @@ bool	hit_cylinder_caps(t_ray_vec3 *r, t_obj *o, t_hit_rec *rec)
 	cap2.color = o->color;
 
 	/* Init temp hit record */
+	rec2 = *rec;
 	rec2.t = T_MAX;
 	rec2.hit_anything = false;
-	if (hit_plane(r, &cap1, &rec2) && length_vec3(sub_vec3(rec2.p, cap1.pos)) <= o->radius && rec2.t < rec->t)
+	if (hit_plane(r, &cap1, &rec2) && rec2.t < rec->t && length_vec3(sub_vec3(rec2.p, cap1.pos)) <= o->radius)
 	{
 		hit_anything = true;
 		*rec = rec2;
 	}
-	if (hit_plane(r, &cap2, &rec2) && length_vec3(sub_vec3(rec2.p, cap2.pos)) <= o->radius && rec2.t < rec->t)
+	if (hit_plane(r, &cap2, &rec2) && rec2.t < rec->t && length_vec3(sub_vec3(rec2.p, cap2.pos)) <= o->radius)
 	{
 		hit_anything = true;
 		*rec = rec2;
@@ -143,15 +144,16 @@ bool	hit_cylinder(t_ray_vec3 *r, t_obj *o, t_hit_rec *rec)
 
 
     t_vec3					oc;
-    t_ray_vec3				lr;
-    t_vec3					point;
+    t_ray_vec3				lr;		// local ray; ray transformed in local object coordinates
+    t_vec3					point;	// Calculated point of intersection
     t_vec3					color;
 	static t_quadratic		q;
 
-	lr.dir = vec4_to_vec3(mat_mult_vec4(vec3_to_vec4(r->dir, T_VEC), o->w_to_l));
-	lr.orig = sub_vec3(o->pos, r->orig);
-	lr.orig = vec4_to_vec3(mat_mult_vec4(vec3_to_vec4(r->orig, T_POINT), o->w_to_l));
+	lr.dir = unit_vec3(vec4_to_vec3(mat_mult_vec4(vec3_to_vec4(r->dir, T_VEC), o->w_to_l)));
+	lr.orig = sub_vec3(r->orig, o->pos);
+	lr.orig = vec4_to_vec3(mat_mult_vec4(vec3_to_vec4(lr.orig, T_POINT), o->w_to_l));
 
+	// return (hit_cylinder_caps(&lr, o, rec));
 	// return (hit_cylinder_caps(&lr, o, rec));
 	color = o->color;
 	oc = sub_vec3(lr.orig, o->pos);
@@ -166,6 +168,7 @@ bool	hit_cylinder(t_ray_vec3 *r, t_obj *o, t_hit_rec *rec)
     q.sqrtd = sqrtf(q.discriminant);
     q.root = (-q.half_b - q.sqrtd) / q.a;
 
+	hit_cylinder_caps(&lr, o, rec);
 	point = ray_at(&lr, q.root);
 	if (q.root < T_MIN || q.root > rec->t || fabs(point.y - o->pos.y) > o->height / 2)
 	{
@@ -174,7 +177,6 @@ bool	hit_cylinder(t_ray_vec3 *r, t_obj *o, t_hit_rec *rec)
 		// if (hit_cylinder_caps(r, o, rec))
 		// 	return (true);
 
-		hit_cylinder_caps(r, o, rec);
 		if (q.root < T_MIN || q.root > rec->t || fabs(point.y - o->pos.y) > o->height / 2)
 			return false;
 		color = color_to_vec3(BLACK);
