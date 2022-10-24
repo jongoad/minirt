@@ -7,7 +7,7 @@
 
 /* Image Controls */
 # define ASPECT_RATIO ((float)16 / (float)16)
-# define IMG_W 1200
+# define IMG_W 800
 # define IMG_H (int)(IMG_W / ASPECT_RATIO)
 
 /* Parse Defines */
@@ -33,7 +33,6 @@
 
 #define CAM_TOGGLE_YAW true
 #define CAM_TOGGLE_PITCH true
-
 
 
 /****************************/

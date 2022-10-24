@@ -9,9 +9,9 @@ int	handle_mouse_btn_release(int button, int x, int y, t_data *rt)
 		(void)rt;
 		(void)x;
 		(void)y;
-		printf("mouse btn1 released at [%d, %d]\n", x, y);
+		// printf("mouse btn1 released at [%d, %d]\n", x, y);
 		rt->selected_obj_id = cast_ray_at_pixel(rt, x, y);
-		printf("selected_obj_id = %d\n", rt->selected_obj_id);
+		// printf("selected_obj_id = %d\n", rt->selected_obj_id);
 	}
 	if (button == 2)
 		rt->cam.is_move = false;
@@ -29,7 +29,7 @@ int	handle_mouse_hook(int button, int x, int y, t_data *rt)
 		(void)rt;
 		(void)x;
 		(void)y;
-		printf("mouse btn1 clicked at [%d, %d]\n", x, y);
+		// printf("mouse btn1 clicked at [%d, %d]\n", x, y);
 	}
 	if (button == 2)
 	{
@@ -57,6 +57,7 @@ int	handle_mouse_motion(int x, int y, t_data *rt)
 
 	if (rt->cam.is_move && (delta_x != 0 && delta_y != 0))											/* Only apply changes if there is movement */
 	{
+		
 		/* Calculate tilt */
 		if (CAM_TOGGLE_PITCH)
 		{
@@ -75,6 +76,9 @@ int	handle_mouse_motion(int x, int y, t_data *rt)
 			else if (rt->cam.pan > 0)
 				rt->cam.pan = (int)rt->cam.pan % -360;
 		}
+
+
+		
 		rt->cam.prev_mouse = cur_mouse;
 		cam_recalc(rt);
 		render_scene(rt, rt->objs[0]);

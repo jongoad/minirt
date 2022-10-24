@@ -32,8 +32,8 @@ void	cam_calc_view(t_data *rt)
 	rt->cam.inv_view = mat4(xaxis4, yaxis4, zaxis4, vec4(0,0,0,1));
 	rt->cam.view = mat_inv(rt->cam.inv_view, 4);
 
-	rt->cam.forward = unit_vec3(vec4_to_vec3(mat_mult_vec4(vec4(0,0,-1,0), rt->cam.inv_view)));
-	rt->cam.right = unit_vec3(cross_vec3(rt->cam.forward, rt->cam.up));
+	// rt->cam.forward = unit_vec3(vec4_to_vec3(mat_mult_vec4(vec4(0,0,-1,0), rt->cam.inv_view)));
+	// rt->cam.right = unit_vec3(cross_vec3(rt->cam.forward, rt->cam.up));
 }
 
 /* Calculate matrices for camera projection */
@@ -102,6 +102,16 @@ void	cam_generate_rays(t_data *rt)
 			if ((rt->cam.aim.z < 0 && rt->cam.rays[i.y][i.x].z > 0) ||
 				(rt->cam.aim.z > 0 && rt->cam.rays[i.y][i.x].z < 0))
 				rt->cam.rays[i.y][i.x].z = -rt->cam.rays[i.y][i.x].z;
+
+			if ((rt->cam.aim.x < 0 && rt->cam.rays[i.y][i.x].x > 0) ||
+				(rt->cam.aim.x > 0 && rt->cam.rays[i.y][i.x].x < 0))
+				rt->cam.rays[i.y][i.x].x = -rt->cam.rays[i.y][i.x].x;
+
+			rt->cam.rays[i.y][i.x].y *= -1; //TEMP FIX, FIND THE ROOT OF ALL THIS INVERSION!!!
+
+
+			
+
 			i.x++;
 		}
 		i.y++;
@@ -113,6 +123,11 @@ void	cam_recalc(t_data *rt)
 {
 
 	cam_calc_view(rt);
+	//TEMP
+		rt->cam.forward = unit_vec3(vec4_to_vec3(mat_mult_vec4(vec4(0,0,-1,0), rt->cam.inv_view)));
+		rt->cam.right = unit_vec3(cross_vec3(rt->cam.forward, rt->cam.up));
+
+		rt->cam.forward.x *= -1;	//TEMP FIXME
 	cam_calc_project(rt);
 	cam_generate_rays(rt);
 }
