@@ -31,7 +31,7 @@
 
 /* Camera Toggles */
 
-#define CAM_TOGGLE_YAW false
+#define CAM_TOGGLE_YAW true
 #define CAM_TOGGLE_PITCH true
 
 

@@ -41,3 +41,8 @@ t_vec4	vec4(float x, float y, float z, float w)
 
 	return(res);
 }
+
+void	print_vec3(t_vec3 v)
+{
+	printf("(%f, %f, %f)", v.x, v.y, v.z);
+}

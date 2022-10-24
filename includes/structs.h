@@ -169,6 +169,8 @@ typedef struct s_obj
 	/* Object reference data*/
 	t_vec3		pos;
 	t_vec3		fwd; 		/* for cylinders, planes */
+	t_vec3		ccap; 		/* for cylinders */
+	float		mag_ccap; 		/* for cylinders */
 	t_vec3		color;			/* object initial color vec3 */
 	t_color		clr;			/* Colour data for object */
 	float		ratio;			/* Brightness ratio for light objects */

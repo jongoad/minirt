@@ -31,14 +31,6 @@ void	render_scene(t_data *rt, t_obj *sp)
     // Render
 	t_ray_vec3	r;
 	int			pixel_color;
-
-	// Single pixels debug
-	int		print_pixel = 10;
-	t_point	p_debug = {.x = 0, .y = 0, .z = -3, .w = 0};
-
-	p_debug = sub_vec3(p_debug, rt->cam.pos);
-	printf("\np_debug - cam.pos = (%f, %f, %f)\n", p_debug.x, p_debug.y, p_debug.z);
-	printf("length = %f\n", length_vec3(p_debug));
 	
 	// Benchmarking
 	// float		start_time = (float)clock();
@@ -73,25 +65,6 @@ void	render_scene(t_data *rt, t_obj *sp)
 					rec.obj_id = i_obj;
 				}
 			}
-
-			if (fabs(length_vec3(r.dir) - 1.0F) > 0.01F)
-			{
-				printf("length = %f\n", length_vec3(r.dir));
-				printf("r.dir: (%f, %f, %f)\n", r.dir.x, r.dir.y, r.dir.z);
-			}
-
-			// Single pixels debug
-			if (rec.hit_anything && print_pixel)
-			{
-				printf("\n(%d,%d)\n", i, j);
-				printf("rec->obj_id = %d\n", rec.obj_id);
-				printf("rec->t = %f\n", rec.t);
-				printf("rec->inside_surface? %d\n", rec.inside_surface);
-				printf("cam.pos: (%f, %f, %f)\n", rt->cam.pos.x, rt->cam.pos.y, rt->cam.pos.z);
-				print_pixel--;
-			}
-
-
 
 			if (rec.hit_anything)
             	pixel_color = apply_point_lights(rt, &rec, vec3_to_color(rec.color));

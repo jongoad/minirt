@@ -155,6 +155,7 @@ void	negate_vec3_self(t_vec3 *v);
 /* Vector Utilities */
 t_vec4	vec3_to_vec4(t_vec3 input, char type);
 t_vec3	vec4_to_vec3(t_vec4 input);
+void	print_vec3(t_vec3 v);       /* Debug utils. FIXME: to remove at end of project */
 
 
 /****************************************/
