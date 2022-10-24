@@ -70,7 +70,6 @@ void	init_scene(t_data *rt)
 void	init_cam_angles(t_data *rt, t_vec3 up, t_vec3 right)
 {
 	/* Init tilt (x-rotatation) */
-
 	double dprod = (rt->cam.forward.y * up.y) + (rt->cam.forward.z * up.z);
 	double mag_fwd = sqrt(pow(rt->cam.forward.y, 2) + pow(rt->cam.forward.z, 2));
 	double mag_up = sqrt(pow(up.y, 2) + pow(up.z, 2));
@@ -89,16 +88,8 @@ void	init_cam_angles(t_data *rt, t_vec3 up, t_vec3 right)
 
 
 	/* Test for sign */
+	/* FIXME - Figure out a better solution for this dumpster fire */
 	double test = cos_vec3(rt->cam.forward, vec3(0,0,-1));
-	// printf("Angle from (0,0,-1): %.60f\n\n", test);
-	// double test2 = cos_vec3(rt->cam.forward, vec3(1,0,0));
-	// printf("Angle from (1,0,0): %.60f\n\n", test2);
-
-
-	// If pan value is positive and test 1 is negative, add 90 degrees to value
-	// If pan value is positive and test 1 is positive, do not adjust value
-	// If pan value is negative and test 1 is positive, do not adjust value
-	// if pan value is negative and test 1 negative, add -90 degrees to value
 	if (test == -1.000000119209300208922286401502788066864013671875)
 		rt->cam.pan = 180;
 	else if (rt->cam.pan > 0 && test < 0)

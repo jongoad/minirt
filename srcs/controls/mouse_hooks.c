@@ -44,13 +44,9 @@ int	handle_mouse_hook(int button, int x, int y, t_data *rt)
 /* Need to implement restriction on tilt (prevent camera from inverting)*/
 int	handle_mouse_motion(int x, int y, t_data *rt)
 {
-	t_mat4	tilt;
-	t_mat4	pan;
 	t_vec3	cur_mouse;
-	
 	cur_mouse = vec3((float)x, (float)y, 0);
-
-
+	
 	/* Get magnitude and direction of movement */
 	int delta_x = cur_mouse.x - rt->cam.prev_mouse.x;
 	int delta_y = cur_mouse.y - rt->cam.prev_mouse.y;
@@ -64,16 +60,12 @@ int	handle_mouse_motion(int x, int y, t_data *rt)
 		/* Calculate tilt */
 		if (CAM_TOGGLE_PITCH)
 		{
-			rt->cam.tilt += pcnt_y * CAM_ROT_RATE;
+			rt->cam.tilt -= pcnt_y * CAM_ROT_RATE;
 			if (rt->cam.tilt > CAM_MAX_TILT)
 				rt->cam.tilt = CAM_MAX_TILT;
 			else if (rt->cam.tilt < -CAM_MAX_TILT)
 				rt->cam.tilt = -CAM_MAX_TILT;
 		}
-		tilt = mat_rot(deg_to_rad(rt->cam.tilt), 'x');
-
-		/* Calculate new up vector */
-
 		/* Calculate pan */
 		if (CAM_TOGGLE_YAW)
 		{
@@ -83,22 +75,6 @@ int	handle_mouse_motion(int x, int y, t_data *rt)
 			else if (rt->cam.pan > 0)
 				rt->cam.pan = (int)rt->cam.pan % -360;
 		}
-		pan = mat_rot(deg_to_rad(rt->cam.pan), 'y');
-
-		// /* Calculate new right vector */
-		// t_vec3 new_right = unit_vec3(vec4_to_vec3(mat_mult_vec4(vec4(1,0,0,0), pan)));
-		// /* Calculate new up vector */
-		// t_vec3 new_up = unit_vec3(vec4_to_vec3(mat_mult_vec4(vec4(0,1,0,0), tilt)));
-		// /* Calculate new forward */
-		// rt->cam.forward = unit_vec3(cross_vec3(new_right, new_up));
-
-		// t_mat4 rot = mat_mult_mat(tilt, pan);
-
-
-		
-		rt->cam.forward = unit_vec3(vec4_to_vec3(mat_mult_vec4(vec4(0,0,-1,0), tilt)));
-		rt->cam.forward = unit_vec3(vec4_to_vec3(mat_mult_vec4(vec3_to_vec4(rt->cam.forward, T_VEC), pan)));
-
 		rt->cam.prev_mouse = cur_mouse;
 		cam_recalc(rt);
 		render_scene(rt, rt->objs[0]);

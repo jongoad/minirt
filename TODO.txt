@@ -1,0 +1,12 @@
+
+
+/*****************************************************/
+				       TO-DO LIST:
+/*****************************************************/
+
+
+1. Add toggles for numerous features to make debuggin easier:
+	- Camera yaw
+	- Camera pitch
+	- Object selection and movement
+	

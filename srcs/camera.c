@@ -11,15 +11,29 @@ void	cam_init(t_data *rt)
 	rt->cam.is_move = false;
 }
 
-/* Calculate matrices for camera view based on direction vectors */
 void	cam_calc_view(t_data *rt)
 {
+	float cosPitch = cos(deg_to_rad(rt->cam.tilt));
+    float sinPitch = sin(deg_to_rad(rt->cam.tilt));
+    float cosYaw = cos(deg_to_rad(rt->cam.pan));
+    float sinYaw = sin(deg_to_rad(rt->cam.pan));
+ 
+    t_vec3 xaxis = vec3(cosYaw, 0, -sinYaw);
+    t_vec3 yaxis = vec3(sinYaw * sinPitch, cosPitch, cosYaw * sinPitch);
+    t_vec3 zaxis = vec3(sinYaw * cosPitch, -sinPitch, cosPitch * cosYaw);
 
-	rt->cam.right = unit_vec3(cross_vec3(rt->cam.forward, vec3(0, 1, 0)));
-	rt->cam.up = unit_vec3(cross_vec3(rt->cam.forward, rt->cam.right));
-	rt->cam.view = mat4(vec3_to_vec4(rt->cam.right, T_VEC), vec3_to_vec4(rt->cam.up, T_VEC),
-		vec3_to_vec4(rt->cam.forward, T_VEC), vec3_to_vec4(rt->cam.pos, T_POINT));
-	rt->cam.inv_view = mat_inv(rt->cam.view, 4);
+	//NOTE - Use pos_ref or pos here?
+	t_vec4 xaxis4 = vec4(xaxis.x, xaxis.y, xaxis.z, -dot_vec3(xaxis, rt->cam.pos));
+	t_vec4 yaxis4 = vec4(yaxis.x, yaxis.y, yaxis.z, -dot_vec3(yaxis, rt->cam.pos));
+	t_vec4 zaxis4 = vec4(zaxis.x, zaxis.y, zaxis.z, -dot_vec3(zaxis, rt->cam.pos));
+
+	//NOTE - Ensure that this matrix is the right major type
+	//This code is from https://www.3dgep.com/understanding-the-view-matrix/
+	rt->cam.inv_view = mat4(xaxis4, yaxis4, zaxis4, vec4(0,0,0,1));
+	rt->cam.view = mat_inv(rt->cam.inv_view, 4);
+
+	rt->cam.forward = unit_vec3(vec4_to_vec3(mat_mult_vec4(vec4(0,0,-1,0), rt->cam.inv_view)));
+	rt->cam.right = unit_vec3(cross_vec3(rt->cam.forward, rt->cam.up));
 }
 
 /* Calculate matrices for camera projection */
@@ -82,18 +96,22 @@ void	cam_generate_rays(t_data *rt)
 			target = mat_mult_vec4(vec4(coord.x, coord.y, 1, 1), rt->cam.inv_project);
 			norm = vec3_to_vec4(unit_vec3(mult_vec3(vec4_to_vec3(target), target.w)), 0);
 			rt->cam.rays[i.y][i.x] = unit_vec3(vec4_to_vec3(mat_mult_vec4(norm, rt->cam.inv_view)));
-			// target = vec3(coord.x, coord.y, 1);
-			// rt->cam.rays[i.y][i.x] = unit_vec3(vec4_to_vec3(mat_mult_vec4(vec3_to_vec4(target, T_VEC), rt->cam.view)));
+			
+			// FIXME - Testing inverted z axis
+			// Figure out why z value for ray is inverted?
+			if ((rt->cam.aim.z < 0 && rt->cam.rays[i.y][i.x].z > 0) ||
+				(rt->cam.aim.z > 0 && rt->cam.rays[i.y][i.x].z < 0))
+				rt->cam.rays[i.y][i.x].z = -rt->cam.rays[i.y][i.x].z;
 			i.x++;
 		}
 		i.y++;
 	}
 }
 
-
 /* Recalculate view & projection matrices and regenerate rays */
 void	cam_recalc(t_data *rt)
 {
+
 	cam_calc_view(rt);
 	cam_calc_project(rt);
 	cam_generate_rays(rt);
