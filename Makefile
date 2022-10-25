@@ -22,20 +22,13 @@ CFILES	=	cleanup.c \
 			utils.c \
 			controls/hooks.c controls/key_hooks.c controls/mouse_hooks.c \
 			vector/vectors.c vector/vectors_self.c vector/vectors_utils.c \
-			rt_one_weekend/shaded_sphere_w_self.c \
+			intersection/hit_objs.c \
 			render/render.c \
 			render/light.c \
-			rt_one_weekend/benchmark.c \
 			parse/parse.c parse/parse_objects.c parse/parse_utils.c \
-			init/init_objects.c init/init.c \
+			init/init_objects.c init/init.c init/init_utils.c \
 			matrix/matrix.c matrix/matrix_utils.c matrix/inv_mat.c \
-			debug.c \
-# rt_one_weekend/shaded_sphere.c \
-# rt_one_weekend/shaded_sphere_by_ptr.c \
-# rt_one_weekend/hello.c \
-# vectors_ptr.c \
-# rt_one_weekend/ray_background.c \
-# rt_one_weekend/simple_sphere.c
+			debug.c
 
 SRC_DIR	= srcs
 SRCS	= $(addprefix $(SRC_DIR)/, $(CFILES))

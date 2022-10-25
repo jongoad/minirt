@@ -13,7 +13,7 @@ int	cast_ray_at_pixel(t_data *rt, int x, int y)
 	
 	r.orig = rt->cam.pos;
 	r.dir = rt->cam.rays[y][x];
-	rec.color = color_to_vec3(rt->background);
+	rec.color = int_to_color(rt->background);
 	rec.t = T_MAX;
 	rec.hit_anything = false;
 	i = -1;

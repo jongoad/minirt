@@ -78,24 +78,24 @@ void	init_cam_angles(t_data *rt, t_vec3 up, t_vec3 right)
 		dprod = (rt->cam.forward.y * up.y) + (rt->cam.forward.x * up.x);
 		mag_fwd = sqrt(pow(rt->cam.forward.y, 2) + pow(rt->cam.forward.x, 2));
 	}
-	rt->cam.tilt = 90 - (acos(dprod / (mag_fwd * mag_up)) * (180 / PI));
+	rt->cam.pitch = 90 - (acos(dprod / (mag_fwd * mag_up)) * (180 / PI));
 
 	/* Init pan (y-rotation) */
 	dprod = (rt->cam.forward.x * right.x) + (rt->cam.forward.z * right.z);
 	mag_fwd = sqrt(pow(rt->cam.forward.x, 2) + pow(rt->cam.forward.z, 2));
 	double mag_right = sqrt(pow(right.x, 2) + pow(right.z, 2));
-	rt->cam.pan = 90 - (acos(dprod / (mag_fwd * mag_right)) * (180 / PI));
+	rt->cam.yaw = 90 - (acos(dprod / (mag_fwd * mag_right)) * (180 / PI));
 
 
 	/* Test for sign */
 	/* FIXME - Figure out a better solution for this dumpster fire */
 	double test = cos_vec3(rt->cam.forward, vec3(0,0,-1));
 	if (test == -1.000000119209300208922286401502788066864013671875)
-		rt->cam.pan = 180;
-	else if (rt->cam.pan > 0 && test < 0)
-		rt->cam.pan += 90;
-	else if (rt->cam.pan < 0 && test < 0)
-		rt->cam.pan -= 90;
+		rt->cam.yaw = 180;
+	else if (rt->cam.yaw > 0 && test < 0)
+		rt->cam.yaw += 90;
+	else if (rt->cam.yaw < 0 && test < 0)
+		rt->cam.yaw -= 90;
 }
 
 

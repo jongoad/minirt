@@ -5,8 +5,14 @@
 /*****************************************************/
 
 
-1. Add toggles for numerous features to make debuggin easier:
-	- Camera yaw
-	- Camera pitch
-	- Object selection and movement
-	
+1. Replace system string to float (atof) with our own version.
+2. Change the nomenclature for camera matrices
+	- View is the inverse matrix of the world_to_camera matrix
+
+
+
+
+
+RESOURCES:
+
+https://www.3dgep.com/understanding-the-view-matrix/

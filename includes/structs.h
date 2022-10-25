@@ -4,7 +4,7 @@
 #include "defines_enums.h"
 
 /*******************************/
-/*      Structs Prototypes     */
+/*      Struct Prototypes     */
 /*******************************/
 typedef struct s_hit_rec	t_hit_rec;
 typedef struct s_obj		t_obj;
@@ -115,25 +115,22 @@ typedef struct s_ambient
 /* Camera object */
 typedef struct s_camera
 {
+	t_vec3		pos;
+	/* Camera rotation values */
+	float		pitch;
+	float		yaw;
 
-	float		tilt;
-	float		pan;
-	/* Clipping planes */
+	/* Perspective data */
 	float		near;
 	float		far;
-	
-	/* Reference data */
 	int			fov;					/* Field of view in degrees */
-	t_vec3		pos_ref;				/* Initial camera position */
+	
 	t_vec3		prev_mouse;
 
 	/* Camera direction vectors */
 	t_vec3		forward;				/* Direction camera is pointing */
-	t_vec3		aim;					/* FIXME: to compile */
 	t_vec3		up;						/* Default up vector (0, 1, 0) */
 	t_vec3		right;
-
-	t_vec3		fwd_ref;
 
 	/* Camera transformation matrices */
 	t_mat4		project;
@@ -145,22 +142,12 @@ typedef struct s_camera
 	t_vec3		rays[IMG_H][IMG_W];
 
 	/* Camera movement vectors */
-	t_vec3	rotate;
-	t_vec3	translate;
+	t_vec3		translate;			/* Might want this */
 	
 	/* Current camera data */
-	t_vec3		pos;
+	
 	bool		is_move;
 
-
-	/* FIXME - Check with Ismael what is still needed from this section */
-	t_vec3		horizontal;			/* view_w vector  */
-	t_vec3		vertical;			/* view_h vector  */
-	t_vec3		low_left;			/* Vector from origin to lower left corner */
-	int			img_w;				/* Width of image in pixels */
-	int			img_h;				/* Height of image in pixels */
-	float		view_w;				/* Width of the viewport */
-	float		view_h;				/* Height of the viewport */
 }	t_camera;
 
 /* Generic scene object */
@@ -168,10 +155,9 @@ typedef struct s_obj
 {
 	/* Object reference data*/
 	t_vec3		pos;
-	t_vec3		fwd; 		/* for cylinders, planes */
-	t_vec3		ccap; 		/* for cylinders */
+	t_vec3		fwd; 			/* for cylinders, planes */
+	t_vec3		ccap; 			/* for cylinders */
 	float		mag_ccap; 		/* for cylinders */
-	t_vec3		color;			/* object initial color vec3 */
 	t_color		clr;			/* Colour data for object */
 	float		ratio;			/* Brightness ratio for light objects */
 	float		width;			/* for cylinders */
@@ -217,7 +203,7 @@ typedef struct s_hit_rec
 {
 	t_vec3	p;				/* Coords of point of collision */
     t_vec3	normal;			/* Unit vector representing the normal to the surface at collision */
-    t_vec3	color;			/* Color vector at collision */
+    t_color	color;			/* Color vector at collision */
     double	t;				/* Distance to point of collision */
     int		obj_id;			/* ID of the object with which collision happened */
     bool	inside_surface;		/* If thew point is near an edge, use antialiasing */

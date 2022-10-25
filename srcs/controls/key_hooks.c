@@ -24,7 +24,7 @@ int	handle_key_press_hook(int keysym, t_data *rt)
 		// rt->cam.forward.x *= -1;	//TEMP FIXME
 		//DIRECTION OF CAMERA AIM IS BEING INVERTED
 		//NEED TO CLEAN UP FLOW SO THIS IS MORE TRANSPARENT (CALCULATION OF AXIAL VECTORS)
-
+		
 
 		if (keysym == KEY_W)			/* Move camera forwards */
 			rt->cam.pos = add_vec3(rt->cam.pos, mult_vec3(rt->cam.forward, CAM_TRANS_RATE));

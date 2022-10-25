@@ -31,7 +31,7 @@ bool	hit_sphere(t_ray_vec3 *r, t_obj *o, t_hit_rec *rec)
 		rec->t = q.root;
 		rec->p = ray_at(r, rec->t);
 		rec->normal = div_vec3(sub_vec3(rec->p, o->pos), o->radius);
-		rec->color = o->color;
+		rec->color = o->clr;
     	return true;
 	}
 	return false;
@@ -50,7 +50,7 @@ bool	hit_plane(t_ray_vec3 *r, t_obj *o, t_hit_rec *rec)
 		{
 			rec->t = t;
 			rec->hit_anything = true;
-			rec->color = o->color;
+			rec->color = o->clr;
 			rec->normal = o->fwd;
 			rec->p = ray_at(r, rec->t);
 			return (true);
@@ -71,12 +71,12 @@ bool	hit_cylinder_caps(t_ray_vec3 *r, t_obj *o, t_hit_rec *rec)
 	/* First cap */
 	cap1.fwd = o->fwd;
 	cap1.pos = add_vec3(o->pos, mult_vec3(cap1.fwd, o->height / 2));
-	cap1.color = o->color;
+	cap1.clr = o->clr;
 
 	/* Second cap */
 	cap2.fwd = negate_vec3(o->fwd);
 	cap2.pos = add_vec3(o->pos, mult_vec3(cap2.fwd, o->height / 2));
-	cap2.color = o->color;
+	cap2.clr = o->clr;
 
 	/* Init temp hit record */
 	rec2 = *rec;
@@ -138,7 +138,7 @@ bool	hit_cylinder(t_ray_vec3 *r, t_obj *o, t_hit_rec *rec)
 	// }
 	// rec->p = add_vec3(r->orig, mult_vec3(r->dir, rec->t));
 	// rec->hit_anything = true;
-	// rec->color = o->color;
+	// rec->color = o->clr;
 	// return (true);
 
 
@@ -146,7 +146,7 @@ bool	hit_cylinder(t_ray_vec3 *r, t_obj *o, t_hit_rec *rec)
     t_vec3					oc;
     t_ray_vec3				lr;		// local ray; ray transformed in local object coordinates
     t_vec3					point;	// Calculated point of intersection
-    t_vec3					color;
+    t_color					color;
 	static t_quadratic		q;
 
 	lr.dir = unit_vec3(vec4_to_vec3(mat_mult_vec4(vec3_to_vec4(r->dir, T_VEC), o->w_to_l)));
@@ -155,7 +155,7 @@ bool	hit_cylinder(t_ray_vec3 *r, t_obj *o, t_hit_rec *rec)
 
 	// return (hit_cylinder_caps(&lr, o, rec));
 	// return (hit_cylinder_caps(&lr, o, rec));
-	color = o->color;
+	color = o->clr;
 	oc = sub_vec3(lr.orig, o->pos);
 	q.a = (lr.dir.x * lr.dir.x) + (lr.dir.z * lr.dir.z);
 	if (q.a == 0)
@@ -179,7 +179,9 @@ bool	hit_cylinder(t_ray_vec3 *r, t_obj *o, t_hit_rec *rec)
 
 		if (q.root < T_MIN || q.root > rec->t || fabs(point.y - o->pos.y) > o->height / 2)
 			return false;
-		color = color_to_vec3(BLACK);
+		color.r = 0;
+		color.g = 0;
+		color.b = 0;
 		rec->inside_surface = true;
 	}
 

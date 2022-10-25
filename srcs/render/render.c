@@ -49,7 +49,7 @@ void	render_scene(t_data *rt, t_obj *sp)
     for (int j = 0; j < rt->img->height; ++j) {
         for (int i = 0; i < rt->img->width; ++i) {
 			r.dir = rt->cam.rays[j][i];
-			rec.color = color_to_vec3(rt->background);
+			rec.color = int_to_color(rt->background);
 			rec.t = T_MAX;
 			rec.hit_anything = false;
 
@@ -67,7 +67,7 @@ void	render_scene(t_data *rt, t_obj *sp)
 			}
 
 			if (rec.hit_anything)
-            	pixel_color = apply_point_lights(rt, &rec, vec3_to_color(rec.color));
+            	pixel_color = apply_point_lights(rt, &rec, color_to_int(rec.color));
 			if (rt->apply_light_halos == true)
 				pixel_color = apply_light_halos(rt, &r, &rec, pixel_color, i, j);
 			

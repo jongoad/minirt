@@ -61,20 +61,20 @@ int	handle_mouse_motion(int x, int y, t_data *rt)
 		/* Calculate tilt */
 		if (CAM_TOGGLE_PITCH)
 		{
-			rt->cam.tilt -= pcnt_y * CAM_ROT_RATE;
-			if (rt->cam.tilt > CAM_MAX_TILT)
-				rt->cam.tilt = CAM_MAX_TILT;
-			else if (rt->cam.tilt < -CAM_MAX_TILT)
-				rt->cam.tilt = -CAM_MAX_TILT;
+			rt->cam.pitch -= pcnt_y * CAM_ROT_RATE;
+			if (rt->cam.pitch > CAM_MAX_TILT)
+				rt->cam.pitch = CAM_MAX_TILT;
+			else if (rt->cam.pitch < -CAM_MAX_TILT)
+				rt->cam.pitch = -CAM_MAX_TILT;
 		}
 		/* Calculate pan */
 		if (CAM_TOGGLE_YAW)
 		{
-			rt->cam.pan += pcnt_x * CAM_ROT_RATE;
-			if (rt->cam.pan < 0)
-				rt->cam.pan = (int)rt->cam.pan % 360;
-			else if (rt->cam.pan > 0)
-				rt->cam.pan = (int)rt->cam.pan % -360;
+			rt->cam.yaw += pcnt_x * CAM_ROT_RATE;
+			if (rt->cam.yaw < 0)
+				rt->cam.yaw = (int)rt->cam.yaw % 360;
+			else if (rt->cam.yaw > 0)
+				rt->cam.yaw = (int)rt->cam.yaw % -360;
 		}
 
 

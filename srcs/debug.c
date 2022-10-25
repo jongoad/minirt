@@ -23,9 +23,9 @@ void	print_scene_after_init(t_data *rt)
 	printf("\ty: %f\n", rt->cam.pos.y);
 	printf("\tz: %f\n", rt->cam.pos.z);
 	printf("Orientation:\n");
-	printf("\tx: %f\n", rt->cam.aim.x);
-	printf("\ty: %f\n", rt->cam.aim.y);
-	printf("\tz: %f\n", rt->cam.aim.z);
+	printf("\tx: %f\n", rt->cam.forward.x);
+	printf("\ty: %f\n", rt->cam.forward.y);
+	printf("\tz: %f\n", rt->cam.forward.z);
 	printf("FOV: %d\n\n", rt->cam.fov);
 
 	printf(RED_C"---------- Printing Objects -----------\n\n"CLEAR);
@@ -47,10 +47,6 @@ void	print_scene_after_init(t_data *rt)
 		printf("\tr: %d\n", rt->objs[i]->clr.r);
 		printf("\tg: %d\n", rt->objs[i]->clr.g);
 		printf("\tb: %d\n", rt->objs[i]->clr.b);
-		printf("Color**:\n");
-		printf("\tr: %f\n", rt->objs[i]->color.x);
-		printf("\tg: %f\n", rt->objs[i]->color.y);
-		printf("\tb: %f\n", rt->objs[i]->color.z);
 		printf("Brightness Ratio: %f\n", rt->objs[i]->ratio);
 		printf("Radius: %f\n", rt->objs[i]->radius);
 		printf("Height: %f\n", rt->objs[i]->height);
@@ -73,10 +69,6 @@ void	print_scene_after_init(t_data *rt)
 		printf("\tr: %d\n", rt->lights[i]->clr.r);
 		printf("\tg: %d\n", rt->lights[i]->clr.g);
 		printf("\tb: %d\n", rt->lights[i]->clr.b);
-		printf("Color**:\n");
-		printf("\tr: %f\n", rt->lights[i]->color.x);
-		printf("\tg: %f\n", rt->lights[i]->color.y);
-		printf("\tb: %f\n", rt->lights[i]->color.z);
 		printf("Brightness Ratio: %f\n", rt->lights[i]->ratio);
 		printf("Radius: %f\n", rt->lights[i]->radius);
 		printf("Height: %f\n", rt->lights[i]->height);
@@ -134,9 +126,9 @@ void	print_data_to_screen(t_data *rt)
 	mlx_string_put(rt->mlx_ptr, rt->win_ptr, 10, 155, RED, c);
 	sprintf(ca, "aim: x: %f y: %f z: %f", rt->cam.forward.x, rt->cam.forward.y, rt->cam.forward.z);
 	mlx_string_put(rt->mlx_ptr, rt->win_ptr, 10, 170, RED, ca);
-	sprintf(cb, "tilt: %f", rt->cam.tilt);
+	sprintf(cb, "tilt: %f", rt->cam.pitch);
 	mlx_string_put(rt->mlx_ptr, rt->win_ptr, 10, 185, RED, cb);
-	sprintf(cc, "pan: %f", rt->cam.pan);
+	sprintf(cc, "pan: %f", rt->cam.yaw);
 	mlx_string_put(rt->mlx_ptr, rt->win_ptr, 10, 200, RED, cc);
 
 
@@ -147,8 +139,5 @@ void	print_data_to_screen(t_data *rt)
 	mlx_string_put(rt->mlx_ptr, rt->win_ptr, 10, 225, RED, "Ray Data:");
 	mlx_string_put(rt->mlx_ptr, rt->win_ptr, 10, 240, RED, r2);
 	mlx_string_put(rt->mlx_ptr, rt->win_ptr, 10, 255, RED, r);
-
-
-
 }
 
