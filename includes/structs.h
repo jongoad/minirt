@@ -132,6 +132,7 @@ typedef struct s_camera
 	t_vec3		up;						/* Default up vector (0, 1, 0) */
 	t_vec3		right;
 
+	t_vec3		aim;				//Testing
 	/* Camera transformation matrices */
 	t_mat4		project;
 	t_mat4		inv_project;

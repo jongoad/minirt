@@ -99,12 +99,12 @@ void	cam_generate_rays(t_data *rt)
 			
 			// FIXME - Testing inverted z axis
 			// Figure out why z value for ray is inverted?
-			if ((rt->cam.forward.z < 0 && rt->cam.rays[i.y][i.x].z > 0) ||
-				(rt->cam.forward.z > 0 && rt->cam.rays[i.y][i.x].z < 0))
+			if ((rt->cam.aim.z < 0 && rt->cam.rays[i.y][i.x].z > 0) ||
+				(rt->cam.aim.z > 0 && rt->cam.rays[i.y][i.x].z < 0))
 				rt->cam.rays[i.y][i.x].z = -rt->cam.rays[i.y][i.x].z;
 
-			if ((rt->cam.forward.x < 0 && rt->cam.rays[i.y][i.x].x > 0) ||
-				(rt->cam.forward.x > 0 && rt->cam.rays[i.y][i.x].x < 0))
+			if ((rt->cam.aim.x < 0 && rt->cam.rays[i.y][i.x].x > 0) ||
+				(rt->cam.aim.x > 0 && rt->cam.rays[i.y][i.x].x < 0))
 				rt->cam.rays[i.y][i.x].x = -rt->cam.rays[i.y][i.x].x;
 
 			rt->cam.rays[i.y][i.x].y *= -1; //TEMP FIX, FIND THE ROOT OF ALL THIS INVERSION!!!
