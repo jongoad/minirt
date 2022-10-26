@@ -6,7 +6,7 @@ int	apply_point_lights(t_data *rt, t_hit_rec *rec, int color)
 	t_ray_vec3	pt_to_light;
 	t_hit_rec	rec2;
 	t_vec3		diff;
-	double		diff_len;
+	double		dist_to_light;
 	double		t;
 	int			i;
 
@@ -19,14 +19,14 @@ int	apply_point_lights(t_data *rt, t_hit_rec *rec, int color)
 		pt_to_light.dir = diff;
 
 		// To verify objects hits are happening before light hit
-		diff_len = length_vec3(diff);
-		rec2.t = diff_len;
+		dist_to_light = length_vec3(diff);
+		rec2.t = dist_to_light;
 		unit_vec3_self(&pt_to_light.dir);
 		// Test for hard shadows, correct to prevent shadow acne
-		if (hit_anything(rt, &pt_to_light, &rec2) && fabs(rec2.t - diff_len) > EPSILON)
+		if (hit_anything(rt, &pt_to_light, &rec2) && fabs(rec2.t - dist_to_light) > EPSILON)
 			continue;
 		t = cos_vec3(rec->normal, diff);
-		t /= (diff_len + 1.0F);
+		t /= (dist_to_light + 1.0F);
 		vcolor = int_to_vec3(color);
 		color = vec3_to_color(lerp_vec3(vcolor, color_to_vec3(rt->lights[i]->clr), t));
 	}

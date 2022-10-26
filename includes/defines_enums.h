@@ -16,8 +16,10 @@
 #define BONUS 1
 
 /* Math Defines */
-# define T_MAX	1e10
-# define T_MIN	0.01F
+# define T_MAX	 1e10
+# define T_MIN	 0.01F
+# define EPSILON 0.0001F
+
 # define LIGHT_RADIUS	1.05F
 # define PI 3.14159265359f
 
