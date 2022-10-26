@@ -7,7 +7,7 @@
 
 /* Image Controls */
 # define ASPECT_RATIO ((float)16 / (float)16)
-# define IMG_W 800
+# define IMG_W 1000
 # define IMG_H (int)(IMG_W / ASPECT_RATIO)
 
 /* Parse Defines */
@@ -16,8 +16,10 @@
 #define BONUS 1
 
 /* Math Defines */
-# define T_MAX	1e10
-# define T_MIN	0.01F
+# define T_MAX	 1e10
+# define T_MIN	 0.01F
+# define EPSILON 0.0001F
+
 # define LIGHT_RADIUS	1.05F
 # define PI 3.14159265359f
 

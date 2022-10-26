@@ -77,7 +77,7 @@ COMPILE_C_OUT	=	$$($(COMPILE_C) 2>&1 | sed -e 's/error/\\\033[0;31merror\\\033[0
 
 $(OBJ_DIR)/%.o:	$(SRC_DIR)/%.c $(INCS)
 	@mkdir -p $(@D)
-	@printf "$(CYAN)%-25s-->%25s $(RESET_COL)$(COMPILE_C_OUT)\n" $< $@
+	@printf "$(CYAN)%-36s-->%36s $(RESET_COL)$(COMPILE_C_OUT)\n" $< $@
 # $(COMPILE_C)
 
 
@@ -105,7 +105,7 @@ $(NAME_LINUX):	libft pretty_print $(OBJS)
 	@echo -e "\n$(CYAN)>>>>>>>> Compiling into executable $(UYELLOW)./$(NAME_LINUX)$(RESET_COL)$(COMPILE_EXE_LINUX_OUT)"
 
 silent_libft:
-	@echo -e "---------------------- libft.a ----------------------\n"
+	@echo -e "------------------------------ libft.a ------------------------------\n"
 	@echo -e "$(RED)\t*** WARNING: LIBFT CURRENTLY NOT BUILT ***$(RESET_COL)";
 	
 # @echo -e "$(CYAN)>>>>>>>> Archiving libft.a ...$(RESET_COL)"
@@ -120,7 +120,7 @@ silent_libft:
 libft: silent_libft
 
 pretty_print: 
-	@echo -e "\n--------------------- $(NAME) ---------------------"
+	@echo -e "\n------------------------------ $(NAME) -------------------------------"
 											  
 
 clean:

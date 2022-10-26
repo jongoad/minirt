@@ -104,89 +104,36 @@ int	sign(float f)
 	return (1);
 }
 
-bool	hit_cylinder(t_ray_vec3 *r, t_obj *o, t_hit_rec *rec)
+bool	hit_cylinder_body(t_ray_vec3 *r, t_obj *o, t_hit_rec *rec)
 {
-	// const t_vec3	oc = sub_vec3(r->orig, o->pos);
-	// const float		card = dot_vec3(o->ccap, r->dir);
-	// const float		caoc = dot_vec3(o->ccap, oc);
-	// const float		a = o->mag_ccap - card * card;
-	// const float		b = o->mag_ccap * dot_vec3(oc, r->dir) - caoc * card;
-	// float			h = b * b - a * (o->mag_ccap * dot_vec3(oc, oc) - caoc * caoc - o->radius * o->radius * o->mag_ccap);
-	// float			y;
-	// // float			t;
-
-	// if (h < 0.0)
-	// 	return (false);
-	// h = sqrtf(h);
-	// rec->t = (-b - h) / a;
-	// y = caoc + rec->t * card;
-	
-	// // normal = (oc + (dir * t) - (ccap * y / mag_ccap)) / radius
-	
-	// if (y > 0.0 && y < o->mag_ccap)
-	// 	rec->normal = unit_vec3(mult_vec3(add_vec3(oc, sub_vec3(mult_vec3(r->dir, rec->t), mult_vec3(\
-	// 	mult_vec3(o->ccap, y), 1.0 / o->mag_ccap))), 1.0 / o->radius));
-	// 	// rec->normal = (o->fwd, o->right);
-	// else
-	// {
-	// 	rec->t = (o->mag_ccap * !(y < 0.0) - caoc) / card;
-	// 	if (fabs(b + a * rec->t) >= h)
-	// 		return (false);
-	// 	// rec->normal = unit_vec3(mult_vec3(mult_vec3(o->ccap, sign(y)), \
-	// 	// 	1.0 / o->mag_ccap));
-	// 	rec->normal = o->fwd;
-	// }
-	// rec->p = add_vec3(r->orig, mult_vec3(r->dir, rec->t));
-	// rec->hit_anything = true;
-	// rec->color = o->clr;
-	// return (true);
-
-
-
-
-
-
-
     t_vec3					oc;
-    t_ray_vec3				lr;		// local ray; ray transformed in local object coordinates
-    t_vec3					point;	// Calculated point of intersection
-    t_color					color;
 	static t_quadratic		q;
+	double					dist;
+	double					dir_x_fwd;
+	double					oc_x_fwd;
 
-	lr.dir = vec4_to_vec3(mat_mult_vec4(vec3_to_vec4(r->dir, T_VEC), o->w_to_l));
-	lr.orig = sub_vec3(r->orig, o->pos);
-	// lr.orig = r->orig;
-	lr.orig = vec4_to_vec3(mat_mult_vec4(vec3_to_vec4(lr.orig, T_POINT), o->w_to_l));
+	oc = sub_vec3(r->orig, o->pos);
+	dir_x_fwd = dot_vec3(r->dir, o->fwd);
+	oc_x_fwd = dot_vec3(oc, o->fwd);
 
-	// return (hit_cylinder_caps(&lr, o, rec));
-	// return (hit_cylinder_caps(&lr, o, rec));
-	color = o->clr;
-	oc = sub_vec3(lr.orig, o->pos);
-	q.a = (lr.dir.x * lr.dir.x) + (lr.dir.z * lr.dir.z);
-	if (q.a == 0)
-		return (false);
-	q.half_b = (oc.x * lr.dir.x) + (oc.z * lr.dir.z);
-	q.c = (oc.x * oc.x) + (oc.z * oc.z) - o->radius * o->radius;
+	q.a = dot_vec3(r->dir, r->dir) - dir_x_fwd * dir_x_fwd;
+	q.half_b = dot_vec3(r->dir, oc) - dir_x_fwd * oc_x_fwd;
+	q.c = dot_vec3(oc, oc) - oc_x_fwd * oc_x_fwd - o->radius * o->radius;
+
 	q.discriminant = q.half_b * q.half_b - q.a * q.c;
     if (q.discriminant < 0)
         return false;
     q.sqrtd = sqrtf(q.discriminant);
     q.root = (-q.half_b - q.sqrtd) / q.a;
 
-	hit_cylinder_caps(r, o, rec);
-	point = ray_at(&lr, q.root);
-	if (q.root < T_MIN || q.root > rec->t || fabs(point.y - o->pos.y) > o->height / 2)
+	dist = dir_x_fwd * q.root + oc_x_fwd;
+
+	if (q.root < T_MIN || q.root > rec->t || fabs(dist) > o->height / 2)
 	{
         q.root = (-q.half_b + q.sqrtd) / q.a;
-		point = ray_at(&lr, q.root);
-		// if (hit_cylinder_caps(r, o, rec))
-		// 	return (true);
-
-		if (q.root < T_MIN || q.root > rec->t || fabs(point.y - o->pos.y) > o->height / 2)
+		dist = dir_x_fwd * q.root + oc_x_fwd;
+		if (q.root < T_MIN || q.root > rec->t || fabs(dist) > o->height / 2)
 			return false;
-		color.r = 0;
-		color.g = 0;
-		color.b = 0;
 		rec->inside_surface = true;
 	}
 
@@ -194,11 +141,21 @@ bool	hit_cylinder(t_ray_vec3 *r, t_obj *o, t_hit_rec *rec)
 		rec->hit_anything = true;
 		rec->t = q.root;
 		rec->p = ray_at(r, rec->t);
-		// rec->p = vec4_to_vec3(mat_mult_vec4(vec3_to_vec4(point, T_POINT), o->l_to_w));
-		// rec->normal = div_vec3(sub_vec3(rec->p, o->pos), o->radius);
-		rec->normal = unit_vec3(sub_vec3(rec->p, add_vec3(o->pos, vec3(0, rec->p.y - o->pos.y, 0))));
-		rec->color = color;
+		rec->color = o->clr;
+		rec->normal = unit_vec3(sub_vec3(sub_vec3(rec->p, o->pos), mult_vec3(o->fwd, dist)));
 		return true;
 	}
 	return false;
+}
+
+bool	hit_cylinder(t_ray_vec3 *r, t_obj *o, t_hit_rec *rec)
+{
+	bool	hit;
+	
+	hit = false;
+	if (hit_cylinder_caps(r, o, rec))
+		hit = true;
+	if (hit_cylinder_body(r, o, rec))
+		hit = true;
+	return (hit);
 }
