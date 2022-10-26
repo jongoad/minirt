@@ -126,4 +126,5 @@ void	init_cylinder(t_data *rt, char **input, int obj_nb)
 
 
 	rt->objs[obj_nb]->hit = hit_cylinder;
+	// rt->objs[obj_nb]->hit = hit_cone;
 }

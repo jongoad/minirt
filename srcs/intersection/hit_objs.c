@@ -104,6 +104,10 @@ int	sign(float f)
 	return (1);
 }
 
+
+/** Formula for body intersection found at 
+ *  https://hugi.scene.org/online/hugi24/coding%20graphics%20chris%20dragan%20raytracing%20shapes.htm
+**/ 
 bool	hit_cylinder_body(t_ray_vec3 *r, t_obj *o, t_hit_rec *rec)
 {
     t_vec3					oc;
@@ -158,4 +162,57 @@ bool	hit_cylinder(t_ray_vec3 *r, t_obj *o, t_hit_rec *rec)
 	if (hit_cylinder_body(r, o, rec))
 		hit = true;
 	return (hit);
+}
+
+
+/** Formula for body intersection found at 
+ *  https://hugi.scene.org/online/hugi24/coding%20graphics%20chris%20dragan%20raytracing%20shapes.htm
+**/ 
+bool	hit_cone(t_ray_vec3 *r, t_obj *o, t_hit_rec *rec)
+{
+    t_vec3					oc;
+	static t_quadratic		q;
+	double					dist;
+	double					dir_x_fwd;
+	double					oc_x_fwd;
+	double					half_tan;
+	double					wtf;	//	represents 1 + half_tan^2
+
+	half_tan = tanf(PI / 8);
+
+	oc = sub_vec3(r->orig, o->pos);
+	dir_x_fwd = dot_vec3(r->dir, o->fwd);
+	oc_x_fwd = dot_vec3(oc, o->fwd);
+	wtf = 1 + half_tan * half_tan;
+
+	q.a = dot_vec3(r->dir, r->dir) - wtf * dir_x_fwd * dir_x_fwd;
+	q.half_b = dot_vec3(r->dir, oc) - wtf * dir_x_fwd * oc_x_fwd;
+	q.c = dot_vec3(oc, oc) - wtf * oc_x_fwd * oc_x_fwd;
+
+	q.discriminant = q.half_b * q.half_b - q.a * q.c;
+    if (q.discriminant < 0)
+        return false;
+    q.sqrtd = sqrtf(q.discriminant);
+    q.root = (-q.half_b - q.sqrtd) / q.a;
+
+	dist = dir_x_fwd * q.root + oc_x_fwd;
+
+	if (q.root < T_MIN || q.root > rec->t || fabs(dist) > o->height / 2)
+	{
+        q.root = (-q.half_b + q.sqrtd) / q.a;
+		dist = dir_x_fwd * q.root + oc_x_fwd;
+		if (q.root < T_MIN || q.root > rec->t || fabs(dist) > o->height / 2)
+			return false;
+		rec->inside_surface = true;
+	}
+
+	if (q.root < rec->t) {
+		rec->hit_anything = true;
+		rec->t = q.root;
+		rec->p = ray_at(r, rec->t);
+		rec->color = o->clr;
+		rec->normal = unit_vec3(sub_vec3(sub_vec3(rec->p, o->pos), mult_vec3(o->fwd, dist)));
+		return true;
+	}
+	return false;
 }
