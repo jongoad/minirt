@@ -77,7 +77,7 @@ void	render_scene(t_data *rt, t_obj *sp);
 
 /* Rendering - Lights */
 int		apply_point_lights(t_data *rt, t_hit_rec *rec, int color);
-int		apply_light_halos(t_data *rt, t_ray_vec3 *r, t_hit_rec *rec, int color, int x, int y);
+int		apply_light_halos(t_data *rt, t_ray_vec3 *r, t_hit_rec *rec, int color);
 
 /* Benchmarking FIXME: to remove for mandatory part */
 void	display_fps(t_data *rt, double start_time);

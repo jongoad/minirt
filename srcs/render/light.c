@@ -24,8 +24,9 @@ int	apply_point_lights(t_data *rt, t_hit_rec *rec, int color)
 		if (hit_anything(rt, &pt_to_light, &rec2))
 			continue;
 		t = cos_vec3(rec->normal, diff);
-		if (t < 0.0001F)
-			continue;
+		t /= length_vec3(diff);
+		// if (t < 0.0001F)
+		// 	continue;
 		vcolor = int_to_vec3(color);
 		color = vec3_to_color(lerp_vec3(vcolor, color_to_vec3(rt->lights[i]->clr), t));
 	}
@@ -38,7 +39,7 @@ bool	hit_light(t_ray_vec3 *r, t_obj *l, t_hit_rec *rec)
 	return (hit_plane(r, l, rec));
 }
 
-int	apply_light_halos(t_data *rt, t_ray_vec3 *r, t_hit_rec *rec, int color, int x, int y)
+int	apply_light_halos(t_data *rt, t_ray_vec3 *r, t_hit_rec *rec, int color)
 {
 	t_hit_rec		rec2;
 	int				i;
@@ -55,8 +56,6 @@ int	apply_light_halos(t_data *rt, t_ray_vec3 *r, t_hit_rec *rec, int color, int 
 			dist = length_vec3(sub_vec3(rt->lights[i]->pos, rec2.p));
 			dist += 1.0F;
 			dist *= dist;
-			(void)x;
-			(void)y;
 			if (dist * dist < LIGHT_RADIUS
 				&& (!rec->hit_anything || (rec->hit_anything && rec2.t < rec->t)))
 				color = color_to_int(rt->lights[i]->clr);

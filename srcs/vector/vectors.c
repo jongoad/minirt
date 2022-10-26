@@ -115,9 +115,13 @@ t_vec3  lerp_vec3( t_vec3 a, t_vec3 b, float factor )
 {
     t_vec3  diff;
     
-    if (factor <= 0.0F || factor > 1.0F)
+    if (factor <= 0.0F)
     {
         return vec3(a.x, a.y, a.z);
+    }
+    else if (factor > 1.0F)
+    {
+        factor = 1.0F;
     }
     diff = sub_vec3(b, a);
     return add_vec3(a, mult_vec3(diff, factor));

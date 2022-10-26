@@ -30,7 +30,7 @@ int	main(int argc, char **argv)
 	
 	set_hooks(rt);
 	cam_init(rt);
-	// print_scene_after_init(rt);
+	print_scene_after_init(rt);
 	cam_calc_view(rt);
 	cam_calc_project(rt);
 	cam_generate_rays(rt);
