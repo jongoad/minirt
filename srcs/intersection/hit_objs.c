@@ -124,9 +124,9 @@ bool	hit_cylinder(t_ray_vec3 *r, t_obj *o, t_hit_rec *rec)
 	// // normal = (oc + (dir * t) - (ccap * y / mag_ccap)) / radius
 	
 	// if (y > 0.0 && y < o->mag_ccap)
-	// 	rec->normal = (o->fwd, o->right);
-	// 	// rec->normal = unit_vec3(mult_vec3(add_vec3(oc, sub_vec3(mult_vec3(r->dir, rec->t), mult_vec3(\
-	// 	// mult_vec3(o->ccap, y), 1.0 / o->mag_ccap))), 1.0 / o->radius));
+	// 	rec->normal = unit_vec3(mult_vec3(add_vec3(oc, sub_vec3(mult_vec3(r->dir, rec->t), mult_vec3(\
+	// 	mult_vec3(o->ccap, y), 1.0 / o->mag_ccap))), 1.0 / o->radius));
+	// 	// rec->normal = (o->fwd, o->right);
 	// else
 	// {
 	// 	rec->t = (o->mag_ccap * !(y < 0.0) - caoc) / card;
@@ -143,14 +143,19 @@ bool	hit_cylinder(t_ray_vec3 *r, t_obj *o, t_hit_rec *rec)
 
 
 
+
+
+
+
     t_vec3					oc;
     t_ray_vec3				lr;		// local ray; ray transformed in local object coordinates
     t_vec3					point;	// Calculated point of intersection
     t_color					color;
 	static t_quadratic		q;
 
-	lr.dir = unit_vec3(vec4_to_vec3(mat_mult_vec4(vec3_to_vec4(r->dir, T_VEC), o->w_to_l)));
+	lr.dir = vec4_to_vec3(mat_mult_vec4(vec3_to_vec4(r->dir, T_VEC), o->w_to_l));
 	lr.orig = sub_vec3(r->orig, o->pos);
+	// lr.orig = r->orig;
 	lr.orig = vec4_to_vec3(mat_mult_vec4(vec3_to_vec4(lr.orig, T_POINT), o->w_to_l));
 
 	// return (hit_cylinder_caps(&lr, o, rec));
@@ -168,7 +173,7 @@ bool	hit_cylinder(t_ray_vec3 *r, t_obj *o, t_hit_rec *rec)
     q.sqrtd = sqrtf(q.discriminant);
     q.root = (-q.half_b - q.sqrtd) / q.a;
 
-	hit_cylinder_caps(&lr, o, rec);
+	hit_cylinder_caps(r, o, rec);
 	point = ray_at(&lr, q.root);
 	if (q.root < T_MIN || q.root > rec->t || fabs(point.y - o->pos.y) > o->height / 2)
 	{

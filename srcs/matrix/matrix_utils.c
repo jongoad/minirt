@@ -70,6 +70,33 @@ t_vec4	mat_mult_vec4(t_vec4 v, t_mat4 m)
 	return (res);
 }
 
+
+t_vec3	mat_mult_vec3(t_vec3 v, t_mat4 m)
+{
+	double		new[4];
+	size_t		i;
+	size_t		j;
+	double		current[4];
+
+	current[0] = v.x;
+	current[1] = v.y;
+	current[2] = v.z;
+	current[3] = v.w;
+	i = 0;
+	while (i < 3)
+	{
+		j = 0;
+		while (j < 4)
+		{
+			new[i] += (m.m[i][j] * current[j]);
+			j++;
+		}
+		i++;
+	}
+	return (vec3(new[0], new[1], new[2]));
+}
+
+
 /* Build a mat4 from four component vec4 */
 t_mat4	mat4(t_vec4 a, t_vec4 b, t_vec4 c, t_vec4 d)
 {
