@@ -20,13 +20,13 @@ int	cast_ray_at_pixel(t_data *rt, int x, int y)
 	rec.obj_id = i;
 	while (++i < rt->nb_objs)
 	{
-		printf("i = %d\n", i);
+		// printf("i = %d\n", i);
 		if (rt->objs[i]->hit(&r, rt->objs[i], &rec))
 		{
 			rec.obj_id = i;
-			printf("Hit ! rec.obj_id = %d\n", rec.obj_id);
+			// printf("Hit ! rec.obj_id = %d\n", rec.obj_id);
 		}
-		printf("rec.obj_id = %d\n", rec.obj_id);
+		// printf("rec.obj_id = %d\n", rec.obj_id);
 	}
 	if (rec.hit_anything)
 		return (rec.obj_id);

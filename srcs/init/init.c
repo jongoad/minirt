@@ -44,8 +44,8 @@ void	init_scene(t_data *rt)
 	init_parse_fct_ptrs(rt);
 	count_objects(rt);
 	// FIXME: to remove
-	printf("nb_objs = %d\n", rt->nb_objs);
-	printf("nb_lights = %d\n", rt->nb_lights);
+	// printf("nb_objs = %d\n", rt->nb_objs);
+	// printf("nb_lights = %d\n", rt->nb_lights);
 
 	rt->objs = ft_xalloc(sizeof(t_obj *) * (rt->nb_objs + 1));
 	rt->lights = ft_xalloc(sizeof(t_obj *) * (rt->nb_lights + 1));
@@ -73,12 +73,16 @@ void	init_cam_angles(t_data *rt, t_vec3 up, t_vec3 right)
 	double dprod = (rt->cam.forward.y * up.y) + (rt->cam.forward.z * up.z);
 	double mag_fwd = sqrt(pow(rt->cam.forward.y, 2) + pow(rt->cam.forward.z, 2));
 	double mag_up = sqrt(pow(up.y, 2) + pow(up.z, 2));
+
+	//Solution for looking straight up or straight down
 	if (mag_fwd == 0.0)
 	{
 		dprod = (rt->cam.forward.y * up.y) + (rt->cam.forward.x * up.x);
 		mag_fwd = sqrt(pow(rt->cam.forward.y, 2) + pow(rt->cam.forward.x, 2));
 	}
 	rt->cam.pitch = 90 - (acos(dprod / (mag_fwd * mag_up)) * (180 / PI));
+
+	rt->cam.pitch *= -1.0f; //Pitch rotation up is actually a negative rot!!!!
 
 	/* Init pan (y-rotation) */
 	dprod = (rt->cam.forward.x * right.x) + (rt->cam.forward.z * right.z);
@@ -89,7 +93,17 @@ void	init_cam_angles(t_data *rt, t_vec3 up, t_vec3 right)
 
 	/* Test for sign */
 	/* FIXME - Figure out a better solution for this dumpster fire */
-	double test = cos_vec3(rt->cam.forward, vec3(0,0,-1));
+
+	t_vec3 tmp = vec3(rt->cam.forward.x, 0, rt->cam.forward.z);
+
+	double test = cos_vec3(tmp, vec3(0,0,-1));
+
+	printf("test: %f\n", test);
+
+	//This test is no reliable if the y component of the camera orientation is non-zero
+
+	//We can effectively round the float if we multiply it by a value, cast to int, then cast back 
+	//to float and divide by the same number
 	if (test == -1.000000119209300208922286401502788066864013671875)
 		rt->cam.yaw = 180;
 	else if (rt->cam.yaw > 0 && test < 0)

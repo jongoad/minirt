@@ -27,7 +27,7 @@ void	cam_calc_view(t_data *rt)
 
 	//Why is inv_view being calculated with a default pos?
 	rt->cam.inv_view = mat4(xaxis4, yaxis4, zaxis4, vec4(0,0,0,1));
-	// rt->cam.inv_view = mat4(xaxis4, yaxis4, zaxis4, rt->cam.pos);
+	// rt->cam.inv_view = mat4(xaxis4, yaxis4, zaxis4, vec3_to_vec4(rt->cam.pos, T_POINT));
 	rt->cam.view = mat_inv(rt->cam.inv_view, 4);
 
 
@@ -75,13 +75,64 @@ void	cam_calc_project(t_data *rt)
 	rt->cam.inv_project = mat_inv(rt->cam.project, 4);
 }
 
-/* Generate and pre-cache camera rays */
+// /* Generate and pre-cache camera rays */
+// void	cam_generate_rays(t_data *rt)
+// {
+// 	t_i i;
+// 	t_vec4 coord;
+// 	t_vec4 target;
+// 	t_vec4 norm;
+// 	i.y = 0;
+// 	while (i.y < IMG_H)
+// 	{
+// 		i.x = 0;
+// 		while (i.x < IMG_W)
+// 		{
+// 			coord = vec4((float)i.x / (float)IMG_W, (float)i.y / (float)IMG_H, -1, 1);
+// 			coord.x = coord.x * 2.0f - 1.0f;
+// 			coord.y = coord.y * 2.0f - 1.0f;
+// 			target = mat_mult_vec4(vec4(coord.x, coord.y, -1, 1), rt->cam.inv_project); //Be mindful of z coord of target
+// 			norm = vec3_to_vec4(unit_vec3(mult_vec3(vec4_to_vec3(target), target.w)), 0);
+// 			rt->cam.rays[i.y][i.x] = unit_vec3(vec4_to_vec3(mat_mult_vec4(norm, rt->cam.inv_view)));		
+// 			// FIXME - Testing inverted z axis
+// 			// Figure out why z value for ray is inverted?
+// 			// if ((rt->cam.aim.z < 0 && rt->cam.rays[i.y][i.x].z > 0) ||
+// 			// 	(rt->cam.aim.z > 0 && rt->cam.rays[i.y][i.x].z < 0))
+// 			// 	rt->cam.rays[i.y][i.x].z = -rt->cam.rays[i.y][i.x].z;
+// 			// if ((rt->cam.aim.x < 0 && rt->cam.rays[i.y][i.x].x > 0) ||
+// 			// 	(rt->cam.aim.x > 0 && rt->cam.rays[i.y][i.x].x < 0))
+// 			// 	rt->cam.rays[i.y][i.x].x = -rt->cam.rays[i.y][i.x].x;
+// 			// rt->cam.rays[i.y][i.x].y *= -1; //TEMP FIX, FIND THE ROOT OF ALL THIS INVERSION!
+// 			i.x++;
+// 		}
+// 		i.y++;
+// 	}
+// }
+
+
+//This only need to be calculated once at start of program
+//Same for height
+float	calc_img_width(float FOV)
+{
+	float width = 2 * tan(deg_to_rad(FOV) / 2);
+
+	return (width);
+}
+
 void	cam_generate_rays(t_data *rt)
 {
-	t_i i;
-	t_vec4 coord;
-	t_vec4 target;
-	t_vec4 norm;
+	t_i	i;
+
+	t_vec4 ray;
+
+	float width = calc_img_width(rt->cam.fov);
+	float height = (width / ((float)ASPECT_RATIO * 100.0f)) * 100.0f;
+
+	t_mat4 pitch = mat_rot(deg_to_rad(rt->cam.pitch), 'x');
+	t_mat4 yaw = mat_rot(deg_to_rad(rt->cam.yaw), 'y');
+
+
+
 
 	i.y = 0;
 	while (i.y < IMG_H)
@@ -89,79 +140,51 @@ void	cam_generate_rays(t_data *rt)
 		i.x = 0;
 		while (i.x < IMG_W)
 		{
-			coord = vec4((float)i.x / (float)IMG_W, (float)i.y / (float)IMG_H, 1, 1);
-			coord.x = coord.x * 2.0f - 1.0f;
-			coord.y = coord.y * 2.0f - 1.0f;
-			
-			target = mat_mult_vec4(vec4(coord.x, coord.y, 1, 1), rt->cam.inv_project);
-			norm = vec3_to_vec4(unit_vec3(mult_vec3(vec4_to_vec3(target), target.w)), 0);
-			rt->cam.rays[i.y][i.x] = unit_vec3(vec4_to_vec3(mat_mult_vec4(norm, rt->cam.inv_view)));
-			
-			// FIXME - Testing inverted z axis
-			// Figure out why z value for ray is inverted?
-			if ((rt->cam.aim.z < 0 && rt->cam.rays[i.y][i.x].z > 0) ||
-				(rt->cam.aim.z > 0 && rt->cam.rays[i.y][i.x].z < 0))
-				rt->cam.rays[i.y][i.x].z = -rt->cam.rays[i.y][i.x].z;
+			ray.x = (float)i.x / (float)IMG_W;
+			ray.y = (float)i.y / (float)IMG_H;
 
-			if ((rt->cam.aim.x < 0 && rt->cam.rays[i.y][i.x].x > 0) ||
-				(rt->cam.aim.x > 0 && rt->cam.rays[i.y][i.x].x < 0))
-				rt->cam.rays[i.y][i.x].x = -rt->cam.rays[i.y][i.x].x;
+			ray.y = 1.0f - ray.y; //Invert y so it matches the rest of our coord systems (neg is bottom, pos is top)
 
-			rt->cam.rays[i.y][i.x].y *= -1; //TEMP FIX, FIND THE ROOT OF ALL THIS INVERSION!!!
+			ray.x = (width * ray.x) - (width * 0.5f);
+			ray.y = (height * ray.y) - (height * 0.5f);
+
+			ray.z = -1.0f;
+			ray.w = 0;
+
+			/* Apply camera rotation */
+			ray = mat_mult_vec4(ray, pitch);
+			ray = mat_mult_vec4(ray, yaw);
+			rt->cam.rays[i.y][i.x] = unit_vec3(vec4_to_vec3(ray));
 
 			i.x++;
 		}
 		i.y++;
 	}
+
+	t_vec4 fwd_tmp = vec4(0,0,-1,0);
+	fwd_tmp = mat_mult_vec4(fwd_tmp, pitch);
+	fwd_tmp = mat_mult_vec4(fwd_tmp, yaw);
+	rt->cam.forward = unit_vec3(vec4_to_vec3(fwd_tmp));
+	rt->cam.right = unit_vec3(cross_vec3(rt->cam.forward, rt->cam.up));
 }
+
+
+
 
 /* Recalculate view & projection matrices and regenerate rays */
 void	cam_recalc(t_data *rt)
 {
 
-	cam_calc_view(rt);
+	// cam_calc_view(rt);
 
 
-	//TEMP
-		rt->cam.forward = unit_vec3(vec4_to_vec3(mat_mult_vec4(vec4(0,0,-1,0), rt->cam.inv_view)));
-		rt->cam.right = unit_vec3(cross_vec3(rt->cam.forward, rt->cam.up));
+	// //TEMP
+	// 	rt->cam.forward = unit_vec3(vec4_to_vec3(mat_mult_vec4(vec4(0,0,-1,0), rt->cam.inv_view)));
+	// 	rt->cam.right = unit_vec3(cross_vec3(rt->cam.forward, rt->cam.up));
 
-		rt->cam.forward.x *= -1;	//TEMP FIXME
+	// 	rt->cam.forward.x *= -1;	//TEMP FIXME
 
 
-	cam_calc_project(rt);
+	// cam_calc_project(rt);
 	cam_generate_rays(rt);
 }
-
-
-
-/* Camera Cleanup:
-
-	- Figure out why rays are ending up with inverted x and y components
-	- Change flow so that axial vectors only need to be recalculated once
-	- Change flow so that all transforms are applied in the same place
-	- Review projection code to ensure it is behaving as expected (this could be source of inversion)
-
-
-	Problems:
-	- Currently the code to apply camera position translations relies on use of the view matrix.
-		- This is a problem because the view matrix uses camera position.
-
-
-
-	Init steps:
-	1. Using the camera orientation vector, find the current rotation values for x and y axis.
-	
-
-
-
-	Loop Steps:
-	1. Get input data from mouse and/or keyboard to update transforms for camera and thus for rays.
-	2. Apply rotation data and then recalculate view matrix
-	3. Recalculate axial vectors and apply camera translation (steps 2 and 3 are an issue. see problems)
-
-
-
-
-
-*/

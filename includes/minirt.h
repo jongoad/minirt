@@ -50,7 +50,7 @@ bool	hit_sphere(t_ray_vec3 *r, t_obj *o, t_hit_rec *rec);
 bool	hit_sphere_no_hit_rec(t_ray_vec3 *r, t_obj *o);
 bool	hit_plane(t_ray_vec3 *r, t_obj *o, t_hit_rec *rec);
 bool	hit_cylinder(t_ray_vec3 *r, t_obj *o, t_hit_rec *rec);
-
+bool	hit_cone(t_ray_vec3 *r, t_obj *o, t_hit_rec *rec);
 
 /* Colors */
 t_color     int_to_color(int c);

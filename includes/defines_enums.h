@@ -19,9 +19,11 @@
 # define T_MAX	 1e10
 # define T_MIN	 0.01F
 # define EPSILON 0.0001F
-
-# define LIGHT_RADIUS	1.05F
 # define PI 3.14159265359f
+
+/* Light Defines */
+# define LIGHT_INTENSITY 2
+# define LIGHT_RADIUS	1.1F
 
 /* Flag Defines */
 # define NO_HIT -1

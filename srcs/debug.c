@@ -57,7 +57,7 @@ void	print_scene_after_init(t_data *rt)
 		printf("\tb: %d\n", rt->objs[i]->clr.b);
 		printf("Brightness Ratio: %f\n", rt->objs[i]->ratio);
 		printf("Radius: %f\n", rt->objs[i]->radius);
-		printf("Height: %f\n", rt->objs[i]->height);
+		printf("Height: %f\n", rt->objs[i]->half_height);
 		printf("\n\n");
 		i++;
 	}
@@ -69,17 +69,11 @@ void	print_scene_after_init(t_data *rt)
 		printf("\tx: %f\n", rt->lights[i]->pos.x);
 		printf("\ty: %f\n", rt->lights[i]->pos.y);
 		printf("\tz: %f\n", rt->lights[i]->pos.z);
-		printf("Orientation:\n");
-		printf("\tx: %f\n", rt->lights[i]->fwd.x);
-		printf("\ty: %f\n", rt->lights[i]->fwd.y);
-		printf("\tz: %f\n", rt->lights[i]->fwd.z);
 		printf("Colour:\n");
 		printf("\tr: %d\n", rt->lights[i]->clr.r);
 		printf("\tg: %d\n", rt->lights[i]->clr.g);
 		printf("\tb: %d\n", rt->lights[i]->clr.b);
 		printf("Brightness Ratio: %f\n", rt->lights[i]->ratio);
-		printf("Radius: %f\n", rt->lights[i]->radius);
-		printf("Height: %f\n", rt->lights[i]->height);
 		printf("\n\n");
 		i++;
 	}
@@ -106,7 +100,7 @@ void	print_obj_data(t_obj *obj)
 	printf ("\tType: %c\n", obj->type);
 	printf("\tRadius: %f\n", obj->radius);
 	printf("\tWidth: %f\n", obj->width);
-	printf("\tHeight: %f\n\n", obj->height); 
+	printf("\tHeight: %f\n\n", obj->half_height); 
 	printf(RED_C"--- Position ---\n"CLEAR);
 	printf("\tx: %f\n\ty: %f\n\tz: %f\n\n", obj->pos.x, obj->pos.y, obj->pos.z);
 	printf(RED_C"--- Orientation ---\n"CLEAR);
@@ -120,8 +114,8 @@ void	print_data_to_screen(t_data *rt)
 
 	char o[150], c[150], ca[150], cb[150], cc[150], r[150], r2[150];
 
-	int x = 600;
-	int y = 600;
+	int x = 400;
+	int y = 400;
 
 	/* Object 0 */
 	sprintf(o, "pos: x: %f y: %f z: %f", rt->objs[0]->pos.x, rt->objs[0]->pos.y, rt->objs[0]->pos.z);
