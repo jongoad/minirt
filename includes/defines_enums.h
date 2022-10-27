@@ -22,11 +22,12 @@
 # define PI 3.14159265359f
 
 /* Light Defines */
-# define LIGHT_INTENSITY 2
+# define LIGHT_INTENSITY 3.0F
 # define LIGHT_RADIUS	1.1F
 
-/* Flag Defines */
+/* Object Defines */
 # define NO_HIT -1
+# define OBJ_ROT_RATE (PI)/8
 
 /* Camera Defines */
 #define CAM_ROT_RATE 45.0f
@@ -42,6 +43,16 @@
 /****************************/
 /*          Enums           */
 /****************************/
+
+/* Bash colors for terminal printing */
+# define BASH_BLACK	 "\033[0;30m"
+# define BASH_RED	 "\033[1;31m"
+# define BASH_GREEN	 "\033[0;32m"
+# define BASH_YELLOW "\033[0;33m"
+# define BASH_BLUE	 "\033[0;34m"
+# define BASH_PURPLE "\033[0;35m"
+# define BASH_CYAN	 "\033[0;36m"
+# define BASH_RESET	 "\033[0m"
 
 /* Colour Codes */
 typedef enum e_colors
@@ -73,5 +84,12 @@ typedef enum e_vec_types
 	T_VEC	= 'v',
 	T_POINT	= 'p'
 }	e_vec_types;
+
+typedef enum e_rot_axes
+{
+	X_ROT = 0,
+	Y_ROT = 1,
+	Z_ROT = 2
+}	e_rot_axes;
 
 #endif	//DEFINES_ENUMS_H_

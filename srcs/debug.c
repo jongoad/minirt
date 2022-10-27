@@ -89,8 +89,6 @@ void	print_cam_data(t_data *rt)
 	printf("x: %f\ny: %f\nz: %f\n\n", rt->cam.forward.x, rt->cam.forward.y, rt->cam.forward.z);
 	printf(RED_C"--- Other ---\n"CLEAR);
 	printf("FOV: %d\n", rt->cam.fov);
-	printf("Near Clip: %f\n", rt->cam.near);
-	printf("Far Clip: %f\n\n", rt->cam.far);
 }
 
 /* Print out current data for an individual object */

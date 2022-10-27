@@ -26,15 +26,12 @@ bool	hit_sphere(t_ray_vec3 *r, t_obj *o, t_hit_rec *rec)
 			return false;
 		rec->inside_surface = true;
     }
-	if (q.root < rec->t) {
-		rec->hit_anything = true;
-		rec->t = q.root;
-		rec->p = ray_at(r, rec->t);
-		rec->normal = div_vec3(sub_vec3(rec->p, o->pos), o->radius);
-		rec->color = o->clr;
-    	return true;
-	}
-	return false;
+	rec->hit_anything = true;
+	rec->t = q.root;
+	rec->p = ray_at(r, rec->t);
+	rec->normal = div_vec3(sub_vec3(rec->p, o->pos), o->radius);
+	rec->color = o->clr;
+	return true;
 }
 
 bool	hit_plane(t_ray_vec3 *r, t_obj *o, t_hit_rec *rec)
@@ -88,18 +85,9 @@ bool	hit_cylinder_caps(t_ray_vec3 *r, t_obj *o, t_hit_rec *rec)
 	return (false); 
 }
 
-int	sign(float f)
-{
-	if (f < 0)
-		return (-1);
-	else if (f == 0)
-		return (0);
-	return (1);
-}
-
-
 /** Formula for body intersection found at 
- *  https://hugi.scene.org/online/hugi24/coding%20graphics%20chris%20dragan%20raytracing%20shapes.htm
+ *  https://hugi.scene.org/online/hugi24/ \
+ * 	coding%20graphics%20chris%20dragan%20raytracing%20shapes.htm
 **/ 
 bool	hit_cylinder_body(t_ray_vec3 *r, t_obj *o, t_hit_rec *rec)
 {
@@ -112,19 +100,15 @@ bool	hit_cylinder_body(t_ray_vec3 *r, t_obj *o, t_hit_rec *rec)
 	oc = sub_vec3(r->orig, o->pos);
 	dir_x_fwd = dot_vec3(r->dir, o->fwd);
 	oc_x_fwd = dot_vec3(oc, o->fwd);
-
 	q.a = dot_vec3(r->dir, r->dir) - dir_x_fwd * dir_x_fwd;
 	q.half_b = dot_vec3(r->dir, oc) - dir_x_fwd * oc_x_fwd;
 	q.c = dot_vec3(oc, oc) - oc_x_fwd * oc_x_fwd - o->radius * o->radius;
-
 	q.discriminant = q.half_b * q.half_b - q.a * q.c;
     if (q.discriminant < 0)
         return false;
     q.sqrtd = sqrtf(q.discriminant);
     q.root = (-q.half_b - q.sqrtd) / q.a;
-
 	dist = dir_x_fwd * q.root + oc_x_fwd;
-
 	if (q.root < T_MIN || q.root > rec->t || fabs(dist) > o->half_height)
 	{
         q.root = (-q.half_b + q.sqrtd) / q.a;
@@ -133,16 +117,12 @@ bool	hit_cylinder_body(t_ray_vec3 *r, t_obj *o, t_hit_rec *rec)
 			return false;
 		rec->inside_surface = true;
 	}
-
-	if (q.root < rec->t) {
-		rec->hit_anything = true;
-		rec->t = q.root;
-		rec->p = ray_at(r, rec->t);
-		rec->color = o->clr;
-		rec->normal = unit_vec3(sub_vec3(sub_vec3(rec->p, o->pos), mult_vec3(o->fwd, dist)));
-		return true;
-	}
-	return false;
+	rec->hit_anything = true;
+	rec->t = q.root;
+	rec->p = ray_at(r, rec->t);
+	rec->color = o->clr;
+	rec->normal = unit_vec3(sub_vec3(sub_vec3(rec->p, o->pos), mult_vec3(o->fwd, dist)));
+	return true;
 }
 
 bool	hit_cylinder(t_ray_vec3 *r, t_obj *o, t_hit_rec *rec)
@@ -159,7 +139,8 @@ bool	hit_cylinder(t_ray_vec3 *r, t_obj *o, t_hit_rec *rec)
 
 
 /** Formula for body intersection found at 
- *  https://hugi.scene.org/online/hugi24/coding%20graphics%20chris%20dragan%20raytracing%20shapes.htm
+ *  https://hugi.scene.org/online/hugi24/ \
+ * 	coding%20graphics%20chris%20dragan%20raytracing%20shapes.htm
 **/ 
 bool	hit_cone(t_ray_vec3 *r, t_obj *o, t_hit_rec *rec)
 {
@@ -206,10 +187,7 @@ bool	hit_cone(t_ray_vec3 *r, t_obj *o, t_hit_rec *rec)
 		rec->t = q.root;
 		rec->p = ray_at(r, rec->t);
 		rec->color = o->clr;
-		// rec->normal = unit_vec3(sub_vec3(sub_vec3(rec->p, o->pos), mult_vec3(o->fwd, dist)));
-		// N = nrm( P-C-V*m - V*m*k*k )
    		rec->normal = unit_vec3( sub_vec3(sub_vec3(rec->p, o->pos), mult_vec3(mult_vec3(o->fwd, dist), angle_ofs)));
-
 		return true;
 	}
 	return false;

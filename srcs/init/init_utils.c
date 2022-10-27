@@ -9,7 +9,7 @@ void	init_color(t_color *clr, char *input)
 	clr->r = ft_atoi(split[0]);
 	clr->g = ft_atoi(split[1]);
 	clr->b = ft_atoi(split[2]);
-	clr->weight = 1;
+	// clr->weight = 1;
 	ft_free_split(split);
 }
 

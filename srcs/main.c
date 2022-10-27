@@ -30,13 +30,12 @@ int	main(int argc, char **argv)
 	
 	set_hooks(rt);
 	cam_init(rt);
-	print_scene_after_init(rt);
-	cam_calc_view(rt);
-	cam_calc_project(rt);
-	cam_generate_rays(rt);
+	// print_scene_after_init(rt);
+
+	cam_recalc(rt);
 
 	/* Preliminary render before entering main loop */
-	render_scene(rt, rt->objs[0]);
+	render_scene(rt);
 
 	/* Enter into main loop */
 	mlx_loop(rt->mlx_ptr);

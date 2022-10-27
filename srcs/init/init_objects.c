@@ -15,8 +15,6 @@ void	init_camera(t_data *rt, char **input, int obj_nb)
 	(void)obj_nb;
 	init_float_triplet(&rt->cam.pos, input[1]);					/* Init camera position */
 	init_float_triplet(&rt->cam.forward, input[2]);				/* Init camera orientation */
-	init_float_triplet(&rt->cam.aim, input[2]);				/* Init camera orientation */
-
 	rt->cam.fov = ft_atoi(input[3]);							/* Init camera FOV */
 }
 
@@ -89,5 +87,6 @@ void	init_cylinder(t_data *rt, char **input, int obj_nb)
 
 
 	rt->objs[obj_nb]->hit = hit_cylinder;
+	/* Turn this on to test for cones */
 	// rt->objs[obj_nb]->hit = hit_cone;
 }

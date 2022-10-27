@@ -1,8 +1,7 @@
 #include "minirt.h"
 
-int	apply_point_lights(t_data *rt, t_hit_rec *rec, int color)
+t_color	apply_point_lights(t_data *rt, t_hit_rec *rec, t_color color)
 {
-	t_vec3		vcolor; 
 	t_ray_vec3	pt_to_light;
 	t_hit_rec	rec2;
 	t_vec3		diff;
@@ -10,7 +9,6 @@ int	apply_point_lights(t_data *rt, t_hit_rec *rec, int color)
 	double		t;
 	int			i;
 
-	//FIXME: to remove
 	i = -1;
 	while (++i < rt->nb_lights)
 	{
@@ -27,10 +25,9 @@ int	apply_point_lights(t_data *rt, t_hit_rec *rec, int color)
 			continue;
 		t = cos_vec3(rec->normal, diff) * LIGHT_INTENSITY;
 		t /= (dist_to_light + 1.0F);
-		vcolor = int_to_vec3(color);
-		color = vec3_to_color(lerp_vec3(vcolor, color_to_vec3(rt->lights[i]->clr), t));
+		color = lerp_color(color, rt->lights[i]->clr, t);
 	}
-	return color;
+	return (color);
 }
 
 bool	hit_light(t_ray_vec3 *r, t_obj *l, t_hit_rec *rec)
@@ -39,7 +36,7 @@ bool	hit_light(t_ray_vec3 *r, t_obj *l, t_hit_rec *rec)
 	return (hit_plane(r, l, rec));
 }
 
-int	apply_light_halos(t_data *rt, t_ray_vec3 *r, t_hit_rec *rec, int color)
+t_color	apply_light_halos(t_data *rt, t_ray_vec3 *r, t_hit_rec *rec, t_color color)
 {
 	t_hit_rec		rec2;
 	int				i;
@@ -56,13 +53,8 @@ int	apply_light_halos(t_data *rt, t_ray_vec3 *r, t_hit_rec *rec, int color)
 			dist = length_vec3(sub_vec3(rt->lights[i]->pos, rec2.p));
 			dist += 1.0F;
 			dist *= dist;
-			color = vec3_to_color(lerp_vec3(int_to_vec3(color), color_to_vec3(rt->lights[i]->clr), 1 / dist));
-			// if (dist * dist < LIGHT_RADIUS
-			// 	&& (!rec->hit_anything || (rec->hit_anything && rec2.t < rec->t)))
-			// 	color = color_to_int(rt->lights[i]->clr);
-			// else if (rec->hit_anything == false || (dist * dist < LIGHT_RADIUS && rec2.t < rec->t))
-				// color = vec3_to_color(lerp_vec3(int_to_vec3(color), color_to_vec3(rt->lights[i]->clr), 1 / dist));
+			color = lerp_color(color, rt->lights[i]->clr, 1 / dist);
 		}
 	}
-	return color;
+	return (color);
 }
