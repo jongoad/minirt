@@ -1,7 +1,7 @@
 #include "minirt.h"
 #include "hooks.h"
 
-static int	handle_key_press_hook_rt_one_weekend(int keysym, t_data *rt);
+static int	handle_key_press_objects(int keysym, t_data *rt);
 
 int	handle_key_release_hook(int keysym, t_data *rt)
 {
@@ -43,89 +43,34 @@ int	handle_key_press_hook(int keysym, t_data *rt)
 		cam_recalc(rt);
 		render_scene(rt, rt->objs[0]);
 	}
-
-	handle_key_press_hook_rt_one_weekend(keysym, rt);
-
+	else if (rt->selected_obj_id != NO_HIT)
+		handle_key_press_objects(keysym, rt);
 	return (0);
 }
 
-// int	handle_key_press_hook(int keysym, t_data *rt)
-// {
-// 	return (handle_key_press_hook_rt_one_weekend(keysym, rt));
-// }
-
-
-
-static int	handle_key_press_hook_rt_one_weekend(int keysym, t_data *rt)
+static int	handle_key_press_objects(int keysym, t_data *rt)
 {
-	if (rt->cam.is_move)
-		return (0);
-	if (keysym == NUMPAD2 || keysym == KEY_S)		/* Move backwards */
-	{
-		if (rt->selected_obj_id != NO_HIT)
-		{
-			rt->objs[rt->selected_obj_id]->pos.z -= 0.5F;
-			printf("pos.z = %f\n", rt->objs[rt->selected_obj_id]->pos.z);
-		}
-	}
-	else if (keysym == NUMPAD8 || keysym == KEY_W)		/* Move forwards */
-	{
-		if (rt->selected_obj_id != NO_HIT)
-		{
-			rt->objs[rt->selected_obj_id]->pos.z += 0.5F;
-			printf("pos.z = %f\n", rt->objs[rt->selected_obj_id]->pos.z);
-		}
-	}
-	else if (keysym == KEY_RIGHT || keysym == KEY_D)		/* Move right */
-	{
-		if (rt->selected_obj_id != NO_HIT)
-		{
-			rt->objs[rt->selected_obj_id]->pos.x -= 0.5F;
-			printf("pos.x = %f\n", rt->objs[rt->selected_obj_id]->pos.x);
-		}
-	}
-	else if (keysym == KEY_LEFT || keysym == KEY_A)		/* Move left */
-	{
-		if (rt->selected_obj_id != NO_HIT)
-		{
-			rt->objs[rt->selected_obj_id]->pos.x += 0.5F;
-			printf("pos.x = %f\n", rt->objs[rt->selected_obj_id]->pos.x);
-		}
-	}
-	else if (keysym == KEY_UP || keysym == KEY_Q)		/* Move down */
-	{
-		if (rt->selected_obj_id != NO_HIT)
-		{
-			rt->objs[rt->selected_obj_id]->pos.y += 0.5F;
-			printf("pos.y = %f\n", rt->objs[rt->selected_obj_id]->pos.y);
-		}
-	}
-	else if (keysym == KEY_DOWN || keysym == KEY_E)		/* Move up */
-	{
-		if (rt->selected_obj_id != NO_HIT)
-		{
-			rt->objs[rt->selected_obj_id]->pos.y -= 0.5F;
-			printf("pos.y = %f\n", rt->objs[rt->selected_obj_id]->pos.y);
-		}
-	}
+	t_obj	*o;
+
+	o = rt->objs[rt->selected_obj_id];
+	if (keysym == KEY_S)		/* Move obj closer */
+		add_vec3_self(&o->pos, mult_vec3(rt->cam.forward, 2.0F));
+	else if (keysym == KEY_W)		/* Move obj further */
+		sub_vec3_self(&o->pos, mult_vec3(rt->cam.forward, 2.0F));
+	else if (keysym == KEY_RIGHT || keysym == KEY_D)		/* Move obj right */
+		add_vec3_self(&o->pos, mult_vec3(rt->cam.right, 2.0F));
+	else if (keysym == KEY_LEFT || keysym == KEY_A)		/* Move obj left */
+		sub_vec3_self(&o->pos, mult_vec3(rt->cam.right, 2.0F));
+	else if (keysym == KEY_UP || keysym == KEY_E)		/* Move obj up */
+		add_vec3_self(&o->pos, mult_vec3(rt->cam.up, 2.0F));
+	else if (keysym == KEY_DOWN || keysym == KEY_Q)		/* Move obj down */
+		sub_vec3_self(&o->pos, mult_vec3(rt->cam.up, 2.0F));
 	else if (keysym == KEY_PLUS || keysym == NUMPAD_PLUS)
-	{
-		if (rt->selected_obj_id != NO_HIT)
-		{
-			rt->objs[rt->selected_obj_id]->radius += 0.01;
-		}
-	}
+		o->radius += 0.01;
 	else if (keysym == KEY_MINUS || keysym == NUMPAD_MINUS)
-	{
-		if (rt->selected_obj_id != NO_HIT)
-		{
-			if (rt->objs[rt->selected_obj_id]->radius > 0.05F)
-				rt->objs[rt->selected_obj_id]->radius -= 0.01;
-		}
-	}
+		o->radius -= 0.01;
 	else
 		return (0);
-
 	cam_recalc(rt);
 	render_scene(rt, rt->objs[0]);
 	return (0);
