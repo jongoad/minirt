@@ -14,18 +14,6 @@ bool	hit_anything(t_data *rt, t_ray_vec3 *pt_to_light, t_hit_rec *rec)
 	return (false);
 }
 
-void	objects_apply_inverse_view_matrix(t_data *rt)
-{
-	int		i;
-
-	i = -1;
-	while (++i < rt->nb_objs)
-		rt->objs[i]->pos = vec4_to_vec3(mat_mult_vec4(vec3_to_vec4(rt->objs[i]->pos_ref, T_POINT), rt->cam.view));
-	i = -1;
-	while (++i < rt->nb_lights)
-		rt->lights[i]->pos = vec4_to_vec3(mat_mult_vec4(vec3_to_vec4(rt->lights[i]->pos_ref, T_POINT), rt->cam.view));
-}
-
 void	render_scene(t_data *rt, t_obj *sp)
 {
     // Render
@@ -40,8 +28,6 @@ void	render_scene(t_data *rt, t_obj *sp)
 
 	// To traverse objs array
 	int		i_obj;
-	// FIXME: might be broken ? question mark
-	// objects_apply_inverse_view_matrix(rt);
 
 	
 	r.orig = rt->cam.pos;

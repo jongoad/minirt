@@ -116,38 +116,24 @@ typedef struct s_ambient
 typedef struct s_camera
 {
 	t_vec3		pos;
-	/* Camera rotation values */
+	int			fov;					/* Field of view in degrees */
+
+	t_mat4		m_pitch;
+	t_mat4		m_yaw;
 	float		pitch;
 	float		yaw;
-
-	/* Perspective data */
-	float		near;
-	float		far;
-	int			fov;					/* Field of view in degrees */
-	
 	t_vec3		prev_mouse;
 
 	/* Camera direction vectors */
-	t_vec3		forward;				/* Direction camera is pointing */
+	t_vec3		forward;
 	t_vec3		up;						/* Default up vector (0, 1, 0) */
 	t_vec3		right;
-
-	t_vec3		aim;				//Testing
-	/* Camera transformation matrices */
-	t_mat4		project;
-	t_mat4		inv_project;
-	t_mat4		view;
-	t_mat4		inv_view;
-
-	/* Pre-cached vector array */
-	t_vec3		rays[IMG_H][IMG_W];
-
-	/* Camera movement vectors */
-	t_vec3		translate;			/* Might want this */
-	
-	/* Current camera data */
-	
+	t_vec3		rays[IMG_H][IMG_W];			/* Pre-cached vector array */
 	bool		is_move;
+
+
+	float		view_w;
+	float		view_h;
 
 }	t_camera;
 

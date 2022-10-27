@@ -67,53 +67,37 @@ void	init_scene(t_data *rt)
 	}
 }
 
-void	init_cam_angles(t_data *rt, t_vec3 up, t_vec3 right)
+/* Round a float at a specified precision */
+float roundf_precision(float n, float p)
 {
-	/* Init tilt (x-rotatation) */
-	double dprod = (rt->cam.forward.y * up.y) + (rt->cam.forward.z * up.z);
-	double mag_fwd = sqrt(pow(rt->cam.forward.y, 2) + pow(rt->cam.forward.z, 2));
-	double mag_up = sqrt(pow(up.y, 2) + pow(up.z, 2));
+	double res;
 
-	//Solution for looking straight up or straight down
-	if (mag_fwd == 0.0)
-	{
-		dprod = (rt->cam.forward.y * up.y) + (rt->cam.forward.x * up.x);
-		mag_fwd = sqrt(pow(rt->cam.forward.y, 2) + pow(rt->cam.forward.x, 2));
-	}
-	rt->cam.pitch = 90 - (acos(dprod / (mag_fwd * mag_up)) * (180 / PI));
-
-	rt->cam.pitch *= -1.0f; //Pitch rotation up is actually a negative rot!!!!
-
-	/* Init pan (y-rotation) */
-	dprod = (rt->cam.forward.x * right.x) + (rt->cam.forward.z * right.z);
-	mag_fwd = sqrt(pow(rt->cam.forward.x, 2) + pow(rt->cam.forward.z, 2));
-	double mag_right = sqrt(pow(right.x, 2) + pow(right.z, 2));
-	rt->cam.yaw = 90 - (acos(dprod / (mag_fwd * mag_right)) * (180 / PI));
-
-
-	/* Test for sign */
-	/* FIXME - Figure out a better solution for this dumpster fire */
-
-	t_vec3 tmp = vec3(rt->cam.forward.x, 0, rt->cam.forward.z);
-
-	double test = cos_vec3(tmp, vec3(0,0,-1));
-
-	printf("test: %f\n", test);
-
-	//This test is no reliable if the y component of the camera orientation is non-zero
-
-	//We can effectively round the float if we multiply it by a value, cast to int, then cast back 
-	//to float and divide by the same number
-	if (test == -1.000000119209300208922286401502788066864013671875)
-		rt->cam.yaw = 180;
-	else if (rt->cam.yaw > 0 && test < 0)
-		rt->cam.yaw += 90;
-	else if (rt->cam.yaw < 0 && test < 0)
-		rt->cam.yaw -= 90;
+	res = round(n * p);
+	return (res / p);
 }
 
+/* Get initial camera angles from orientation vector */
+void	init_cam_angles(t_data *rt)
+{
+	/* Init pitch */
+	if (sqrt(pow(rt->cam.forward.y, 2) + pow(rt->cam.forward.z, 2)) == 0.0)
+		rt->cam.pitch = (90 - (acos(rt->cam.forward.y / (sqrt(pow(rt->cam.forward.y, 2)
+			+ pow(rt->cam.forward.x, 2)))) * (180 / PI))) * -1.0f;
+	else
+		rt->cam.pitch = (90 - (acos(rt->cam.forward.y / (sqrt(pow(rt->cam.forward.y, 2)
+			+ pow(rt->cam.forward.z, 2)))) * (180 / PI))) * -1.0f;
+	rt->cam.pitch = roundf_precision(rt->cam.pitch, 5);
 
-
+	/* Init yaw */
+	rt->cam.yaw = acos(-rt->cam.forward.z / (sqrt(pow(rt->cam.forward.x, 2)
+		+ pow(rt->cam.forward.z, 2)))) * (180 / PI);
+	rt->cam.yaw = roundf_precision(rt->cam.yaw, 5);
+	t_vec3 cross_test = cross_vec3(vec3(0,0,-1),
+		unit_vec3(vec3(rt->cam.forward.x, 0, rt->cam.forward.z)));
+	float res = roundf_precision(cross_test.y, 5);
+	if (res > 0)		/* Vector falls on -x side */
+		rt->cam.yaw = 360 - rt->cam.yaw;
+}
 
 /* Split input and initialize objects */
 void	rt_init(t_data *rt, char *filepath)
@@ -125,5 +109,5 @@ void	rt_init(t_data *rt, char *filepath)
 	rt_init_img(rt);
 	init_scene(rt);
 	parse_free(&rt->parse);
-	init_cam_angles(rt, vec3(0,1,0), vec3(1,0,0));
+	init_cam_angles(rt);
 }
