@@ -64,10 +64,7 @@ bool	hit_cylinder_caps(t_ray_vec3 *r, t_obj *o, t_hit_rec *rec)
 	static t_obj		cap1;
 	static t_obj		cap2;
 	static t_hit_rec	rec2;
-	bool				hit_anything;
 
-	hit_anything = false;
-	unit_vec3_self(&(o->fwd));
 	/* First cap */
 	cap1.fwd = o->fwd;
 	cap1.pos = add_vec3(o->pos, mult_vec3(cap1.fwd, o->half_height));
@@ -80,19 +77,15 @@ bool	hit_cylinder_caps(t_ray_vec3 *r, t_obj *o, t_hit_rec *rec)
 
 	/* Init temp hit record */
 	rec2 = *rec;
-	rec2.t = T_MAX;
+	rec2.t = rec->t;
 	rec2.hit_anything = false;
-	if (hit_plane(r, &cap1, &rec2) && rec2.t < rec->t && length_vec3(sub_vec3(rec2.p, cap1.pos)) <= o->radius)
+	if ((hit_plane(r, &cap1, &rec2) && length_vec3(sub_vec3(rec2.p, cap1.pos)) <= o->radius)
+		|| (hit_plane(r, &cap2, &rec2) && length_vec3(sub_vec3(rec2.p, cap2.pos)) <= o->radius))
 	{
-		hit_anything = true;
 		*rec = rec2;
+		return (true);
 	}
-	if (hit_plane(r, &cap2, &rec2) && rec2.t < rec->t && length_vec3(sub_vec3(rec2.p, cap2.pos)) <= o->radius)
-	{
-		hit_anything = true;
-		*rec = rec2;
-	}
-	return (hit_anything); 
+	return (false); 
 }
 
 int	sign(float f)
@@ -202,7 +195,9 @@ bool	hit_cone(t_ray_vec3 *r, t_obj *o, t_hit_rec *rec)
         q.root = (-q.half_b + q.sqrtd) / q.a;
 		dist = dir_x_fwd * q.root + oc_x_fwd;
 		if (q.root < T_MIN || q.root > rec->t || fabs(dist) > o->half_height)
+		{
 			return false;
+		}
 		rec->inside_surface = true;
 	}
 
@@ -211,7 +206,10 @@ bool	hit_cone(t_ray_vec3 *r, t_obj *o, t_hit_rec *rec)
 		rec->t = q.root;
 		rec->p = ray_at(r, rec->t);
 		rec->color = o->clr;
-		rec->normal = unit_vec3(sub_vec3(sub_vec3(rec->p, o->pos), mult_vec3(o->fwd, dist)));
+		// rec->normal = unit_vec3(sub_vec3(sub_vec3(rec->p, o->pos), mult_vec3(o->fwd, dist)));
+		// N = nrm( P-C-V*m - V*m*k*k )
+   		rec->normal = unit_vec3( sub_vec3(sub_vec3(rec->p, o->pos), mult_vec3(mult_vec3(o->fwd, dist), angle_ofs)));
+
 		return true;
 	}
 	return false;

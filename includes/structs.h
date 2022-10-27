@@ -157,8 +157,6 @@ typedef struct s_obj
 	/* Object reference data*/
 	t_vec3		pos;
 	t_vec3		fwd; 			/* for cylinders, planes */
-	t_vec3		ccap; 			/* for cylinders */
-	float		mag_ccap; 		/* for cylinders */
 	t_color		clr;			/* Colour data for object */
 	float		ratio;			/* Brightness ratio for light objects */
 	float		width;			/* for cylinders */
@@ -180,8 +178,8 @@ typedef struct s_obj
 	/* Object transformation */
 	t_vec3		up;
 	t_vec3		right;
-	t_mat4		l_to_w;
-	t_mat4		w_to_l;
+	t_mat4		l_to_w;		/* Local to world transforms matrix */
+	t_mat4		w_to_l;		/* World to local transforms matrix */
 
 	/* Function pointers for ray collision per object */
 	bool		(*hit)(t_ray_vec3 *r, t_obj *o, t_hit_rec *rec);	/* Function ptr for any object type */

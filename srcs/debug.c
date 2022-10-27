@@ -69,17 +69,11 @@ void	print_scene_after_init(t_data *rt)
 		printf("\tx: %f\n", rt->lights[i]->pos.x);
 		printf("\ty: %f\n", rt->lights[i]->pos.y);
 		printf("\tz: %f\n", rt->lights[i]->pos.z);
-		printf("Orientation:\n");
-		printf("\tx: %f\n", rt->lights[i]->fwd.x);
-		printf("\ty: %f\n", rt->lights[i]->fwd.y);
-		printf("\tz: %f\n", rt->lights[i]->fwd.z);
 		printf("Colour:\n");
 		printf("\tr: %d\n", rt->lights[i]->clr.r);
 		printf("\tg: %d\n", rt->lights[i]->clr.g);
 		printf("\tb: %d\n", rt->lights[i]->clr.b);
 		printf("Brightness Ratio: %f\n", rt->lights[i]->ratio);
-		printf("Radius: %f\n", rt->lights[i]->radius);
-		printf("Height: %f\n", rt->lights[i]->half_height);
 		printf("\n\n");
 		i++;
 	}
