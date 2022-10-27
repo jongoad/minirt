@@ -70,12 +70,12 @@ bool	hit_cylinder_caps(t_ray_vec3 *r, t_obj *o, t_hit_rec *rec)
 	unit_vec3_self(&(o->fwd));
 	/* First cap */
 	cap1.fwd = o->fwd;
-	cap1.pos = add_vec3(o->pos, mult_vec3(cap1.fwd, o->height / 2));
+	cap1.pos = add_vec3(o->pos, mult_vec3(cap1.fwd, o->half_height));
 	cap1.clr = o->clr;
 
 	/* Second cap */
 	cap2.fwd = negate_vec3(o->fwd);
-	cap2.pos = add_vec3(o->pos, mult_vec3(cap2.fwd, o->height / 2));
+	cap2.pos = add_vec3(o->pos, mult_vec3(cap2.fwd, o->half_height));
 	cap2.clr = o->clr;
 
 	/* Init temp hit record */
@@ -132,11 +132,11 @@ bool	hit_cylinder_body(t_ray_vec3 *r, t_obj *o, t_hit_rec *rec)
 
 	dist = dir_x_fwd * q.root + oc_x_fwd;
 
-	if (q.root < T_MIN || q.root > rec->t || fabs(dist) > o->height / 2)
+	if (q.root < T_MIN || q.root > rec->t || fabs(dist) > o->half_height)
 	{
         q.root = (-q.half_b + q.sqrtd) / q.a;
 		dist = dir_x_fwd * q.root + oc_x_fwd;
-		if (q.root < T_MIN || q.root > rec->t || fabs(dist) > o->height / 2)
+		if (q.root < T_MIN || q.root > rec->t || fabs(dist) > o->half_height)
 			return false;
 		rec->inside_surface = true;
 	}
@@ -176,18 +176,18 @@ bool	hit_cone(t_ray_vec3 *r, t_obj *o, t_hit_rec *rec)
 	double					dir_x_fwd;
 	double					oc_x_fwd;
 	double					half_tan;
-	double					wtf;	//	represents 1 + half_tan^2
+	double					angle_ofs;	//	represents 1 + half_tan^2
 
 	half_tan = tanf(PI / 8);
 
 	oc = sub_vec3(r->orig, o->pos);
 	dir_x_fwd = dot_vec3(r->dir, o->fwd);
 	oc_x_fwd = dot_vec3(oc, o->fwd);
-	wtf = 1 + half_tan * half_tan;
+	angle_ofs = 1 + half_tan * half_tan;
 
-	q.a = dot_vec3(r->dir, r->dir) - wtf * dir_x_fwd * dir_x_fwd;
-	q.half_b = dot_vec3(r->dir, oc) - wtf * dir_x_fwd * oc_x_fwd;
-	q.c = dot_vec3(oc, oc) - wtf * oc_x_fwd * oc_x_fwd;
+	q.a = dot_vec3(r->dir, r->dir) - angle_ofs * dir_x_fwd * dir_x_fwd;
+	q.half_b = dot_vec3(r->dir, oc) - angle_ofs * dir_x_fwd * oc_x_fwd;
+	q.c = dot_vec3(oc, oc) - angle_ofs * oc_x_fwd * oc_x_fwd;
 
 	q.discriminant = q.half_b * q.half_b - q.a * q.c;
     if (q.discriminant < 0)
@@ -197,11 +197,11 @@ bool	hit_cone(t_ray_vec3 *r, t_obj *o, t_hit_rec *rec)
 
 	dist = dir_x_fwd * q.root + oc_x_fwd;
 
-	if (q.root < T_MIN || q.root > rec->t || fabs(dist) > o->height / 2)
+	if (q.root < T_MIN || q.root > rec->t || fabs(dist) > o->half_height)
 	{
         q.root = (-q.half_b + q.sqrtd) / q.a;
 		dist = dir_x_fwd * q.root + oc_x_fwd;
-		if (q.root < T_MIN || q.root > rec->t || fabs(dist) > o->height / 2)
+		if (q.root < T_MIN || q.root > rec->t || fabs(dist) > o->half_height)
 			return false;
 		rec->inside_surface = true;
 	}

@@ -72,7 +72,8 @@ void	init_cylinder(t_data *rt, char **input, int obj_nb)
 	init_float_triplet(&rt->objs[obj_nb]->fwd, input[2]);	/* Init cylinder orientation */
 	unit_vec3_self(&rt->objs[obj_nb]->fwd);					/* Normalize cylinder orientation */
 	rt->objs[obj_nb]->radius = atof(input[3]) / 2;			/* Init cylinder radius */
-	rt->objs[obj_nb]->height = atof(input[4]);				/* Init cylinder height */
+	rt->objs[obj_nb]->half_height = atof(input[4]);			/* Init cylinder height */
+	rt->objs[obj_nb]->half_height /= 2;						/* Only (height / 2) is used */
 	init_color(&rt->objs[obj_nb]->clr, input[5]);			/* Init cylinder color */
 
 	// Added by Ismael, to test local_to_world matrices;
@@ -87,8 +88,8 @@ void	init_cylinder(t_data *rt, char **input, int obj_nb)
 	o->w_to_l = mat_inv(o->l_to_w, 4);
 
 	o->ccap = sub_vec3(
-		add_vec3(o->pos, mult_vec3(o->fwd, o->height)),
-		sub_vec3(o->pos, mult_vec3(o->fwd, o->height)));
+		add_vec3(o->pos, mult_vec3(o->fwd, o->half_height)),
+		sub_vec3(o->pos, mult_vec3(o->fwd, o->half_height)));
 	o->mag_ccap = dot_vec3(o->ccap, o->ccap);
 
 

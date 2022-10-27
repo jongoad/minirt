@@ -25,7 +25,7 @@ int	apply_point_lights(t_data *rt, t_hit_rec *rec, int color)
 		// Test for hard shadows, correct to prevent shadow acne
 		if (hit_anything(rt, &pt_to_light, &rec2) && fabs(rec2.t - dist_to_light) > EPSILON)
 			continue;
-		t = cos_vec3(rec->normal, diff);
+		t = cos_vec3(rec->normal, diff) * LIGHT_INTENSITY;
 		t /= (dist_to_light + 1.0F);
 		vcolor = int_to_vec3(color);
 		color = vec3_to_color(lerp_vec3(vcolor, color_to_vec3(rt->lights[i]->clr), t));
@@ -56,11 +56,12 @@ int	apply_light_halos(t_data *rt, t_ray_vec3 *r, t_hit_rec *rec, int color)
 			dist = length_vec3(sub_vec3(rt->lights[i]->pos, rec2.p));
 			dist += 1.0F;
 			dist *= dist;
-			if (dist * dist < LIGHT_RADIUS
-				&& (!rec->hit_anything || (rec->hit_anything && rec2.t < rec->t)))
-				color = color_to_int(rt->lights[i]->clr);
-			else if (rec->hit_anything == false || (dist * dist < LIGHT_RADIUS && rec2.t < rec->t))
-				color = vec3_to_color(lerp_vec3(int_to_vec3(color), color_to_vec3(rt->lights[i]->clr), 1 / dist));
+			color = vec3_to_color(lerp_vec3(int_to_vec3(color), color_to_vec3(rt->lights[i]->clr), 1 / dist));
+			// if (dist * dist < LIGHT_RADIUS
+			// 	&& (!rec->hit_anything || (rec->hit_anything && rec2.t < rec->t)))
+			// 	color = color_to_int(rt->lights[i]->clr);
+			// else if (rec->hit_anything == false || (dist * dist < LIGHT_RADIUS && rec2.t < rec->t))
+				// color = vec3_to_color(lerp_vec3(int_to_vec3(color), color_to_vec3(rt->lights[i]->clr), 1 / dist));
 		}
 	}
 	return color;

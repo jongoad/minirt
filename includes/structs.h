@@ -163,7 +163,7 @@ typedef struct s_obj
 	float		ratio;			/* Brightness ratio for light objects */
 	float		width;			/* for cylinders */
 	float		radius;			/* for spheres */
-	float		height;			/* for cylinders */
+	float		half_height;			/* for cylinders */
 	
 	/* Object current data */
 	t_vec3		pos_ref; //c_center

@@ -57,7 +57,7 @@ void	print_scene_after_init(t_data *rt)
 		printf("\tb: %d\n", rt->objs[i]->clr.b);
 		printf("Brightness Ratio: %f\n", rt->objs[i]->ratio);
 		printf("Radius: %f\n", rt->objs[i]->radius);
-		printf("Height: %f\n", rt->objs[i]->height);
+		printf("Height: %f\n", rt->objs[i]->half_height);
 		printf("\n\n");
 		i++;
 	}
@@ -79,7 +79,7 @@ void	print_scene_after_init(t_data *rt)
 		printf("\tb: %d\n", rt->lights[i]->clr.b);
 		printf("Brightness Ratio: %f\n", rt->lights[i]->ratio);
 		printf("Radius: %f\n", rt->lights[i]->radius);
-		printf("Height: %f\n", rt->lights[i]->height);
+		printf("Height: %f\n", rt->lights[i]->half_height);
 		printf("\n\n");
 		i++;
 	}
@@ -106,7 +106,7 @@ void	print_obj_data(t_obj *obj)
 	printf ("\tType: %c\n", obj->type);
 	printf("\tRadius: %f\n", obj->radius);
 	printf("\tWidth: %f\n", obj->width);
-	printf("\tHeight: %f\n\n", obj->height); 
+	printf("\tHeight: %f\n\n", obj->half_height); 
 	printf(RED_C"--- Position ---\n"CLEAR);
 	printf("\tx: %f\n\ty: %f\n\tz: %f\n\n", obj->pos.x, obj->pos.y, obj->pos.z);
 	printf(RED_C"--- Orientation ---\n"CLEAR);
