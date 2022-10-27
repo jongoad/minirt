@@ -1,6 +1,24 @@
 #include "minirt.h"
 #include "hooks.h"
 
+
+static void	print_selected_object_info(t_data *rt)
+{
+	if (rt->selected_obj_id == NO_HIT)
+		return ;
+	printf("You have selected a ");
+	if (rt->objs[rt->selected_obj_id]->type == T_CYL)
+		printf("cylinder.");
+	if (rt->objs[rt->selected_obj_id]->type == T_PLANE)
+		printf("plane.");
+	if (rt->objs[rt->selected_obj_id]->type == T_SPH)
+		printf("sphere.");
+	
+
+	printf(" It is object #%d. ", rt->selected_obj_id + 1);
+	printf("(Press `F1' to display keyboard controls)\n");
+}
+
 int	handle_mouse_btn_release(int button, int x, int y, t_data *rt)
 {
 	if (button == 1)
@@ -11,7 +29,7 @@ int	handle_mouse_btn_release(int button, int x, int y, t_data *rt)
 		(void)y;
 		// printf("mouse btn1 released at [%d, %d]\n", x, y);
 		rt->selected_obj_id = cast_ray_at_pixel(rt, x, y);
-		// printf("selected_obj_id = %d\n", rt->selected_obj_id);
+		print_selected_object_info(rt);
 	}
 	if (button == 2)
 		rt->cam.is_move = false;

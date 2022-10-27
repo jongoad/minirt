@@ -54,6 +54,7 @@ void	render_scene(t_data *rt, t_obj *sp)
 
 			if (rec.hit_anything)
             	pixel_color = apply_point_lights(rt, &rec, color_to_int(rec.color));
+			// pixel_color = color_to_int(rec.color);
 			if (rt->apply_light_halos == true)
 				pixel_color = apply_light_halos(rt, &r, &rec, pixel_color);
 			

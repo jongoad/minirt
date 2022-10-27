@@ -150,8 +150,8 @@ bool	hit_cylinder(t_ray_vec3 *r, t_obj *o, t_hit_rec *rec)
 	bool	hit;
 	
 	hit = false;
-	if (hit_cylinder_caps(r, o, rec))
-		hit = true;
+	// if (hit_cylinder_caps(r, o, rec))
+	// 	hit = true;
 	if (hit_cylinder_body(r, o, rec))
 		hit = true;
 	return (hit);

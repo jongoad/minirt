@@ -87,5 +87,6 @@ void	init_cylinder(t_data *rt, char **input, int obj_nb)
 
 
 	rt->objs[obj_nb]->hit = hit_cylinder;
+	/* Turn this on to test for cones */
 	// rt->objs[obj_nb]->hit = hit_cone;
 }

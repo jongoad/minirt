@@ -24,7 +24,7 @@ int	cast_ray_at_pixel(t_data *rt, int x, int y)
 		if (rt->objs[i]->hit(&r, rt->objs[i], &rec))
 		{
 			rec.obj_id = i;
-			// printf("Hit ! rec.obj_id = %d\n", rec.obj_id);
+			printf("Hit ! rec.obj_id = %d\n", rec.obj_id);
 		}
 		// printf("rec.obj_id = %d\n", rec.obj_id);
 	}

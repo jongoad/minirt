@@ -22,11 +22,12 @@
 # define PI 3.14159265359f
 
 /* Light Defines */
-# define LIGHT_INTENSITY 2
+# define LIGHT_INTENSITY 5.0F
 # define LIGHT_RADIUS	1.1F
 
-/* Flag Defines */
+/* Object Defines */
 # define NO_HIT -1
+# define OBJ_ROT_RATE (PI)/16
 
 /* Camera Defines */
 #define CAM_ROT_RATE 45.0f
@@ -73,5 +74,12 @@ typedef enum e_vec_types
 	T_VEC	= 'v',
 	T_POINT	= 'p'
 }	e_vec_types;
+
+typedef enum e_rot_axes
+{
+	X_ROT = 0,
+	Y_ROT = 1,
+	Z_ROT = 2
+}	e_rot_axes;
 
 #endif	//DEFINES_ENUMS_H_
