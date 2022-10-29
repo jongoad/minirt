@@ -22,7 +22,7 @@
 # define PI 3.14159265359f
 
 /* Light Defines */
-# define LIGHT_INTENSITY 5.0F
+# define LIGHT_INTENSITY 3.0F
 # define LIGHT_RADIUS	1.1F
 
 /* Object Defines */

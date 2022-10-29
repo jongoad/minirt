@@ -15,6 +15,8 @@ int	handle_key_release_hook(int keysym, t_data *rt)
 	}
 	else if (keysym == KEY_F1)
 		print_usage();
+	else
+		return (0);
 	return (0);
 }
 
@@ -92,7 +94,7 @@ static void	apply_rotation(t_obj *o, unsigned char rot_axis, bool rot_is_positiv
 	o->right = vec4_to_vec3(mat_mult_vec4(vec3_to_vec4(o->right, T_POINT), rot_matrices[2 * rot_axis + rot_is_positive]));
 	o->up = vec4_to_vec3(mat_mult_vec4(vec3_to_vec4(o->up, T_POINT), rot_matrices[2 * rot_axis + rot_is_positive]));
 }
-// 
+
 static int	handle_object_rotations(int keysym, t_data *rt)
 {
 	t_obj	*o;

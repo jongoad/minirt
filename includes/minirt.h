@@ -54,12 +54,12 @@ bool	hit_cone(t_ray_vec3 *r, t_obj *o, t_hit_rec *rec);
 
 /* Colors */
 t_color     int_to_color(int c);
-void    color(t_color *c);
-int     vec3_to_color(t_vec3 c);
-int     vec3_to_color_copy(t_vec3 c);
-t_vec3	int_to_vec3(int c);
-t_vec3	color_to_vec3(t_color c);
-int     color_to_int(t_color c);
+void        color(t_color *c);
+int         vec3_to_color(t_vec3 c);
+t_vec3	    int_to_vec3(int c);
+t_vec3	    color_to_vec3(t_color c);
+int         color_to_int(t_color c);
+t_color     lerp_color(t_color a, t_color b, float factor);
 
 
 /* Display */
@@ -72,12 +72,12 @@ int		cast_ray_at_pixel(t_data *rt, int x, int y);
 t_vec3	ray_at(t_ray_vec3 *r, float t);
 
 /* Rendering */
-bool	hit_anything(t_data *rt, t_ray_vec3 *pt_to_light, t_hit_rec *rec);
+bool	hit_anything(t_data *rt, t_ray_vec3 *r, t_hit_rec *rec);
 void	render_scene(t_data *rt);
 
 /* Rendering - Lights */
-int		apply_point_lights(t_data *rt, t_hit_rec *rec, int color);
-int		apply_light_halos(t_data *rt, t_ray_vec3 *r, t_hit_rec *rec, int color);
+t_color	apply_point_lights(t_data *rt, t_hit_rec *rec, t_color color);
+t_color	apply_light_halos(t_data *rt, t_ray_vec3 *r, t_hit_rec *rec, t_color color);
 
 /* Benchmarking FIXME: to remove for mandatory part */
 void	display_fps(t_data *rt, double start_time);
@@ -90,9 +90,8 @@ void	display_fps(t_data *rt, double start_time);
 void	*ft_xalloc(size_t size);
 void	exit_on_err(char *err_message);
 void	draw_background(t_img *img, int color);
-void	fill_pixel(t_img *img, int x, int y, int color);
+void	fill_pixel(t_img *img, int x, int y, t_color color);
 double	lerp(double start, double end, double curr);
-int		lerp_color(int start, float ratio);
 float	deg_to_rad(float deg);
 void	print_usage(void);
 

@@ -103,7 +103,7 @@ void	init_cam_angles(t_data *rt)
 void	rt_init(t_data *rt, char *filepath)
 {
 	// FIXME: to remove, for testing purposes
-	rt->background = lerp_color(WHITE, 0.2);
+	rt->background = lerp_color(int_to_color(BLACK), int_to_color(WHITE), 0.2);
 	rt->selected_obj_id = 0;
 	rt_init_mlx(rt, filepath);
 	rt_init_img(rt);

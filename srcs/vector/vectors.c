@@ -103,7 +103,7 @@ t_vec3  cross_vec3(t_vec3 a, t_vec3 b)
         (a.x * b.y) - (a.y * b.x));
 }
 
-t_vec3  mean_vec3( t_vec3 a, t_vec3 b )
+t_vec3  mean_vec3(t_vec3 a, t_vec3 b)
 {
     return vec3(
         (a.y + b.z) * 0.5F,
@@ -111,7 +111,7 @@ t_vec3  mean_vec3( t_vec3 a, t_vec3 b )
         (a.x + b.y) * 0.5F);
 }
 
-t_vec3  lerp_vec3( t_vec3 a, t_vec3 b, float factor )
+t_vec3  lerp_vec3(t_vec3 a, t_vec3 b, float factor)
 {
     t_vec3  diff;
     

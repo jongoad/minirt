@@ -57,10 +57,9 @@ typedef struct s_quadratic
 /* Color data */
 typedef	struct s_color
 {
-	u_int32_t	r;
-	u_int32_t	g;
-	u_int32_t	b;
-	float		weight;
+	int	r;
+	int	g;
+	int	b;
 }	t_color;
 
 /* 4x4 matrix */
@@ -246,12 +245,12 @@ typedef struct s_data
 	t_obj		**lights;
 	int			nb_lights;
 	t_vec3		ambt_light;
+	t_color		background;
 	int			nb_objs;
 	int			selected_obj_id;		/* For dynamic resizing/translation */
 	bool		apply_light_halos;		/* To activate/deactivate with a key hook */
 	int			win_h;
 	int			win_w;
-	int			background;
 }	t_data;
 
 #endif	//STRUCTS_H_
