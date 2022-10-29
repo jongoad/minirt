@@ -49,6 +49,7 @@ void	cam_recalc(t_data *rt)
 	/* Recalculate axial vectors */
 	rt->cam.forward = unit_vec3(vec4_to_vec3(mat_mult_vec4(mat_mult_vec4(vec4(0,0,-1,0), rt->cam.m_pitch), rt->cam.m_yaw)));
 	rt->cam.right = unit_vec3(cross_vec3(rt->cam.forward, rt->cam.up));
+	rt->cam.real_up = unit_vec3(cross_vec3(rt->cam.right, rt->cam.forward));
 
 	/* Generate new rays */
 	cam_generate_rays(rt);

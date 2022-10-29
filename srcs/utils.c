@@ -38,16 +38,16 @@ void	draw_background(t_img *img, int color)
 
 void	fill_pixel(t_img *img, int x, int y, t_color color)
 {
-
-	*(int *)(char *)(img->data_addr + x * img->bpp / 8 + y * img->line_len) = color_to_int(color);
+	*(int *)(char *)(img->data_addr + x * img->bpp / 8 + y * img->line_len) \
+		= color_to_int(color);
 }
 
 void	print_usage(void)
 {
 	printf("%s\n*** Object Rotations ***\n%s", BASH_CYAN, BASH_RESET);
-	printf("x axis:   NUMPAD1 // NUMPAD2\n  Toggle: NUMPAD3\n");
-	printf("y axis:   NUMPAD4 // NUMPAD5\n  Toggle: NUMPAD6\n");
-	printf("z axis:   NUMPAD7 // NUMPAD8\n  Toggle: NUMPAD9\n");
+	printf("x axis:   NUMPAD1 // NUMPAD2\n");
+	printf("y axis:   NUMPAD4 // NUMPAD5\n");
+	printf("z axis:   NUMPAD7 // NUMPAD8\n");
 	printf("Toggle All:  'R'\n");
 	printf("%s\n*** Object Translations ***\n%s", BASH_CYAN, BASH_RESET);
 	printf("x axis:   KEY_LEFT / 'A' // KEY_RIGHT / 'D'\n");

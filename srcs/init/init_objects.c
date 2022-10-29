@@ -7,6 +7,8 @@ void	init_ambient(t_data *rt, char **input, int obj_nb)
 	/*FIXME - Replace with non library string to float function */
 	rt->ambient.ratio = atof(input[1]);
 	init_color(&rt->ambient.clr, input[2]);
+	rt->ambient.scene_ambient 
+		= mult_vec3(color_to_vec3(rt->ambient.clr), rt->ambient.ratio / 255);
 } 
 
 /* Initilize camera object using parsed input data */

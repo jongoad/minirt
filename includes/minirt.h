@@ -54,12 +54,10 @@ bool	hit_cone(t_ray_vec3 *r, t_obj *o, t_hit_rec *rec);
 
 /* Colors */
 t_color     int_to_color(int c);
-void        color(t_color *c);
-int         vec3_to_color(t_vec3 c);
-t_vec3	    int_to_vec3(int c);
-t_vec3	    color_to_vec3(t_color c);
 int         color_to_int(t_color c);
+t_vec3	    color_to_vec3(t_color c);
 t_color     lerp_color(t_color a, t_color b, float factor);
+t_color     color_x_vec3(t_color col, t_vec3 factor);
 
 
 /* Display */
@@ -70,6 +68,7 @@ int	display_img(t_data *rt, t_img *img);
 /* Ray Generation */
 int		cast_ray_at_pixel(t_data *rt, int x, int y);
 t_vec3	ray_at(t_ray_vec3 *r, float t);
+t_vec3	project_a_on_b(t_vec3 a, t_vec3 b);
 
 /* Rendering */
 bool	hit_anything(t_data *rt, t_ray_vec3 *r, t_hit_rec *rec);
@@ -226,5 +225,6 @@ void	print_scene_after_init(t_data *rt);
 void	print_cam_data(t_data *rt);
 void	print_obj_data(t_obj *obj);
 void	print_data_to_screen(t_data *rt);
+void	print_obj_info(t_data *rt, int id);
 
 #endif // MINIRT_H

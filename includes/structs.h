@@ -109,6 +109,7 @@ typedef struct s_ambient
 {
 	t_color	clr;
 	float	ratio;
+	t_vec3	scene_ambient;
 }	t_ambient;
 
 /* Camera object */
@@ -127,7 +128,8 @@ typedef struct s_camera
 	t_vec3		forward;
 	t_vec3		up;						/* Default up vector (0, 1, 0) */
 	t_vec3		right;
-	t_vec3		rays[IMG_H][IMG_W];			/* Pre-cached vector array */
+	t_vec3		real_up;				/* To calculate relative transforms */
+	t_vec3		rays[IMG_H][IMG_W];		/* Pre-cached vector array */
 	bool		is_move;
 
 
@@ -249,6 +251,7 @@ typedef struct s_data
 	int			nb_objs;
 	int			selected_obj_id;		/* For dynamic resizing/translation */
 	bool		apply_light_halos;		/* To activate/deactivate with a key hook */
+	bool		left_clicking;		/* To activate/deactivate with a key hook */
 	int			win_h;
 	int			win_w;
 }	t_data;

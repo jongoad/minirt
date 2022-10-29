@@ -25,3 +25,13 @@ t_vec3	ray_at(t_ray_vec3 *r, float t)
 {
 	return add_vec3(r->orig, mult_vec3(r->dir, t));
 }
+
+// t_vec3	reflect_ray(t_vec3 dir, t_vec3 normal)
+// {
+// 	return add_vec3(r->orig, mult_vec3(r->dir, t));
+// }
+
+t_vec3	project_a_on_b(t_vec3 a, t_vec3 b)
+{
+	return (mult_vec3(b, dot_vec3(a, b) / dot_vec3(b, b)));
+}

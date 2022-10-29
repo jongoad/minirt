@@ -33,14 +33,16 @@ int	handle_key_press_hook(int keysym, t_data *rt)
 		if (keysym == KEY_D)			/* Move camera right */
 			rt->cam.pos = add_vec3(rt->cam.pos, mult_vec3(rt->cam.right, CAM_TRANS_RATE));
 		if (keysym == KEY_Q)			/* Move camera down */
-			rt->cam.pos = sub_vec3(rt->cam.pos, mult_vec3(rt->cam.up, CAM_TRANS_RATE));
+			rt->cam.pos = sub_vec3(rt->cam.pos, mult_vec3(rt->cam.real_up, CAM_TRANS_RATE));
 		if (keysym == KEY_E)			/* Move camera up */
-			rt->cam.pos = add_vec3(rt->cam.pos, mult_vec3(rt->cam.up, CAM_TRANS_RATE));
+			rt->cam.pos = add_vec3(rt->cam.pos, mult_vec3(rt->cam.real_up, CAM_TRANS_RATE));
 		cam_recalc(rt);
 		render_scene(rt);
 	}
 	else if (rt->selected_obj_id != NO_HIT)
 	{
+		if (keysym == KEY_SPACE)
+			print_obj_data(rt->objs[rt->selected_obj_id]);
 		handle_object_translations(keysym, rt);
 		handle_object_rotations(keysym, rt);
 	}
@@ -61,9 +63,9 @@ static int	handle_object_translations(int keysym, t_data *rt)
 	else if (keysym == KEY_LEFT || keysym == KEY_A)		/* Move obj left */
 		sub_vec3_self(&o->pos, mult_vec3(rt->cam.right, 2.0F));
 	else if (keysym == KEY_UP || keysym == KEY_E)		/* Move obj up */
-		add_vec3_self(&o->pos, mult_vec3(rt->cam.up, 2.0F));
+		add_vec3_self(&o->pos, mult_vec3(rt->cam.real_up, 2.0F));
 	else if (keysym == KEY_DOWN || keysym == KEY_Q)		/* Move obj down */
-		sub_vec3_self(&o->pos, mult_vec3(rt->cam.up, 2.0F));
+		sub_vec3_self(&o->pos, mult_vec3(rt->cam.real_up, 2.0F));
 	else if (keysym == KEY_PLUS || keysym == NUMPAD_PLUS)
 		o->radius += 0.01;
 	else if (keysym == KEY_MINUS || keysym == NUMPAD_MINUS)

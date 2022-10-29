@@ -43,9 +43,6 @@ void	init_scene(t_data *rt)
 	light_nb = 0;
 	init_parse_fct_ptrs(rt);
 	count_objects(rt);
-	// FIXME: to remove
-	// printf("nb_objs = %d\n", rt->nb_objs);
-	// printf("nb_lights = %d\n", rt->nb_lights);
 
 	rt->objs = ft_xalloc(sizeof(t_obj *) * (rt->nb_objs + 1));
 	rt->lights = ft_xalloc(sizeof(t_obj *) * (rt->nb_lights + 1));
@@ -102,12 +99,14 @@ void	init_cam_angles(t_data *rt)
 /* Split input and initialize objects */
 void	rt_init(t_data *rt, char *filepath)
 {
-	// FIXME: to remove, for testing purposes
-	rt->background = lerp_color(int_to_color(BLACK), int_to_color(WHITE), 0.2);
+	// FIXME: temporary represents an arbitrary shade of grey
+	rt->background = int_to_color(BLACK);
+	// rt->background = lerp_color(int_to_color(BLACK), int_to_color(WHITE), 0.2);
 	rt->selected_obj_id = 0;
 	rt_init_mlx(rt, filepath);
 	rt_init_img(rt);
 	init_scene(rt);
+	// rt->background = lerp_color(int_to_color(BLACK), rt->ambient.clr, rt->ambient.ratio);
 	parse_free(&rt->parse);
 	init_cam_angles(rt);
 }
