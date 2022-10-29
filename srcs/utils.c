@@ -61,3 +61,21 @@ void	fill_pixel(t_img *img, int x, int y, int color)
 {
 	*(int *)(char *)(img->data_addr + x * img->bpp / 8 + y * img->line_len) = color;
 }
+
+void	print_usage(void)
+{
+	printf("%s\n*** Object Rotations ***\n%s", BASH_CYAN, BASH_RESET);
+	printf("x axis:   NUMPAD1 // NUMPAD2\n  Toggle: NUMPAD3\n");
+	printf("y axis:   NUMPAD4 // NUMPAD5\n  Toggle: NUMPAD6\n");
+	printf("z axis:   NUMPAD7 // NUMPAD8\n  Toggle: NUMPAD9\n");
+	printf("Toggle All:  'R'\n");
+	printf("%s\n*** Object Translations ***\n%s", BASH_CYAN, BASH_RESET);
+	printf("x axis:   KEY_LEFT / 'A' // KEY_RIGHT / 'D'\n");
+	printf("y axis:   KEY_UP / KEY_Z // KEY_DOWN / KEY_X\n");
+	printf("z axis:   'W'            // 'D' \n");
+	printf("%s\n*** Object Scale ***\n%s", BASH_CYAN, BASH_RESET);
+	printf("Zoom:          '+' // '-' \n");
+	printf("%s\n*** Fun stuff ***\n%s", BASH_CYAN, BASH_RESET);
+	printf("Toggle Light Halos:  'L'\n");
+	printf("Print usage:         KEY_F1\n");
+}

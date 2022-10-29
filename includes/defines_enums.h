@@ -27,7 +27,7 @@
 
 /* Object Defines */
 # define NO_HIT -1
-# define OBJ_ROT_RATE (PI)/16
+# define OBJ_ROT_RATE (PI)/8
 
 /* Camera Defines */
 #define CAM_ROT_RATE 45.0f
@@ -43,6 +43,16 @@
 /****************************/
 /*          Enums           */
 /****************************/
+
+/* Bash colors for terminal printing */
+# define BASH_BLACK	 "\033[0;30m"
+# define BASH_RED	 "\033[1;31m"
+# define BASH_GREEN	 "\033[0;32m"
+# define BASH_YELLOW "\033[0;33m"
+# define BASH_BLUE	 "\033[0;34m"
+# define BASH_PURPLE "\033[0;35m"
+# define BASH_CYAN	 "\033[0;36m"
+# define BASH_RESET	 "\033[0m"
 
 /* Colour Codes */
 typedef enum e_colors

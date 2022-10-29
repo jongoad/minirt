@@ -73,7 +73,7 @@ t_vec3	ray_at(t_ray_vec3 *r, float t);
 
 /* Rendering */
 bool	hit_anything(t_data *rt, t_ray_vec3 *pt_to_light, t_hit_rec *rec);
-void	render_scene(t_data *rt, t_obj *sp);
+void	render_scene(t_data *rt);
 
 /* Rendering - Lights */
 int		apply_point_lights(t_data *rt, t_hit_rec *rec, int color);
@@ -94,7 +94,7 @@ void	fill_pixel(t_img *img, int x, int y, int color);
 double	lerp(double start, double end, double curr);
 int		lerp_color(int start, float ratio);
 float	deg_to_rad(float deg);
-
+void	print_usage(void);
 
 /****************************************/
 /*         Cleaning Functions           */

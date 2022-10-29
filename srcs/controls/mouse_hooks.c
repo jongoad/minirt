@@ -112,7 +112,7 @@ int	handle_mouse_motion(int x, int y, t_data *rt)
 		
 		rt->cam.prev_mouse = cur_mouse;
 		cam_recalc(rt);
-		render_scene(rt, rt->objs[0]);
+		render_scene(rt);
 	}
 	return (0);
 }

@@ -8,11 +8,13 @@ int	handle_key_release_hook(int keysym, t_data *rt)
 {
 	if (keysym == KEY_ESC)
 		rt_clean_exit(rt);
-	if (keysym == KEY_L)
+	else if (keysym == KEY_L)
 	{
 		rt->apply_light_halos = !(rt->apply_light_halos);
-		render_scene(rt, rt->objs[0]);
+		render_scene(rt);
 	}
+	else if (keysym == KEY_F1)
+		print_usage();
 	return (0);
 }
 
@@ -33,13 +35,12 @@ int	handle_key_press_hook(int keysym, t_data *rt)
 		if (keysym == KEY_E)			/* Move camera up */
 			rt->cam.pos = add_vec3(rt->cam.pos, mult_vec3(rt->cam.up, CAM_TRANS_RATE));
 		cam_recalc(rt);
-		render_scene(rt, rt->objs[0]);
+		render_scene(rt);
 	}
 	else if (rt->selected_obj_id != NO_HIT)
 	{
 		handle_object_translations(keysym, rt);
 		handle_object_rotations(keysym, rt);
-
 	}
 	return (0);
 }
@@ -68,7 +69,7 @@ static int	handle_object_translations(int keysym, t_data *rt)
 	else
 		return (0);
 	cam_recalc(rt);
-	render_scene(rt, rt->objs[0]);
+	render_scene(rt);
 	return (0);
 }
 
@@ -91,27 +92,27 @@ static void	apply_rotation(t_obj *o, unsigned char rot_axis, bool rot_is_positiv
 	o->right = vec4_to_vec3(mat_mult_vec4(vec3_to_vec4(o->right, T_POINT), rot_matrices[2 * rot_axis + rot_is_positive]));
 	o->up = vec4_to_vec3(mat_mult_vec4(vec3_to_vec4(o->up, T_POINT), rot_matrices[2 * rot_axis + rot_is_positive]));
 }
-
+// 
 static int	handle_object_rotations(int keysym, t_data *rt)
 {
 	t_obj	*o;
 	
 	o = rt->objs[rt->selected_obj_id];
-	if (keysym == NUMPAD7)		/* Rotate clockwise around x axis */
+	if (keysym == NUMPAD1)		/* Rotate clockwise around x axis */
 		apply_rotation(o, X_ROT, true);
-	else if (keysym == NUMPAD8)		/* Rotate counter-clockwise x axis */
+	else if (keysym == NUMPAD2)		/* Rotate counter-clockwise x axis */
 		apply_rotation(o, X_ROT, false);
 	else if (keysym == NUMPAD4)		/* Rotate clockwise around y axis */
 		apply_rotation(o, Y_ROT, true);
 	else if (keysym == NUMPAD5)		/* Rotate counter-clockwise y axis */
 		apply_rotation(o, Y_ROT, false);
-	else if (keysym == NUMPAD1)		/* Rotate clockwise around z axis */
+	else if (keysym == NUMPAD7)		/* Rotate clockwise around z axis */
 		apply_rotation(o, Z_ROT, true);
-	else if (keysym == NUMPAD2)		/* Rotate counter-clockwise z axis */
+	else if (keysym == NUMPAD8)		/* Rotate counter-clockwise z axis */
 		apply_rotation(o, Z_ROT, false);
 	else
 		return (0);
 	cam_recalc(rt);
-	render_scene(rt, rt->objs[0]);
+	render_scene(rt);
 	return (0);
 }

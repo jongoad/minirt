@@ -35,7 +35,7 @@ int	main(int argc, char **argv)
 	cam_recalc(rt);
 
 	/* Preliminary render before entering main loop */
-	render_scene(rt, rt->objs[0]);
+	render_scene(rt);
 
 	/* Enter into main loop */
 	mlx_loop(rt->mlx_ptr);
