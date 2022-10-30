@@ -12,8 +12,11 @@ t_color	apply_point_lights(t_data *rt, t_hit_rec *rec, t_color color)
 	double		dist_to_light;
 	double		t;
 	int			i;
+	bool		hit;
 
+	hit = false;
 	i = -1;
+	color = color_x_vec3(color, rt->ambient.scene_ambient);
 	while (++i < rt->nb_lights)
 	{
 		// Diffuse lighting
@@ -31,12 +34,17 @@ t_color	apply_point_lights(t_data *rt, t_hit_rec *rec, t_color color)
 		// Test for hard shadows, correct to prevent shadow acne
 		if (hit_anything(rt, &pt_to_light, &rec2) && fabs(rec2.t - dist_to_light) > EPSILON)
 			continue ;
+		hit = true;
 		// t = cos_vec3(rec->normal, pt_to_light.dir);
-		t = cos_vec3(rec->normal, pt_to_light.dir) * LIGHT_INTENSITY;
+		t = dot_vec3(rec->normal, pt_to_light.dir);
+		t *= LIGHT_INTENSITY;
 		t /= (dist_to_light + 1.0F);
-		color = lerp_color(color, rt->lights[i]->clr, t);
+		color = lerp_color(rec->color, rt->lights[i]->clr, t);
 
 	}
+	// return (color_x_vec3(color, rt->ambient.scene_ambient));
+	// if (!hit)
+	// 	return (color_x_vec3(color, rt->ambient.scene_ambient));
 	return (color);
 }
 

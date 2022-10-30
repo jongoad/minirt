@@ -109,6 +109,7 @@ typedef struct s_ambient
 {
 	t_color	clr;
 	float	ratio;
+	t_vec3	scene_ambient;
 }	t_ambient;
 
 /* Camera object */

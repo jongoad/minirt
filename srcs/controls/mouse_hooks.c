@@ -128,4 +128,3 @@ static int	handle_mouse_obj_translation(float pcnt_x, float pcnt_y, t_data *rt)
 	return (false);
 }
 
-

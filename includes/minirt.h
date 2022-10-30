@@ -54,12 +54,10 @@ bool	hit_cone(t_ray_vec3 *r, t_obj *o, t_hit_rec *rec);
 
 /* Colors */
 t_color     int_to_color(int c);
-void        color(t_color *c);
-int         vec3_to_color(t_vec3 c);
-t_vec3	    int_to_vec3(int c);
-t_vec3	    color_to_vec3(t_color c);
 int         color_to_int(t_color c);
+t_vec3	    color_to_vec3(t_color c);
 t_color     lerp_color(t_color a, t_color b, float factor);
+t_color     color_x_vec3(t_color col, t_vec3 factor);
 
 
 /* Display */
