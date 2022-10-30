@@ -117,11 +117,11 @@ static int	handle_mouse_obj_translation(float pcnt_x, float pcnt_y, t_data *rt)
 	if (rt->left_clicking && rt->selected_obj_id != NO_HIT
 		&& pcnt_x != 0 && pcnt_y != 0)		/* Object xy rotation */
 	{
-		z_dist = (sub_vec3(rt->objs[rt->selected_obj_id]->pos, rt->cam.pos)).z;
+		z_dist = length_vec3(project_a_on_b(sub_vec3(rt->objs[rt->selected_obj_id]->pos, rt->cam.pos), rt->cam.forward));
 		add_vec3_self(&rt->objs[rt->selected_obj_id]->pos, 
-			mult_vec3(rt->cam.right, rt->cam.view_w * -pcnt_x * z_dist));
+			mult_vec3(rt->cam.right, rt->cam.view_w * pcnt_x * z_dist));
 		add_vec3_self(&rt->objs[rt->selected_obj_id]->pos, 
-			mult_vec3(rt->cam.real_up, rt->cam.view_h * pcnt_y * z_dist));
+			mult_vec3(rt->cam.real_up, rt->cam.view_h * -pcnt_y * z_dist));
 		render_scene(rt);
 		return (true);
 	}

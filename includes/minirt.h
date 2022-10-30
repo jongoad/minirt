@@ -70,6 +70,7 @@ int	display_img(t_data *rt, t_img *img);
 /* Ray Generation */
 int		cast_ray_at_pixel(t_data *rt, int x, int y);
 t_vec3	ray_at(t_ray_vec3 *r, float t);
+t_vec3	project_a_on_b(t_vec3 a, t_vec3 b);
 
 /* Rendering */
 bool	hit_anything(t_data *rt, t_ray_vec3 *r, t_hit_rec *rec);

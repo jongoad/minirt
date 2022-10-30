@@ -5,7 +5,8 @@
 /*****************************************************/
 
 
-0. What is Albedo ? lul
+0. Q: What is Albedo ? lul
+	A: Albedo is the total light absorbance of a material, BOTH diffuse and specular
 
 1. Specular reflection
 	a. t_ray reflect(t_ray r, t_vec3 normal)

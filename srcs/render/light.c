@@ -1,5 +1,10 @@
 #include "minirt.h"
 
+// t_color	apply_specular(t_data *rt, t_hit_rec *rec, t_color color)
+// {
+
+// }
+
 t_color	apply_point_lights(t_data *rt, t_hit_rec *rec, t_color color)
 {
 	t_ray_vec3	pt_to_light;
@@ -15,7 +20,7 @@ t_color	apply_point_lights(t_data *rt, t_hit_rec *rec, t_color color)
 		pt_to_light.orig = rec->p;
 		pt_to_light.dir = sub_vec3(rt->lights[i]->pos, rec->p);
 
-		// Small optimization to fail check early
+		// Small optimization to fail the intersect early
 		if (dot_vec3(pt_to_light.dir, rec->normal) <= 0.0F)
 			continue ;
 
@@ -30,9 +35,6 @@ t_color	apply_point_lights(t_data *rt, t_hit_rec *rec, t_color color)
 		t = cos_vec3(rec->normal, pt_to_light.dir) * LIGHT_INTENSITY;
 		t /= (dist_to_light + 1.0F);
 		color = lerp_color(color, rt->lights[i]->clr, t);
-
-
-		// Specular reflection
 
 	}
 	return (color);
