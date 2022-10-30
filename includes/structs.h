@@ -127,7 +127,8 @@ typedef struct s_camera
 	t_vec3		forward;
 	t_vec3		up;						/* Default up vector (0, 1, 0) */
 	t_vec3		right;
-	t_vec3		rays[IMG_H][IMG_W];			/* Pre-cached vector array */
+	t_vec3		real_up;				/* To calculate relative transforms */
+	t_vec3		rays[IMG_H][IMG_W];		/* Pre-cached vector array */
 	bool		is_move;
 
 

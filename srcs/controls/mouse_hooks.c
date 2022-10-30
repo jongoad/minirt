@@ -122,7 +122,7 @@ static int	handle_mouse_obj_translation(float pcnt_x, float pcnt_y, t_data *rt)
 		add_vec3_self(&rt->objs[rt->selected_obj_id]->pos, 
 			mult_vec3(rt->cam.right, rt->cam.view_w * -pcnt_x * z_dist));
 		add_vec3_self(&rt->objs[rt->selected_obj_id]->pos, 
-			mult_vec3(rt->cam.up, rt->cam.view_h * pcnt_y * z_dist));
+			mult_vec3(rt->cam.real_up, rt->cam.view_h * pcnt_y * z_dist));
 		render_scene(rt);
 		return (true);
 	}
