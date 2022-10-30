@@ -25,7 +25,9 @@
 
 6. Split parsing into mandatory and bonus.
 
-7. Add obj xy translations with mouse
+7. Add a real up vector for object translation
+
+8. Add obj xy translations with mouse
 
 
 

@@ -249,6 +249,7 @@ typedef struct s_data
 	int			nb_objs;
 	int			selected_obj_id;		/* For dynamic resizing/translation */
 	bool		apply_light_halos;		/* To activate/deactivate with a key hook */
+	bool		left_clicking;		/* To activate/deactivate with a key hook */
 	int			win_h;
 	int			win_w;
 }	t_data;

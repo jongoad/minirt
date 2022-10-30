@@ -1,6 +1,7 @@
 #include "minirt.h"
 #include "hooks.h"
 
+static int	handle_mouse_obj_translation(float pcnt_x, float pcnt_y, t_data *rt);
 
 static void	print_selected_object_info(t_data *rt)
 {
@@ -21,43 +22,34 @@ static void	print_selected_object_info(t_data *rt)
 
 int	handle_mouse_btn_release(int button, int x, int y, t_data *rt)
 {
-	if (button == 1)
-	{
-
-		(void)rt;
-		(void)x;
-		(void)y;
-		// printf("mouse btn1 released at [%d, %d]\n", x, y);
-		rt->selected_obj_id = cast_ray_at_pixel(rt, x, y);
-		print_selected_object_info(rt);
-	}
+	(void)rt;
+	(void)x;
+	(void)y;
 	if (button == 2)
 		rt->cam.is_move = false;
+	else if (button == 1)
+		rt->left_clicking = false;
 	return (0);
-
 }
-
-
 
 int	handle_mouse_hook(int button, int x, int y, t_data *rt)
 {
+	(void)rt;
+	(void)x;
+	(void)y;
 	if (button == 1)
 	{
-
-		(void)rt;
-		(void)x;
-		(void)y;
-		// printf("mouse btn1 clicked at [%d, %d]\n", x, y);
+		rt->selected_obj_id = cast_ray_at_pixel(rt, x, y);
+		print_selected_object_info(rt);
+		rt->left_clicking = true;
 	}
-	if (button == 2)
-	{
-		rt->cam.prev_mouse = vec3((float)x, (float)y, 0);
+	else if (button == 2)
 		rt->cam.is_move = true;
-	}
+	else
+		return (0);
+	rt->cam.prev_mouse = vec3((float)x, (float)y, 0);
 	return (0);
 }
-
-
 
 /* Need to implement restriction on tilt (prevent camera from inverting)*/
 int	handle_mouse_motion(int x, int y, t_data *rt)
@@ -114,8 +106,27 @@ int	handle_mouse_motion(int x, int y, t_data *rt)
 		cam_recalc(rt);
 		render_scene(rt);
 	}
+	if (handle_mouse_obj_translation(pcnt_x, pcnt_y, rt))
+		rt->cam.prev_mouse = vec3((float)x, (float)y, 0);
 	return (0);
 }
 
+static int	handle_mouse_obj_translation(float pcnt_x, float pcnt_y, t_data *rt)
+{
+	float	z_dist;
+	
+	if (rt->left_clicking && rt->selected_obj_id != NO_HIT
+		&& pcnt_x != 0 && pcnt_y != 0)		/* Object xy rotation */
+	{
+		z_dist = (sub_vec3(rt->objs[rt->selected_obj_id]->pos, rt->cam.pos)).z;
+		add_vec3_self(&rt->objs[rt->selected_obj_id]->pos, 
+			mult_vec3(rt->cam.right, rt->cam.view_w * -pcnt_x * z_dist));
+		add_vec3_self(&rt->objs[rt->selected_obj_id]->pos, 
+			mult_vec3(rt->cam.up, rt->cam.view_h * pcnt_y * z_dist));
+		render_scene(rt);
+		return (true);
+	}
+	return (false);
+}
 
 
