@@ -41,6 +41,8 @@ int	handle_key_press_hook(int keysym, t_data *rt)
 	}
 	else if (rt->selected_obj_id != NO_HIT)
 	{
+		if (keysym == KEY_SPACE)
+			print_obj_data(rt->objs[rt->selected_obj_id]);
 		handle_object_translations(keysym, rt);
 		handle_object_rotations(keysym, rt);
 	}

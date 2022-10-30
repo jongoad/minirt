@@ -14,7 +14,13 @@
 2. Color
 	a. How do we want to set up diffuse ligthing?
 	b. Color accumulation? How does specularity work with different lights?
-	c. Should diffuse lighting be independent of distance ?
+	c. Should diffuse lighting be independent of distance ? 
+		```c
+		attenuation = 1.0 / (light0.constantAttenuation
+			   + light0.linearAttenuation * distance
+			   + light0.quadraticAttenuation * distance * distance);
+		```
+	from https://en.wikibooks.org/wiki/GLSL_Programming/GLUT/Specular_Highlights
 
 3. Antialiasing!
 	a. Sobel operator ? https://en.wikipedia.org/wiki/Sobel_operator
@@ -25,10 +31,13 @@
 
 6. Split parsing into mandatory and bonus.
 
+******************* DONE *********************
 7. Add a real up vector for object translation
+**********************************************
 
-8. Add obj xy translations with mouse
 *************** DONE ****************
+8. Add obj xy translations with mouse
+*************************************
 
 
 RESOURCES:

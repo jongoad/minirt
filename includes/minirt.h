@@ -226,5 +226,6 @@ void	print_scene_after_init(t_data *rt);
 void	print_cam_data(t_data *rt);
 void	print_obj_data(t_obj *obj);
 void	print_data_to_screen(t_data *rt);
+void	print_obj_info(t_data *rt, int id);
 
 #endif // MINIRT_H

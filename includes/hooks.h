@@ -50,6 +50,7 @@ typedef enum e_keyhooks
 	KEY_Y = 16,
 	KEY_Z = 6,
 	KEY_ESC = 53,
+	KEY_SPACE = 49,
 	KEY_F1 = 122,
 	NUMPAD0 = 82,
 	NUMPAD1 = 83,

@@ -3,6 +3,36 @@
 #define RED_C "\033[1;31m"
 #define CLEAR "\033[0m"
 
+void	print_obj_info(t_data *rt, int id)
+{
+	printf(RED_C"--- Object #: %d ---\n"CLEAR, id);
+	printf("Type: %c\n", rt->objs[id]->type);
+	printf("Position:\n");
+	printf("\tx: %f\n", rt->objs[id]->pos.x);
+	printf("\ty: %f\n", rt->objs[id]->pos.y);
+	printf("\tz: %f\n", rt->objs[id]->pos.z);
+	printf("Forward:\n");
+	printf("\tx: %f\n", rt->objs[id]->fwd.x);
+	printf("\ty: %f\n", rt->objs[id]->fwd.y);
+	printf("\tz: %f\n", rt->objs[id]->fwd.z);
+	printf("Up:\n");
+	printf("\tx: %f\n", rt->objs[id]->up.x);
+	printf("\ty: %f\n", rt->objs[id]->up.y);
+	printf("\tz: %f\n", rt->objs[id]->up.z);
+	printf("Right:\n");
+	printf("\tx: %f\n", rt->objs[id]->right.x);
+	printf("\ty: %f\n", rt->objs[id]->right.y);
+	printf("\tz: %f\n", rt->objs[id]->right.z);
+	printf("Colour:\n");
+	printf("\tr: %d\n", rt->objs[id]->clr.r);
+	printf("\tg: %d\n", rt->objs[id]->clr.g);
+	printf("\tb: %d\n", rt->objs[id]->clr.b);
+	printf("Brightness Ratio: %f\n", rt->objs[id]->ratio);
+	printf("Radius: %f\n", rt->objs[id]->radius);
+	printf("Height: %f\n", rt->objs[id]->half_height);
+	printf("\n\n");
+}
+
 // /* Print out all objects in scene */
 void	print_scene_after_init(t_data *rt)
 {
@@ -33,32 +63,7 @@ void	print_scene_after_init(t_data *rt)
 	i = 0;
 	while (i < rt->nb_objs)
 	{
-		printf(RED_C"--- Object #: %d ---\n"CLEAR, i);
-		printf("Type: %c\n", rt->objs[i]->type);
-		printf("Position:\n");
-		printf("\tx: %f\n", rt->objs[i]->pos.x);
-		printf("\ty: %f\n", rt->objs[i]->pos.y);
-		printf("\tz: %f\n", rt->objs[i]->pos.z);
-		printf("Forward:\n");
-		printf("\tx: %f\n", rt->objs[i]->fwd.x);
-		printf("\ty: %f\n", rt->objs[i]->fwd.y);
-		printf("\tz: %f\n", rt->objs[i]->fwd.z);
-		printf("Up:\n");
-		printf("\tx: %f\n", rt->objs[i]->up.x);
-		printf("\ty: %f\n", rt->objs[i]->up.y);
-		printf("\tz: %f\n", rt->objs[i]->up.z);
-		printf("Right:\n");
-		printf("\tx: %f\n", rt->objs[i]->right.x);
-		printf("\ty: %f\n", rt->objs[i]->right.y);
-		printf("\tz: %f\n", rt->objs[i]->right.z);
-		printf("Colour:\n");
-		printf("\tr: %d\n", rt->objs[i]->clr.r);
-		printf("\tg: %d\n", rt->objs[i]->clr.g);
-		printf("\tb: %d\n", rt->objs[i]->clr.b);
-		printf("Brightness Ratio: %f\n", rt->objs[i]->ratio);
-		printf("Radius: %f\n", rt->objs[i]->radius);
-		printf("Height: %f\n", rt->objs[i]->half_height);
-		printf("\n\n");
+
 		i++;
 	}
 	i = 0;
