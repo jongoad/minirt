@@ -5,11 +5,27 @@
 /*****************************************************/
 
 
-1. Replace system string to float (atof) with our own version.
-2. Change the nomenclature for camera matrices
-	- View is the inverse matrix of the world_to_camera matrix
+0. What is Albedo ? lul
 
+1. Specular reflection
+	a. t_ray reflect(t_ray r, t_vec3 normal)
+	b. calculate specularity based on cos(reflect, pt_to_light)
+	
+2. Color
+	a. How do we want to set up diffuse ligthing?
+	b. Color accumulation? How does specularity work with different lights?
+	c. Should diffuse lighting be independent of distance ?
 
+3. Antialiasing!
+	a. Sobel operator ? https://en.wikipedia.org/wiki/Sobel_operator
+
+4. Add caps to cones
+
+5. Integrate checkerboard patterns
+
+6. Split parsing into mandatory and bonus.
+
+7. Add obj xy translations with mouse
 
 
 
