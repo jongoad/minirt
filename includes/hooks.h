@@ -66,6 +66,14 @@ typedef enum e_keyhooks
 	NUMPAD_PLUS = 69
 }	t_keyhooks;
 
+typedef enum e_mousehooks
+{
+	LEFT_CLICK = 1,
+	RIGHT_CLICK = 2,
+	WHEEL_DOWN = 4,
+	WHEEL_UP = 5
+}	t_mousehooks;
+
 /* X11 Event Define Codes */
 typedef enum e_mlx_events
 {
