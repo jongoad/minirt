@@ -63,7 +63,7 @@ void	init_sphere(t_data *rt, char **input, int obj_nb)
 /* Initialize cylinder object using parsed input data */
 void	init_cylinder(t_data *rt, char **input, int obj_nb)
 {
-	t_obj	*o;
+	// t_obj	*o;
 
 	rt->objs[obj_nb] = ft_xalloc(sizeof(t_obj));			/* Allocate object */
 	rt->objs[obj_nb]->type = T_CYL;
@@ -77,15 +77,15 @@ void	init_cylinder(t_data *rt, char **input, int obj_nb)
 	init_color(&rt->objs[obj_nb]->clr, input[5]);			/* Init cylinder color */
 
 	// Added by Ismael, to test local_to_world matrices;
-	o = rt->objs[obj_nb];
-	o->right = unit_vec3(cross_vec3(o->fwd, vec3(0, 1, 0)));
-	o->up = unit_vec3(cross_vec3(o->fwd, o->right));
+	// o = rt->objs[obj_nb];
+	// o->right = unit_vec3(cross_vec3(o->fwd, vec3(0, 1, 0)));
+	// o->up = unit_vec3(cross_vec3(o->fwd, o->right));
 
-	o->l_to_w = mat4(vec3_to_vec4(o->right, T_VEC), vec3_to_vec4(o->fwd, T_VEC),
-		vec3_to_vec4(o->up, T_VEC), (t_vec4){0, 0, 0, 1});
+	// o->l_to_w = mat4(vec3_to_vec4(o->right, T_VEC), vec3_to_vec4(o->fwd, T_VEC),
+	// 	vec3_to_vec4(o->up, T_VEC), (t_vec4){0, 0, 0, 1});
 	
 
-	o->w_to_l = mat_inv(o->l_to_w, 4);
+	// o->w_to_l = mat_inv(o->l_to_w, 4);
 
 
 	rt->objs[obj_nb]->hit = hit_cylinder;

@@ -16,6 +16,19 @@ int	main(int argc, char **argv)
 {
 	t_data	*rt;
 
+	t_vec3	orig	= {1, 1, 1, 0};
+	t_vec3	normal	= {0, 1, 0, 0};
+
+	unit_vec3_self(&orig);
+	printf("original vector: ");
+	print_vec3(orig);
+	printf("\nnormal vector: ");
+	print_vec3(normal);
+	printf("\n");
+
+	print_vec3(reflect_ray(orig, normal));
+	printf("\n");
+
 	/* Check for invalid command line input */
 	if (argc != 2)
 		exit_on_err(BAD_ARG_ERR);

@@ -58,7 +58,8 @@ int         color_to_int(t_color c);
 t_vec3	    color_to_vec3(t_color c);
 t_color     lerp_color(t_color a, t_color b, float factor);
 t_color     color_x_vec3(t_color col, t_vec3 factor);
-
+t_color     mult_color(t_color a, float factor);
+t_color     add_color(t_color a, t_color b);
 
 /* Display */
 int	display_default(t_data *rt);
@@ -69,6 +70,7 @@ int	display_img(t_data *rt, t_img *img);
 int		cast_ray_at_pixel(t_data *rt, int x, int y);
 t_vec3	ray_at(t_ray_vec3 *r, float t);
 t_vec3	project_a_on_b(t_vec3 a, t_vec3 b);
+t_vec3	reflect_ray(t_vec3 dir, t_vec3 normal);
 
 /* Rendering */
 bool	hit_anything(t_data *rt, t_ray_vec3 *r, t_hit_rec *rec);

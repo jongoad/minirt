@@ -23,7 +23,7 @@ bool	hit_sphere(t_ray_vec3 *r, t_obj *o, t_hit_rec *rec)
 	{
         q.root = (-q.half_b + q.sqrtd) / q.a;
         if (q.root < T_MIN || q.root > T_MAX)
-			return false;
+			return (false);
 		rec->inside_surface = true;
     }
 	rec->hit_anything = true;
@@ -31,7 +31,7 @@ bool	hit_sphere(t_ray_vec3 *r, t_obj *o, t_hit_rec *rec)
 	rec->p = ray_at(r, rec->t);
 	rec->normal = div_vec3(sub_vec3(rec->p, o->pos), o->radius);
 	rec->color = o->clr;
-	return true;
+	return (true);
 }
 
 bool	hit_plane(t_ray_vec3 *r, t_obj *o, t_hit_rec *rec)
@@ -53,7 +53,7 @@ bool	hit_plane(t_ray_vec3 *r, t_obj *o, t_hit_rec *rec)
 			return (true);
 		}
 	}
-	return false;
+	return (false);
 }
 
 bool	hit_cylinder_caps(t_ray_vec3 *r, t_obj *o, t_hit_rec *rec)
@@ -114,7 +114,7 @@ bool	hit_cylinder_body(t_ray_vec3 *r, t_obj *o, t_hit_rec *rec)
         q.root = (-q.half_b + q.sqrtd) / q.a;
 		dist = dir_x_fwd * q.root + oc_x_fwd;
 		if (q.root < T_MIN || q.root > rec->t || fabs(dist) > o->half_height)
-			return false;
+			return (false);
 		rec->inside_surface = true;
 	}
 	rec->hit_anything = true;
@@ -122,7 +122,7 @@ bool	hit_cylinder_body(t_ray_vec3 *r, t_obj *o, t_hit_rec *rec)
 	rec->p = ray_at(r, rec->t);
 	rec->color = o->clr;
 	rec->normal = unit_vec3(sub_vec3(sub_vec3(rec->p, o->pos), mult_vec3(o->fwd, dist)));
-	return true;
+	return (true);
 }
 
 bool	hit_cylinder(t_ray_vec3 *r, t_obj *o, t_hit_rec *rec)
@@ -165,7 +165,7 @@ bool	hit_cone(t_ray_vec3 *r, t_obj *o, t_hit_rec *rec)
 
 	q.discriminant = q.half_b * q.half_b - q.a * q.c;
     if (q.discriminant < 0)
-        return false;
+        return (false);
     q.sqrtd = sqrtf(q.discriminant);
     q.root = (-q.half_b - q.sqrtd) / q.a;
 
@@ -177,7 +177,7 @@ bool	hit_cone(t_ray_vec3 *r, t_obj *o, t_hit_rec *rec)
 		dist = dir_x_fwd * q.root + oc_x_fwd;
 		if (q.root < T_MIN || q.root > rec->t || fabs(dist) > o->half_height)
 		{
-			return false;
+			return (false);
 		}
 		rec->inside_surface = true;
 	}
@@ -188,7 +188,7 @@ bool	hit_cone(t_ray_vec3 *r, t_obj *o, t_hit_rec *rec)
 		rec->p = ray_at(r, rec->t);
 		rec->color = o->clr;
    		rec->normal = unit_vec3( sub_vec3(sub_vec3(rec->p, o->pos), mult_vec3(mult_vec3(o->fwd, dist), angle_ofs)));
-		return true;
+		return (true);
 	}
-	return false;
+	return (false);
 }

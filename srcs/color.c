@@ -38,6 +38,44 @@ t_color lerp_color(t_color a, t_color b, float factor)
     return (diff);
 }
 
+void    clamp_color(t_color *c)
+{
+    if (c->r < 0)
+        c->r = 0;
+    else if (c->r > 255)
+        c->r = 255;
+    if (c->g < 0)
+        c->g = 0;
+    else if (c->g > 255)
+        c->g = 255;
+    if (c->b < 0)
+        c->b = 0;
+    else if (c->b > 255)
+        c->b = 255;
+}
+
+t_color mult_color(t_color rgb, float factor)
+{
+    t_color diff;
+    
+    diff.r = rgb.r * factor;
+    diff.g = rgb.g * factor;
+    diff.b = rgb.b * factor;
+    clamp_color(&diff);
+    return (diff);
+}
+
+t_color add_color(t_color a, t_color b)
+{
+    t_color diff;
+    
+    diff.r = a.r + b.r;
+    diff.g = a.g + b.r;
+    diff.b = a.b + b.r;
+    clamp_color(&diff);
+    return (diff);
+}
+
 t_color color_x_vec3(t_color col, t_vec3 factor)
 {
     t_color diff;
