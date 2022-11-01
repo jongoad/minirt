@@ -22,8 +22,10 @@
 #define PI 3.14159265359f
 
 /* Light Defines */
-#define LIGHT_INTENSITY 3.0F
+#define LIGHT_INTENSITY 10.0F
 #define KS 0.5F
+#define KD 1.0F
+#define SHININESS 20
 #define LIGHT_RADIUS 1.1F
 
 /* Object Defines */

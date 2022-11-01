@@ -80,7 +80,6 @@ int	handle_mouse_motion(int x, int y, t_data *rt)
 	//Vertical movement is inverted
 	if (rt->cam.is_move && (delta_x != 0 && delta_y != 0))											/* Only apply changes if there is movement */
 	{
-		printf("delta_x: %d - delta_y: %d\n", delta_x, delta_y);
 		/* Calculate tilt */
 		if (CAM_TOGGLE_PITCH)
 		{
@@ -139,9 +138,9 @@ static int	handle_mouse_z_translation(t_data *rt, int button)
 	if (rt->selected_obj_id != NO_HIT)		/* Object xy rotation */
 	{
 		if (button == WHEEL_UP)
-			z_offset = -1.0F;
-		else
 			z_offset = 1.0F;
+		else
+			z_offset = -1.0F;
 		add_vec3_self(&rt->objs[rt->selected_obj_id]->pos, 
 			mult_vec3(rt->cam.forward, z_offset));
 		render_scene(rt);
