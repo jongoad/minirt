@@ -3,20 +3,18 @@
 
 // https://raytracing.github.io/books/RayTracingInOneWeekend.html
 
-bool	hit_sphere(t_ray_vec3 *r, t_obj *o, t_hit_rec *rec)
+bool	hit_sphere(t_ray *r, t_obj *o, t_hit_rec *rec)
 {
     t_vec3			oc;
 	static t_quadratic		q;
 
 	oc = sub_vec3(r->orig, o->pos);
 	q.a = dot_vec3(r->dir, r->dir);
-	if (q.a == 0)
-		return (false);
 	q.half_b = dot_vec3(oc, r->dir);
 	q.c = dot_vec3(oc, oc) - o->radius * o->radius;
 	q.discriminant = q.half_b * q.half_b - q.a * q.c;
-    if (q.discriminant < 0)
-        return false;	
+    if (q.discriminant < 0 || q.a == 0)
+        return (false);	
     q.sqrtd = sqrtf(q.discriminant);
     q.root = (-q.half_b - q.sqrtd) / q.a;
     if (q.root < T_MIN || q.root > rec->t)
@@ -34,7 +32,7 @@ bool	hit_sphere(t_ray_vec3 *r, t_obj *o, t_hit_rec *rec)
 	return (true);
 }
 
-bool	hit_plane(t_ray_vec3 *r, t_obj *o, t_hit_rec *rec)
+bool	hit_plane(t_ray *r, t_obj *o, t_hit_rec *rec)
 {
 	float	discriminant;
 	float	t;
@@ -56,7 +54,7 @@ bool	hit_plane(t_ray_vec3 *r, t_obj *o, t_hit_rec *rec)
 	return (false);
 }
 
-bool	hit_cylinder_caps(t_ray_vec3 *r, t_obj *o, t_hit_rec *rec)
+bool	hit_cylinder_caps(t_ray *r, t_obj *o, t_hit_rec *rec)
 {
 	static t_obj		cap1;
 	static t_obj		cap2;
@@ -89,7 +87,7 @@ bool	hit_cylinder_caps(t_ray_vec3 *r, t_obj *o, t_hit_rec *rec)
  *  https://hugi.scene.org/online/hugi24/ \
  * 	coding%20graphics%20chris%20dragan%20raytracing%20shapes.htm
 **/ 
-bool	hit_cylinder_body(t_ray_vec3 *r, t_obj *o, t_hit_rec *rec)
+bool	hit_cylinder_body(t_ray *r, t_obj *o, t_hit_rec *rec)
 {
     t_vec3					oc;
 	static t_quadratic		q;
@@ -125,7 +123,7 @@ bool	hit_cylinder_body(t_ray_vec3 *r, t_obj *o, t_hit_rec *rec)
 	return (true);
 }
 
-bool	hit_cylinder(t_ray_vec3 *r, t_obj *o, t_hit_rec *rec)
+bool	hit_cylinder(t_ray *r, t_obj *o, t_hit_rec *rec)
 {
 	bool	hit;
 	
@@ -142,7 +140,7 @@ bool	hit_cylinder(t_ray_vec3 *r, t_obj *o, t_hit_rec *rec)
  *  https://hugi.scene.org/online/hugi24/ \
  * 	coding%20graphics%20chris%20dragan%20raytracing%20shapes.htm
 **/ 
-bool	hit_cone(t_ray_vec3 *r, t_obj *o, t_hit_rec *rec)
+bool	hit_cone(t_ray *r, t_obj *o, t_hit_rec *rec)
 {
     t_vec3					oc;
 	static t_quadratic		q;

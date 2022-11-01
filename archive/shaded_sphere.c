@@ -3,7 +3,7 @@
 
 // https://raytracing.github.io/books/RayTracingInOneWeekend.html
 
-double hit_sphere_slow(t_vec3 *sp_center, double radius2, t_ray_vec3 *r) {
+double hit_sphere_slow(t_vec3 *sp_center, double radius2, t_ray *r) {
     t_vec3	oc;
     double	a;
     double	b;
@@ -21,7 +21,7 @@ double hit_sphere_slow(t_vec3 *sp_center, double radius2, t_ray_vec3 *r) {
 	// Only return the smallest value, i.e. the closest
 }
 
-double hit_sphere(t_vec3 *sp_center, double radius2, t_ray_vec3 *r) {
+double hit_sphere(t_vec3 *sp_center, double radius2, t_ray *r) {
     t_vec3	oc;
     double	a;
     double	half_b;
@@ -39,7 +39,7 @@ double hit_sphere(t_vec3 *sp_center, double radius2, t_ray_vec3 *r) {
 	// Only return the smallest value, i.e. the closest
 }
 
-int		ray_color_sphere_shaded(t_ray_vec3 *r, t_vec3 sp_center)
+int		ray_color_sphere_shaded(t_ray *r, t_vec3 sp_center)
 {
 	double	radius2 = 0.5F * 0.5F;
 	double	t = hit_sphere(&sp_center, radius2, r);
@@ -109,7 +109,7 @@ void	generate_sphere_shaded(t_data *rt, t_vec3 *sp_center)
 	// low_left = origin - horizontal/2 - vertical/2 - vec3(0, 0, focal_length);
 
     // Render
-	t_ray_vec3	r;
+	t_ray	r;
 	t_vec3		destination;
 	int			pixel_color;
 	double		u;

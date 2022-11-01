@@ -39,12 +39,21 @@ void	init_plane(t_data *rt, char **input, int obj_nb)
 	rt->objs[obj_nb] = ft_xalloc(sizeof(t_obj));				/* Allocate object */
 	rt->objs[obj_nb]->type = T_PLANE;
 	init_float_triplet(&rt->objs[obj_nb]->pos, input[1]);		/* Init plane position */
-	rt->objs[obj_nb]->pos_ref = rt->objs[obj_nb]->pos;
 	init_float_triplet(&rt->objs[obj_nb]->fwd, input[2]);		/* Init plane orientation */
 	init_color(&rt->objs[obj_nb]->clr, input[3]);				/* Init plane color */
 
 	rt->objs[obj_nb]->hit = hit_plane;
+
+	rt->objs[obj_nb]->texture.is_image = false;
+	rt->objs[obj_nb]->normal.is_image = false;
+
+	rt->objs[obj_nb]->rot.x = 0;
+	rt->objs[obj_nb]->rot.y = 0;
+	rt->objs[obj_nb]->rot.z = 0;
+
+
 }
+
 
 /* Initialize sphere object using parsed input data */
 void	init_sphere(t_data *rt, char **input, int obj_nb)
@@ -53,11 +62,26 @@ void	init_sphere(t_data *rt, char **input, int obj_nb)
 	rt->objs[obj_nb] = ft_xalloc(sizeof(t_obj));				/* Allocate object */
 	rt->objs[obj_nb]->type = T_SPH;
 	init_float_triplet(&rt->objs[obj_nb]->pos, input[1]);		/* Init sphere position */
-	rt->objs[obj_nb]->pos_ref = rt->objs[obj_nb]->pos;
 	rt->objs[obj_nb]->radius = atof(input[2]) / 2;				/* Init sphere radius */
 	init_color(&rt->objs[obj_nb]->clr, input[3]);				/* Init sphere color */
-
 	rt->objs[obj_nb]->hit = hit_sphere;
+
+
+	//FIXME- temp until parsing is changed
+	read_ppm(&rt->objs[obj_nb]->texture.image, "images/earth_texture.ppm");
+	rt->objs[obj_nb]->texture.width = rt->objs[obj_nb]->texture.image.width;
+	rt->objs[obj_nb]->texture.height = rt->objs[obj_nb]->texture.image.height;
+	read_ppm(&rt->objs[obj_nb]->normal.image, "images/earth_normal.ppm");
+	rt->objs[obj_nb]->normal.width = rt->objs[obj_nb]->normal.image.width;
+	rt->objs[obj_nb]->normal.height = rt->objs[obj_nb]->normal.image.height;
+
+
+	rt->objs[obj_nb]->texture.is_image = true;
+	rt->objs[obj_nb]->normal.is_image = true;
+
+	rt->objs[obj_nb]->rot.x = 0;
+	rt->objs[obj_nb]->rot.y = 0;
+	rt->objs[obj_nb]->rot.z = 0;
 }
 
 /* Initialize cylinder object using parsed input data */
@@ -68,7 +92,6 @@ void	init_cylinder(t_data *rt, char **input, int obj_nb)
 	rt->objs[obj_nb] = ft_xalloc(sizeof(t_obj));			/* Allocate object */
 	rt->objs[obj_nb]->type = T_CYL;
 	init_float_triplet(&rt->objs[obj_nb]->pos, input[1]);	/* Init cylinder position */
-	rt->objs[obj_nb]->pos_ref = rt->objs[obj_nb]->pos;
 	init_float_triplet(&rt->objs[obj_nb]->fwd, input[2]);	/* Init cylinder orientation */
 	unit_vec3_self(&rt->objs[obj_nb]->fwd);					/* Normalize cylinder orientation */
 	rt->objs[obj_nb]->radius = atof(input[3]) / 2;			/* Init cylinder radius */
@@ -91,4 +114,11 @@ void	init_cylinder(t_data *rt, char **input, int obj_nb)
 	rt->objs[obj_nb]->hit = hit_cylinder;
 	/* Turn this on to test for cones */
 	// rt->objs[obj_nb]->hit = hit_cone;
+
+	rt->objs[obj_nb]->texture.is_image = false;
+	rt->objs[obj_nb]->normal.is_image = false;
+
+	rt->objs[obj_nb]->rot.x = 0;
+	rt->objs[obj_nb]->rot.y = 0;
+	rt->objs[obj_nb]->rot.z = 0;
 }

@@ -90,8 +90,8 @@ t_color color_x_vec3(t_color col, t_vec3 factor)
         // printf("\n");
         // return (col);
     }
-    diff.r = col.r * factor.x > 255 ? 255 : col.r * factor.x;
-    diff.g = col.g * factor.y > 255 ? 255 : col.g * factor.y;
-    diff.b = col.b * factor.z > 255 ? 255 : col.b * factor.z;
+    diff.r = col.r * factor.x > 255 ? 255 : (col.r * factor.x < 0 ? 0 : col.r * factor.x);
+    diff.g = col.g * factor.y > 255 ? 255 : (col.g * factor.y < 0 ? 0 : col.g * factor.y);
+    diff.b = col.b * factor.z > 255 ? 255 : (col.b * factor.z < 0 ? 0 : col.b * factor.z);
     return (diff);
 }

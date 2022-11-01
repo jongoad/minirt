@@ -1,0 +1,39 @@
+# Ambient light (A)
+#	Intensity		|	Colour
+A	0.0					255,255,255
+
+# Camera (C)
+#	Position		|	Orientation			|	Field of View (FOV)
+C	0.0,0.0,40.0		0.0,0.0,-1.0			50
+
+# Point Light (L)
+#	Position		|	Intensity			|	Colour
+L	10.0,4.0,2.0		0.0						255,255,255
+
+########################
+# Mandatory Object Types
+########################
+
+# Sphere (sp)
+#	Position		|	Radius			|	Colour			|	Specular		|	Shininess	|	Texture Path						|	Normal Path	
+sp	0.0,0.0,0.0			4.0					255,255,255			255,255,255			16.0			"images/granite_texture.ppm"			"images/granite_normal/ppm"
+
+# Plane (pl)
+#	Position		|	Orientation		|	Colour			|	Specular		|	Shininess	|	Texture Path						|	Normal Path	
+pl	0.0,-4.0,0.0		0.0,1.0,0.0			255,255,255			255,255,255			16.0			"images/granite_texture.ppm"			"images/granite_normal/ppm"
+
+# Cylinder (cy)
+#	Position		|	Orientation		|	Radius	|	Height	|	Colour			|	Specular		|	Shininess	|	Texture Path						|	Normal Path	
+cy	0.0,0.0,0.0			0.0,1.0,0.0			2.0			20.0		255,255,255			255,255,255			16.0			"images/granite_texture.ppm"			"images/granite_normal/ppm"
+
+#####################
+# Bonus Object Types
+#####################
+
+# Spot Light (S)
+#	Position		|	Orentation		|	Angle	|	Intensity	|	Colour
+S	0.0,0.0,0.0			0.0,1.0,0.0			30.0		1.0				255,255,255
+
+# Cone (co)
+#	Position		|	Orientation		|	Angle	|	Height	|	Colour			|	Specular		|	Shininess	|	Texture Path						|	Normal Path
+co	0.0,0.0,0.0			0.0,1.0,0.0			90.0		20.0		255,255,255			255,255,255			16.0			"images/granite_texture.ppm"			"images/granite_normal/ppm"

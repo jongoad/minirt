@@ -26,7 +26,6 @@ void	set_hooks(t_data *rt)
 
 int	default_hook(t_data *rt)
 {
-	(void) rt;
-
+	(void)rt;
 	return (0);
 }

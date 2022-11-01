@@ -50,12 +50,13 @@ void	print_usage(void)
 	printf("z axis:   NUMPAD7 // NUMPAD8\n");
 	printf("Toggle All:  'R'\n");
 	printf("%s\n*** Object Translations ***\n%s", BASH_CYAN, BASH_RESET);
-	printf("x axis:   KEY_LEFT / 'A' // KEY_RIGHT / 'D'\n");
-	printf("y axis:   KEY_UP / KEY_Z // KEY_DOWN / KEY_X\n");
-	printf("z axis:   'W'            // 'D' \n");
+	printf("x axis:   KEY_LEFT / 'A' 		// KEY_RIGHT / 'D'\n");
+	printf("y axis:   KEY_UP / KEY_Z 		// KEY_DOWN / KEY_X\n");
+	printf("z axis:   MOUSE_WHEEL_UP / 'W'  // MOUSE_WHEEL_UP / 'D' \n");
 	printf("%s\n*** Object Scale ***\n%s", BASH_CYAN, BASH_RESET);
-	printf("Zoom:          '+' // '-' \n");
+	printf("scale:         '+' // '-' \n");
 	printf("%s\n*** Fun stuff ***\n%s", BASH_CYAN, BASH_RESET);
 	printf("Toggle Light Halos:  'L'\n");
-	printf("Print usage:         KEY_F1\n");
+	printf("Print usage:      			   KEY_F1\n");
+	printf("Print selected obj info:       SPACEBAR\n");
 }

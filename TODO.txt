@@ -5,42 +5,49 @@
 /*****************************************************/
 
 
-0. Q: What is Albedo ? lul
-	A: Albedo is the total light absorbance of a material, BOTH diffuse and specular
+JON:
 
-1. Specular reflection
-	a. t_ray reflect(t_ray r, t_vec3 normal)
-	b. calculate specularity based on cos(reflect, pt_to_light)
+1. Rewrite parser to handle bonus
+	- Test well and fix segfault for period instead of comma on colour
+2. Add BONUS define control to toggle off all non-mandatory functionality
+3. Implement texture mapping
+4. Implement normal mapping
+5. Implement checkerboard pattern mapping (non-image mapping)
+6. Clean up all texture and image loading
+
+ISMAEL:
+
+1. Finish colour attenuation functionality
+2. Finish specularity implementation
+
+
+MAYBE:
+
+1. Antialiasing
+	- Sobel operator ? https://en.wikipedia.org/wiki/Sobel_operator
+2. Spot lights
+3. Additional shapes
+	- Cubes (can be used for skybox)
+	- Triangles
 	
-2. Color
-	a. How do we want to set up diffuse ligthing?
-	b. Color accumulation? How does specularity work with different lights?
-	c. Should diffuse lighting be independent of distance ? 
-		```c
-		attenuation = 1.0 / (light0.constantAttenuation
-			   + light0.linearAttenuation * distance
-			   + light0.quadraticAttenuation * distance * distance);
-		```
-	from https://en.wikibooks.org/wiki/GLSL_Programming/GLUT/Specular_Highlights
 
-3. Antialiasing!
-	a. Sobel operator ? https://en.wikipedia.org/wiki/Sobel_operator
 
-4. Add caps to cones
 
-5. Integrate checkerboard patterns
-
-6. Split parsing into mandatory and bonus.
-
-******************* DONE *********************
-7. Add a real up vector for object translation
-**********************************************
-
-*************** DONE ****************
-8. Add obj xy translations with mouse
-*************************************
 
 
 RESOURCES:
 
 https://www.3dgep.com/understanding-the-view-matrix/
+
+
+UV TEXTURE MAPPING:
+
+http://raytracerchallenge.com/bonus/texture-mapping.html
+https://raytracing.github.io/books/RayTracingTheNextWeek.html#solidtextures
+https://www.cl.cam.ac.uk/teaching/1617/AdvGraph/4.%20Ray%20Tracing%20-%20Image%20Quality%20and%20Texture.pdf
+
+
+
+TEXTURE DOWNLOADS:
+https://cpetry.github.io/NormalMap-Online/
+https://patternpanda.org/walls.html

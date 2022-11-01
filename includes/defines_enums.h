@@ -11,20 +11,25 @@
 #define IMG_H (int)(IMG_W / ASPECT_RATIO)
 
 /* Parse Defines */
-#define READ_SIZE 100000
+#define READ_SIZE 100000000
 #define NB_OBJ_TYPE 6
 #define BONUS 1
 
 /* Math Defines */
 #define T_MAX 1e4
-#define T_MIN 0.01F
-#define EPSILON 0.000001F
+#define T_MIN 0.01f
+#define EPSILON 0.000001f
 #define PI 3.14159265359f
 
 /* Light Defines */
-#define LIGHT_INTENSITY 3.0F
-#define KS 0.5F
-#define LIGHT_RADIUS 1.1F
+#define LIGHT_INTENSITY 10.0F
+#define DIFFUSE_MULTIPLIER 10.0F
+#define SPEC_MULTIPLIER 5.0F
+#define KS 0.5F * SPEC_MULTIPLIER
+#define KD 1.0F * DIFFUSE_MULTIPLIER
+#define SHININESS 20
+#define LIGHT_RADIUS 1.1F	/* For light halos */
+#define GAMMA 1/1.2F
 
 /* Object Defines */
 #define NO_HIT -1

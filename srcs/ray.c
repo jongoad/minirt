@@ -3,11 +3,11 @@
 /**
  * @brief  Generate a primary ray for a specific pixel, returns the 
  * 
- * @return obj_id of the closest hit obj 
+ * @return ptr to the closest intersected obj
  */
-int	cast_ray_at_pixel(t_data *rt, int x, int y)
+t_obj	*cast_ray_at_pixel(t_data *rt, int x, int y)
 {
-	t_ray_vec3	r;
+	t_ray		r;
 	t_hit_rec	rec;
 	
 	r.orig = rt->cam.pos;
@@ -15,13 +15,13 @@ int	cast_ray_at_pixel(t_data *rt, int x, int y)
 	rec.color = rt->background;
 	rec.t = T_MAX;
 	rec.hit_anything = false;
-	rec.obj_id = NO_HIT;
-	if (hit_anything(rt, &r, &rec))
-		return (rec.obj_id);
-	return (NO_HIT);
+	rec.obj = NULL;
+	hit_anything(rt, &r, &rec);
+	hit_lights(rt, &r, &rec);
+	return (rec.obj);
 }
 
-t_vec3	ray_at(t_ray_vec3 *r, float t)
+t_vec3	ray_at(t_ray *r, float t)
 {
 	return add_vec3(r->orig, mult_vec3(r->dir, t));
 }

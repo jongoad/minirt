@@ -4,7 +4,7 @@
 extern double	g_fps;
 
 typedef struct s_data		t_data;
-typedef struct s_ray_vec3	t_ray_vec3;
+typedef struct s_ray	t_ray;
 typedef struct s_vec3		t_vec3;
 typedef struct s_obj		t_obj;
 
