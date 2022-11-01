@@ -19,10 +19,10 @@ bool	hit_sphere(t_ray_vec3 *r, t_obj *o, t_hit_rec *rec)
         return false;	
     q.sqrtd = sqrtf(q.discriminant);
     q.root = (-q.half_b - q.sqrtd) / q.a;
-    if (q.root < T_MIN || q.root > T_MAX)
+    if (q.root < T_MIN || q.root > rec->t)
 	{
         q.root = (-q.half_b + q.sqrtd) / q.a;
-        if (q.root < T_MIN || q.root > T_MAX)
+        if (q.root < T_MIN || q.root > rec->t)
 			return (false);
 		rec->inside_surface = true;
     }

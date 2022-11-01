@@ -1,7 +1,8 @@
 #include "minirt.h"
 #include "hooks.h"
 
-static int	handle_mouse_obj_translation(float pcnt_x, float pcnt_y, t_data *rt);
+static int	handle_mouse_xy_translation(float pcnt_x, float pcnt_y, t_data *rt);
+static int	handle_mouse_z_translation(t_data *rt, int button);
 
 static void	print_selected_object_info(t_data *rt)
 {
@@ -24,9 +25,9 @@ int	handle_mouse_btn_release(int button, int x, int y, t_data *rt)
 	(void)rt;
 	(void)x;
 	(void)y;
-	if (button == 2)
+	if (button == RIGHT_CLICK)
 		rt->cam.is_move = false;
-	else if (button == 1)
+	else if (button == LEFT_CLICK)
 		rt->left_clicking = false;
 	return (0);
 }
@@ -36,14 +37,16 @@ int	handle_mouse_hook(int button, int x, int y, t_data *rt)
 	(void)rt;
 	(void)x;
 	(void)y;
-	if (button == 1)
+	if (button == LEFT_CLICK)
 	{
 		rt->selected_obj_id = cast_ray_at_pixel(rt, x, y);
 		print_selected_object_info(rt);
 		rt->left_clicking = true;
 	}
-	else if (button == 2)
+	else if (button == RIGHT_CLICK)
 		rt->cam.is_move = true;
+	else if (button == WHEEL_UP || button == WHEEL_DOWN)
+		handle_mouse_z_translation(rt, button);
 	else
 		return (0);
 	rt->cam.prev_mouse = vec3((float)x, (float)y, 0);
@@ -105,12 +108,12 @@ int	handle_mouse_motion(int x, int y, t_data *rt)
 		cam_recalc(rt);
 		render_scene(rt);
 	}
-	if (handle_mouse_obj_translation(pcnt_x, pcnt_y, rt))
+	if (handle_mouse_xy_translation(pcnt_x, pcnt_y, rt))
 		rt->cam.prev_mouse = vec3((float)x, (float)y, 0);
 	return (0);
 }
 
-static int	handle_mouse_obj_translation(float pcnt_x, float pcnt_y, t_data *rt)
+static int	handle_mouse_xy_translation(float pcnt_x, float pcnt_y, t_data *rt)
 {
 	float	z_dist;
 	
@@ -122,6 +125,25 @@ static int	handle_mouse_obj_translation(float pcnt_x, float pcnt_y, t_data *rt)
 			mult_vec3(rt->cam.right, rt->cam.view_w * pcnt_x * z_dist));
 		add_vec3_self(&rt->objs[rt->selected_obj_id]->pos, 
 			mult_vec3(rt->cam.real_up, rt->cam.view_h * -pcnt_y * z_dist));
+		render_scene(rt);
+		return (true);
+	}
+	return (false);
+}
+
+
+static int	handle_mouse_z_translation(t_data *rt, int button)
+{
+	float	z_offset;
+	
+	if (rt->selected_obj_id != NO_HIT)		/* Object xy rotation */
+	{
+		if (button == WHEEL_UP)
+			z_offset = -1.0F;
+		else
+			z_offset = 1.0F;
+		add_vec3_self(&rt->objs[rt->selected_obj_id]->pos, 
+			mult_vec3(rt->cam.forward, z_offset));
 		render_scene(rt);
 		return (true);
 	}

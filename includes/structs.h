@@ -57,9 +57,9 @@ typedef struct s_quadratic
 /* Color data */
 typedef	struct s_color
 {
-	int	r;
-	int	g;
-	int	b;
+	unsigned char	r;
+	unsigned char	g;
+	unsigned char	b;
 }	t_color;
 
 /* 4x4 matrix */
