@@ -8,15 +8,17 @@ int	handle_key_release_hook(int keysym, t_data *rt)
 {
 	if (keysym == KEY_ESC)
 		rt_clean_exit(rt);
-	else if (keysym == KEY_L)
-	{
-		rt->apply_light_halos = !(rt->apply_light_halos);
-		render_scene(rt);
-	}
+	if (keysym == KEY_L)
+		rt->toggle.is_light_halo = !(rt->toggle.is_light_halo);
+	else if (keysym == KEY_N)
+		rt->toggle.is_normal = !(rt->toggle.is_normal);
+	else if (keysym == KEY_T)
+		rt->toggle.is_texture = !(rt->toggle.is_texture);
 	else if (keysym == KEY_F1)
 		print_usage();
 	else
 		return (0);
+	render_scene(rt);
 	return (0);
 }
 

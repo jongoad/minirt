@@ -43,7 +43,6 @@ void	init_scene(t_data *rt)
 	light_nb = 0;
 	init_parse_fct_ptrs(rt);
 	count_objects(rt);
-
 	rt->objs = ft_xalloc(sizeof(t_obj *) * (rt->nb_objs + 1));
 	rt->lights = ft_xalloc(sizeof(t_obj *) * (rt->nb_lights + 1));
 	while (rt->parse.scene[i])
@@ -65,6 +64,7 @@ void	init_scene(t_data *rt)
 }
 
 /* Round a float at a specified precision */
+//FIXME - Move to utilities
 float roundf_precision(float n, float p)
 {
 	double res;
@@ -96,6 +96,27 @@ void	init_cam_angles(t_data *rt)
 		rt->cam.yaw = 360 - rt->cam.yaw;
 }
 
+
+void	init_toggle(t_data *rt)
+{
+	if (BONUS)
+	{
+		rt->toggle.is_normal = true;
+		rt->toggle.is_texture = true;
+		rt->toggle.is_specular = true;
+	}
+	else
+	{
+		rt->toggle.is_normal = false;
+		rt->toggle.is_texture = false;
+		rt->toggle.is_specular = false;
+	}
+	rt->toggle.is_light_halo = false;
+	rt->toggle.is_point_light = true;
+	rt->toggle.is_display_debug = false;
+	rt->toggle.is_left_click = false;
+}
+
 /* Split input and initialize objects */
 void	rt_init(t_data *rt, char *filepath)
 {
@@ -109,4 +130,13 @@ void	rt_init(t_data *rt, char *filepath)
 	// rt->background = lerp_color(int_to_color(BLACK), rt->ambient.clr, rt->ambient.ratio);
 	parse_free(&rt->parse);
 	init_cam_angles(rt);
+
+	/* Set initial toggle values */
+	init_toggle(rt);
+
+
+	// read_ppm(&rt->objs[obj_nb]->texture.image, "images/woodroof_diffuse.ppm");
+	// read_ppm(&rt->objs[obj_nb]->normal.image, "images/woodroof_normal.ppm");
+	// rt->objs[obj_nb]->texture.is_image = true;
+	// rt->objs[obj_nb]->normal.is_image = true;
 }

@@ -11,14 +11,14 @@
 #define IMG_H (int)(IMG_W / ASPECT_RATIO)
 
 /* Parse Defines */
-#define READ_SIZE 100000
+#define READ_SIZE 100000000
 #define NB_OBJ_TYPE 6
 #define BONUS 1
 
 /* Math Defines */
 #define T_MAX 1e4
-#define T_MIN 0.01F
-#define EPSILON 0.000001F
+#define T_MIN 0.01f
+#define EPSILON 0.000001f
 #define PI 3.14159265359f
 
 /* Light Defines */

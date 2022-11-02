@@ -27,8 +27,8 @@ int	handle_mouse_btn_release(int button, int x, int y, t_data *rt)
 	(void)y;
 	if (button == RIGHT_CLICK)
 		rt->cam.is_move = false;
-	else if (button == LEFT_CLICK)
-		rt->left_clicking = false;
+	else if (button == 1)
+		rt->toggle.is_left_click = false;
 	return (0);
 }
 
@@ -41,7 +41,7 @@ int	handle_mouse_hook(int button, int x, int y, t_data *rt)
 	{
 		rt->selected_obj_id = cast_ray_at_pixel(rt, x, y);
 		print_selected_object_info(rt);
-		rt->left_clicking = true;
+		rt->toggle.is_left_click = true;
 	}
 	else if (button == RIGHT_CLICK)
 		rt->cam.is_move = true;
@@ -61,8 +61,7 @@ int	handle_mouse_motion(int x, int y, t_data *rt)
 	
 	/* Get magnitude and direction of movement */
 	int delta_x = cur_mouse.x - rt->cam.prev_mouse.x;
-	int delta_y = (cur_mouse.y - rt->cam.prev_mouse.y);
-	//Changed to negative value to match expectations for rotation
+	int delta_y = cur_mouse.y - rt->cam.prev_mouse.y;
 
 	/* Convert to % of screen so movement does not change with different resolutions */
 	float pcnt_x = (float)delta_x / (float)IMG_W;
@@ -116,7 +115,7 @@ static int	handle_mouse_xy_translation(float pcnt_x, float pcnt_y, t_data *rt)
 {
 	float	z_dist;
 	
-	if (rt->left_clicking && rt->selected_obj_id != NO_HIT
+	if (rt->toggle.is_left_click && rt->selected_obj_id != NO_HIT
 		&& pcnt_x != 0 && pcnt_y != 0)		/* Object xy rotation */
 	{
 		z_dist = length_vec3(project_a_on_b(sub_vec3(rt->objs[rt->selected_obj_id]->pos, rt->cam.pos), rt->cam.forward));

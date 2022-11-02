@@ -219,6 +219,44 @@ void	init_sphere(t_data *rt, char **input, int obj_nb);
 void	init_cylinder(t_data *rt, char **input, int obj_nb);
 
 
+
+/****************************************/
+/*                BONUS               */
+/****************************************/
+
+/* Shape Specific UV mapping */
+t_vec2 spherical_map(t_vec3 p);
+t_vec2 planar_map(t_vec3 p);
+t_vec2 cylindrical_map(t_vec3 p);
+
+/* Checkerboard Pattern */
+t_texture uv_checkers(int width, int height, t_color c1, t_color c2);
+t_color uv_pattern_at_checkers(t_texture texture, t_vec2 uv);
+
+// /* Image texture mapping */
+t_color uv_pattern_at_image(t_texture texture, float u, float v);
+t_color	obj_get_color(t_data *rt, t_vec3 p, t_obj *obj);
+
+// /* Normal Mapping */
+t_vec2	uv_at(t_vec3 p, t_obj *obj);
+t_vec3	get_normal_map(t_vec3 p, t_obj *obj);
+t_vec3	obj_get_normal(t_vec3 normal, t_vec3 p, t_obj *obj);
+
+
+
+/* Reading PPM Files */
+void 	parse_ppm_skip_comment(char *buf, int *p);
+void	parse_ppm_skip_whitespace(char *buf, int *p);
+int 	parse_ppm_identifier(char *buf, int *p);
+void 	parse_ppm_width(t_ppm *img, char *buf, int *p);
+void 	parse_ppm_height(t_ppm *img, char *buf, int *p);
+void 	parse_ppm_maxval(t_ppm *img, char *buf, int *p);
+void 	parse_ppm_header(t_ppm *img, char *buf, int *p);
+void	parse_ppm(t_ppm *img, char *buf);
+void	read_ppm(t_ppm *img, char *path);
+
+
+
 /****************************************/
 /*           Debug Utilities            */
 /****************************************/

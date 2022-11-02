@@ -28,6 +28,7 @@ CFILES	=	cleanup.c \
 			parse/parse.c parse/parse_objects.c parse/parse_utils.c \
 			init/init_objects.c init/init.c init/init_utils.c \
 			matrix/matrix.c matrix/matrix_utils.c matrix/inv_mat.c \
+			texture/texture.c texture/read_ppm.c texture/normal_map.c texture/shape_map.c \
 			debug.c
 
 SRC_DIR	= srcs
