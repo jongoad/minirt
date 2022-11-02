@@ -20,25 +20,31 @@ bool	hit_anything(t_data *rt, t_ray_vec3 *r, t_hit_rec *rec)
 static inline t_color	render_pixel(t_data *rt, t_ray_vec3 *r, t_hit_rec *rec)
 {
 	register t_color	pixel_color;
-
+	t_vec3 p;
+	t_mat4 rot;
 	rec->t = T_MAX;
 	rec->hit_anything = false;
 	if (hit_anything(rt, r, rec))
 	{
-		// if (rt->toggle.is_texture)
-		// 	rec->color = pattern_at_image(sub_vec3(rec->p, rt->objs[rec->obj_id]->pos), rt->earth, T_SPH);
+		p =  sub_vec3(rec->p, rt->objs[rec->obj_id]->pos);
 
-		rec->color = obj_get_color(rt, sub_vec3(rec->p, rt->objs[rec->obj_id]->pos), rt->objs[rec->obj_id]);
-		if (rt->toggle.is_normal)
-			rec->normal = obj_get_normal(rec->normal, sub_vec3(rec->p, rt->objs[rec->obj_id]->pos), rt->objs[rec->obj_id]);
-		// rec->normal = perturb_normal(rec->normal, normal_image_to_vec3(uv_at(sub_vec3(rec->p, rt->objs[rec->obj_id]->pos), rt->earth_normal, T_SPH), rt->earth_normal.image));
+		// printf("Before:\n\tx: %f\n\ty: %f\n\tz:%f\n\n", p.x, p.y, p.z);
+		rot = mat_rot_compound(deg_to_rad(rt->objs[rec->obj_id]->rot.x), deg_to_rad(rt->objs[rec->obj_id]->rot.y), deg_to_rad(rt->objs[rec->obj_id]->rot.z));
+		p = vec4_to_vec3(mat_mult_vec4(vec3_to_vec4(p, T_POINT), rot));
+		// printf("after:\n\tx: %f\n\ty: %f\n\tz:%f\n\n", p.x, p.y, p.z);
+
+
+		if (rt->toggle.is_texture && rt->objs[rec->obj_id]->texture.is_image)
+			rec->color = obj_get_color(rt,p, rt->objs[rec->obj_id]);
+		if (rt->toggle.is_normal && rt->objs[rec->obj_id]->normal.is_image)
+			rec->normal = obj_get_normal(rec->normal, p, rt->objs[rec->obj_id]);
+	
 		/* Toggle point lights */
 		if (rt->toggle.is_point_light)
 			pixel_color = apply_point_lights(rt, rec, rec->color);
 	}
 	else 
 		pixel_color = rt->background;
-	//Can this be moved into render control?
 	if (rt->toggle.is_light_halo)
 		pixel_color = apply_light_halos(rt, r, rec, pixel_color);
 	return (pixel_color);

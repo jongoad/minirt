@@ -85,6 +85,35 @@ static int	handle_object_translations(int keysym, t_data *rt)
 	return (0);
 }
 
+void	save_rot(t_obj *obj, unsigned char axis, bool is_positive)
+{
+	float rot_val;
+
+	rot_val = (PI/16) * (180/PI);
+	if (!is_positive)
+		rot_val *= -1; 
+	if (axis == X_ROT)
+		obj->rot.x += rot_val;
+	else if (axis == Y_ROT)
+		obj->rot.y += rot_val;
+	else if (axis == Z_ROT)
+		obj->rot.z += rot_val;
+
+	//Handle overotation
+	if (obj->rot.x < 0)
+		obj->rot.x = (int)obj->rot.x % 360;
+	else if (obj->rot.x > 0)
+		obj->rot.x = (int)obj->rot.x % -360;
+	if (obj->rot.y < 0)
+		obj->rot.y = (int)obj->rot.y % 360;
+	else if (obj->rot.y > 0)
+		obj->rot.y = (int)obj->rot.y % -360;
+	if (obj->rot.z < 0)
+		obj->rot.z = (int)obj->rot.z % 360;
+	else if (obj->rot.z > 0)
+		obj->rot.z = (int)obj->rot.z % -360;
+}
+
 static void	apply_rotation(t_obj *o, unsigned char rot_axis, bool rot_is_positive)
 {
 	static t_mat4	rot_matrices[6];
@@ -100,6 +129,7 @@ static void	apply_rotation(t_obj *o, unsigned char rot_axis, bool rot_is_positiv
 	}
 	if (rot_axis > Z_ROT)
 		return ;
+	save_rot(o, rot_axis, rot_is_positive);
 	o->fwd = vec4_to_vec3(mat_mult_vec4(vec3_to_vec4(o->fwd, T_POINT), rot_matrices[2 * rot_axis + rot_is_positive]));
 	o->right = vec4_to_vec3(mat_mult_vec4(vec3_to_vec4(o->right, T_POINT), rot_matrices[2 * rot_axis + rot_is_positive]));
 	o->up = vec4_to_vec3(mat_mult_vec4(vec3_to_vec4(o->up, T_POINT), rot_matrices[2 * rot_axis + rot_is_positive]));

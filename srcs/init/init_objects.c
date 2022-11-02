@@ -43,7 +43,17 @@ void	init_plane(t_data *rt, char **input, int obj_nb)
 	init_color(&rt->objs[obj_nb]->clr, input[3]);				/* Init plane color */
 
 	rt->objs[obj_nb]->hit = hit_plane;
+
+	rt->objs[obj_nb]->texture.is_image = false;
+	rt->objs[obj_nb]->normal.is_image = false;
+
+	rt->objs[obj_nb]->rot.x = 0;
+	rt->objs[obj_nb]->rot.y = 0;
+	rt->objs[obj_nb]->rot.z = 0;
+
+
 }
+
 
 /* Initialize sphere object using parsed input data */
 void	init_sphere(t_data *rt, char **input, int obj_nb)
@@ -58,16 +68,20 @@ void	init_sphere(t_data *rt, char **input, int obj_nb)
 
 
 	//FIXME- temp until parsing is changed
-	read_ppm(&rt->objs[obj_nb]->texture.image, "images/woodroof_diffuse.ppm");
+	read_ppm(&rt->objs[obj_nb]->texture.image, "images/earth_texture.ppm");
 	rt->objs[obj_nb]->texture.width = rt->objs[obj_nb]->texture.image.width;
 	rt->objs[obj_nb]->texture.height = rt->objs[obj_nb]->texture.image.height;
-	read_ppm(&rt->objs[obj_nb]->normal.image, "images/woodroof_normal.ppm");
+	read_ppm(&rt->objs[obj_nb]->normal.image, "images/earth_normal.ppm");
 	rt->objs[obj_nb]->normal.width = rt->objs[obj_nb]->normal.image.width;
 	rt->objs[obj_nb]->normal.height = rt->objs[obj_nb]->normal.image.height;
 
 
 	rt->objs[obj_nb]->texture.is_image = true;
 	rt->objs[obj_nb]->normal.is_image = true;
+
+	rt->objs[obj_nb]->rot.x = 0;
+	rt->objs[obj_nb]->rot.y = 0;
+	rt->objs[obj_nb]->rot.z = 0;
 }
 
 /* Initialize cylinder object using parsed input data */
@@ -100,4 +114,11 @@ void	init_cylinder(t_data *rt, char **input, int obj_nb)
 	rt->objs[obj_nb]->hit = hit_cylinder;
 	/* Turn this on to test for cones */
 	// rt->objs[obj_nb]->hit = hit_cone;
+
+	rt->objs[obj_nb]->texture.is_image = false;
+	rt->objs[obj_nb]->normal.is_image = false;
+
+	rt->objs[obj_nb]->rot.x = 0;
+	rt->objs[obj_nb]->rot.y = 0;
+	rt->objs[obj_nb]->rot.z = 0;
 }

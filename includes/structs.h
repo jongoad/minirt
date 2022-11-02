@@ -25,11 +25,6 @@ typedef struct s_toggle		t_toggle;
 typedef struct s_ppm		t_ppm;
 typedef struct s_texture	t_texture;
 
-
-
-
-
-
 /*******************************/
 /*         QoL Typedefs        */
 /*******************************/
@@ -77,11 +72,9 @@ typedef struct s_mat4
 }	t_mat4;
 
 
-
 /*******************************/
 /*            BONUS            */
 /*******************************/
-
 
 /* PPM image data */
 typedef struct s_ppm
@@ -104,10 +97,6 @@ typedef struct s_texture
 	t_color	c1;
 	t_color c2;
 }	t_texture;
-
-
-
-
 
 /*******************************/
 /*        3D Data Structs      */
