@@ -21,18 +21,16 @@ static inline t_color	render_pixel(t_data *rt, t_ray_vec3 *r, t_hit_rec *rec)
 {
 	register t_color	pixel_color;
 	t_vec3 p;
-	t_mat4 rot;
+	// t_vec3 normal;
+	// t_mat4 rot;
 	rec->t = T_MAX;
 	rec->hit_anything = false;
 	if (hit_anything(rt, r, rec))
 	{
 		p =  sub_vec3(rec->p, rt->objs[rec->obj_id]->pos);
-
-		// printf("Before:\n\tx: %f\n\ty: %f\n\tz:%f\n\n", p.x, p.y, p.z);
-		rot = mat_rot_compound(deg_to_rad(rt->objs[rec->obj_id]->rot.x), deg_to_rad(rt->objs[rec->obj_id]->rot.y), deg_to_rad(rt->objs[rec->obj_id]->rot.z));
-		p = vec4_to_vec3(mat_mult_vec4(vec3_to_vec4(p, T_POINT), rot));
-		// printf("after:\n\tx: %f\n\ty: %f\n\tz:%f\n\n", p.x, p.y, p.z);
-
+		// rot = mat_rot_compound(deg_to_rad(rt->objs[rec->obj_id]->rot.x), deg_to_rad(rt->objs[rec->obj_id]->rot.y), deg_to_rad(rt->objs[rec->obj_id]->rot.z));
+		// p = vec4_to_vec3(mat_mult_vec4(vec3_to_vec4(p, T_POINT), rot));
+		// normal = vec4_to_vec3(mat_mult_vec4(vec3_to_vec4(rec->normal, T_VEC), rot));
 
 		if (rt->toggle.is_texture && rt->objs[rec->obj_id]->texture.is_image)
 			rec->color = obj_get_color(rt,p, rt->objs[rec->obj_id]);

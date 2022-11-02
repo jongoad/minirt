@@ -49,7 +49,7 @@ t_vec3	obj_get_normal(t_vec3 normal, t_vec3 p, t_obj *obj)
 	if (normal.y > 0.99f || normal.y < -0.99f)				/* If y value too close to 1 or -1 use                                                                         */
 		new_up = vec3(1,0,0);
 	else
-		new_up = vec3(0,0,-1);
+		new_up = vec3(0,1,0);
 	pV = unit_vec3(cross_vec3(new_up, normal));				/* Find first axis */
 	pU = unit_vec3(cross_vec3(normal, pV));					/* Find second axis */
 	/* Find perturbation values from normal map vector */
