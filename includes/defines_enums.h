@@ -26,7 +26,8 @@
 #define KS 0.5F
 #define KD 1.0F
 #define SHININESS 20
-#define LIGHT_RADIUS 1.1F
+#define LIGHT_RADIUS 1.1F	/* For light halos */
+#define GAMMA 1/1.2F
 
 /* Object Defines */
 #define NO_HIT -1

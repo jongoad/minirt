@@ -23,8 +23,9 @@ CFILES	=	cleanup.c \
 			controls/hooks.c controls/key_hooks.c controls/mouse_hooks.c \
 			vector/vectors.c vector/vectors_self.c vector/vectors_utils.c \
 			intersection/hit_objs.c \
+			intersection/hit_lights.c \
 			render/render.c \
-			render/light.c \
+			render/shader.c \
 			parse/parse.c parse/parse_objects.c parse/parse_utils.c \
 			init/init_objects.c init/init.c init/init_utils.c \
 			matrix/matrix.c matrix/matrix_utils.c matrix/inv_mat.c \

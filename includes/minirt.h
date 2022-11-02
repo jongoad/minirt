@@ -77,7 +77,7 @@ bool	hit_anything(t_data *rt, t_ray_vec3 *r, t_hit_rec *rec);
 void	render_scene(t_data *rt);
 
 /* Rendering - Lights */
-t_color	apply_point_lights(t_data *rt, t_hit_rec *rec, t_color color);
+t_color	pixel_shader(t_data *rt, t_hit_rec *rec, t_color color);
 t_color	apply_light_halos(t_data *rt, t_ray_vec3 *r, t_hit_rec *rec, t_color color);
 
 /* Benchmarking FIXME: to remove for mandatory part */

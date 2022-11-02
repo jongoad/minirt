@@ -68,15 +68,16 @@ static int	handle_object_translations(int keysym, t_data *rt)
 		add_vec3_self(&o->pos, mult_vec3(rt->cam.real_up, 2.0F));
 	else if (keysym == KEY_DOWN || keysym == KEY_Q)		/* Move obj down */
 		sub_vec3_self(&o->pos, mult_vec3(rt->cam.real_up, 2.0F));
+	// FIXME: put scaling in a function to lower bound it
 	else if (keysym == KEY_PLUS || keysym == NUMPAD_PLUS)
 	{
-		o->radius += 0.1;
-		o->half_height += 0.05;
+		o->radius *= 1.1;
+		o->half_height *= 1.1;
 	}
 	else if (keysym == KEY_MINUS || keysym == NUMPAD_MINUS)
 	{
-		o->radius -= 0.1;
-		o->half_height -= 0.05;
+		o->radius /= 1.1;
+		o->half_height /= 1.1;
 	}
 	else
 		return (0);

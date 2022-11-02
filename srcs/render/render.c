@@ -39,7 +39,7 @@ static inline t_color	render_pixel(t_data *rt, t_ray_vec3 *r, t_hit_rec *rec)
 	
 		/* Toggle point lights */
 		if (rt->toggle.is_point_light)
-			pixel_color = apply_point_lights(rt, rec, rec->color);
+			pixel_color = pixel_shader(rt, rec, rec->color);
 	}
 	else 
 		pixel_color = rt->background;

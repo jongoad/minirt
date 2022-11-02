@@ -16,7 +16,6 @@ typedef struct s_vec3		t_vec3;
 typedef struct s_vec4		t_vec4;
 typedef	struct s_ray_vec3	t_ray_vec3;
 typedef struct s_ambient	t_ambient;
-typedef struct s_light_pt	t_light_pt;
 typedef struct s_camera		t_camera;
 typedef struct s_parse		t_parse;
 typedef struct s_img		t_img;
@@ -225,14 +224,6 @@ typedef struct s_obj
 	t_vec3		trans;
 }	t_obj;
 
-/* Point light object */
-typedef struct s_light_pt
-{
-	t_vec3	pos;
-	t_vec3	color;
-	t_obj	plane;
-}	t_light_pt;
-
 /******************************************/
 /*        Raytracing Utility Structs      */
 /******************************************/
@@ -305,7 +296,6 @@ typedef struct s_data
 	t_img		*img;
 	t_camera	cam;
 	t_obj		**objs;
-	t_light_pt	*lights_struct;
 	t_obj		**lights;
 	int			nb_lights;
 	t_vec3		ambt_light;
