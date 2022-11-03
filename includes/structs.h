@@ -14,7 +14,7 @@ typedef struct s_quadratic	t_quadratic;
 typedef	struct s_color		t_color;
 typedef struct s_vec3		t_vec3;
 typedef struct s_vec4		t_vec4;
-typedef	struct s_ray_vec3	t_ray_vec3;
+typedef	struct s_ray		t_ray;
 typedef struct s_ambient	t_ambient;
 typedef struct s_camera		t_camera;
 typedef struct s_parse		t_parse;
@@ -130,11 +130,11 @@ typedef struct s_vec4
 }	t_vec4;
 
 /* Ray vector */
-typedef	struct s_ray_vec3
+typedef	struct s_ray
 {
 	t_vec3 	orig;					/* Originating point of ray (camera focal point) */
 	t_vec3	dir;					/* Secondary point of ray (pixel on image plane) */
-}	t_ray_vec3;
+}	t_ray;
 
 /* UV coordinate struct */
 typedef struct s_uv
@@ -214,7 +214,7 @@ typedef struct s_obj
 	t_color		specular_clr;
 
 	/* Function pointers for ray collision per object */
-	bool		(*hit)(t_ray_vec3 *r, t_obj *o, t_hit_rec *rec);	/* Function ptr for any object type */
+	bool		(*hit)(t_ray *r, t_obj *o, t_hit_rec *rec);	/* Function ptr for any object type */
 	
 
 	/* Transformation data */
@@ -234,7 +234,7 @@ typedef struct s_hit_rec
     t_vec3	normal;					/* Unit vector representing the normal to the surface at collision */
     t_color	color;					/* Color vector at collision */
     double	t;						/* Distance to point of collision */
-    int		obj_id;					/* ID of the object with which collision happened */
+    t_obj	*obj;					/* Ptr to the object with which collision happened, NULL if no collision */
     bool	inside_surface;			/* If thew point is near an edge, use antialiasing */
     bool	hit_anything;			/* FIXME: not sure if will be needed, but useful for debugging */
 }	t_hit_rec;
@@ -301,7 +301,7 @@ typedef struct s_data
 	t_vec3		ambt_light;
 	t_color		background;
 	int			nb_objs;
-	int			selected_obj_id;		/* For dynamic resizing/translation */
+	t_obj		*selected;		   		/* Ptr to the object user selected with the mouse */
 	int			win_h;
 	int			win_w;
 	t_toggle	toggle;					/* Struct for all toggleable variables */

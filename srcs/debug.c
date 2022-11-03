@@ -121,9 +121,9 @@ void	print_data_to_screen(t_data *rt)
 	int y = 400;
 
 	/* Object 0 */
-	if (rt->selected_obj_id != NO_HIT)
+	if (rt->selected)
 	{
-		sprintf(o, "pos: x: %f y: %f z: %f", rt->objs[rt->selected_obj_id]->pos.x, rt->objs[rt->selected_obj_id]->pos.y, rt->objs[rt->selected_obj_id]->pos.z);
+		sprintf(o, "pos: x: %f y: %f z: %f", rt->selected->pos.x, rt->selected->pos.y, rt->selected->pos.z);
 		mlx_string_put(rt->mlx_ptr, rt->win_ptr, 10, 100, RED, "Object Data:");
 		mlx_string_put(rt->mlx_ptr, rt->win_ptr, 10, 115, RED, o);
 	}

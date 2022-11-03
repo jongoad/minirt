@@ -123,7 +123,7 @@ void	rt_init(t_data *rt, char *filepath)
 	// FIXME: temporary represents an arbitrary shade of grey
 	rt->background = int_to_color(BLACK);
 	// rt->background = lerp_color(int_to_color(BLACK), int_to_color(WHITE), 0.2);
-	rt->selected_obj_id = 0;
+	rt->selected = 0;
 	rt_init_mlx(rt, filepath);
 	rt_init_img(rt);
 	init_scene(rt);

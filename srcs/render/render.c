@@ -1,7 +1,7 @@
 #include "minirt.h"
 #include <time.h>
 
-bool	hit_anything(t_data *rt, t_ray_vec3 *r, t_hit_rec *rec)
+bool	hit_anything(t_data *rt, t_ray *r, t_hit_rec *rec)
 {
 	int		i;
 
@@ -10,32 +10,32 @@ bool	hit_anything(t_data *rt, t_ray_vec3 *r, t_hit_rec *rec)
 	{
 		if (rt->objs[i]->hit(r, rt->objs[i], rec))
 		{
-			rec->obj_id = i;
+			rec->obj = rt->objs[i];
 		}
 	}
 	return (rec->hit_anything);
 }
 
 /* Get final colour values for a single pixel */
-static inline t_color	render_pixel(t_data *rt, t_ray_vec3 *r, t_hit_rec *rec)
+static inline t_color	render_pixel(t_data *rt, t_ray *r, t_hit_rec *rec)
 {
 	register t_color	pixel_color;
 	t_vec3 p;
-	// t_vec3 normal;
-	// t_mat4 rot;
+	t_vec3 normal;
+	t_mat4 rot;
 	rec->t = T_MAX;
 	rec->hit_anything = false;
 	if (hit_anything(rt, r, rec))
 	{
-		p =  sub_vec3(rec->p, rt->objs[rec->obj_id]->pos);
-		// rot = mat_rot_compound(deg_to_rad(rt->objs[rec->obj_id]->rot.x), deg_to_rad(rt->objs[rec->obj_id]->rot.y), deg_to_rad(rt->objs[rec->obj_id]->rot.z));
-		// p = vec4_to_vec3(mat_mult_vec4(vec3_to_vec4(p, T_POINT), rot));
-		// normal = vec4_to_vec3(mat_mult_vec4(vec3_to_vec4(rec->normal, T_VEC), rot));
+		p =  sub_vec3(rec->p, rec->obj->pos);
+		rot = mat_rot_compound(deg_to_rad(rec->obj->rot.x), deg_to_rad(rec->obj->rot.y), deg_to_rad(rec->obj->rot.z));
+		p = vec4_to_vec3(mat_mult_vec4(vec3_to_vec4(p, T_POINT), rot));
+		normal = vec4_to_vec3(mat_mult_vec4(vec3_to_vec4(rec->normal, T_VEC), rot));
 
-		if (rt->toggle.is_texture && rt->objs[rec->obj_id]->texture.is_image)
-			rec->color = obj_get_color(rt,p, rt->objs[rec->obj_id]);
-		if (rt->toggle.is_normal && rt->objs[rec->obj_id]->normal.is_image)
-			rec->normal = obj_get_normal(rec->normal, p, rt->objs[rec->obj_id]);
+		if (rt->toggle.is_texture && rec->obj->texture.is_image)
+			rec->color = obj_get_color(rt,p, rec->obj);
+		if (rt->toggle.is_normal && rec->obj->normal.is_image)
+			rec->normal = obj_get_normal(rec->normal, p, rec->obj);
 	
 		/* Toggle point lights */
 		if (rt->toggle.is_point_light)
@@ -51,7 +51,7 @@ static inline t_color	render_pixel(t_data *rt, t_ray_vec3 *r, t_hit_rec *rec)
 /* Render current scene and displayto screen */
 void	render_scene(t_data *rt)
 {
-	t_ray_vec3	r;
+	t_ray	r;
 	t_hit_rec	rec;
 	int			i;
 	int			j;

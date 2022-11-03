@@ -46,11 +46,11 @@ t_obj	*new_plane(t_vec3 pos, t_vec3 normal, t_vec3 color);
 t_obj	*new_cylinder(t_vec3 pos, t_vec3 normal, float diameter, float height, t_vec3 color);
 
 /* Object intersection functions */
-bool	hit_sphere(t_ray_vec3 *r, t_obj *o, t_hit_rec *rec);
-bool	hit_sphere_no_hit_rec(t_ray_vec3 *r, t_obj *o);
-bool	hit_plane(t_ray_vec3 *r, t_obj *o, t_hit_rec *rec);
-bool	hit_cylinder(t_ray_vec3 *r, t_obj *o, t_hit_rec *rec);
-bool	hit_cone(t_ray_vec3 *r, t_obj *o, t_hit_rec *rec);
+bool	hit_sphere(t_ray *r, t_obj *o, t_hit_rec *rec);
+bool	hit_sphere_no_hit_rec(t_ray *r, t_obj *o);
+bool	hit_plane(t_ray *r, t_obj *o, t_hit_rec *rec);
+bool	hit_cylinder(t_ray *r, t_obj *o, t_hit_rec *rec);
+bool	hit_cone(t_ray *r, t_obj *o, t_hit_rec *rec);
 
 /* Colors */
 t_color     int_to_color(int c);
@@ -67,18 +67,18 @@ int	display_img(t_data *rt, t_img *img);
 
 
 /* Ray Generation */
-int		cast_ray_at_pixel(t_data *rt, int x, int y);
-t_vec3	ray_at(t_ray_vec3 *r, float t);
+t_obj	*cast_ray_at_pixel(t_data *rt, int x, int y);
+t_vec3	ray_at(t_ray *r, float t);
 t_vec3	project_a_on_b(t_vec3 a, t_vec3 b);
 t_vec3	reflect_ray(t_vec3 dir, t_vec3 normal);
 
 /* Rendering */
-bool	hit_anything(t_data *rt, t_ray_vec3 *r, t_hit_rec *rec);
+bool	hit_anything(t_data *rt, t_ray *r, t_hit_rec *rec);
 void	render_scene(t_data *rt);
 
 /* Rendering - Lights */
 t_color	pixel_shader(t_data *rt, t_hit_rec *rec, t_color color);
-t_color	apply_light_halos(t_data *rt, t_ray_vec3 *r, t_hit_rec *rec, t_color color);
+t_color	apply_light_halos(t_data *rt, t_ray *r, t_hit_rec *rec, t_color color);
 
 /* Benchmarking FIXME: to remove for mandatory part */
 void	display_fps(t_data *rt, double start_time);

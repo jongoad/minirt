@@ -41,10 +41,10 @@ int	handle_key_press_hook(int keysym, t_data *rt)
 		cam_recalc(rt);
 		render_scene(rt);
 	}
-	else if (rt->selected_obj_id != NO_HIT)
+	else if (rt->selected != NULL)
 	{
 		if (keysym == KEY_SPACE)
-			print_obj_data(rt->objs[rt->selected_obj_id]);
+			print_obj_data(rt->selected);
 		handle_object_translations(keysym, rt);
 		handle_object_rotations(keysym, rt);
 	}
@@ -55,7 +55,7 @@ static int	handle_object_translations(int keysym, t_data *rt)
 {
 	t_obj	*o;
 
-	o = rt->objs[rt->selected_obj_id];
+	o = rt->selected;
 	if (keysym == KEY_S)		/* Move obj closer */
 		add_vec3_self(&o->pos, mult_vec3(rt->cam.forward, 2.0F));
 	else if (keysym == KEY_W)		/* Move obj further */
@@ -140,7 +140,7 @@ static int	handle_object_rotations(int keysym, t_data *rt)
 {
 	t_obj	*o;
 	
-	o = rt->objs[rt->selected_obj_id];
+	o = rt->selected;
 	if (keysym == NUMPAD1)		/* Rotate clockwise around x axis */
 		apply_rotation(o, X_ROT, true);
 	else if (keysym == NUMPAD2)		/* Rotate counter-clockwise x axis */

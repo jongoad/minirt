@@ -6,14 +6,17 @@ static int	handle_mouse_z_translation(t_data *rt, int button);
 
 static void	print_selected_object_info(t_data *rt)
 {
-	if (rt->selected_obj_id == NO_HIT)
+	if (rt->selected == NULL)
+	{
+		printf("Click on a scene object to select it.\n");
 		return ;
-	printf("You have selected object #%d, a ", rt->selected_obj_id + 1);
-	if (rt->objs[rt->selected_obj_id]->type == T_CYL)
+	}
+	printf("You have selected a ");
+	if (rt->selected->type == T_CYL)
 		printf("cylinder.");
-	if (rt->objs[rt->selected_obj_id]->type == T_PLANE)
+	if (rt->selected->type == T_PLANE)
 		printf("plane.");
-	if (rt->objs[rt->selected_obj_id]->type == T_SPH)
+	if (rt->selected->type == T_SPH)
 		printf("sphere.");
 
 	printf("(Press `F1' to display keyboard controls)\n");
@@ -39,7 +42,7 @@ int	handle_mouse_hook(int button, int x, int y, t_data *rt)
 	(void)y;
 	if (button == LEFT_CLICK)
 	{
-		rt->selected_obj_id = cast_ray_at_pixel(rt, x, y);
+		rt->selected = cast_ray_at_pixel(rt, x, y);
 		print_selected_object_info(rt);
 		rt->toggle.is_left_click = true;
 	}
@@ -115,13 +118,12 @@ static int	handle_mouse_xy_translation(float pcnt_x, float pcnt_y, t_data *rt)
 {
 	float	z_dist;
 	
-	if (rt->toggle.is_left_click && rt->selected_obj_id != NO_HIT
-		&& pcnt_x != 0 && pcnt_y != 0)		/* Object xy rotation */
+	if (rt->toggle.is_left_click && rt->selected && pcnt_x != 0 && pcnt_y != 0)		/* Object xy rotation */
 	{
-		z_dist = length_vec3(project_a_on_b(sub_vec3(rt->objs[rt->selected_obj_id]->pos, rt->cam.pos), rt->cam.forward));
-		add_vec3_self(&rt->objs[rt->selected_obj_id]->pos, 
+		z_dist = length_vec3(project_a_on_b(sub_vec3(rt->selected->pos, rt->cam.pos), rt->cam.forward));
+		add_vec3_self(&rt->selected->pos, 
 			mult_vec3(rt->cam.right, rt->cam.view_w * pcnt_x * z_dist));
-		add_vec3_self(&rt->objs[rt->selected_obj_id]->pos, 
+		add_vec3_self(&rt->selected->pos, 
 			mult_vec3(rt->cam.real_up, rt->cam.view_h * -pcnt_y * z_dist));
 		render_scene(rt);
 		return (true);
@@ -134,13 +136,13 @@ static int	handle_mouse_z_translation(t_data *rt, int button)
 {
 	float	z_offset;
 	
-	if (rt->selected_obj_id != NO_HIT)		/* Object xy rotation */
+	if (rt->selected)		/* Object z rotation */
 	{
 		if (button == WHEEL_UP)
 			z_offset = 1.0F;
 		else
 			z_offset = -1.0F;
-		add_vec3_self(&rt->objs[rt->selected_obj_id]->pos, 
+		add_vec3_self(&rt->selected->pos, 
 			mult_vec3(rt->cam.forward, z_offset));
 		render_scene(rt);
 		return (true);

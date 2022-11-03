@@ -2,7 +2,7 @@
 
 typedef struct s_shader
 {
-	t_ray_vec3	pt_to_light;	/* To calculate intersect with scene objects */
+	t_ray	pt_to_light;	/* To calculate intersect with scene objects */
 	t_hit_rec	rec;			/* To calculate hard shadows */
 	t_color		ambient;		/* Ambient light */
 	t_vec3		light_dir;		/* Normalized vector from intx_point to light */
@@ -75,7 +75,7 @@ static inline t_color	apply_diffuse(t_shader *shader, t_hit_rec *rec)
  */
 t_color pixel_shader(t_data *rt, t_hit_rec *rec, t_color color)
 {
-	// t_ray_vec3		pt_to_light;
+	// t_ray		pt_to_light;
 	// t_hit_rec		rec2;
 	// t_vec3			light_color;
 	// double			dist_to_light;

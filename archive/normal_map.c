@@ -46,9 +46,9 @@ t_vec3	perturb_normal(t_vec3 normal, t_vec3 perturb)
 //Code to place in render to enable texture and normal map
 
 /* Apply texture*/
-// rec->color = pattern_at_image(sub_vec3(rec->p, rt->objs[rec->obj_id]->pos), rt->earth, T_SPH); //For applying texture to sphere
+// rec->color = pattern_at_image(sub_vec3(rec->p, rt->objs[rec->obj]->pos), rt->earth, T_SPH); //For applying texture to sphere
 /* Apply normal */
-// rec->normal = perturb_normal(rec->normal, normal_image_to_vec3(uv_at(sub_vec3(rec->p, rt->objs[rec->obj_id]->pos), rt->earth_normal, T_SPH), rt->earth_normal.image));
+// rec->normal = perturb_normal(rec->normal, normal_image_to_vec3(uv_at(sub_vec3(rec->p, rt->objs[rec->obj]->pos), rt->earth_normal, T_SPH), rt->earth_normal.image));
 
 
 

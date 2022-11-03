@@ -13,7 +13,7 @@
 //     return (v);
 // }
 
-bool hit_sphere_bool(t_vec3 *pos, double radius2, t_ray_vec3 *r) {
+bool hit_sphere_bool(t_vec3 *pos, double radius2, t_ray *r) {
     t_vec3	oc;
     double	a;
     double	b;
@@ -28,7 +28,7 @@ bool hit_sphere_bool(t_vec3 *pos, double radius2, t_ray_vec3 *r) {
     return (discriminant > 0);
 }
 
-int		ray_color_sphere_simple(t_ray_vec3 *r)
+int		ray_color_sphere_simple(t_ray *r)
 {
 	t_vec3	pos = vec3(0,0,-1);
 	double	radius2 = 0.5F * 0.5F;
@@ -75,7 +75,7 @@ void	generate_sphere_simple(t_data *rt)
 
 	printf("P3\n%d %d\n", image_width, image_height);
 
-	t_ray_vec3	r;
+	t_ray	r;
 	t_vec3		destination;
 	int			pixel_color;
 	double		u;
