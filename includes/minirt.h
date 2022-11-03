@@ -79,6 +79,7 @@ void	render_scene(t_data *rt);
 /* Rendering - Lights */
 t_color	pixel_shader(t_data *rt, t_hit_rec *rec, t_color color);
 t_color	apply_light_halos(t_data *rt, t_ray *r, t_hit_rec *rec, t_color color);
+bool    hit_lights(t_data *rt, t_ray *r, t_hit_rec *rec);
 
 /* Benchmarking FIXME: to remove for mandatory part */
 void	display_fps(t_data *rt, double start_time);

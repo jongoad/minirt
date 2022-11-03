@@ -6,6 +6,28 @@ bool hit_light(t_ray *r, t_obj *l, t_hit_rec *rec)
 	return (hit_plane(r, l, rec));
 }
 
+bool hit_lights(t_data *rt, t_ray *r, t_hit_rec *rec)
+{
+	double	tmp;
+	int		i;
+
+	i = 0;
+	tmp = rec->t;
+	while (i < rt->nb_lights)
+	{
+		if (hit_light(r, rt->lights[i], rec))
+		{
+			if (length_vec3(sub_vec3(rt->lights[i]->pos, rec->p)) < LIGHT_RADIUS)
+				rec->obj = rt->lights[i];
+			else
+				rec->t = tmp;
+		}
+		i++;
+	}
+	return (rec->hit_anything);
+}
+
+
 t_color apply_light_halos(t_data *rt, t_ray *r, t_hit_rec *rec, t_color color)
 {
 	t_hit_rec rec2;

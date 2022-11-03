@@ -17,6 +17,7 @@ t_obj	*cast_ray_at_pixel(t_data *rt, int x, int y)
 	rec.hit_anything = false;
 	rec.obj = NULL;
 	hit_anything(rt, &r, &rec);
+	hit_lights(rt, &r, &rec);
 	return (rec.obj);
 }
 

@@ -14,10 +14,12 @@ static void	print_selected_object_info(t_data *rt)
 	printf("You have selected a ");
 	if (rt->selected->type == T_CYL)
 		printf("cylinder.");
-	if (rt->selected->type == T_PLANE)
+	else if (rt->selected->type == T_PLANE)
 		printf("plane.");
-	if (rt->selected->type == T_SPH)
+	else if (rt->selected->type == T_SPH)
 		printf("sphere.");
+	else if (rt->selected->type == T_LIGHT)
+		printf("point light.");
 
 	printf("(Press `F1' to display keyboard controls)\n");
 	printf("(Press SPACE to display object info)\n");

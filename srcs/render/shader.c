@@ -16,6 +16,14 @@ typedef struct s_shader
 	double		lambertian;		/* Final lambertian contribution to shader */
 }	t_shader;
 
+
+static inline t_color	apply_diffuse(t_shader *shader, t_hit_rec *rec)
+{
+	return (color_x_vec3(rec->color, \
+		mult_vec3( \
+			shader->light_color, \
+			shader->lambertian * KD / shader->dist)));
+}
 static inline t_color	apply_specular(t_shader *shader, t_obj *light)
 {
 	// Calculate light direction and view direction.
@@ -24,7 +32,7 @@ static inline t_color	apply_specular(t_shader *shader, t_obj *light)
 	// t_vec3 half_dir = unit_vec3(add_vec3(light_dir, view_dir));
     // double spec_angle = fmax(dot_vec3(half_dir, rec->normal), 0.0);
     // double specular = pow(spec_angle, SHININESS);
-	return (mult_color(light->clr, shader->specular * KS * LIGHT_INTENSITY / shader->dist));
+	return (mult_color(light->clr, shader->specular * KS / shader->dist));
 }
 
 
@@ -37,9 +45,9 @@ static inline bool	calculate_shader_vars(t_data *rt, t_hit_rec *rec, t_shader *s
 	if (dot_vec3(shader->pt_to_light.dir, rec->normal) <= 0.0F)
 		return (false);
 
+	// Calculate the bare minimum to test for shadows
 	shader->dist = length_vec3(shader->pt_to_light.dir);
 	shader->rec.t = shader->dist;
-	// Normalize direction
 	unit_vec3_self(&shader->pt_to_light.dir);
 
 	// Test for hard shadows, epsilon to prevent shadow acne
@@ -47,9 +55,11 @@ static inline bool	calculate_shader_vars(t_data *rt, t_hit_rec *rec, t_shader *s
 		&& fabs(shader->rec.t - shader->dist) > EPSILON)
 		return (false);
 	
+	// For both diffuse and specular
 	shader->dist *= shader->dist;
-	shader->lambertian = fmax(dot_vec3(shader->pt_to_light.dir, rec->normal), 0.0F);
 	shader->light_color = div_vec3(color_to_vec3(light->clr), 255);
+
+	shader->lambertian = fmax(dot_vec3(shader->pt_to_light.dir, rec->normal), 0.0F);
 
 	shader->light_dir = shader->pt_to_light.dir;
 	shader->view_dir = unit_vec3(sub_vec3(rt->cam.pos, shader->pt_to_light.orig));
@@ -57,14 +67,6 @@ static inline bool	calculate_shader_vars(t_data *rt, t_hit_rec *rec, t_shader *s
 	shader->spec_angle = fmax(dot_vec3(shader->half_dir, rec->normal), 0.0);
 	shader->specular = pow(shader->spec_angle, SHININESS);
 	return (true);
-}
-
-static inline t_color	apply_diffuse(t_shader *shader, t_hit_rec *rec)
-{
-	return (color_x_vec3(rec->color, \
-		mult_vec3( \
-			shader->light_color, \
-			shader->lambertian * KD * LIGHT_INTENSITY / shader->dist)));
 }
 
 
