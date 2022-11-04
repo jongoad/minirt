@@ -198,6 +198,7 @@ int		parse_plane(char **obj);
 int		parse_sphere(char **obj);
 int		parse_cylinder(char **obj);
 int		parse_cone(char **obj);
+int		parse_obj_bonus(char *obj);
 
 /* Parsing Utils */
 int 	check_rgb(char *rgb);
@@ -217,7 +218,7 @@ void	init_float_triplet(t_vec3 *vec, char *input);
 void	init_ambient(t_data *rt, char **input, int obj_nb);
 void	init_camera(t_data *rt, char **input, int obj_nb);
 void	init_light(t_data *rt, char **input, int obj_nb);
-void	init_obj_bonus(t_obj *obj, char *shininess, char *texture, char *normal);
+void	init_obj_bonus(t_obj *obj, char **input);
 void	init_plane(t_data *rt, char **input, int obj_nb);
 void	init_sphere(t_data *rt, char **input, int obj_nb);
 void	init_cylinder(t_data *rt, char **input, int obj_nb);

@@ -16,7 +16,7 @@ L	10.0,4.0,2.0		1.0						255,255,255
 
 # Sphere (sp)
 #	Position		|	Radius			|	Colour			|	Shininess	|	Texture Path						|	Normal Path	
-sp	0.0,0.0,0.0			4.0					255,255,255			16.0			images/granite_diffuse.ppm			images/granite_normal.ppm
+sp	0.0,0.0,0.0			4.0					255,255,255			shininess:16.0			texture:images/granite_diffuse.ppm			normal:images/granite_normal.ppm
 
 # Plane (pl)
 #	Position		|	Orientation		|	Colour			|	Shininess	|	Texture Path						|	Normal Path	

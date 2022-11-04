@@ -14,8 +14,8 @@ t_vec2 uv_at(t_vec3 p, t_obj *obj)
 	else if (obj->type == T_CONE)
 		uv = cylindrical_map(p);
 
-	uv.u = floor((1.0f - uv.u) * obj->texture.width);
-	uv.v = floor((1.0f - uv.v) * obj->texture.height);
+	uv.u = floor((1.0f - uv.u) * (obj->texture.width - 1));
+	uv.v = floor((1.0f - uv.v) * (obj->texture.height - 1));
 	return (uv);
 }
 

@@ -36,7 +36,7 @@ char	**create_tok(void)
 {
 	char **tok;
 	
-	tok = ft_xalloc(sizeof(char *) * 7);
+	tok = ft_xalloc(sizeof(char *) * 8);
 	tok[0] = ft_strdup("A");
 	tok[1] = ft_strdup("C");
 	tok[2] = ft_strdup("L");

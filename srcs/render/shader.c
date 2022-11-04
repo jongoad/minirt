@@ -65,10 +65,8 @@ static inline bool	calculate_shader_vars(t_data *rt, t_hit_rec *rec, t_shader *s
 	shader->view_dir = unit_vec3(sub_vec3(rt->cam.pos, shader->pt_to_light.orig));
 	shader->half_dir = unit_vec3(add_vec3(shader->light_dir, shader->view_dir));
 	shader->spec_angle = fmax(dot_vec3(shader->half_dir, rec->normal), 0.0);
-	if (BONUS)
-		shader->specular = pow(shader->spec_angle, rec->obj->shininess);
-	else
-		shader->specular = pow(shader->spec_angle, SHININESS);
+	shader->specular = pow(shader->spec_angle, rec->obj->shininess);
+	//FIXME - Ensure that using per object shininess is fine (will this interact with halos?)
 	return (true);
 }
 

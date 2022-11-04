@@ -66,6 +66,9 @@ t_color	obj_get_color(t_data *rt, t_vec3 p, t_obj *obj)
 			uv = planar_map(p);
 		else if (obj->type == T_CYL)
 			uv = cylindrical_map(p);
+		else if (obj->type == T_CONE)
+			uv = cylindrical_map(p);
+			//FIXME - need to deal with attempting to texture thigns we dont want to texture
 	}
 	if (rt->toggle.is_texture && obj->texture.is_image)
 		return(uv_pattern_at_image(obj->texture, uv.u, uv.v));

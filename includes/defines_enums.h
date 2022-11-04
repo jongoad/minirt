@@ -34,6 +34,7 @@
 /* Object Defines */
 #define NO_HIT -1
 #define OBJ_ROT_RATE (PI) / 8
+#define MAX_SHININESS 100
 
 /* Camera Defines */
 #define CAM_ROT_RATE 45.0f
