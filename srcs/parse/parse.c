@@ -24,9 +24,23 @@ void	parse_free(t_parse *dat)
 }
 
 /* Free parse memory on error return */
-int	parse_error(t_parse *dat, char *err)
+int	parse_error(t_parse *dat, char *err, char **line)
 {
+	t_i i;
+
+	i.x = 0;
 	ft_putstr_fd(err, 2);
+	if (line)
+	{
+		ft_putchar_fd('\t', 2);
+		while (line[i.x])
+		{
+			ft_putstr_fd(line[i.x], 2);
+			if (line[i.x + 1])
+				ft_putstr_fd(" ", 2);
+			i.x++;
+		}
+	}
 	parse_free(dat);
 	return (0);
 }
@@ -36,14 +50,15 @@ char	**create_tok(void)
 {
 	char **tok;
 	
-	tok = ft_xalloc(sizeof(char *) * 7);
+	tok = ft_xalloc(sizeof(char *) * 8);
 	tok[0] = ft_strdup("A");
 	tok[1] = ft_strdup("C");
 	tok[2] = ft_strdup("L");
 	tok[3] = ft_strdup("pl");
 	tok[4] = ft_strdup("sp");
 	tok[5] = ft_strdup("cy");
-	tok[6] = NULL;
+	tok[6] = ft_strdup("co");
+	tok[7] = NULL;
 	return (tok);
 }
 
@@ -77,6 +92,7 @@ void init_parse(t_parse *dat)
 	dat->f[3] = parse_plane;
 	dat->f[4] = parse_sphere;
 	dat->f[5] = parse_cylinder;
+	dat->f[6] = parse_cone;
 	dat->tok = create_tok();
 	dat->has_ambient = false;
 	dat->has_camera = false;
@@ -92,16 +108,16 @@ int	open_scene(t_parse *dat, char *path)
 	i = 0;
 	dat->fd = open(path, O_RDONLY);
 	if (dat->fd == -1)
-		return (parse_error(dat, PARSE_ERR_OPEN));
+		return (parse_error(dat, PARSE_ERR_OPEN, NULL));
 	dat->buf = ft_xalloc(READ_SIZE + 1);
 	status = read(dat->fd, dat->buf, READ_SIZE);
 	if (status == -1)
-		return (parse_error(dat, PARSE_ERR_READ));
+		return (parse_error(dat, PARSE_ERR_READ, NULL));
 	dat->split = ft_split(dat->buf, '\n');
 	while (dat->split && dat->split[i])
 		i++;
 	if (i == 0)
-		return (parse_error(dat, PARSE_ERR_EMPTY));
+		return (parse_error(dat, PARSE_ERR_EMPTY, NULL));
 	replace_whitespace(dat);
 	split_scene(dat);
 	return (1);
@@ -138,15 +154,17 @@ int check_scene(t_parse *dat)
 		if (res == -2)
 			continue;
 		if (res == -1)
-			return (parse_error(dat, PARSE_ERR_OBJ));
+			return (parse_error(dat, PARSE_ERR_OBJ, dat->scene[i.x]));
 		if ((res == 0 && dat->has_ambient) || (res == 1 && dat->has_camera))
-			return (parse_error(dat, PARSE_ERR_DUP));
+			return (parse_error(dat, PARSE_ERR_DUP, dat->scene[i.x]));
 		if (res == 0 && !dat->has_ambient)
 			dat->has_ambient = true;
 		if (res == 1 && !dat->has_camera)
 			dat->has_camera = true;
+		if (res == 6 && !BONUS)						/* If cone and not bonus */
+			return (parse_error(dat, PARSE_ERR_BONUS, dat->scene[i.x]));
 		if (!dat->f[res](dat->scene[i.x]))
-			return (parse_error(dat, PARSE_ERR_BAD_DATA));
+			return (parse_error(dat, PARSE_ERR_BAD_DATA, dat->scene[i.x]));
 	}
 	return (1);
 }
@@ -158,6 +176,5 @@ int	parse(t_data *rt, char *path)
 	init_parse(&rt->parse);
 	if (!open_scene(&rt->parse, path) || !check_scene(&rt->parse))
 		return (0);
-	
 	return (1);
 }

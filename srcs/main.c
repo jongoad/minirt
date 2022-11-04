@@ -37,22 +37,7 @@ int	main(int argc, char **argv)
 	/* Preliminary render before entering main loop */
 	render_scene(rt);
 
-	// t_i i;
-
-	// i.y = 0;
-	// while (i.y < IMG_H)
-	// {
-	// 	i.x = 0;
-	// 	while (i.x < IMG_W)
-	// 	{
-	// 		fill_pixel(rt->img, i.x, i.y, rt->earth.image.pixels[i.y][i.x]);
-	// 		i.x++;
-	// 	}
-	// 	i.y++;
-	// }
-
-	
-	// display_default(rt);
+	display_default(rt);
 
 	/* Enter into main loop */
 	mlx_loop(rt->mlx_ptr);

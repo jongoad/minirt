@@ -45,6 +45,7 @@ void	init_scene(t_data *rt)
 	count_objects(rt);
 	rt->objs = ft_xalloc(sizeof(t_obj *) * (rt->nb_objs + 1));
 	rt->lights = ft_xalloc(sizeof(t_obj *) * (rt->nb_lights + 1));
+	
 	while (rt->parse.scene[i])
 	{
 		res = check_tok(rt->parse.scene[i][0], rt->parse.tok);
@@ -53,7 +54,7 @@ void	init_scene(t_data *rt)
 			rt->parse.f2[res](rt, rt->parse.scene[i], light_nb);
 			light_nb++;
 		}
-		else
+		else if (res >= 0)
 		{
 			rt->parse.f2[res](rt, rt->parse.scene[i], obj_nb);
 			if (res > 2)
@@ -112,7 +113,6 @@ void	init_toggle(t_data *rt)
 		rt->toggle.is_specular = false;
 	}
 	rt->toggle.is_light_halo = false;
-	rt->toggle.is_point_light = true;
 	rt->toggle.is_display_debug = false;
 	rt->toggle.is_left_click = false;
 }
@@ -126,6 +126,7 @@ void	rt_init(t_data *rt, char *filepath)
 	rt->selected = 0;
 	rt_init_mlx(rt, filepath);
 	rt_init_img(rt);
+	
 	init_scene(rt);
 	// rt->background = lerp_color(int_to_color(BLACK), rt->ambient.clr, rt->ambient.ratio);
 	parse_free(&rt->parse);
@@ -134,9 +135,4 @@ void	rt_init(t_data *rt, char *filepath)
 	/* Set initial toggle values */
 	init_toggle(rt);
 
-
-	// read_ppm(&rt->objs[obj_nb]->texture.image, "images/woodroof_diffuse.ppm");
-	// read_ppm(&rt->objs[obj_nb]->normal.image, "images/woodroof_normal.ppm");
-	// rt->objs[obj_nb]->texture.is_image = true;
-	// rt->objs[obj_nb]->normal.is_image = true;
 }

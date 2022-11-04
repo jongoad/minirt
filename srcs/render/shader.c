@@ -65,7 +65,8 @@ static inline bool	calculate_shader_vars(t_data *rt, t_hit_rec *rec, t_shader *s
 	shader->view_dir = unit_vec3(sub_vec3(rt->cam.pos, shader->pt_to_light.orig));
 	shader->half_dir = unit_vec3(add_vec3(shader->light_dir, shader->view_dir));
 	shader->spec_angle = fmax(dot_vec3(shader->half_dir, rec->normal), 0.0);
-	shader->specular = pow(shader->spec_angle, SHININESS);
+	shader->specular = pow(shader->spec_angle, rec->obj->shininess);
+	//FIXME - Ensure that using per object shininess is fine (will this interact with halos?)
 	return (true);
 }
 
@@ -98,7 +99,6 @@ t_color pixel_shader(t_data *rt, t_hit_rec *rec, t_color color)
 		// pt_to_light.dir = sub_vec3(rt->lights[i]->pos, rec->p);
 		if (calculate_shader_vars(rt, rec, &shader, rt->lights[i]) == false)
 			continue ;
-
 		// // Small optimization to fail the intersect early
 		// if (dot_vec3(pt_to_light.dir, rec->normal) <= 0.0F)
 		// 	continue;

@@ -11,5 +11,6 @@
 #define PARSE_ERR_OBJ "Error: invalid scene object\n"
 #define PARSE_ERR_DUP "Error: duplicate camera or ambient light objects\n"
 #define PARSE_ERR_BAD_DATA "Error: scene object contains invalid data\n"
+#define PARSE_ERR_BONUS "Error: object type only valid in bonus\n"
 #endif
 

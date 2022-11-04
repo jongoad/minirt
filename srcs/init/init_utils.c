@@ -55,4 +55,5 @@ void	init_parse_fct_ptrs(t_data *rt)
 	rt->parse.f2[3] = init_plane;
 	rt->parse.f2[4] = init_sphere;
 	rt->parse.f2[5] = init_cylinder;
+	rt->parse.f2[6] = init_cone;
 }

@@ -197,6 +197,8 @@ int		parse_light(char **obj);
 int		parse_plane(char **obj);
 int		parse_sphere(char **obj);
 int		parse_cylinder(char **obj);
+int		parse_cone(char **obj);
+int		parse_obj_bonus(char *obj);
 
 /* Parsing Utils */
 int 	check_rgb(char *rgb);
@@ -204,6 +206,7 @@ int		check_float(char *val, float lim1, float lim2);
 int		check_int(char *val, int lim1, int lim2);
 int		check_orientation(char *orient);
 int		check_coords(char *coord);
+int		check_path(char *path, char type);
 void	replace_whitespace(t_parse *dat);
 
 /* Scene Initialization Functions */
@@ -215,10 +218,11 @@ void	init_float_triplet(t_vec3 *vec, char *input);
 void	init_ambient(t_data *rt, char **input, int obj_nb);
 void	init_camera(t_data *rt, char **input, int obj_nb);
 void	init_light(t_data *rt, char **input, int obj_nb);
+void	init_obj_bonus(t_obj *obj, char **input);
 void	init_plane(t_data *rt, char **input, int obj_nb);
 void	init_sphere(t_data *rt, char **input, int obj_nb);
 void	init_cylinder(t_data *rt, char **input, int obj_nb);
-
+void	init_cone(t_data *rt, char **input, int obj_nb);
 
 
 /****************************************/
@@ -235,7 +239,7 @@ t_texture uv_checkers(int width, int height, t_color c1, t_color c2);
 t_color uv_pattern_at_checkers(t_texture texture, t_vec2 uv);
 
 // /* Image texture mapping */
-t_color uv_pattern_at_image(t_texture texture, float u, float v);
+t_color uv_pattern_at_image(t_texture texture, t_vec2 uv);
 t_color	obj_get_color(t_data *rt, t_vec3 p, t_obj *obj);
 
 // /* Normal Mapping */
@@ -253,8 +257,8 @@ void 	parse_ppm_width(t_ppm *img, char *buf, int *p);
 void 	parse_ppm_height(t_ppm *img, char *buf, int *p);
 void 	parse_ppm_maxval(t_ppm *img, char *buf, int *p);
 void 	parse_ppm_header(t_ppm *img, char *buf, int *p);
-void	parse_ppm(t_ppm *img, char *buf);
-void	read_ppm(t_ppm *img, char *path);
+int		parse_ppm(t_ppm *img, char *buf);
+int		read_ppm(t_ppm *img, char *path);
 
 
 
