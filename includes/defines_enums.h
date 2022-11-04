@@ -12,7 +12,7 @@
 
 /* Parse Defines */
 #define READ_SIZE 100000000
-#define NB_OBJ_TYPE 6
+#define NB_OBJ_TYPE 7
 #define BONUS 1
 
 /* Math Defines */
@@ -96,5 +96,11 @@ typedef enum e_rot_axes
 	Y_ROT = 1,
 	Z_ROT = 2
 } e_rot_axes;
+
+typedef enum e_image_type
+{
+	T_TEXTURE = 'T',
+	T_NORMAL = 'N'
+}	e_image_type;
 
 #endif // DEFINES_ENUMS_H_

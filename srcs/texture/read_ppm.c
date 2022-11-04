@@ -96,14 +96,9 @@ void parse_ppm_header(t_ppm *img, char *buf, int *p)
 	/* Increment past last byte before binary data starts*/
 	if (buf[*p] == '\n')
 		(*p)++;
-
-	// printf("Type: P%i\n", img->type);
-	// printf("Width: %i\n", img->width);
-	// printf("Height: %i\n", img->height);
-	// printf("Maxval: %i\n", img->maxval);
 }
 
-void	parse_ppm(t_ppm *img, char *buf)
+int	parse_ppm(t_ppm *img, char *buf)
 {
 	t_i i;
 	int p;
@@ -111,7 +106,7 @@ void	parse_ppm(t_ppm *img, char *buf)
 	p = 0;
 	img->type = parse_ppm_identifier(buf, &p);
 	if (!img->type)
-		return ; /* Return error not valid .ppm file */
+		return (0); /* Return error not valid .ppm file */
 	parse_ppm_header(img, buf, &p);
 	img->pixels = ft_xalloc(sizeof(t_color *) * img->height);
 	i.y = 0;
@@ -138,11 +133,12 @@ void	parse_ppm(t_ppm *img, char *buf)
 		}
 		i.y++;
 	}
+	return (1);
 }
 
 
 
-void	read_ppm(t_ppm *img, char *path)
+int	read_ppm(t_ppm *img, char *path)
 {
 	int 	fd;
 	int 	status;
@@ -150,11 +146,14 @@ void	read_ppm(t_ppm *img, char *path)
 
 	fd = open(path, O_RDONLY);
 	if (fd == -1)
-		return ; // Return error
+		return (0); // Return error
 	buf = ft_xalloc(READ_SIZE + 1);
 	status = read(fd, buf, READ_SIZE);
 	if (status == -1)
-		return ; // Return error
+		return (0); // Return error
 	close(fd);
-	parse_ppm(img, buf);
+	free(buf);
+	if (!parse_ppm(img, buf))
+		return (0);
+	return (1);
 }

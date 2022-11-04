@@ -11,6 +11,8 @@ t_vec2 uv_at(t_vec3 p, t_obj *obj)
 		uv = planar_map(p);
 	else if (obj->type == T_CYL)
 		uv = cylindrical_map(p);
+	else if (obj->type == T_CONE)
+		uv = cylindrical_map(p);
 
 	uv.u = floor((1.0f - uv.u) * obj->texture.width);
 	uv.v = floor((1.0f - uv.v) * obj->texture.height);
@@ -28,6 +30,7 @@ t_vec3 get_normal_map(t_vec3 p, t_obj *obj)
 	pos = uv_at(p, obj);
 	u = pos.u;
 	v = pos.v;
+
 	normal.x = (((float)obj->texture.image.pixels[v][u].r / 255.0f) * 2.0f) - 1.0f;
 	normal.y = (((float)obj->texture.image.pixels[v][u].g / 255.0f) * 2.0f) - 1.0f;
 	normal.z = (((float)obj->texture.image.pixels[v][u].b / 255.0f) * 2.0f) - 1.0f;

@@ -112,7 +112,6 @@ void	init_toggle(t_data *rt)
 		rt->toggle.is_specular = false;
 	}
 	rt->toggle.is_light_halo = false;
-	rt->toggle.is_point_light = true;
 	rt->toggle.is_display_debug = false;
 	rt->toggle.is_left_click = false;
 }

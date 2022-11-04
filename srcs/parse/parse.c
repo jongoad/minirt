@@ -43,7 +43,8 @@ char	**create_tok(void)
 	tok[3] = ft_strdup("pl");
 	tok[4] = ft_strdup("sp");
 	tok[5] = ft_strdup("cy");
-	tok[6] = NULL;
+	tok[6] = ft_strdup("co");
+	tok[7] = NULL;
 	return (tok);
 }
 
@@ -77,6 +78,7 @@ void init_parse(t_parse *dat)
 	dat->f[3] = parse_plane;
 	dat->f[4] = parse_sphere;
 	dat->f[5] = parse_cylinder;
+	dat->f[6] = parse_cone;
 	dat->tok = create_tok();
 	dat->has_ambient = false;
 	dat->has_camera = false;
@@ -145,6 +147,8 @@ int check_scene(t_parse *dat)
 			dat->has_ambient = true;
 		if (res == 1 && !dat->has_camera)
 			dat->has_camera = true;
+		if (res == 6 && !BONUS)						/* If cone and not bonus */
+			return (parse_error(dat, PARSE_ERR_OBJ));
 		if (!dat->f[res](dat->scene[i.x]))
 			return (parse_error(dat, PARSE_ERR_BAD_DATA));
 	}
@@ -158,6 +162,5 @@ int	parse(t_data *rt, char *path)
 	init_parse(&rt->parse);
 	if (!open_scene(&rt->parse, path) || !check_scene(&rt->parse))
 		return (0);
-	
 	return (1);
 }

@@ -10,6 +10,7 @@ t_texture uv_checkers(int width, int height, t_color c1, t_color c2)
 	res.c1 = c1;
 	res.c2 = c2;
 	res.is_image = false;
+	res.is_checkers = true;
 	return (res);
 }
 

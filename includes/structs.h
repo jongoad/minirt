@@ -195,6 +195,7 @@ typedef struct s_obj
 	float		radius;					/* For spheres */
 	float		width;					/* For cylinders */
 	float		half_height;			/* For cylinders */
+	float		angle;					/* For cones */
 
 	/* Object orientation vectors  */
 	t_vec3		fwd;
@@ -210,8 +211,6 @@ typedef struct s_obj
 	t_texture	texture;				/* Texture file */
 	t_texture	normal;					/* Normal map file */
 	float		shininess;				/* Reflectivity value */
-	t_color		diffuse_clr;			/* This should be set to default object colour */
-	t_color		specular_clr;
 
 	/* Function pointers for ray collision per object */
 	bool		(*hit)(t_ray *r, t_obj *o, t_hit_rec *rec);	/* Function ptr for any object type */
@@ -278,7 +277,6 @@ typedef struct s_toggle
 {
 	bool	is_normal;
 	bool	is_texture;
-	bool	is_point_light;
 	bool	is_light_halo;
 	bool	is_specular;
 	bool	is_left_click;				/* Track if the left mouse button is pressed down */

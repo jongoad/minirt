@@ -93,6 +93,25 @@ int	check_coords(char *coord)
 	return (1);
 }
 
+/* Check if texture/normal path is valid */
+int	check_path(char *path, char type)
+{
+	t_i i;
+
+	i.x = 0;
+	if (!path)
+		return (0);
+	while (path[i.x] && path[i.x] != '.')
+		i.x++;
+	if (type == T_TEXTURE && !ft_strcmp(path, "checkers"))
+		return (1);
+	else if (!ft_strcmp(path, "n/a"))
+		return (1);
+	else if ((i.x >= 7 && !ft_strncmp(path, "images/", 7)) && (path[i.x] && !ft_strcmp(&path[i.x], ".ppm")))
+		return (1);
+	return (0);
+}
+
 /* Replace all whitespaces with space char */
 void	replace_whitespace(t_parse *dat)
 {
