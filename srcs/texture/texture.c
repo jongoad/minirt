@@ -17,8 +17,8 @@ t_texture uv_checkers(int width, int height, t_color c1, t_color c2)
 /* Return color at a given uv coordinate */
 t_color uv_pattern_at_checkers(t_texture texture, t_vec2 uv)
 {
-	int u2;
-	int v2;
+	unsigned int u2;
+	unsigned int v2;
 
 	u2 = floor(uv.u * texture.width);
 	v2 = floor(uv.v * texture.height);
@@ -43,10 +43,9 @@ t_color uv_pattern_at_checkers(t_texture texture, t_vec2 uv)
 t_color uv_pattern_at_image(t_texture texture, float u, float v)
 {
 	//1 - value is to invert texture
-	int	u2 = floor( (1 - u) * texture.width);
+	unsigned int	u2 = floor( (1 - u) * texture.width);
 
-	int	v2 = floor( (1 - v) * texture.height);
-
+	unsigned int	v2 = floor( (1 - v) * texture.height);
 
 	t_color ret = texture.image.pixels[v2][u2];
 	return (ret);
