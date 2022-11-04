@@ -30,7 +30,7 @@ static inline t_color	render_pixel(t_data *rt, t_ray *r, t_hit_rec *rec)
 	{
 		/* Handle translation and rotation of hit point for texture and normal application */
 		//FIXME - Confirm that normal actually needs to be rotated as well
-		if ( rt->toggle.is_texture || rt->toggle.is_normal)
+		if ((rt->toggle.is_texture || rt->toggle.is_normal) && rec->obj->type == T_SPH)
 		{
 			/* Hanble hit record point transformation */
 			p =  sub_vec3(rec->p, rec->obj->pos);

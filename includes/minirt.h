@@ -239,7 +239,7 @@ t_texture uv_checkers(int width, int height, t_color c1, t_color c2);
 t_color uv_pattern_at_checkers(t_texture texture, t_vec2 uv);
 
 // /* Image texture mapping */
-t_color uv_pattern_at_image(t_texture texture, float u, float v);
+t_color uv_pattern_at_image(t_texture texture, t_vec2 uv);
 t_color	obj_get_color(t_data *rt, t_vec3 p, t_obj *obj);
 
 // /* Normal Mapping */
