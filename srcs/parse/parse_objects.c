@@ -10,7 +10,7 @@ int	parse_ambient(char **obj)
 		i.x++;
 	if (i.x != 3)
 		return (0);
-	if (!check_float(obj[1], 0, 1)) //Check lighting ratio
+	if (!check_float(obj[1], 0.0f, 1.0f)) //Check lighting ratio
 		return (0);
 	if (!check_rgb(obj[2])) // Check RGB
 		return (0);

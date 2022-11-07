@@ -41,7 +41,7 @@ static inline t_color	render_pixel(t_data *rt, t_ray *r, t_hit_rec *rec)
 			if (rt->toggle.is_texture && (rec->obj->texture.is_image || rec->obj->texture.is_checkers))
 				rec->color = obj_get_color(rt, p, rec->obj);
 			if (rt->toggle.is_normal && rec->obj->normal.is_image)
-				rec->normal = obj_get_normal(rec->normal, p, rec->obj);
+				rec->normal = obj_get_normal(normal, p, rec->obj);
 		}
 		pixel_color = pixel_shader(rt, rec, rec->color);
 	}

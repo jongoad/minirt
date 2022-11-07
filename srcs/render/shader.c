@@ -99,7 +99,6 @@ t_color pixel_shader(t_data *rt, t_hit_rec *rec, t_color color)
 		// pt_to_light.dir = sub_vec3(rt->lights[i]->pos, rec->p);
 		if (calculate_shader_vars(rt, rec, &shader, rt->lights[i]) == false)
 			continue ;
-
 		// // Small optimization to fail the intersect early
 		// if (dot_vec3(pt_to_light.dir, rec->normal) <= 0.0F)
 		// 	continue;
