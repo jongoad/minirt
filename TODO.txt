@@ -5,30 +5,29 @@
 /*****************************************************/
 
 
-JON:
+FINAL LIST:
 
-1. Rewrite parser to handle bonus
-	- Test well and fix segfault for period instead of comma on colour
-2. Add BONUS define control to toggle off all non-mandatory functionality
-3. Implement texture mapping
-4. Implement normal mapping
-5. Implement checkerboard pattern mapping (non-image mapping)
-6. Clean up all texture and image loading
+1. Ensure BONUS define is properly implemented from makefile and in program.
+2. Cleanup all code, and comment well for github.
+3. Create selection of scenes to showcase various features of program.
+	- Make a simple scene for showing movement so it is smooth.
+4. Test everything thoroughly to ensure no segfaults or other undefined behaviour.
+5. Check for leaks.
+	- Loaded images must be freed!
+6. Check over error handling.
+	- Ensure all exit paths free
+	- Ensure all exit paths have proper error messaging.
+7. Merge to main branch on git and clean up history
+7. Norminette
+	- Make a seperate branch on git for final normed version.
+8. ???
+9. Profit
 
-ISMAEL:
-
-1. Finish colour attenuation functionality
-2. Finish specularity implementation
 
 
-MAYBE:
 
-1. Antialiasing
-	- Sobel operator ? https://en.wikipedia.org/wiki/Sobel_operator
-2. Spot lights
-3. Additional shapes
-	- Cubes (can be used for skybox)
-	- Triangles
+
+
 	
 
 
