@@ -31,6 +31,7 @@ void	init_light(t_data *rt, char **input, int obj_nb)
 		init_color(&rt->lights[obj_nb]->clr, input[3]); 		/* Init light colour for bonus */
 	else
 		init_color(&rt->lights[obj_nb]->clr, "255,255,255"); 	/* Init default light colour */
+	rt->lights[obj_nb]->clr = mult_color(rt->lights[obj_nb]->clr, rt->lights[obj_nb]->ratio);
 }
 
 /* Load and initialize texture from image*/
