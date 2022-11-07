@@ -4,11 +4,14 @@ A	1.0					255,255,255
 
 # Camera (C)
 #	Position		|	Orientation			|	Field of View (FOV)
-C	0.0,0.0,40.0		0.0,0.0,-1.0			50
+C	0.0,0.0,10.0		0.0,0.0,-1.0			50
 
 # Point Light (L)
 #	Position		|	Intensity			|	Colour
 L	0.0,2.0,10.0		1.0						255,255,255
+L	5.0,3.0,2.0		1.0						255,255,255
+L	-5.0,-3.0,2.0		1.0						255,255,255
+# L	-5.0,-3.0,2.0		1.0						255,255,255
 
 ########################
 # Mandatory Object Types
@@ -16,7 +19,7 @@ L	0.0,2.0,10.0		1.0						255,255,255
 
 # Sphere (sp)
 #	Position		|	Radius			|	Colour			|	Shininess	|	Texture Path						|	Normal Path	
-sp	0.0,0.0,0.0			4.0					255,255,255			shininess:16.0			texture:images/granite_diffuse.ppm			normal:images/granite_normal.ppm
+sp	0.0,0.0,0.0			4.0					20,20,255			shininess:16.0			texture:images/granite_texture.ppm			normal:images/granite_normal.ppm
 
 # Plane (pl)
 #	Position		|	Orientation		|	Colour			|	Shininess	|	Texture Path						|	Normal Path	

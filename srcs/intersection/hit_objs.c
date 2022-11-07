@@ -54,32 +54,52 @@ bool	hit_plane(t_ray *r, t_obj *o, t_hit_rec *rec)
 	return (false);
 }
 
+bool	hit_disk(t_ray *r, t_obj *o, t_hit_rec *rec)
+{
+	register float	discriminant;
+	register float	t;
+	register t_vec3	p;
+
+	discriminant = dot_vec3(o->fwd, r->dir);
+    if (fabs(discriminant) > T_MIN)
+	{
+		t = dot_vec3(sub_vec3(o->pos, r->orig), o->fwd) / discriminant;
+		p = ray_at(r, t);
+		if (t >= T_MIN && t < rec->t \
+			&& length_vec3(sub_vec3(p, o->pos)) <= o->radius)
+		{
+			rec->t = t;
+			rec->hit_anything = true;
+			rec->color = o->clr;
+			rec->normal = o->fwd;
+			rec->p = ray_at(r, rec->t);
+			return (true);
+		}
+	}
+	return (false);
+}
+
 bool	hit_cylinder_caps(t_ray *r, t_obj *o, t_hit_rec *rec)
 {
 	static t_obj		cap1;
 	static t_obj		cap2;
-	static t_hit_rec	rec2;
 
 	/* First cap */
 	cap1.fwd = o->fwd;
 	cap1.pos = add_vec3(o->pos, mult_vec3(cap1.fwd, o->half_height));
+	cap1.radius = o->radius;
 	cap1.clr = o->clr;
 
 	/* Second cap */
 	cap2.fwd = negate_vec3(o->fwd);
 	cap2.pos = add_vec3(o->pos, mult_vec3(cap2.fwd, o->half_height));
+	cap2.radius = o->radius;
 	cap2.clr = o->clr;
 
-	/* Init temp hit record */
-	rec2 = *rec;
-	rec2.t = rec->t;
-	rec2.hit_anything = false;
-	if ((hit_plane(r, &cap1, &rec2) && length_vec3(sub_vec3(rec2.p, cap1.pos)) <= o->radius)
-		|| (hit_plane(r, &cap2, &rec2) && length_vec3(sub_vec3(rec2.p, cap2.pos)) <= o->radius))
-	{
-		*rec = rec2;
+	if (hit_disk(r, &cap1, rec))
 		return (true);
-	}
+	if (hit_disk(r, &cap2, rec))
+		return (true);
 	return (false); 
 }
 
