@@ -37,6 +37,9 @@ void	rt_cleanup(t_data *rt)
 		free(rt->objs[i++]);
 	}
 	free(rt->objs);
+	i = 0;
+	while (i < rt->nb_lights)
+		free(rt->lights[i++]);
 	free(rt->lights);
 	free(rt->win_name);
 	free(rt->img);

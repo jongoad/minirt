@@ -24,8 +24,13 @@ CFILES	=	cleanup.c \
 			utils.c \
 			controls/hooks.c controls/key_hooks.c controls/mouse_hooks.c \
 			vector/vectors.c vector/vectors_self.c vector/vectors_utils.c \
-			intersection/hit_objs.c \
+			intersection/hit_caps.c \
+			intersection/hit_cone.c \
+			intersection/hit_cylinder.c \
+			intersection/hit_disk.c \
 			intersection/hit_lights.c \
+			intersection/hit_plane.c \
+			intersection/hit_sphere.c \
 			render/render.c \
 			render/shader.c \
 			parse/parse.c parse/parse_objects.c parse/parse_light_camera.c \

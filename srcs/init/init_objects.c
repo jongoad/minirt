@@ -61,13 +61,20 @@ void	init_cylinder(t_data *rt, char **input, int obj_nb)
 /* Initialize cone object using parsed data */
 void	init_cone(t_data *rt, char **input, int obj_nb)
 {
+	double	half_tan;
+
 	rt->objs[obj_nb] = ft_xalloc(sizeof(t_obj));
 	rt->objs[obj_nb]->type = T_CONE;								/* Set object type*/
 	init_float_triplet(&rt->objs[obj_nb]->pos, input[1]);			/* Set cone position */
 	init_float_triplet(&rt->objs[obj_nb]->fwd, input[2]);			/* Set cone orientation */
 	unit_vec3_self(&rt->objs[obj_nb]->fwd);							/* Normalize cone orientation */
-	rt->objs[obj_nb]->angle = ft_atof(input[3]);					/* Set cone angle */
+	half_tan = tanf(deg_to_rad(ft_atof(input[3]))) / 2.0F;
+	rt->objs[obj_nb]->angle_ofs = 1 + half_tan * half_tan;			/* Set cone angle */
+	printf("rt->objs[obj_nb]->angle = %f\n", rt->objs[obj_nb]->angle);
 	rt->objs[obj_nb]->half_height = ft_atof(input[4]) / 2;			/* Set cone height, only (height / 2) is used */
+	printf("rt->objs[obj_nb]->half_height = %f\n", rt->objs[obj_nb]->half_height);
+	rt->objs[obj_nb]->radius = tanf(rt->objs[obj_nb]->angle) * rt->objs[obj_nb]->half_height;			/* Set cone height, only (height / 2) is used */
+	printf("rt->objs[obj_nb]->radius = %f\n", rt->objs[obj_nb]->radius);
 	init_color(&rt->objs[obj_nb]->clr, input[5]);					/* Set cone color */
 	rt->objs[obj_nb]->hit = hit_cone;
 	rt->objs[obj_nb]->rot = vec3(0,0,0);
