@@ -20,9 +20,9 @@ void	init_float_triplet(t_vec3 *vec, char *input)
 	char **split;
 
 	split = ft_split(input, ',');
-	vec->x = atof(split[0]);
-	vec->y = atof(split[1]);
-	vec->z = atof(split[2]);
+	vec->x = ft_atof(split[0]);
+	vec->y = ft_atof(split[1]);
+	vec->z = ft_atof(split[2]);
 }
 
 /* Count objects for allocation and final parse step */

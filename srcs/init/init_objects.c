@@ -5,7 +5,7 @@ void	init_ambient(t_data *rt, char **input, int obj_nb)
 {
 	(void)obj_nb;
 	/*FIXME - Replace with non library string to float function */
-	rt->ambient.ratio = atof(input[1]);
+	rt->ambient.ratio = ft_atof(input[1]);
 	init_color(&rt->ambient.clr, input[2]);
 	rt->ambient.scene_ambient 
 		= mult_vec3(color_to_vec3(rt->ambient.clr), rt->ambient.ratio / 255);
@@ -26,7 +26,7 @@ void	init_light(t_data *rt, char **input, int obj_nb)
 	rt->lights[obj_nb] = ft_xalloc(sizeof(t_obj));				/* Allocate object */
 	rt->lights[obj_nb]->type = T_LIGHT;
 	init_float_triplet(&rt->lights[obj_nb]->pos, input[1]);		/* Init light position */
-	rt->lights[obj_nb]->ratio = atof(input[2]);					/* Init brightness ratio */
+	rt->lights[obj_nb]->ratio = ft_atof(input[2]);					/* Init brightness ratio */
 	if (BONUS && input[3])
 		init_color(&rt->lights[obj_nb]->clr, input[3]); 		/* Init light colour for bonus */
 	else
@@ -46,12 +46,15 @@ void	init_texture(t_obj *obj, char *input)
 		else
 			obj->texture = uv_checkers(8, 8, int_to_color(BLACK), int_to_color(WHITE));
 	}
-	else if (read_ppm(&obj->texture.image, input))
+	else if (!read_ppm(&obj->texture.image, input))
+		exit_on_err("Error: unable read or parse .ppm file\n");
+	else
 	{
 		obj->texture.is_image = true;
 		obj->texture.width = obj->texture.image.width;
 		obj->texture.height = obj->texture.image.height;
 	}
+
 }
 
 /* Load and initialize normal map from image */
@@ -83,7 +86,7 @@ void	init_obj_bonus(t_obj *obj, char **input)
 			else if (!ft_strcmp(split[0], "normal"))
 				init_normal(obj, split[1]);
 			else if (!ft_strcmp(split[0], "shininess"))
-				obj->shininess = atof(split[1]);
+				obj->shininess = ft_atof(split[1]);
 			else
 				obj->shininess = SHININESS;
 		}
@@ -120,7 +123,7 @@ void	init_sphere(t_data *rt, char **input, int obj_nb)
 	rt->objs[obj_nb] = ft_xalloc(sizeof(t_obj));				/* Allocate object */
 	rt->objs[obj_nb]->type = T_SPH;
 	init_float_triplet(&rt->objs[obj_nb]->pos, input[1]);		/* Init sphere position */
-	rt->objs[obj_nb]->radius = atof(input[2]) / 2;				/* Init sphere radius */
+	rt->objs[obj_nb]->radius = ft_atof(input[2]) / 2;				/* Init sphere radius */
 	init_color(&rt->objs[obj_nb]->clr, input[3]);				/* Init sphere color */
 	rt->objs[obj_nb]->hit = hit_sphere;
 	rt->objs[obj_nb]->rot = vec3(0,0,0);
@@ -143,8 +146,8 @@ void	init_cylinder(t_data *rt, char **input, int obj_nb)
 	init_float_triplet(&rt->objs[obj_nb]->pos, input[1]);	/* Init cylinder position */
 	init_float_triplet(&rt->objs[obj_nb]->fwd, input[2]);	/* Init cylinder orientation */
 	unit_vec3_self(&rt->objs[obj_nb]->fwd);					/* Normalize cylinder orientation */
-	rt->objs[obj_nb]->radius = atof(input[3]) / 2;			/* Init cylinder radius */
-	rt->objs[obj_nb]->half_height = atof(input[4]);			/* Init cylinder height */
+	rt->objs[obj_nb]->radius = ft_atof(input[3]) / 2;			/* Init cylinder radius */
+	rt->objs[obj_nb]->half_height = ft_atof(input[4]);			/* Init cylinder height */
 	rt->objs[obj_nb]->half_height /= 2;						/* Only (height / 2) is used */
 	init_color(&rt->objs[obj_nb]->clr, input[5]);			/* Init cylinder color */
 	rt->objs[obj_nb]->hit = hit_cylinder;
@@ -168,8 +171,8 @@ void	init_cone(t_data *rt, char **input, int obj_nb)
 	init_float_triplet(&rt->objs[obj_nb]->pos, input[1]);	/* Init cone position */
 	init_float_triplet(&rt->objs[obj_nb]->fwd, input[2]);	/* Init cone orientation */
 	unit_vec3_self(&rt->objs[obj_nb]->fwd);					/* Normalize cone orientation */
-	rt->objs[obj_nb]->angle = atof(input[3]);				/* Init cone angle */
-	rt->objs[obj_nb]->half_height = atof(input[4]);			/* Init cone height */
+	rt->objs[obj_nb]->angle = ft_atof(input[3]);				/* Init cone angle */
+	rt->objs[obj_nb]->half_height = ft_atof(input[4]);			/* Init cone height */
 	rt->objs[obj_nb]->half_height /= 2;						/* Only (height / 2) is used */
 	init_color(&rt->objs[obj_nb]->clr, input[5]);			/* Init cone color */
 	rt->objs[obj_nb]->hit = hit_cone;

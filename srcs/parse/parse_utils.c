@@ -41,9 +41,9 @@ int parse_float(char *val)
 	{
 		if (!ft_isdigit(val[i.x]))
 		{
-			if (!val[i.x + 1] && (val[i.x] != 'f' || val[i.x] != 'F'))
-				return(0);
-			if (val[i.x] == '.' && !dot_count && i.x != 0)
+			if (!val[i.x + 1] && (val[i.x] == 'f' || val[i.x] == 'F'))
+				return(1);
+			else if (val[i.x] == '.' && !dot_count && i.x != 0)
 				dot_count++;
 			else
 				return (0);
@@ -59,10 +59,13 @@ int	check_float(char *val, float lim1, float lim2)
 	float res;
 	int retval;
 
-	res = atof(val);  //FIXME - Need to write atof function
+	res = ft_atof(val);
 	retval = 1;
 	if (!parse_float(val))
+	{
+		printf("fail\n");
 		retval = 0;
+	}
 	else if (lim1 != 0.0f || lim2 != 0.0f)
 		if (res < lim1 || res > lim2)
 			retval = 0;
@@ -110,7 +113,7 @@ int	check_orientation(char *orient)
 	split = ft_split(orient, ',');
 	while (split[i.x])
 	{
-		res = atof(split[i.x]); //Need to write atof function
+		res = ft_atof(split[i.x]);
 		if (res < -1 || res > 1)
 			retval = 0;
 		i.x++;
