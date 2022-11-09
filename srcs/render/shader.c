@@ -87,7 +87,11 @@ t_color pixel_shader(t_data *rt, t_hit_rec *rec, t_color color)
 		if (calculate_shader_vars(rt, rec, &shader, rt->lights[i]) == false)
 			continue ;
 		color = add_color(color, apply_diffuse(&shader, rec));
+		// add_color(color, apply_specular(&shader, rt->lights[i]));
 		color = add_color(color, apply_specular(&shader, rt->lights[i]));
 	}
+	// color.r = pow(color.r, 0.9F);
+	// color.g = pow(color.g, 0.9F);
+	// color.b = pow(color.b, 0.9F);
 	return (color);
 }

@@ -7,8 +7,8 @@
  */
 t_obj	*cast_ray_at_pixel(t_data *rt, int x, int y)
 {
-	t_ray		r;
 	t_hit_rec	rec;
+	t_ray		r;
 	
 	r.orig = rt->cam.pos;
 	r.dir = rt->cam.rays[y][x];

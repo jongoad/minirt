@@ -1,39 +1,5 @@
 #include "minirt.h"
 
-/* Create three axis vectors from a single direction vector */
-t_mat4	orient_to_rot(t_vec3 direct)
-{
-	t_mat4 m;
-
-	t_vec3 tmp_up;
-	tmp_up.x = 0;
-	tmp_up.y = 1;
-	tmp_up.z = 0;
-
-	t_vec3	x = cross_vec3(direct, tmp_up);
-	x = unit_vec3(x);
-
-	t_vec3	y = cross_vec3(direct, x);
-	y = unit_vec3(y);
-
-	m.m[0][0] = x.x;
-	m.m[1][0] = y.x;
-	m.m[2][0] = direct.x;
-	m.m[3][0] = 0;
-
-	m.m[0][1] = x.y;
-	m.m[1][1] = y.y;
-	m.m[2][1] = direct.y;
-	m.m[3][2] = 0;
-
-	m.m[0][2] = x.z;
-	m.m[1][2] = y.z;
-	m.m[2][2] = direct.z;
-	m.m[3][2] = 0;
-	
-	return (m);
-}
-
 /* Multiply two matrices together */
 t_mat4	mat_mult_mat(t_mat4 m1, t_mat4 m2)
 {
@@ -123,9 +89,4 @@ t_mat4	mat4(t_vec4 a, t_vec4 b, t_vec4 c, t_vec4 d)
 	res.m[3][3] = d.w;
 
 	return (res);
-}
-
-float	deg_to_rad(float deg)
-{
-	return (deg * (PI / 180));
 }

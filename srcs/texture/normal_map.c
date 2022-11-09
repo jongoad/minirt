@@ -1,6 +1,7 @@
 #include "minirt.h"
 
 /* Find UV coordinate at a point for a given object type */
+//Deprecated unless we want textures on non-spherical objects
 t_vec2 uv_at(t_vec3 p, t_obj *obj)
 {
 	t_vec2	uv;

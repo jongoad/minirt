@@ -202,11 +202,6 @@ typedef struct s_obj
 	t_vec3		up;
 	t_vec3		right;
 
-	/* Coordinate transformation matrices*/
-	//Check if these are being used
-	t_mat4		l_to_w;					/* Local to world transforms matrix */
-	t_mat4		w_to_l;					/* World to local transforms matrix */
-
 	/* Object material data */
 	t_texture	texture;				/* Texture file */
 	t_texture	normal;					/* Normal map file */
@@ -215,7 +210,6 @@ typedef struct s_obj
 	/* Function pointers for ray collision per object */
 	bool		(*hit)(t_ray *r, t_obj *o, t_hit_rec *rec);	/* Function ptr for any object type */
 	
-
 	/* Transformation data */
 	//This data might not be necesssary
 	float		scale;

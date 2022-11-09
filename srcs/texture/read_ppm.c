@@ -16,101 +16,22 @@ void	parse_ppm_skip_whitespace(char *buf, int *p)
 		(*p)++;
 }
 
-/* Confirm valid "magic number" identifier */
-int parse_ppm_identifier(char *buf, int *p)
-{
-	int ret;
-
-	ret = 0;
-	if (buf[*p])
-	{
-		if (buf[*p] != 'P')
-			return (0);
-		(*p)++;
-	}
-	if (buf[*p])
-	{
-		if (buf[*p] == '6')
-			ret = 6;
-		else if (buf[*p] == '3')
-			ret = 3;
-		(*p)++;
-	}
-	parse_ppm_skip_whitespace(buf, p);
-	if (buf[*p] && buf[*p] == '#')
-		parse_ppm_skip_comment(buf, p);
-	return (ret);
-}
-
-/* Get image width */
-void parse_ppm_width(t_ppm *img, char *buf, int *p)
-{
-	while (buf[*p] && !ft_isdigit(buf[*p]))
-	{
-		if (buf[*p] == '#')
-			parse_ppm_skip_comment(buf, p);
-		else if (buf[*p] && (ft_isspace(buf[*p]) || buf[*p] == '\n'))
-			parse_ppm_skip_whitespace(buf, p);		
-	}
-	img->width = ft_atoi(&buf[*p]);
-	while (buf[*p] && ft_isdigit(buf[*p]))
-		(*p)++;
-}
-
-/* Get image height */
-void parse_ppm_height(t_ppm *img, char *buf, int *p)
-{
-	while (buf[*p] && !ft_isdigit(buf[*p]))
-	{
-		if (buf[*p] == '#')
-			parse_ppm_skip_comment(buf, p);
-		else if (buf[*p] && (ft_isspace(buf[*p]) || buf[*p] == '\n'))
-			parse_ppm_skip_whitespace(buf, p);	
-	}
-	img->height= ft_atoi(&buf[*p]);
-	while (buf[*p] && ft_isdigit(buf[*p]))
-		(*p)++;
-}
-
-/* Get image maxval */
-void parse_ppm_maxval(t_ppm *img, char *buf, int *p)
-{
-	while (buf[*p] && !ft_isdigit(buf[*p]))
-	{
-		if (buf[*p] == '#')
-			parse_ppm_skip_comment(buf, p);
-		else if (buf[*p] && (ft_isspace(buf[*p]) || buf[*p] == '\n'))
-			parse_ppm_skip_whitespace(buf, p);	
-	}
-	img->maxval= ft_atoi(&buf[*p]);
-	while (buf[*p] && ft_isdigit(buf[*p]))
-		(*p)++;
-}
-
-/* Parse header info (width, height, maxval) */
-void parse_ppm_header(t_ppm *img, char *buf, int *p)
-{
-	parse_ppm_width(img, buf, p);
-	parse_ppm_height(img, buf, p);
-	parse_ppm_maxval(img, buf, p);
-	/* Increment past last byte before binary data starts*/
-	if (buf[*p] == '\n')
-		(*p)++;
-}
-
+/* Parse .ppm file data and read into memory */
 int	parse_ppm(t_ppm *img, char *buf)
 {
 	t_i i;
 	int p;
 
 	p = 0;
-	img->type = parse_ppm_identifier(buf, &p);
+	img->type = parse_ppm_identifier(buf, &p);						/* Ensure filetype is correct */
 	if (!img->type)
-		return (0); /* Return error not valid .ppm file */
-	parse_ppm_header(img, buf, &p);
+	{
+		ft_putstr_fd(PPM_ERR_TYPE, 2);
+		return (0);
+	}
+	parse_ppm_header(img, buf, &p);									/* Parse header data */
 	img->pixels = ft_xalloc(sizeof(t_color *) * img->height);
 	i.y = 0;
-
 	while (i.y < img->height)
 	{
 		i.x = 0;
@@ -118,7 +39,7 @@ int	parse_ppm(t_ppm *img, char *buf)
 		while (i.x < img->width)
 		{
 			i.z = 0;
-			while (i.z < 3)
+			while (i.z < 3)											/* Read colour data and assign to memory */
 			{
 					if (i.z == 0)
 						img->pixels[i.y][i.x].r = buf[p];
@@ -136,8 +57,7 @@ int	parse_ppm(t_ppm *img, char *buf)
 	return (1);
 }
 
-
-
+/* Open a .ppm image file. Parse it and read into memory */
 int	read_ppm(t_ppm *img, char *path)
 {
 	int 	fd;
@@ -146,14 +66,26 @@ int	read_ppm(t_ppm *img, char *path)
 
 	fd = open(path, O_RDONLY);
 	if (fd == -1)
-		return (0); // Return error
+	{
+		ft_putstr_fd(PPM_ERR_OPEN, 2);
+		fprintf(stderr, "\tpath: %s\n", path);
+		return (0);
+	}
 	buf = ft_xalloc(READ_SIZE + 1);
 	status = read(fd, buf, READ_SIZE);
 	if (status == -1)
-		return (0); // Return error
+	{
+		ft_putstr_fd(PPM_ERR_READ, 2);
+		fprintf(stderr, "\tpath: %s\n", path);
+		return (0);
+	}
 	close(fd);
 	free(buf);
 	if (!parse_ppm(img, buf))
+	{
+		ft_putstr_fd(PPM_ERR_PARSE, 2);
+		fprintf(stderr, "\tpath: %s\n", path);
 		return (0);
+	}
 	return (1);
 }

@@ -1,35 +1,5 @@
 #include "minirt.h"
 
-/* Parse bonus object attributes */
-int	parse_obj_bonus(char *obj)
-{
-	char	**split;
-	int		retval;
-	t_i		i;
-
-	split = ft_split(obj, ':');
-	retval = 1;
-	i.x = 0;
-	while (split[i.x])
-		i.x++;
-	if (i.x != 2)
-	{
-		ft_free_split(split);
-		return (0);
-	}
-	if (!ft_strcmp(split[0], "shininess"))				/* Parse object shininess */
-		if (!check_float(split[1], 0, MAX_SHININESS))	/* Check if shininess value is within range */
-			retval = 0;
-	else if (!ft_strcmp(split[0], "texture"))			/* Parse object texture */
-		if (!check_path(split[1], T_TEXTURE))			/* Check if filepath or keyword follows defined syntax */
-			retval = 0;
-	else if (!ft_strcmp(split[0], "normal"))			/* Parse object normal map */
-		if (!check_path(split[1], T_NORMAL))			/* Check if filepath follows defined syntax */
-			retval = 0;
-	ft_free_split(split);
-	return (retval);
-}
-
 /* Parse plane (pl) */
 int parse_plane(char **obj)
 {
@@ -135,7 +105,7 @@ int	parse_cone(char **obj)
 		return (0);
 	else if (!check_orientation(obj[2]))				/* Check orientation vector */
 		return (0);
-	else if (!check_float(obj[3], 0, 0)) 				/* Ensure cone radius value is valid */
+	else if (!check_float(obj[3], 0, 0)) 				/* Ensure cone angle value is valid */
 		return (0);
 	else if (!check_float(obj[4], 0, 0))				/* Ensure cone height value is valid */
 		return (0);
@@ -152,4 +122,30 @@ int	parse_cone(char **obj)
 		}
 	}
 	return (1);
+}
+
+/* Parse bonus object attributes */
+int	parse_obj_bonus(char *obj)
+{
+	char	**split;
+	int		retval;
+
+	split = ft_split(obj, ':');
+	retval = 1;
+	if (count_array_2d(split) == 2)
+	{
+		if (!ft_strcmp(split[0], "shininess"))				/* Parse object shininess */
+			if (!check_float(split[1], 0, MAX_SHININESS))	/* Check if shininess value is within range */
+				retval = 0;
+		if (!ft_strcmp(split[0], "texture"))				/* Parse object texture */
+			if (!check_path(split[1], T_TEXTURE))			/* Check if filepath or keyword follows defined syntax */
+				retval = 0;
+		if (!ft_strcmp(split[0], "normal"))					/* Parse object normal map */
+			if (!check_path(split[1], T_NORMAL))			/* Check if filepath follows defined syntax */
+				retval = 0;
+	}
+	else
+		retval = 0;
+	ft_free_split(split);
+	return (retval);
 }

@@ -60,3 +60,30 @@ void	print_usage(void)
 	printf("Print usage:      			   KEY_F1\n");
 	printf("Print selected obj info:       SPACEBAR\n");
 }
+
+/* Round a float at a specified precision */
+float roundf_precision(float n, float p)
+{
+	double res;
+
+	res = round(n * p);
+	return (res / p);
+}
+
+/* Count number of elements in a 2D string array */
+int	count_array_2d(char **array)
+{
+	t_i	i;
+
+	i.x = 0;
+	while (array && array[i.x])
+		i.x++;
+	return (i.x);
+}
+
+/* Convert degrees to radians */
+float	deg_to_rad(float deg)
+{
+	return (deg * (PI / 180));
+}
+

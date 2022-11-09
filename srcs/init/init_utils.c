@@ -1,28 +1,29 @@
 #include "minirt.h"
 
-/* Split a colour input into components */
+/* Initialize RGB colour value from string */
 void	init_color(t_color *clr, char *input)
 {
-	char **split;
+	char	**split;
 
 	split = ft_split(input, ',');
 	clr->r = ft_atoi(split[0]);
 	clr->g = ft_atoi(split[1]);
 	clr->b = ft_atoi(split[2]);
 	// clr->weight = 1;
+	//FIXME - If weight is not being used anywhere is can be removed
 	ft_free_split(split);
 }
 
-/* Initialize a vec3 from parsed input data */
+/* Initialize a vec3 from string */
 void	init_float_triplet(t_vec3 *vec, char *input)
 {
-	/* FIXME - Replace string to float with non library version */
-	char **split;
+	char	**split;
 
 	split = ft_split(input, ',');
 	vec->x = ft_atof(split[0]);
 	vec->y = ft_atof(split[1]);
 	vec->z = ft_atof(split[2]);
+	ft_free_split(split);
 }
 
 /* Count objects for allocation and final parse step */
@@ -46,7 +47,7 @@ void	count_objects(t_data *rt)
 	}
 }
 
-/* Initilialize function pointer array for object init */
+/* Initilialize function pointer array for specific object intialization */
 void	init_parse_fct_ptrs(t_data *rt)
 {
 	rt->parse.f2[0] = init_ambient;

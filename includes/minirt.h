@@ -20,7 +20,6 @@
 # include "../libft/libft.h"
 
 /* Local File Includes */
-# include "rt_one_weekend.h"
 # include "structs.h"
 # include "defines_enums.h"
 # include "error.h"
@@ -30,12 +29,6 @@
 /*    Function Declarations    */
 /*******************************/
 
-
-/* Initialization */
-t_data	*get_data(void);
-void	rt_init(t_data *rt, char *filepath);
-void	rt_init_img(t_data *rt);
-void	rt_init_mlx(t_data *rt, char *filename);
 
 /* Hooks */
 void	set_hooks(t_data *rt);
@@ -49,6 +42,7 @@ t_obj	*new_cylinder(t_vec3 pos, t_vec3 normal, float diameter, float height, t_v
 bool	hit_sphere(t_ray *r, t_obj *o, t_hit_rec *rec);
 bool	hit_sphere_no_hit_rec(t_ray *r, t_obj *o);
 bool	hit_plane(t_ray *r, t_obj *o, t_hit_rec *rec);
+bool	hit_disk(t_ray *r, t_obj *o, t_hit_rec *rec);   // Uses obj's radius to limit plane intersection to a disk
 bool	hit_cylinder(t_ray *r, t_obj *o, t_hit_rec *rec);
 bool	hit_cone(t_ray *r, t_obj *o, t_hit_rec *rec);
 
@@ -89,21 +83,24 @@ void	display_fps(t_data *rt, double start_time);
 /*          Utility Functions           */
 /****************************************/
 
-void	*ft_xalloc(size_t size);
-void	exit_on_err(char *err_message);
 void	draw_background(t_img *img, int color);
 void	fill_pixel(t_img *img, int x, int y, t_color color);
 double	lerp(double start, double end, double curr);
 float	deg_to_rad(float deg);
 void	print_usage(void);
+float	roundf_precision(float n, float p);
+int		count_array_2d(char **array);
+
 
 /****************************************/
-/*         Cleaning Functions           */
+/*        Memory & Error Functions      */
 /****************************************/
 
+t_data	*get_data(void);
 int		rt_clean_exit(t_data *rt);
 void	rt_cleanup(t_data *rt);
-
+void	exit_on_err(char *err_message);
+void	*ft_xalloc(size_t size);
 
 /****************************************/
 /*       Matrix & Vector Functions      */
@@ -118,13 +115,7 @@ t_mat4	mat_mult_mat(t_mat4 m1, t_mat4 m2);
 t_vec4	mat_mult_vec4(t_vec4 v, t_mat4 m);
 t_vec3	mat_mult_vec3(t_vec3 v, t_mat4 m); // Added by Ismael
 
-/* Inverse matrix functions */
-t_mat4	mat_inv(t_mat4 a, double f);
-double	determinant(t_mat4 a, double k);
-t_mat4	transpose(t_mat4 a, t_mat4 fac, double r);
-
 /* Matrix Utilities */
-t_mat4	orient_to_rot(t_vec3 direct);
 t_mat4	mat_rot_compound(float x, float y, float z);
 
 /* Vectors by copy */
@@ -179,18 +170,17 @@ void	cam_recalc(t_data *rt);
 
 
 /****************************************/
-/*    Parsing & Scene Initialization    */
+/*           Parsing Functions          */
 /****************************************/
 
-/* Parsing Functions */
+/* Main Parsing */
 void	init_parse(t_parse *dat);
 int		open_scene(t_parse *dat, char *path);
 int		check_tok(char *input, char** tok);
 int		check_scene(t_parse *dat);
-void	parse_free(t_parse *dat);
 int		parse(t_data *rt, char *path);
 
-/* Individual Object Parsing Functions */
+/* Individual Object Parsing */
 int		parse_ambient(char **obj);
 int		parse_camera(char **obj);
 int		parse_light(char **obj);
@@ -200,29 +190,54 @@ int		parse_cylinder(char **obj);
 int		parse_cone(char **obj);
 int		parse_obj_bonus(char *obj);
 
-/* Parsing Utils */
+/* Parsing Utililities */
 int 	check_rgb(char *rgb);
-int		check_float(char *val, float lim1, float lim2);
-int		check_int(char *val, int lim1, int lim2);
 int		check_orientation(char *orient);
 int		check_coords(char *coord);
 int		check_path(char *path, char type);
+int		validate_float(char *val);
+int		check_float(char *val, float lim1, float lim2);
+int		check_int(char *val, int lim1, int lim2);
 void	replace_whitespace(t_parse *dat);
+int		parse_error(t_parse *dat, char *err, char **line);
+void	parse_free(t_parse *dat);
+void	split_scene(t_parse *dat);
+char	**create_tok(void);
 
-/* Scene Initialization Functions */
+/****************************************/
+/*       Initialization Functions       */
+/****************************************/
+
+/* Main Initialization */
+void	rt_init(t_data *rt, char *filepath);
+void	rt_init_img(t_data *rt);
+void	rt_init_mlx(t_data *rt, char *filename);
+void	init_toggle(t_data *rt);
+
+/* Scene Initialization */
+void	init_cam_angles(t_data *rt);
 void	init_scene(t_data *rt);
-void	init_parse_fct_ptrs(t_data *rt);
-void	count_objects(t_data *rt);
-void	init_color(t_color *clr, char *input);
-void	init_float_triplet(t_vec3 *vec, char *input);
+void	init_scene_allocate(t_data *rt);
+
+/* Object Initialization */
 void	init_ambient(t_data *rt, char **input, int obj_nb);
 void	init_camera(t_data *rt, char **input, int obj_nb);
 void	init_light(t_data *rt, char **input, int obj_nb);
-void	init_obj_bonus(t_obj *obj, char **input);
 void	init_plane(t_data *rt, char **input, int obj_nb);
 void	init_sphere(t_data *rt, char **input, int obj_nb);
 void	init_cylinder(t_data *rt, char **input, int obj_nb);
 void	init_cone(t_data *rt, char **input, int obj_nb);
+
+/* Bonus Attributes Inialization */
+void	init_texture(t_obj *obj, char *input);
+void	init_normal(t_obj *obj, char *input);
+void	init_obj_bonus(t_obj *obj, char **input);;
+
+/* Initialization Utilities*/
+void	init_color(t_color *clr, char *input);
+void	init_float_triplet(t_vec3 *vec, char *input);
+void	count_objects(t_data *rt);
+void	init_parse_fct_ptrs(t_data *rt);
 
 
 /****************************************/
@@ -238,18 +253,16 @@ t_vec2 cylindrical_map(t_vec3 p);
 t_texture uv_checkers(int width, int height, t_color c1, t_color c2);
 t_color uv_pattern_at_checkers(t_texture texture, t_vec2 uv);
 
-// /* Image texture mapping */
+/* Image texture mapping */
 t_color uv_pattern_at_image(t_texture texture, t_vec2 uv);
 t_color	obj_get_color(t_data *rt, t_vec3 p, t_obj *obj);
 
-// /* Normal Mapping */
+/* Normal Mapping */
 t_vec2	uv_at(t_vec3 p, t_obj *obj);
 t_vec3	get_normal_map(t_vec3 p, t_obj *obj);
 t_vec3	obj_get_normal(t_vec3 normal, t_vec3 p, t_obj *obj);
 
-
-
-/* Reading PPM Files */
+/* Reading & Parsing .PPM Files */
 void 	parse_ppm_skip_comment(char *buf, int *p);
 void	parse_ppm_skip_whitespace(char *buf, int *p);
 int 	parse_ppm_identifier(char *buf, int *p);
@@ -259,8 +272,6 @@ void 	parse_ppm_maxval(t_ppm *img, char *buf, int *p);
 void 	parse_ppm_header(t_ppm *img, char *buf, int *p);
 int		parse_ppm(t_ppm *img, char *buf);
 int		read_ppm(t_ppm *img, char *path);
-
-
 
 /****************************************/
 /*           Debug Utilities            */

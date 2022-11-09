@@ -1,6 +1,6 @@
 #include "minirt.h"
 
-/* Function to create a checkerboard pattern */
+/* Create a checkerboard pattern texture */
 t_texture uv_checkers(int width, int height, t_color c1, t_color c2)
 {
 	t_texture res;
@@ -14,7 +14,7 @@ t_texture uv_checkers(int width, int height, t_color c1, t_color c2)
 	return (res);
 }
 
-/* Return color at a given uv coordinate for checkers */
+/* Return color at a given uv coordinate for checkerboard pattern */
 t_color uv_pattern_at_checkers(t_texture texture, t_vec2 uv)
 {
 	unsigned int u;
@@ -28,7 +28,7 @@ t_color uv_pattern_at_checkers(t_texture texture, t_vec2 uv)
 		return (texture.c2);
 }
 
-/* Return colour at a given uv coordinate in image */
+/* Return colour at a given uv coordinate for texture image */
 t_color uv_pattern_at_image(t_texture texture, t_vec2 uv)
 {
 	unsigned int	u;

@@ -62,6 +62,15 @@ typedef enum e_keyhooks
 	NUMPAD7 = 89,
 	NUMPAD8 = 91,
 	NUMPAD9 = 92,
+	KEY_1 = 18,
+	KEY_2 = 19,
+	KEY_3 = 20,
+	KEY_4 = 21,
+	KEY_5 = 23,
+	KEY_6 = 22,
+	KEY_7 = 26,
+	KEY_8 = 28,
+	KEY_9 = 25,
 	NUMPAD_MINUS = 78,
 	NUMPAD_PLUS = 69
 }	t_keyhooks;
