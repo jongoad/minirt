@@ -30,9 +30,6 @@
 /*******************************/
 
 
-
-
-
 /* Hooks */
 void	set_hooks(t_data *rt);
 
@@ -118,13 +115,7 @@ t_mat4	mat_mult_mat(t_mat4 m1, t_mat4 m2);
 t_vec4	mat_mult_vec4(t_vec4 v, t_mat4 m);
 t_vec3	mat_mult_vec3(t_vec3 v, t_mat4 m); // Added by Ismael
 
-/* Inverse matrix functions */
-t_mat4	mat_inv(t_mat4 a, double f);
-double	determinant(t_mat4 a, double k);
-t_mat4	transpose(t_mat4 a, t_mat4 fac, double r);
-
 /* Matrix Utilities */
-t_mat4	orient_to_rot(t_vec3 direct);
 t_mat4	mat_rot_compound(float x, float y, float z);
 
 /* Vectors by copy */
@@ -262,18 +253,16 @@ t_vec2 cylindrical_map(t_vec3 p);
 t_texture uv_checkers(int width, int height, t_color c1, t_color c2);
 t_color uv_pattern_at_checkers(t_texture texture, t_vec2 uv);
 
-// /* Image texture mapping */
+/* Image texture mapping */
 t_color uv_pattern_at_image(t_texture texture, t_vec2 uv);
 t_color	obj_get_color(t_data *rt, t_vec3 p, t_obj *obj);
 
-// /* Normal Mapping */
+/* Normal Mapping */
 t_vec2	uv_at(t_vec3 p, t_obj *obj);
 t_vec3	get_normal_map(t_vec3 p, t_obj *obj);
 t_vec3	obj_get_normal(t_vec3 normal, t_vec3 p, t_obj *obj);
 
-
-
-/* Reading PPM Files */
+/* Reading & Parsing .PPM Files */
 void 	parse_ppm_skip_comment(char *buf, int *p);
 void	parse_ppm_skip_whitespace(char *buf, int *p);
 int 	parse_ppm_identifier(char *buf, int *p);
@@ -283,8 +272,6 @@ void 	parse_ppm_maxval(t_ppm *img, char *buf, int *p);
 void 	parse_ppm_header(t_ppm *img, char *buf, int *p);
 int		parse_ppm(t_ppm *img, char *buf);
 int		read_ppm(t_ppm *img, char *path);
-
-
 
 /****************************************/
 /*           Debug Utilities            */

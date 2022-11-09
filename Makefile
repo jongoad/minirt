@@ -33,7 +33,7 @@ CFILES	=	cleanup.c \
 			init/init.c init/init_mlx.c init/init_utils.c \
 			init/init_objects.c init/init_light_camera.c init/init_bonus.c \
 			matrix/matrix.c matrix/matrix_utils.c matrix/inv_mat.c \
-			texture/texture.c texture/read_ppm.c texture/normal_map.c texture/shape_map.c \
+			texture/texture.c texture/read_ppm.c texture/parse_ppm.c texture/normal_map.c texture/shape_map.c \
 			debug.c
 
 SRC_DIR	= srcs

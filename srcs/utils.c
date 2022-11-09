@@ -80,3 +80,10 @@ int	count_array_2d(char **array)
 		i.x++;
 	return (i.x);
 }
+
+/* Convert degrees to radians */
+float	deg_to_rad(float deg)
+{
+	return (deg * (PI / 180));
+}
+
