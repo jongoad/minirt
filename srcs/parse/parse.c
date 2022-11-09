@@ -30,6 +30,7 @@ int	open_scene(t_parse *dat, char *path)
 	if (dat->fd == -1)
 		return (parse_error(dat, PARSE_ERR_OPEN, NULL));
 	dat->buf = ft_xalloc(READ_SIZE + 1);
+	ft_bzero(dat->buf, READ_SIZE + 1);
 	status = read(dat->fd, dat->buf, READ_SIZE);
 	if (status == -1)
 		return (parse_error(dat, PARSE_ERR_READ, NULL));
