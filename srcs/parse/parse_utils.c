@@ -41,9 +41,9 @@ int parse_float(char *val)
 	{
 		if (!ft_isdigit(val[i.x]))
 		{
-			if (!val[i.x + 1] && (val[i.x] != 'f' || val[i.x] != 'F'))
-				return(0);
-			if (val[i.x] == '.' && !dot_count && i.x != 0)
+			if (!val[i.x + 1] && (val[i.x] == 'f' || val[i.x] == 'F'))
+				return(1);
+			else if (val[i.x] == '.' && !dot_count && i.x != 0)
 				dot_count++;
 			else
 				return (0);
@@ -59,10 +59,13 @@ int	check_float(char *val, float lim1, float lim2)
 	float res;
 	int retval;
 
-	res = atof(val);  //FIXME - Need to write atof function
+	res = ft_atof(val);
 	retval = 1;
 	if (!parse_float(val))
+	{
+		printf("fail\n");
 		retval = 0;
+	}
 	else if (lim1 != 0.0f || lim2 != 0.0f)
 		if (res < lim1 || res > lim2)
 			retval = 0;
@@ -110,7 +113,7 @@ int	check_orientation(char *orient)
 	split = ft_split(orient, ',');
 	while (split[i.x])
 	{
-		res = atof(split[i.x]); //Need to write atof function
+		res = ft_atof(split[i.x]);
 		if (res < -1 || res > 1)
 			retval = 0;
 		i.x++;
@@ -183,4 +186,85 @@ void	replace_whitespace(t_parse *dat)
 		}
 		i.y++;
 	}
+}
+
+/* Free parse memory on error return */
+int	parse_error(t_parse *dat, char *err, char **line)
+{
+	t_i i;
+
+	i.x = 0;
+	ft_putstr_fd(err, 2);
+	if (line)
+	{
+		ft_putchar_fd('\t', 2);
+		while (line[i.x])
+		{
+			ft_putstr_fd(line[i.x], 2);
+			if (line[i.x + 1])
+				ft_putstr_fd(" ", 2);
+			i.x++;
+		}
+	}
+	parse_free(dat);
+	return (0);
+}
+
+/* Free all allocated memory used for parsing */
+void	parse_free(t_parse *dat)
+{
+	t_i i;
+
+	i.x = 0;
+	if (dat->buf)
+		free(dat->buf);
+	if (dat->split)
+		ft_free_split(dat->split);
+	if (dat->scene)
+	{
+		while (dat->scene[i.x])
+		{
+			ft_free_split(dat->scene[i.x]);
+			i.x++;
+		}
+		free(dat->scene);
+	}
+	if (dat->tok)
+		ft_free_split(dat->tok);
+	close(dat->fd);
+}
+
+/* Split individual scene lines by space */
+void	split_scene(t_parse *dat)
+{
+	t_i i;
+
+	i.x = 0;
+	while (dat->split[i.x])
+		i.x++;
+	dat->scene = ft_xalloc(sizeof(char *) * (i.x + 1));
+	i.x = 0;
+	while(dat->split[i.x])
+	{
+		dat->scene[i.x] = ft_split(dat->split[i.x], ' ');
+		i.x++;
+	}
+	dat->scene[i.x] = NULL;
+}
+
+/* Allocate, initilialize, and return token array */
+char	**create_tok(void)
+{
+	char **tok;
+	
+	tok = ft_xalloc(sizeof(char *) * 8);
+	tok[0] = ft_strdup("A");
+	tok[1] = ft_strdup("C");
+	tok[2] = ft_strdup("L");
+	tok[3] = ft_strdup("pl");
+	tok[4] = ft_strdup("sp");
+	tok[5] = ft_strdup("cy");
+	tok[6] = ft_strdup("co");
+	tok[7] = NULL;
+	return (tok);
 }

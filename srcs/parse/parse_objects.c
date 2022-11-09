@@ -1,67 +1,11 @@
 #include "minirt.h"
 
-/* Parse ambient light (A) */
-int	parse_ambient(char **obj)
-{
-	t_i i;
-
-	i.x = 0;
-	while (obj[i.x])
-		i.x++;
-	if (i.x != 3)
-		return (0);
-	if (!check_float(obj[1], 0.0f, 1.0f)) //Check lighting ratio
-		return (0);
-	if (!check_rgb(obj[2])) // Check RGB
-		return (0);
-	return (1);
-}
-
-/* Parse camera (C) */
-int	parse_camera(char **obj)
-{
-	t_i i;
-
-	i.x = 0;
-	while (obj[i.x])
-		i.x++;
-	if (i.x != 4)
-		return (0);
-	if (!check_coords(obj[1])) //Check xyz coords
-		return (0);
-	if (!check_orientation(obj[2])) //Check orientation vector
-		return (0);
-	if (!check_int(obj[3], 0, 180))  //Check FOV range
-		return (0);
-	return (1);
-}
-
-/* Parse point light (L) */
-int	parse_light(char **obj)
-{
-	t_i i;
-
-	i.x = 0;
-	while (obj[i.x])
-		i.x++;
-	if (i.x < 3)
-		return (0);
-	if (!check_coords(obj[1])) // Check coords
-		return (0);
-	if (!check_float(obj[2], 0, 1)) //Check lighting ratio
-		return (0);
-	if (BONUS == 1)
-		if (i.x == 4)
-			if (!check_rgb(obj[3])) // Check RGB
-				return (0);
-	return (1);
-}
-
+/* Parse bonus object attributes */
 int	parse_obj_bonus(char *obj)
 {
-	char **split;
-	int retval;
-	t_i i;
+	char	**split;
+	int		retval;
+	t_i		i;
 
 	split = ft_split(obj, ':');
 	retval = 1;
@@ -69,22 +13,19 @@ int	parse_obj_bonus(char *obj)
 	while (split[i.x])
 		i.x++;
 	if (i.x != 2)
+	{
+		ft_free_split(split);
 		return (0);
-	if (!ft_strcmp(split[0], "shininess"))
-	{
-		if (!check_float(split[1], 0, MAX_SHININESS))
-			retval = 0;
 	}
-	else if (!ft_strcmp(split[0], "texture"))
-	{
-		if (!check_path(split[1], T_TEXTURE))
+	if (!ft_strcmp(split[0], "shininess"))				/* Parse object shininess */
+		if (!check_float(split[1], 0, MAX_SHININESS))	/* Check if shininess value is within range */
 			retval = 0;
-	}
-	else if (!ft_strcmp(split[0], "normal"))
-	{
-		if (!check_path(split[1], T_NORMAL))
+	else if (!ft_strcmp(split[0], "texture"))			/* Parse object texture */
+		if (!check_path(split[1], T_TEXTURE))			/* Check if filepath or keyword follows defined syntax */
 			retval = 0;
-	}	
+	else if (!ft_strcmp(split[0], "normal"))			/* Parse object normal map */
+		if (!check_path(split[1], T_NORMAL))			/* Check if filepath follows defined syntax */
+			retval = 0;
 	ft_free_split(split);
 	return (retval);
 }
@@ -92,20 +33,20 @@ int	parse_obj_bonus(char *obj)
 /* Parse plane (pl) */
 int parse_plane(char **obj)
 {
-	t_i i;
+	t_i	i;
 
 	i.x = 0;
 	while (obj[i.x])
 		i.x++;
 	if (i.x < 4)
 		return (0);
-	if (!check_coords(obj[1])) //Check xyz coords
+	if (!check_coords(obj[1]))							/* Check position data */
 		return (0);
-	if (!check_orientation(obj[2])) //Check orientation vector
+	if (!check_orientation(obj[2]))						/* Check orientation vector */
 		return (0);
-	if (!check_rgb(obj[3])) //Check RBG colours
+	if (!check_rgb(obj[3]))								/* Ensure RGB values are within range and valid */
 		return (0);
-	if (BONUS && i.x > 4)
+	if (BONUS && i.x > 4)								/* Check bonus attributes */
 	{
 		i.x = 4;
 		while (obj[i.x])
@@ -128,13 +69,13 @@ int	parse_sphere(char **obj)
 		i.x++;
 	if (i.x < 4)
 		return (0);
-	if (!check_coords(obj[1])) //Check xyz coords
+	if (!check_coords(obj[1]))							/* Check position data */
 		return (0);
-	else if (!check_float(obj[2], 0, 0)) //Check diameter
+	else if (!check_float(obj[2], 0, 0))				/* Ensure sphere diameter value is valid */
 		return (0);
-	else if (!check_rgb(obj[3])) //Check RBG colours
+	else if (!check_rgb(obj[3]))						/* Ensure RGB values are within range and valid */
 		return (0);
-	if (BONUS && i.x > 4)
+	if (BONUS && i.x > 4)								/* Check bonus attributes */
 	{
 		i.x = 4;
 		while (obj[i.x])
@@ -157,17 +98,17 @@ int	parse_cylinder(char **obj)
 		i.x++;
 	if (i.x < 6)
 		return (0);
-	if (!check_coords(obj[1]))
+	if (!check_coords(obj[1]))							/* Check position data */
 		return (0);
-	if (!check_orientation(obj[2])) //Check orientation vector
+	if (!check_orientation(obj[2])) 					/* Check orientation vector */
 		return (0);
-	if (!check_float(obj[3], 0, 0)) //Check diameter
+	if (!check_float(obj[3], 0, 0))						/* Ensure cylinder diameter value is valid */
 		return (0);
-	if (!check_float(obj[4], 0, 0)) //Check height
+	if (!check_float(obj[4], 0, 0))						/* Ensure cylinder height value is valid */
 		return (0);
-	if (!check_rgb(obj[5]))
+	if (!check_rgb(obj[5]))								/* Ensure RGB values are within range and valid */
 		return (0);
-	if (BONUS && i.x > 6)
+	if (BONUS && i.x > 6)								/* Check bonus attributes */
 	{
 		i.x = 6;
 		while (obj[i.x])
@@ -190,17 +131,17 @@ int	parse_cone(char **obj)
 		i.x++;
 	if (i.x < 6)
 		return (0);
-	else if (!check_coords(obj[1]))			/* Check position */
+	else if (!check_coords(obj[1]))						/* Check position data */
 		return (0);
-	else if (!check_orientation(obj[2]))	/* Check orientation vector */
+	else if (!check_orientation(obj[2]))				/* Check orientation vector */
 		return (0);
-	else if (!check_float(obj[3], 0, 0)) 	/* Check radius */
+	else if (!check_float(obj[3], 0, 0)) 				/* Ensure cone radius value is valid */
 		return (0);
-	else if (!check_float(obj[4], 0, 0)) 	/* Check height */
+	else if (!check_float(obj[4], 0, 0))				/* Ensure cone height value is valid */
 		return (0);
-	else if (!check_rgb(obj[5]))			/* Check colour */
+	else if (!check_rgb(obj[5]))						/* Ensure RGB values are within range and valid */
 		return (0);
-	if (BONUS && i.x > 6)
+	if (BONUS && i.x > 6)								/* Check bonus attributes */
 	{
 		i.x = 6;
 		while (obj[i.x])
