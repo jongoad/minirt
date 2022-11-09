@@ -1,10 +1,10 @@
 # Ambient light (A)
 #	Intensity		|	Colour
-A	1.0					255,255,255
+A	0.8					255,255,255
 
 # Camera (C)
 #	Position		|	Orientation			|	Field of View (FOV)
-C	0.0,0.0,10.0		0.0,0.0,-1.0			50
+C	0.0,0.0,40.0		0.0,0.0,-1.0			50
 
 # Point Light (L)
 #	Position		|	Intensity			|	Colour
@@ -16,7 +16,17 @@ L	5.0,2.0,2.0		1.0						255,255,255
 
 # Sphere (sp)
 #	Position		|	Radius			|	Colour			|	Shininess	|	Texture Path						|	Normal Path	
-sp	0.0,0.0,0.0			2.0					20,20,255			shininess:16.0			texture:images/granite_texture.ppm			normal:images/granite_normal.ppm
+sp	0.0,0.0,0.0			8.0					20,20,255			shininess:16.0			texture:images/8k_sun.ppm
+# sp	3.0,0.0,0.0			1.0					20,20,255			shininess:16.0			texture:images/8k_mercury.ppm
+sp	2.0,0.0,10.0			2.0					20,20,255			shininess:16.0			texture:images/4k_venus_atmosphere.ppm
+# sp	2.0,0.0,10.0			1.0					20,20,255			shininess:16.0			texture:images/8k_venus_surface.ppm
+sp	-1.0,-2.0,30.0			4.0					20,20,255			shininess:16.0			texture:images/earth_texture.ppm			normal:images/earth_normal.ppm
+sp	0.8,-1.0,30.0			0.6					20,20,255			shininess:16.0			texture:images/2k_moon.ppm			normal:images/moon_normal.ppm
+# sp	-5.0,3.0,-5.0			2.0					20,20,255			shininess:16.0			texture:images/8k_mars.ppm
+sp	-5.0,3.0,-5.0			4.0					20,20,255			shininess:16.0			texture:images/8k_jupiter.ppm
+sp	-1.0,0.0,-2.0			2.0					20,20,255			shininess:16.0			texture:images/8k_saturn.ppm
+sp	0.0,5.0,-3.0			2.0					20,20,255			shininess:16.0			texture:images/2k_uranus.ppm
+sp	-12.0,0.0,0.0			2.0					20,20,255			shininess:16.0			texture:images/2k_neptune.ppm
 
 # Plane (pl)
 #	Position		|	Orientation		|	Colour			|	Shininess	|	Texture Path						|	Normal Path	
@@ -30,7 +40,8 @@ sp	0.0,0.0,0.0			2.0					20,20,255			shininess:16.0			texture:images/granite_tex
 # Bonus Object Types
 #####################
 
-# Spot Light (S)
+# Spot Light (S)cd li   
+
 #	Position		|	Orentation		|	Angle	|	Intensity	|	Colour
 # S	0.0,0.0,0.0			0.0,1.0,0.0			30.0		1.0				255,255,255
 

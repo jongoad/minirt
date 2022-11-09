@@ -45,7 +45,9 @@ OBJS	= $(addprefix $(OBJ_DIR)/, $(CFILES:.c=.o))
 
 INCFILES	=	hooks.h \
 				minirt.h \
-				rt_one_weekend.h
+				defines_enums.h \
+				hooks.h \
+
 
 INC_DIR			= ./includes
 INCS			= $(addprefix $(INC_DIR)/, $(INCFILES))
@@ -129,11 +131,11 @@ clean:
 	@echo -e "$(RED)>>>>>>>> Deleting obj files$(RESET_COL) [$(RM_OBJS)]"
 
 clean_libft:
-	@echo -e "$(RED)>>>>>>>> make fclean -sC libft $(RESET_COL) [$(RM_LIBFS)]"
+	@echo -e "$(RED)>>>>>>>> make fclean -sC libft $(RESET_COL) [$(RM_LIBFT)]"
 # @echo -e "$(RED)\t*** WARNING: LIBFT CURRENTLY NOT BUILT ***$(RESET_COL)";
 
 fclean:	clean clean_libft
-	@echo -e "$(RED)>>>>>>>> Deleting $(NAME)$(RESET_COL) [$(RM_EXS)]"
+	@echo -e "$(RED)>>>>>>>> Deleting $(NAME)$(RESET_COL) [$(RM_EXE)]"
 
 re:	fclean all
 

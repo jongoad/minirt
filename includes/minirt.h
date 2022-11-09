@@ -20,7 +20,6 @@
 # include "../libft/libft.h"
 
 /* Local File Includes */
-# include "rt_one_weekend.h"
 # include "structs.h"
 # include "defines_enums.h"
 # include "error.h"
@@ -46,6 +45,7 @@ t_obj	*new_cylinder(t_vec3 pos, t_vec3 normal, float diameter, float height, t_v
 bool	hit_sphere(t_ray *r, t_obj *o, t_hit_rec *rec);
 bool	hit_sphere_no_hit_rec(t_ray *r, t_obj *o);
 bool	hit_plane(t_ray *r, t_obj *o, t_hit_rec *rec);
+bool	hit_disk(t_ray *r, t_obj *o, t_hit_rec *rec);   // Uses obj's radius to limit plane intersection to a disk
 bool	hit_cylinder(t_ray *r, t_obj *o, t_hit_rec *rec);
 bool	hit_cone(t_ray *r, t_obj *o, t_hit_rec *rec);
 

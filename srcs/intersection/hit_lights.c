@@ -8,23 +8,30 @@ bool hit_light(t_ray *r, t_obj *l, t_hit_rec *rec)
 
 bool hit_lights(t_data *rt, t_ray *r, t_hit_rec *rec)
 {
-	double	tmp;
-	int		i;
+	t_hit_rec	tmp;
+	int			i;
 
 	i = 0;
-	tmp = rec->t;
+	tmp.t = T_MAX;
+	tmp.hit_anything = false;
 	while (i < rt->nb_lights)
 	{
-		if (hit_light(r, rt->lights[i], rec))
+		rt->lights[i]->fwd = r->dir;
+		rt->lights[i]->radius = LIGHT_RADIUS; // FIXME: if this works, move to init
+		if (hit_disk(r, rt->lights[i], &tmp))
 		{
-			if (length_vec3(sub_vec3(rt->lights[i]->pos, rec->p)) < LIGHT_RADIUS)
+			if (length_vec3(sub_vec3(rt->lights[i]->pos, tmp.p)) < LIGHT_RADIUS)
+			{
+				*rec = tmp;
 				rec->obj = rt->lights[i];
+				tmp.hit_anything = true;
+			}
 			else
-				rec->t = tmp;
+				tmp.t = T_MAX;
 		}
 		i++;
 	}
-	return (rec->hit_anything);
+	return (tmp.hit_anything);
 }
 
 

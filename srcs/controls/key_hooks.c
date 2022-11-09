@@ -24,6 +24,7 @@ int	handle_key_release_hook(int keysym, t_data *rt)
 
 int	handle_key_press_hook(int keysym, t_data *rt)
 {
+	// printf("%d\n", keysym);
 	if (rt->cam.is_move)
 	{
 		if (keysym == KEY_W)			/* Move camera forwards */
@@ -141,17 +142,17 @@ static int	handle_object_rotations(int keysym, t_data *rt)
 	t_obj	*o;
 	
 	o = rt->selected;
-	if (keysym == NUMPAD1)		/* Rotate clockwise around x axis */
+	if (keysym == NUMPAD1 || keysym == KEY_1)		/* Rotate clockwise around x axis */
 		apply_rotation(o, X_ROT, true);
-	else if (keysym == NUMPAD2)		/* Rotate counter-clockwise x axis */
+	else if (keysym == NUMPAD2 || keysym == KEY_2)		/* Rotate counter-clockwise x axis */
 		apply_rotation(o, X_ROT, false);
-	else if (keysym == NUMPAD4)		/* Rotate clockwise around y axis */
+	else if (keysym == NUMPAD4 || keysym == KEY_4)		/* Rotate clockwise around y axis */
 		apply_rotation(o, Y_ROT, true);
-	else if (keysym == NUMPAD5)		/* Rotate counter-clockwise y axis */
+	else if (keysym == NUMPAD5 || keysym == KEY_5)		/* Rotate counter-clockwise y axis */
 		apply_rotation(o, Y_ROT, false);
-	else if (keysym == NUMPAD7)		/* Rotate clockwise around z axis */
+	else if (keysym == NUMPAD7 || keysym == KEY_7)		/* Rotate clockwise around z axis */
 		apply_rotation(o, Z_ROT, true);
-	else if (keysym == NUMPAD8)		/* Rotate counter-clockwise z axis */
+	else if (keysym == NUMPAD8 || keysym == KEY_8)		/* Rotate counter-clockwise z axis */
 		apply_rotation(o, Z_ROT, false);
 	else
 		return (0);

@@ -6,7 +6,7 @@
 /****************************/
 
 /* Image Controls */
-#define ASPECT_RATIO ((float)16 / (float)16)
+#define ASPECT_RATIO ((float)16 / (float)9)
 #define IMG_W 1000
 #define IMG_H (int)(IMG_W / ASPECT_RATIO)
 
@@ -22,8 +22,8 @@
 #define PI 3.14159265359f
 
 /* Light Defines */
-#define LIGHT_INTENSITY 10.0F
-#define DIFFUSE_MULTIPLIER 10.0F
+#define LIGHT_INTENSITY 20.0F
+#define DIFFUSE_MULTIPLIER 30.0F
 #define SPEC_MULTIPLIER 5.0F
 #define KS 0.5F * SPEC_MULTIPLIER
 #define KD 1.0F * DIFFUSE_MULTIPLIER
