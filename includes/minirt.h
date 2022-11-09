@@ -31,11 +31,8 @@
 /*******************************/
 
 
-/* Initialization */
-t_data	*get_data(void);
-void	rt_init(t_data *rt, char *filepath);
-void	rt_init_img(t_data *rt);
-void	rt_init_mlx(t_data *rt, char *filename);
+
+
 
 /* Hooks */
 void	set_hooks(t_data *rt);
@@ -89,21 +86,24 @@ void	display_fps(t_data *rt, double start_time);
 /*          Utility Functions           */
 /****************************************/
 
-void	*ft_xalloc(size_t size);
-void	exit_on_err(char *err_message);
 void	draw_background(t_img *img, int color);
 void	fill_pixel(t_img *img, int x, int y, t_color color);
 double	lerp(double start, double end, double curr);
 float	deg_to_rad(float deg);
 void	print_usage(void);
+float	roundf_precision(float n, float p);
+int		count_array_2d(char **array);
+
 
 /****************************************/
-/*         Cleaning Functions           */
+/*        Memory & Error Functions      */
 /****************************************/
 
+t_data	*get_data(void);
 int		rt_clean_exit(t_data *rt);
 void	rt_cleanup(t_data *rt);
-
+void	exit_on_err(char *err_message);
+void	*ft_xalloc(size_t size);
 
 /****************************************/
 /*       Matrix & Vector Functions      */
@@ -179,18 +179,17 @@ void	cam_recalc(t_data *rt);
 
 
 /****************************************/
-/*    Parsing & Scene Initialization    */
+/*           Parsing Functions          */
 /****************************************/
 
-/* Parsing Functions */
+/* Main Parsing */
 void	init_parse(t_parse *dat);
 int		open_scene(t_parse *dat, char *path);
 int		check_tok(char *input, char** tok);
 int		check_scene(t_parse *dat);
-void	parse_free(t_parse *dat);
 int		parse(t_data *rt, char *path);
 
-/* Individual Object Parsing Functions */
+/* Individual Object Parsing */
 int		parse_ambient(char **obj);
 int		parse_camera(char **obj);
 int		parse_light(char **obj);
@@ -200,29 +199,54 @@ int		parse_cylinder(char **obj);
 int		parse_cone(char **obj);
 int		parse_obj_bonus(char *obj);
 
-/* Parsing Utils */
+/* Parsing Utililities */
 int 	check_rgb(char *rgb);
-int		check_float(char *val, float lim1, float lim2);
-int		check_int(char *val, int lim1, int lim2);
 int		check_orientation(char *orient);
 int		check_coords(char *coord);
 int		check_path(char *path, char type);
+int		validate_float(char *val);
+int		check_float(char *val, float lim1, float lim2);
+int		check_int(char *val, int lim1, int lim2);
 void	replace_whitespace(t_parse *dat);
+int		parse_error(t_parse *dat, char *err, char **line);
+void	parse_free(t_parse *dat);
+void	split_scene(t_parse *dat);
+char	**create_tok(void);
 
-/* Scene Initialization Functions */
+/****************************************/
+/*       Initialization Functions       */
+/****************************************/
+
+/* Main Initialization */
+void	rt_init(t_data *rt, char *filepath);
+void	rt_init_img(t_data *rt);
+void	rt_init_mlx(t_data *rt, char *filename);
+void	init_toggle(t_data *rt);
+
+/* Scene Initialization */
+void	init_cam_angles(t_data *rt);
 void	init_scene(t_data *rt);
-void	init_parse_fct_ptrs(t_data *rt);
-void	count_objects(t_data *rt);
-void	init_color(t_color *clr, char *input);
-void	init_float_triplet(t_vec3 *vec, char *input);
+void	init_scene_allocate(t_data *rt);
+
+/* Object Initialization */
 void	init_ambient(t_data *rt, char **input, int obj_nb);
 void	init_camera(t_data *rt, char **input, int obj_nb);
 void	init_light(t_data *rt, char **input, int obj_nb);
-void	init_obj_bonus(t_obj *obj, char **input);
 void	init_plane(t_data *rt, char **input, int obj_nb);
 void	init_sphere(t_data *rt, char **input, int obj_nb);
 void	init_cylinder(t_data *rt, char **input, int obj_nb);
 void	init_cone(t_data *rt, char **input, int obj_nb);
+
+/* Bonus Attributes Inialization */
+void	init_texture(t_obj *obj, char *input);
+void	init_normal(t_obj *obj, char *input);
+void	init_obj_bonus(t_obj *obj, char **input);;
+
+/* Initialization Utilities*/
+void	init_color(t_color *clr, char *input);
+void	init_float_triplet(t_vec3 *vec, char *input);
+void	count_objects(t_data *rt);
+void	init_parse_fct_ptrs(t_data *rt);
 
 
 /****************************************/

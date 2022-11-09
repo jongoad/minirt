@@ -12,6 +12,9 @@
 #define PARSE_ERR_DUP "Error: duplicate camera or ambient light objects\n"
 #define PARSE_ERR_BAD_DATA "Error: scene object contains invalid data\n"
 #define PARSE_ERR_BONUS "Error: object type only valid in bonus\n"
-
+#define PARSE_ERR_FLOAT "Error: float value is out of defined range or invalid\n"
+#define PARSE_ERR_INT "Error: int value is out of defined range\n"
+#define PARSE_ERR_ORIENT "Error: orientation values are out of defined range or invalid\n"
+#define PARSE_ERR_POS "Error: invalid coordinate data for object\n"
 #endif
 

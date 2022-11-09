@@ -28,8 +28,10 @@ CFILES	=	cleanup.c \
 			intersection/hit_lights.c \
 			render/render.c \
 			render/shader.c \
-			parse/parse.c parse/parse_objects.c parse/parse_utils.c parse/parse_light_camera.c \
-			init/init_objects.c init/init.c init/init_utils.c \
+			parse/parse.c parse/parse_objects.c parse/parse_light_camera.c \
+			parse/parse_utils.c parse/parse_object_utils.c parse/parse_type_utils.c \
+			init/init.c init/init_mlx.c init/init_utils.c \
+			init/init_objects.c init/init_light_camera.c init/init_bonus.c \
 			matrix/matrix.c matrix/matrix_utils.c matrix/inv_mat.c \
 			texture/texture.c texture/read_ppm.c texture/normal_map.c texture/shape_map.c \
 			debug.c
