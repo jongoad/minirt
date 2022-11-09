@@ -28,11 +28,11 @@ t_vec3 get_normal_map(t_vec3 p, t_obj *obj)
 	unsigned int	v;
 
 	pos = spherical_map(p);
-	u = floor((1.0f - pos.u) * (obj->texture.width - 1));
-	v = floor((1.0f - pos.v) * (obj->texture.height - 1));
-	normal.x = (((float)obj->texture.image.pixels[v][u].r / 255.0f) * 2.0f) - 1.0f;
-	normal.y = (((float)obj->texture.image.pixels[v][u].g / 255.0f) * 2.0f) - 1.0f;
-	normal.z = (((float)obj->texture.image.pixels[v][u].b / 255.0f) * 2.0f) - 1.0f;
+	u = floor((1.0f - pos.u) * (obj->normal.width - 1));
+	v = floor((1.0f - pos.v) * (obj->normal.height - 1));
+	normal.x = (((float)obj->normal.image.pixels[v][u].r / 255.0f) * 2.0f) - 1.0f;
+	normal.y = (((float)obj->normal.image.pixels[v][u].g / 255.0f) * 2.0f) - 1.0f;
+	normal.z = (((float)obj->normal.image.pixels[v][u].b / 255.0f) * 2.0f) - 1.0f;
 	return (unit_vec3(normal));
 }
 

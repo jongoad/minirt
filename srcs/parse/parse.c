@@ -1,108 +1,28 @@
 #include "minirt.h"
 
-/* Free all allocated memory used for parsing */
-void	parse_free(t_parse *dat)
+/* Initialize parse variables */
+void	init_parse(t_parse *dat)
 {
-	t_i i;
-
-	i.x = 0;
-	if (dat->buf)
-		free(dat->buf);
-	if (dat->split)
-		ft_free_split(dat->split);
-	if (dat->scene)
-	{
-		while (dat->scene[i.x])
-		{
-			ft_free_split(dat->scene[i.x]);
-			i.x++;
-		}
-		free(dat->scene);
-	}
-	if (dat->tok)
-		ft_free_split(dat->tok);
-}
-
-/* Free parse memory on error return */
-int	parse_error(t_parse *dat, char *err, char **line)
-{
-	t_i i;
-
-	i.x = 0;
-	ft_putstr_fd(err, 2);
-	if (line)
-	{
-		ft_putchar_fd('\t', 2);
-		while (line[i.x])
-		{
-			ft_putstr_fd(line[i.x], 2);
-			if (line[i.x + 1])
-				ft_putstr_fd(" ", 2);
-			i.x++;
-		}
-	}
-	parse_free(dat);
-	return (0);
-}
-
-/* Allocate, initilialize, and return token array */
-char	**create_tok(void)
-{
-	char **tok;
-	
-	tok = ft_xalloc(sizeof(char *) * 8);
-	tok[0] = ft_strdup("A");
-	tok[1] = ft_strdup("C");
-	tok[2] = ft_strdup("L");
-	tok[3] = ft_strdup("pl");
-	tok[4] = ft_strdup("sp");
-	tok[5] = ft_strdup("cy");
-	tok[6] = ft_strdup("co");
-	tok[7] = NULL;
-	return (tok);
-}
-
-/* Split individual scene lines by space */
-void	split_scene(t_parse *dat)
-{
-	t_i i;
-
-	i.x = 0;
-	while (dat->split[i.x])
-		i.x++;
-	dat->scene = ft_xalloc(sizeof(char *) * (i.x + 1));
-	i.x = 0;
-	while(dat->split[i.x])
-	{
-		dat->scene[i.x] = ft_split(dat->split[i.x], ' ');
-		i.x++;
-	}
-	dat->scene[i.x] = NULL;
-}
-
-/* Setup parse variables */
-void init_parse(t_parse *dat)
-{
-	dat->buf = NULL;
+	dat->buf = NULL;										/* Initialize buffer variables to NULL */
 	dat->scene = NULL;
 	dat->split = NULL;
-	dat->f[0] = parse_ambient;
+	dat->f[0] = parse_ambient;								/* Assign object parsing function pointer array */
 	dat->f[1] = parse_camera;
 	dat->f[2] = parse_light;
 	dat->f[3] = parse_plane;
 	dat->f[4] = parse_sphere;
 	dat->f[5] = parse_cylinder;
 	dat->f[6] = parse_cone;
-	dat->tok = create_tok();
-	dat->has_ambient = false;
+	dat->tok = create_tok();								/* Create token array for accessing function pointer array */
+	dat->has_ambient = false;								/* Set duplicate object check variables*/
 	dat->has_camera = false;
 }
 
-/* Attempt to open and read scene file */
+/* Attempt to open and read .rt scene file */
 int	open_scene(t_parse *dat, char *path)
 {
-	int status;
-	int i;
+	int	status;
+	int	i;
 
 	status = 0;
 	i = 0;
@@ -113,28 +33,28 @@ int	open_scene(t_parse *dat, char *path)
 	status = read(dat->fd, dat->buf, READ_SIZE);
 	if (status == -1)
 		return (parse_error(dat, PARSE_ERR_READ, NULL));
-	dat->split = ft_split(dat->buf, '\n');
-	while (dat->split && dat->split[i])
+	dat->split = ft_split(dat->buf, '\n');					/* Split scene by newline */
+	while (dat->split && dat->split[i])						/* Count number of non-empty lines to ensure file contains data */
 		i++;
 	if (i == 0)
 		return (parse_error(dat, PARSE_ERR_EMPTY, NULL));
-	replace_whitespace(dat);
-	split_scene(dat);
+	replace_whitespace(dat);								/* Trim unecessary whitespace from lines */
+	split_scene(dat);										/* Split each scene line into components */
 	return (1);
 }
 
 /* Attempt to match token for object type */
 int	check_tok(char *input, char **types)
 {
-	t_i i;
+	t_i	i;
 
 	i.x = 0;
 
-	if (input[0] == '#')
+	if (input[0] == '#')									/* If a comment line is found, ignore the line entirely */
 		return (-2);
 	while (types[i.x])
 	{
-		if (!ft_strcmp(input, types[i.x]))
+		if (!ft_strcmp(input, types[i.x]))					/* If valid object type identifier found, return index to access function pointer array */
 			return (i.x);
 		i.x++;
 	}
@@ -144,8 +64,8 @@ int	check_tok(char *input, char **types)
 /* Check each scene element for validity */
 int check_scene(t_parse *dat)
 {
-	t_i		i;
-	int		res;
+	t_i	i;
+	int	res;
 
 	i.x = -1;
 	while (dat->scene[++i.x])
@@ -168,7 +88,6 @@ int check_scene(t_parse *dat)
 	}
 	return (1);
 }
-
 
 /* Check if scene if valid */
 int	parse(t_data *rt, char *path)

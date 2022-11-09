@@ -4,7 +4,6 @@
 void	init_ambient(t_data *rt, char **input, int obj_nb)
 {
 	(void)obj_nb;
-	/*FIXME - Replace with non library string to float function */
 	rt->ambient.ratio = ft_atof(input[1]);
 	init_color(&rt->ambient.clr, input[2]);
 	rt->ambient.scene_ambient 
@@ -37,31 +36,31 @@ void	init_light(t_data *rt, char **input, int obj_nb)
 /* Load and initialize texture from image*/
 void	init_texture(t_obj *obj, char *input)
 {
-	obj->texture.is_image = false;
-	obj->texture.is_checkers = false;
 	if (!ft_strcmp(input, "checkers"))
 	{
 		if (obj->type == T_SPH)
 			obj->texture = uv_checkers(16, 8, int_to_color(BLACK), int_to_color(WHITE));
 		else
 			obj->texture = uv_checkers(8, 8, int_to_color(BLACK), int_to_color(WHITE));
+		obj->texture.is_checkers = true;
 	}
 	else if (!read_ppm(&obj->texture.image, input))
-		exit_on_err("Error: unable read or parse .ppm file\n");
+		return ;
 	else
-	{
+	{ 
 		obj->texture.is_image = true;
 		obj->texture.width = obj->texture.image.width;
 		obj->texture.height = obj->texture.image.height;
 	}
-
 }
 
 /* Load and initialize normal map from image */
 void	init_normal(t_obj *obj, char *input)
 {
 	obj->normal.is_image = false;
-	if (read_ppm(&obj->normal.image, input))
+	if (!read_ppm(&obj->normal.image, input))
+		return ;
+	else
 	{
 		obj->normal.is_image = true;
 		obj->normal.width = obj->normal.image.width;
@@ -106,14 +105,12 @@ void	init_plane(t_data *rt, char **input, int obj_nb)
 	rt->objs[obj_nb]->hit = hit_plane;
 	rt->objs[obj_nb]->rot = vec3(0,0,0);
 	rt->objs[obj_nb]->shininess = SHININESS;
+	rt->objs[obj_nb]->texture.is_image = false;
+	rt->objs[obj_nb]->texture.is_checkers = false;
+	rt->objs[obj_nb]->normal.is_image = false;
 	if (BONUS && input[4])
 		init_obj_bonus(rt->objs[obj_nb], &input[4]);
-	else
-	{
-		rt->objs[obj_nb]->texture.is_image = false;
-		rt->objs[obj_nb]->texture.is_checkers = false;
-		rt->objs[obj_nb]->normal.is_image = false;
-	}
+	
 }
 
 
@@ -128,14 +125,11 @@ void	init_sphere(t_data *rt, char **input, int obj_nb)
 	rt->objs[obj_nb]->hit = hit_sphere;
 	rt->objs[obj_nb]->rot = vec3(0,0,0);
 	rt->objs[obj_nb]->shininess = SHININESS;
+	rt->objs[obj_nb]->texture.is_image = false;
+	rt->objs[obj_nb]->texture.is_checkers = false;
+	rt->objs[obj_nb]->normal.is_image = false;
 	if (BONUS && input[4])
 		init_obj_bonus(rt->objs[obj_nb], &input[4]);
-	else
-	{
-		rt->objs[obj_nb]->texture.is_image = false;
-		rt->objs[obj_nb]->texture.is_checkers = false;
-		rt->objs[obj_nb]->normal.is_image = false;
-	}
 }
 
 /* Initialize cylinder object using parsed input data */
@@ -153,14 +147,11 @@ void	init_cylinder(t_data *rt, char **input, int obj_nb)
 	rt->objs[obj_nb]->hit = hit_cylinder;
 	rt->objs[obj_nb]->rot = vec3(0,0,0);
 	rt->objs[obj_nb]->shininess = SHININESS;
+	rt->objs[obj_nb]->texture.is_image = false;
+	rt->objs[obj_nb]->texture.is_checkers = false;
+	rt->objs[obj_nb]->normal.is_image = false;
 	if (BONUS && input[6])
 		init_obj_bonus(rt->objs[obj_nb], &input[6]);
-	else
-	{
-		rt->objs[obj_nb]->texture.is_image = false;
-		rt->objs[obj_nb]->texture.is_checkers = false;
-		rt->objs[obj_nb]->normal.is_image = false;
-	}
 }
 
 /* Initialize cone object using parsed data */
@@ -178,12 +169,9 @@ void	init_cone(t_data *rt, char **input, int obj_nb)
 	rt->objs[obj_nb]->hit = hit_cone;
 	rt->objs[obj_nb]->rot = vec3(0,0,0);
 	rt->objs[obj_nb]->shininess = SHININESS;
+	rt->objs[obj_nb]->texture.is_image = false;
+	rt->objs[obj_nb]->texture.is_checkers = false;
+	rt->objs[obj_nb]->normal.is_image = false;
 	if (BONUS && input[6])
 		init_obj_bonus(rt->objs[obj_nb], &input[6]);
-	else
-	{
-		rt->objs[obj_nb]->texture.is_image = false;
-		rt->objs[obj_nb]->texture.is_checkers = false;
-		rt->objs[obj_nb]->normal.is_image = false;
-	}
 }
