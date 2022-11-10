@@ -83,6 +83,7 @@ bool	hit_cylinder_caps(t_ray *r, t_obj *o, t_hit_rec *rec)
 {
 	static t_obj		cap1;
 	static t_obj		cap2;
+	bool				hit;
 
 	/* First cap */
 	cap1.fwd = o->fwd;
@@ -96,11 +97,12 @@ bool	hit_cylinder_caps(t_ray *r, t_obj *o, t_hit_rec *rec)
 	cap2.radius = o->radius;
 	cap2.clr = o->clr;
 
+	hit = false;
 	if (hit_disk(r, &cap1, rec))
-		return (true);
+		hit = true;
 	if (hit_disk(r, &cap2, rec))
-		return (true);
-	return (false); 
+		hit = true;
+	return (hit); 
 }
 
 /** Formula for body intersection found at 
@@ -131,7 +133,7 @@ bool	hit_cylinder_body(t_ray *r, t_obj *o, t_hit_rec *rec)
 	{
         q.root = (-q.half_b + q.sqrtd) / q.a;
 		dist = dir_x_fwd * q.root + oc_x_fwd;
-		if (q.root < T_MIN || q.root > rec->t || fabs(dist) > o->half_height)
+		if (q.root < T_MIN || q.root >= rec->t || fabs(dist) > o->half_height)
 			return (false);
 		rec->inside_surface = true;
 	}
@@ -160,7 +162,7 @@ bool	hit_cylinder(t_ray *r, t_obj *o, t_hit_rec *rec)
  *  https://hugi.scene.org/online/hugi24/ \
  * 	coding%20graphics%20chris%20dragan%20raytracing%20shapes.htm
 **/ 
-bool	hit_cone(t_ray *r, t_obj *o, t_hit_rec *rec)
+bool	hit_cone_body(t_ray *r, t_obj *o, t_hit_rec *rec)
 {
     t_vec3					oc;
 	static t_quadratic		q;
@@ -170,7 +172,7 @@ bool	hit_cone(t_ray *r, t_obj *o, t_hit_rec *rec)
 	double					half_tan;
 	double					angle_ofs;	//	represents 1 + half_tan^2
 
-	half_tan = tanf(PI / 8);
+	half_tan = tanf(o->angle);
 
 	oc = sub_vec3(r->orig, o->pos);
 	dir_x_fwd = dot_vec3(r->dir, o->fwd);
@@ -189,7 +191,7 @@ bool	hit_cone(t_ray *r, t_obj *o, t_hit_rec *rec)
 
 	dist = dir_x_fwd * q.root + oc_x_fwd;
 
-	if (q.root < T_MIN || q.root > rec->t || fabs(dist) > o->half_height)
+	if (q.root < T_MIN || q.root >= rec->t || fabs(dist) > o->half_height)
 	{
         q.root = (-q.half_b + q.sqrtd) / q.a;
 		dist = dir_x_fwd * q.root + oc_x_fwd;
@@ -209,4 +211,16 @@ bool	hit_cone(t_ray *r, t_obj *o, t_hit_rec *rec)
 		return (true);
 	}
 	return (false);
+}
+
+bool	hit_cone(t_ray *r, t_obj *o, t_hit_rec *rec)
+{
+	bool	hit;
+	
+	hit = false;
+	if (hit_cylinder_caps(r, o, rec))
+		hit = true;
+	if (hit_cone_body(r, o, rec))
+		hit = true;
+	return (hit);
 }

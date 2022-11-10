@@ -7,7 +7,7 @@
 
 /* Image Controls */
 #define ASPECT_RATIO ((float)16 / (float)9)
-#define IMG_W 1000
+#define IMG_W 2000
 #define IMG_H (int)(IMG_W / ASPECT_RATIO)
 
 /* Parse Defines */
@@ -22,11 +22,9 @@
 #define PI 3.14159265359f
 
 /* Light Defines */
-#define LIGHT_INTENSITY 20.0F
-#define DIFFUSE_MULTIPLIER 30.0F
-#define SPEC_MULTIPLIER 5.0F
-#define KS 0.5F * SPEC_MULTIPLIER
-#define KD 1.0F * DIFFUSE_MULTIPLIER
+#define LIGHT_INTENSITY 150.0F
+#define KD 0.8F * LIGHT_INTENSITY
+#define KS 0.1F * LIGHT_INTENSITY
 #define SHININESS 20
 #define LIGHT_RADIUS 1.1F	/* For light halos */
 #define GAMMA 1/1.2F
