@@ -13,7 +13,9 @@
 /* Parse Defines */
 #define READ_SIZE 100000000
 #define NB_OBJ_TYPE 7
-#define BONUS 1
+# ifndef BONUS
+#  define BONUS 0
+# endif // BONUS
 
 /* Math Defines */
 #define T_MAX 1e4
