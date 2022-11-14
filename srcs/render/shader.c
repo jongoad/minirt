@@ -2,14 +2,14 @@
 
 typedef struct s_shader
 {
-	t_ray	pt_to_light;	/* To calculate intersect with scene objects */
+	t_ray		pt_to_light;	/* To calculate intersect with scene objects */
 	t_hit_rec	rec;			/* To calculate hard shadows */
 	t_color		ambient;		/* Ambient light */
 	t_vec3		light_dir;		/* Normalized vector from intx_point to light */
 	t_vec3		p_to_l;			/* Normalized vector from intx_point to light */
 	t_vec3		view_dir;		/* Normalized vector from intx_point to camera */
 	t_vec3		half_dir;		/* For Blinn-Phong model's specularity */
-	t_vec3		light_color;	/* light.rgb converted to 0.0f-1.0f range */ // FIXME: move to light struct
+	t_vec3		light_color;	/* light.rgb converted to 0.0f-1.0f range */
 	double		dist;			/* Dist from hit_point to light */
 	double		specular;		/* Final specular contribution to shader */
 	double		spec_angle;		/* Angle between view_dir and light_dir, calculated from half_dir */
@@ -65,8 +65,6 @@ static inline bool	calculate_shader_vars(t_data *rt, t_hit_rec *rec, t_shader *s
 	return (true);
 }
 
-
-
 /** 
  * 	Code for illumination found at:
  *  https://en.wikipedia.org/wiki/Blinn%E2%80%93Phong_reflection_model
@@ -87,11 +85,8 @@ t_color pixel_shader(t_data *rt, t_hit_rec *rec, t_color color)
 		if (calculate_shader_vars(rt, rec, &shader, rt->lights[i]) == false)
 			continue ;
 		color = add_color(color, apply_diffuse(&shader, rec));
-		// add_color(color, apply_specular(&shader, rt->lights[i]));
-		color = add_color(color, apply_specular(&shader, rt->lights[i]));
+		if (rt->toggle.is_specular)
+			color = add_color(color, apply_specular(&shader, rt->lights[i]));
 	}
-	// color.r = pow(color.r, 0.9F);
-	// color.g = pow(color.g, 0.9F);
-	// color.b = pow(color.b, 0.9F);
 	return (color);
 }

@@ -63,8 +63,9 @@ MLX_FLAGS_LINUX 	= -Lminilibx_linux -lmlx -lXext -lX11
 LIBFT_FLAGS			= -lft -Llibft
 LIBM_FLAG	= -lm
 
-CC		= gcc
-CFLAGS	= -Wall -Werror -Wextra -Ofast -g -funsafe-math-optimizations
+CC				= gcc
+CFLAGS			= -Wall -Werror -Wextra -Ofast -g -funsafe-math-optimizations
+CFLAGS_BONUS	= -D BONUS=1
 
 
 LIBFT_DIR	= ./libft
@@ -85,10 +86,10 @@ COMPILE_EXE_LINUX		=	$(CC) $(CFLAGS) $(LIBFT_FLAGS) $(LIBM_FLAG) $(MLX_FLAGS_LIN
 COMPILE_EXE_LINUX_OUT	=	$$($(COMPILE_EXE_LINUX) 2>&1 | sed -e 's/error/\\\033[0;31merror\\\033[0m/g' -e 's/warning/\\\033[0;33mwarning\\\033[0m/g')
 
 # bonus
-COMPILE_C_BONUS		=	$(CC) $(CFLAGS) $(CFLAGS_BONUS) $(INCLFLAGS) -o $@ -c $<
-COMPILE_C_BONUS_OUT	=	$$($(COMPILE_C_BONUS) 2>&1 | sed -e 's/error/\\\033[0;31merror\\\033[0m/g' -e 's/warning/\\\033[0;33mwarning\\\033[0m/g')
-COMPILE_EXE_BONUS				=	$(CC) $(CFLAGS) $(CFLAGS_BONUS) $(LIBFT_FLAGS) $(LIBM_FLAG) $(MLX_FLAGS) $(INCLFLAGS) $(OBJS_BONUS) -o $(NAME_BONUS)
-COMPILE_EXE_BONUS_OUT			=	$$($(COMPILE_EXE_BONUS) 2>&1 | sed -e 's/error/\\\033[0;31merror\\\033[0m/g' -e 's/warning/\\\033[0;33mwarning\\\033[0m/g')
+COMPILE_C_BONUS			=	$(CC) $(CFLAGS) $(CFLAGS_BONUS) $(INCLFLAGS) -o $@ -c $<
+COMPILE_C_BONUS_OUT		=	$$($(COMPILE_C_BONUS) 2>&1 | sed -e 's/error/\\\033[0;31merror\\\033[0m/g' -e 's/warning/\\\033[0;33mwarning\\\033[0m/g')
+COMPILE_EXE_BONUS		=	$(CC) $(CFLAGS) $(CFLAGS_BONUS) $(LIBFT_FLAGS) $(LIBM_FLAG) $(MLX_FLAGS) $(INCLFLAGS) $(OBJS_BONUS) -o $(NAME_BONUS)
+COMPILE_EXE_BONUS_OUT	=	$$($(COMPILE_EXE_BONUS) 2>&1 | sed -e 's/error/\\\033[0;31merror\\\033[0m/g' -e 's/warning/\\\033[0;33mwarning\\\033[0m/g')
 
 
 
@@ -121,7 +122,7 @@ $(NAME):	libft pretty_print $(OBJS)
 	@echo -e "\n$(CYAN)>>>>>>>> Compiling into executable $(UYELLOW)./$(NAME)$(RESET_COL)"
 	@$(COMPILE_EXE_OUT)
 
-$(NAME_BONUS): $(OBJS_BONUS)
+$(NAME_BONUS): libft pretty_print $(OBJS_BONUS)
 	@echo -e "\n$(CYAN)>>>>>>>> Compiling into executable $(UYELLOW)./$(NAME_BONUS)$(RESET_COL)"
 	@$(COMPILE_EXE_BONUS_OUT)
 
@@ -139,6 +140,9 @@ libft: silent_libft
 
 pretty_print: 
 	@echo -e "\n------------------------------ $(NAME) -------------------------------"
+
+pretty_print_bonus:
+	@echo -e "\n------------------------------ $(NAME_BONUS) -------------------------------"
 	
 clean:
 	@echo -e "$(RED)>>>>>>>> Deleting obj files$(RESET_COL)"
