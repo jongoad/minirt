@@ -74,12 +74,12 @@ void	init_cone(t_data *rt, char **input, int obj_nb)
 	init_float_triplet(&rt->objs[obj_nb]->pos, input[1]);			/* Set cone position */
 	init_float_triplet(&rt->objs[obj_nb]->fwd, input[2]);			/* Set cone orientation */
 	unit_vec3_self(&rt->objs[obj_nb]->fwd);							/* Normalize cone orientation */
-	half_tan = tanf(deg_to_rad(ft_atof(input[3]))) / 2.0F;
+	rt->objs[obj_nb]->angle = deg_to_rad(ft_atof(input[3]));
+	half_tan = tanf(rt->objs[obj_nb]->angle);
 	rt->objs[obj_nb]->half_height = ft_atof(input[4]) / 2;			/* Set cone height, only (height / 2) is used */
-	rt->objs[obj_nb]->radius = tanf(rt->objs[obj_nb]->angle_ofs)
+	rt->objs[obj_nb]->radius = tanf(rt->objs[obj_nb]->angle)
 		* rt->objs[obj_nb]->half_height;							/* Set cone height, only (height / 2) is used */
 	rt->objs[obj_nb]->angle_ofs = 1 + half_tan * half_tan;			/* Set cone angle */
-	rt->objs[obj_nb]->ref_angle = ft_atof(input[3]);
 	rt->objs[obj_nb]->ref_half_height = rt->objs[obj_nb]->half_height;
 	init_color(&rt->objs[obj_nb]->clr, input[5]);					/* Set cone color */
 	rt->objs[obj_nb]->hit = hit_cone;

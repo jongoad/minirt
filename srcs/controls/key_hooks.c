@@ -52,6 +52,7 @@ int	handle_key_press_hook(int keysym, t_data *rt)
 	}
 	return (0);
 }
+
 void	apply_object_scale(t_obj *o, bool is_positive)
 {
 	/* Apply change to scale value*/
@@ -68,7 +69,7 @@ void	apply_object_scale(t_obj *o, bool is_positive)
 	if (o->type == T_CYL || o->type == T_CONE)				/* If cylinder or cone adjust height */
 		o->half_height = o->ref_half_height * o->scale;
 	if (o->type == T_CONE)									/* If cone set new radius based on height */
-		o->radius = tanf(o->ref_angle) * o->half_height;
+		o->radius = tanf(o->angle) * o->half_height;
 }
 
 /* Object translation keyhook handling */

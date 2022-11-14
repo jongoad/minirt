@@ -16,15 +16,15 @@ L	5.0,2.0,2.0		1.0						255,255,255
 
 # Sphere (sp)
 #	Position		|	Radius			|	Colour			|	Shininess	|	Texture Path						|	Normal Path	
-sp	-1.0,-2.0,0.0			1.0					20,20,255			shininess:16.0			texture:images/granite_texture.ppm			normal:images/granite_normal.ppm
+sp	-1.0,-2.0,0.0			1.0					20,20,255			shininess:16.0			texture:images/earth_texture.ppm			normal:images/earth_normal.ppm
 
 # Plane (pl)
 #	Position		|	Orientation		|	Colour			|	Shininess	|	Texture Path						|	Normal Path	
 # pl	0.0,-4.0,0.0		0.0,1.0,0.0			255,255,255			16.0			images/granite_texture.ppm			images/granite_normal.ppm
 
 # Cylinder (cy)
-#	Position		|	Orientation		|	Radius	|	Height	|	Colour			|	Shininess	|	Texture Path						|	Normal Path	
-# cy	0.0,0.0,0.0			0.0,1.0,0.0			2.0			20.0		255,255,255			16.0			images/granite_texture.ppm			images/granite_normal.ppm
+#	Position		|	Orientation		|	Radius	|	Height	|	Colour		
+cy	5.0,-2.0,0.0			0.0,0.0,0.0			2.0			5.0		255,255,255
 
 #####################
 # Bonus Object Types
@@ -37,4 +37,4 @@ sp	-1.0,-2.0,0.0			1.0					20,20,255			shininess:16.0			texture:images/granite_t
 
 # Cone (co)
 #	Position		|	Orientation		|	Angle	|	Height	|	Colour			|	Shininess	|	Texture Path						|	Normal Path
-co	0.0,0.0,0.0			0.0,0.0,1.0			30.0		20.0		68,25,226
+# co	0.0,0.0,0.0			1.0,0.0,1.0			1.0		2.0		68,25,226

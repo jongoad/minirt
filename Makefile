@@ -6,7 +6,6 @@ CC				= gcc
 CFLAGS			= -Wall -Werror -Wextra -Ofast -g -funsafe-math-optimizations
 CFLAGS_BONUS	= -D BONUS=1
 
-
 # FOR TESTING PURPOSES
 RUN_ARGS = scenes/basic.rt
 

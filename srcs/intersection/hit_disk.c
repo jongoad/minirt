@@ -10,7 +10,7 @@ bool	hit_disk(t_ray *r, t_obj *o, t_hit_rec *rec)
 	t = dot_vec3(sub_vec3(o->pos, r->orig), o->fwd) / discriminant;
 	p = ray_at(r, t);
 	if (t < T_MIN || t >= rec->t \
-			|| length_vec3(sub_vec3(p, o->pos)) <= o->radius)
+			|| length_vec3(sub_vec3(p, o->pos)) > o->radius)
 		return (false);
 	rec->t = t;
 	rec->hit_anything = true;

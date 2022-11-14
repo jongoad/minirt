@@ -105,9 +105,9 @@ int	parse_cone(char **obj)
 		return (0);
 	else if (!check_orientation(obj[2]))				/* Check orientation vector */
 		return (0);
-	else if (!check_float(obj[3], 0, 0)) 				/* Ensure cone angle value is valid */
+	else if (!check_float(obj[3], 1, 75)) 				/* Ensure cone angle value is valid */
 		return (0);
-	else if (!check_float(obj[4], 0, 0))				/* Ensure cone height value is valid */
+	else if (!check_float(obj[4], 0.1, 100))			/* Ensure cone height value is valid */
 		return (0);
 	else if (!check_rgb(obj[5]))						/* Ensure RGB values are within range and valid */
 		return (0);

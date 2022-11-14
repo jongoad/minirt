@@ -200,10 +200,10 @@ typedef struct s_obj
 	float		radius;					/* For spheres */
 	float		width;					/* For cylinders */
 	float		half_height;			/* For cylinders */
+	float		angle;					/* Initial angle submitted by user */
 	float		angle_ofs;				/* For cones, represents 1 + half_tan(angle)^2 */
 	float		ref_radius;
 	float		ref_half_height;
-	float		ref_angle;
 
 	/* Object orientation vectors  */
 	t_vec3		fwd;
