@@ -7,7 +7,6 @@ t_vec3  point(float x, float y, float z)
 	v.x = x;
 	v.y = y;
 	v.z = z;
-	v.w = 1;
 	return (v);
 }
 
@@ -18,7 +17,6 @@ t_vec3  vec3(float x, float y, float z)
 	v.x = x;
 	v.y = y;
 	v.z = z;
-	v.w = 0;
 	return (v);
 }
 

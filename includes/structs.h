@@ -30,77 +30,6 @@ typedef struct s_texture	t_texture;
 typedef t_vec3	t_point;
 
 /*******************************/
-/*       Utility Structs       */
-/*******************************/
-
-/* Iterator */
-typedef struct s_i
-{
-	int x;
-	int y;
-	int z;
-	//Check if all 6 of these iterators are needed
-	int i;
-	int j;
-	int k;
-}	t_i;
-
-/* Quadratic solver */
-typedef struct s_quadratic
-{
-    float	a;
-    float	half_b;
-    float	c;
-    float	discriminant;
-	float	sqrtd;
-	float	root;
-	double	dir_dot_fwd;		/* For cones and cylinders */
-	double	oc_dot_fwd;		/* For cones and cylinders */
-	t_vec3	oc;
-}	t_quadratic;
-
-/* Color data */
-typedef	struct s_color
-{
-	unsigned char	r;
-	unsigned char	g;
-	unsigned char 	b;
-}	t_color;
-
-/* 4x4 matrix */
-typedef struct s_mat4
-{
-	double	m[4][4];
-}	t_mat4;
-
-
-/*******************************/
-/*            BONUS            */
-/*******************************/
-
-/* PPM image data */
-typedef struct s_ppm
-{
-	int				type;		/* .PPM file type (P6 or P3)*/
-	int				width;
-	int				height;
-	unsigned int	maxval;		/* Maximum colour value */
-	t_color			**pixels;
-}	t_ppm;
-
-/* Texture data */
-typedef struct s_texture
-{
-	int		width;
-	int		height;
-	t_ppm	image;
-	bool	is_image;
-	bool	is_checkers;
-	t_color	c1;
-	t_color c2;
-}	t_texture;
-
-/*******************************/
 /*        3D Data Structs      */
 /*******************************/
 
@@ -145,6 +74,79 @@ typedef struct s_uv
 	unsigned int u;
 	unsigned int v;
 }	t_uv;
+
+/*******************************/
+/*       Utility Structs       */
+/*******************************/
+
+/* Iterator */
+typedef struct s_i
+{
+	int x;
+	int y;
+	int z;
+	//Check if all 6 of these iterators are needed
+	int i;
+	int j;
+	int k;
+}	t_i;
+
+/* Quadratic solver */
+typedef struct s_quadratic
+{
+    float	a;
+    float	half_b;
+    float	c;
+    float	discriminant;
+	float	sqrtd;
+	float	root;
+	double	dir_dot_fwd;		/* For cones and cylinders */
+	double	oc_dot_fwd;		/* For cones and cylinders */
+	t_vec3	oc;
+}	t_quadratic;
+
+/* Color data */
+typedef	struct s_color
+{
+	unsigned char	r;
+	unsigned char	g;
+	unsigned char 	b;
+}	t_color;
+
+
+/* 4x4 matrix */
+typedef struct s_mat4
+{
+	double	m[4][4];
+}	t_mat4;
+
+
+/*******************************/
+/*            BONUS            */
+/*******************************/
+
+/* PPM image data */
+typedef struct s_ppm
+{
+	int				type;		/* .PPM file type (P6 or P3)*/
+	int				width;
+	int				height;
+	unsigned int	maxval;		/* Maximum colour value */
+	t_color			**pixels;
+}	t_ppm;
+
+/* Texture data */
+typedef struct s_texture
+{
+	int		width;
+	int		height;
+	t_ppm	image;
+	bool	is_image;
+	bool	is_checkers;
+	t_color	c1;
+	t_color c2;
+}	t_texture;
+
 
 /*******************************/
 /*        Objects Structs      */

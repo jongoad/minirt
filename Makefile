@@ -87,7 +87,6 @@ COMPILE_C_OUT	=	$$($(COMPILE_C) 2>&1 | sed -e 's/error/\\\033[0;31merror\\\033[0
 $(OBJ_DIR)/%.o:	$(SRC_DIR)/%.c $(INCS)
 	@mkdir -p $(@D)
 	@printf "$(CYAN)%-36s-->%36s $(RESET_COL)$(COMPILE_C_OUT)\n" $< $@
-# $(COMPILE_C)
 
 
 all: $(NAME)
