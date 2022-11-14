@@ -16,6 +16,7 @@ static bool	cylinder_quadratic(t_ray *r, t_obj *o, t_quadratic *q)
 		return (false);
 	q->sqrtd = sqrtf(q->discriminant);
 	q->root = (-q->half_b - q->sqrtd) / q->a;
+	return (true);
 }
 
 /** Formula for body intersection found at 
@@ -24,7 +25,6 @@ static bool	cylinder_quadratic(t_ray *r, t_obj *o, t_quadratic *q)
 **/
 bool	hit_cylinder_body(t_ray *r, t_obj *o, t_hit_rec *rec)
 {
-	t_vec3					oc;
 	static t_quadratic		q;
 	double					dist;
 

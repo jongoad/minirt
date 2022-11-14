@@ -24,7 +24,6 @@ static bool	cone_quadratic(t_ray *r, t_obj *o, t_quadratic *q)
 **/
 bool	hit_cone_body(t_ray *r, t_obj *o, t_hit_rec *rec)
 {
-	t_vec3					oc;
 	static t_quadratic		q;
 	double					dist;
 
