@@ -2,6 +2,11 @@ NAME				=	minirt
 NAME_BONUS			=	minirt_bonus
 NAME_LINUX			=	minirt_linux
 
+CC				= gcc
+CFLAGS			= -Wall -Werror -Wextra -Ofast -g -funsafe-math-optimizations
+CFLAGS_BONUS	= -D BONUS=1
+
+
 # FOR TESTING PURPOSES
 RUN_ARGS = scenes/basic.rt
 
@@ -50,9 +55,7 @@ OBJS_BONUS		= $(addprefix $(OBJ_DIR_BONUS)/, $(CFILES:.c=.o))
 
 INCFILES	=	hooks.h \
 				minirt.h \
-				defines_enums.h \
-				hooks.h \
-
+				defines_enums.h
 
 INC_DIR			= ./includes
 INCS			= $(addprefix $(INC_DIR)/, $(INCFILES))
@@ -61,12 +64,7 @@ INCLFLAGS			= -I$(INC_DIR)
 MLX_FLAGS 			= -Lminilibx_macos -lmlx  -framework OpenGL -framework AppKit
 MLX_FLAGS_LINUX 	= -Lminilibx_linux -lmlx -lXext -lX11
 LIBFT_FLAGS			= -lft -Llibft
-LIBM_FLAG	= -lm
-
-CC				= gcc
-CFLAGS			= -Wall -Werror -Wextra -Ofast -g -funsafe-math-optimizations
-CFLAGS_BONUS	= -D BONUS=1
-
+LIBM_FLAG			= -lm
 
 LIBFT_DIR	= ./libft
 LIBFT		= $(LIBFT_DIR)/libft.a
@@ -99,7 +97,7 @@ $(OBJ_DIR)/%.o:	$(SRC_DIR)/%.c $(INCS)
 
 $(OBJ_DIR_BONUS)/%.o:	$(SRC_DIR)/%.c $(INCS)
 	@mkdir -p $(@D)
-	@printf "$(CYAN)%-40s-->%40s $(RESET_COL)$(COMPILE_C_OUT)\n" $< $@
+	@printf "$(CYAN)%-40s-->%40s $(RESET_COL)$(COMPILE_C_BONUS_OUT)\n" $< $@
 
 all: $(NAME)
 	@if [ -e $(NAME) ]; \
