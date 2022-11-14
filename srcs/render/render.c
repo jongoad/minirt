@@ -62,15 +62,15 @@ void	render_scene(t_data *rt)
 
 	r.orig = rt->cam.pos;
 	j = -1;
-    while (++j < rt->img->height)
+	while (++j < rt->img->height)
 	{
 		i = -1;
-        while (++i < rt->img->width)
+		while (++i < rt->img->width)
 		{
 			r.dir = rt->cam.rays[j][i];
-            fill_pixel(rt->img, i, j, render_pixel(rt, &r, &rec));
-        }
-    }
+			fill_pixel(rt->img, i, j, render_pixel(rt, &r, &rec));
+		}
+	}
 
 	display_default(rt);
 	print_data_to_screen(rt);

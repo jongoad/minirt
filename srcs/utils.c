@@ -54,11 +54,11 @@ void	print_usage(void)
 	printf("y axis:   KEY_UP / KEY_Z 		// KEY_DOWN / KEY_X\n");
 	printf("z axis:   MOUSE_WHEEL_UP / 'W'  // MOUSE_WHEEL_UP / 'D' \n");
 	printf("%s\n*** Object Scale ***\n%s", BASH_CYAN, BASH_RESET);
-	printf("scale:         '+' // '-' \n");
+	printf("scale:		 '+' // '-' \n");
 	printf("%s\n*** Fun stuff ***\n%s", BASH_CYAN, BASH_RESET);
 	printf("Toggle Light Halos:  'L'\n");
-	printf("Print usage:      			   KEY_F1\n");
-	printf("Print selected obj info:       SPACEBAR\n");
+	printf("Print usage:	  			   KEY_F1\n");
+	printf("Print selected obj info:	   SPACEBAR\n");
 }
 
 /* Round a float at a specified precision */

@@ -15,8 +15,8 @@ t_mat4	mat_mult_mat(t_mat4 m1, t_mat4 m2)
 		{
 			m_res.m[i.y][i.x] = (m1.m[i.y][0] * m2.m[0][i.x]) + 
 							  (m1.m[i.y][1] * m2.m[1][i.x]) +
-						      (m1.m[i.y][2] * m2.m[2][i.x]) +
-						      (m1.m[i.y][3] * m2.m[3][i.x]);
+							  (m1.m[i.y][2] * m2.m[2][i.x]) +
+							  (m1.m[i.y][3] * m2.m[3][i.x]);
 			i.x++;
 		}
 		i.y++;

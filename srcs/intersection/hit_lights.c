@@ -1,12 +1,12 @@
 #include "minirt.h"
 
-bool hit_light(t_ray *r, t_obj *l, t_hit_rec *rec)
+bool	hit_light(t_ray *r, t_obj *l, t_hit_rec *rec)
 {
 	l->fwd = r->dir;
 	return (hit_plane(r, l, rec));
 }
 
-bool hit_lights(t_data *rt, t_ray *r, t_hit_rec *rec)
+bool	hit_lights(t_data *rt, t_ray *r, t_hit_rec *rec)
 {
 	t_hit_rec	tmp;
 	int			i;
@@ -35,7 +35,7 @@ bool hit_lights(t_data *rt, t_ray *r, t_hit_rec *rec)
 }
 
 
-t_color apply_light_halos(t_data *rt, t_ray *r, t_hit_rec *rec, t_color color)
+t_color	apply_light_halos(t_data *rt, t_ray *r, t_hit_rec *rec, t_color color)
 {
 	t_hit_rec rec2;
 	int i;

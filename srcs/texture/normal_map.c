@@ -47,7 +47,7 @@ t_vec3	obj_get_normal(t_vec3 normal, t_vec3 p, t_obj *obj)
 	t_vec3	res;
 
 	perturb = get_normal_map(p, obj);
-	if (normal.y > 0.99f || normal.y < -0.99f)				/* If y value too close to 1 or -1 use                                                                         */
+	if (normal.y > 0.99f || normal.y < -0.99f)				/* If y value too close to 1 or -1 use																		 */
 		new_up = vec3(1,0,0);
 	else
 		new_up = vec3(0,1,0);

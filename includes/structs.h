@@ -54,6 +54,9 @@ typedef struct s_quadratic
     float	discriminant;
 	float	sqrtd;
 	float	root;
+	double	dir_dot_fwd;		/* For cones and cylinders */
+	double	oc_dot_fwd;		/* For cones and cylinders */
+	t_vec3	oc;
 }	t_quadratic;
 
 /* Color data */
@@ -195,7 +198,7 @@ typedef struct s_obj
 	float		radius;					/* For spheres */
 	float		width;					/* For cylinders */
 	float		half_height;			/* For cylinders */
-	float		angle;					/* For cones */
+	float		angle_ofs;				/* For cones, represents 1 + half_tan(angle)^2 */
 
 	/* Object orientation vectors  */
 	t_vec3		fwd;
