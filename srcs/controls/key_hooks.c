@@ -4,6 +4,7 @@
 static int	handle_object_translations(int keysym, t_data *rt);
 static int	handle_object_rotations(int keysym, t_data *rt);
 
+/* Key release event hooks */
 int	handle_key_release_hook(int keysym, t_data *rt)
 {
 	if (keysym == KEY_ESC)
@@ -22,9 +23,9 @@ int	handle_key_release_hook(int keysym, t_data *rt)
 	return (0);
 }
 
+/* Key press event hooks */
 int	handle_key_press_hook(int keysym, t_data *rt)
 {
-	// printf("%d\n", keysym);
 	if (rt->cam.is_move)
 	{
 		if (keysym == KEY_W)			/* Move camera forwards */
@@ -51,35 +52,47 @@ int	handle_key_press_hook(int keysym, t_data *rt)
 	}
 	return (0);
 }
+void	apply_object_scale(t_obj *o, bool is_positive)
+{
+	/* Apply change to scale value*/
+	if (is_positive)
+		o->scale *= 1.1;
+	else
+	{
+		o->scale /= 1.1;
+		if (o->scale > 0.1)
+			o->scale = 0.1;
+	}
+	if (o->type == T_SPH || o->type == T_CYL)				/* If sphere or cylinder adjust radius */
+		o->radius = o->ref_radius * o->scale;
+	if (o->type == T_CYL || o->type == T_CONE)				/* If cylinder or cone adjust height */
+		o->half_height = o->ref_half_height * o->scale;
+	if (o->type == T_CONE)									/* If cone set new radius based on height */
+		o->radius = tanf(o->ref_angle) * o->half_height;
+}
 
+/* Object translation keyhook handling */
 static int	handle_object_translations(int keysym, t_data *rt)
 {
 	t_obj	*o;
 
 	o = rt->selected;
-	if (keysym == KEY_S)		/* Move obj closer */
+	if (keysym == KEY_S)											/* Move obj closer */
 		add_vec3_self(&o->pos, mult_vec3(rt->cam.forward, 2.0F));
-	else if (keysym == KEY_W)		/* Move obj further */
+	else if (keysym == KEY_W)										/* Move obj further */
 		sub_vec3_self(&o->pos, mult_vec3(rt->cam.forward, 2.0F));
-	else if (keysym == KEY_RIGHT || keysym == KEY_D)		/* Move obj right */
+	else if (keysym == KEY_RIGHT || keysym == KEY_D)				/* Move obj right */
 		add_vec3_self(&o->pos, mult_vec3(rt->cam.right, 2.0F));
-	else if (keysym == KEY_LEFT || keysym == KEY_A)		/* Move obj left */
+	else if (keysym == KEY_LEFT || keysym == KEY_A)					/* Move obj left */
 		sub_vec3_self(&o->pos, mult_vec3(rt->cam.right, 2.0F));
-	else if (keysym == KEY_UP || keysym == KEY_E)		/* Move obj up */
+	else if (keysym == KEY_UP || keysym == KEY_E)					/* Move obj up */
 		add_vec3_self(&o->pos, mult_vec3(rt->cam.real_up, 2.0F));
-	else if (keysym == KEY_DOWN || keysym == KEY_Q)		/* Move obj down */
+	else if (keysym == KEY_DOWN || keysym == KEY_Q)					/* Move obj down */
 		sub_vec3_self(&o->pos, mult_vec3(rt->cam.real_up, 2.0F));
-	// FIXME: put scaling in a function to lower bound it
-	else if (keysym == KEY_PLUS || keysym == NUMPAD_PLUS)
-	{
-		o->radius *= 1.1;
-		o->half_height *= 1.1;
-	}
-	else if (keysym == KEY_MINUS || keysym == NUMPAD_MINUS)
-	{
-		o->radius /= 1.1;
-		o->half_height /= 1.1;
-	}
+	else if (keysym == KEY_PLUS || keysym == NUMPAD_PLUS)			/* Increase obj scale */
+		apply_object_scale(o, true);
+	else if (keysym == KEY_MINUS || keysym == NUMPAD_MINUS)			/* Decrease obj scale */
+		apply_object_scale(o, false);
 	else
 		return (0);
 	cam_recalc(rt);
@@ -87,6 +100,7 @@ static int	handle_object_translations(int keysym, t_data *rt)
 	return (0);
 }
 
+/* Track object rotation for allowing texture rotation */
 void	save_rot(t_obj *obj, unsigned char axis, bool is_positive)
 {
 	float rot_val;
@@ -101,7 +115,7 @@ void	save_rot(t_obj *obj, unsigned char axis, bool is_positive)
 	else if (axis == Z_ROT)
 		obj->rot.z += rot_val;
 
-	//Handle overotation
+	/* Handle overotation */
 	if (obj->rot.x < 0)
 		obj->rot.x = (int)obj->rot.x % 360;
 	else if (obj->rot.x > 0)
@@ -116,6 +130,7 @@ void	save_rot(t_obj *obj, unsigned char axis, bool is_positive)
 		obj->rot.z = (int)obj->rot.z % -360;
 }
 
+/* Apply rotation to an object using keyboard controls*/
 static void	apply_rotation(t_obj *o, unsigned char rot_axis, bool rot_is_positive)
 {
 	static t_mat4	rot_matrices[6];
@@ -132,17 +147,21 @@ static void	apply_rotation(t_obj *o, unsigned char rot_axis, bool rot_is_positiv
 	if (rot_axis > Z_ROT)
 		return ;
 	save_rot(o, rot_axis, rot_is_positive);
-	o->fwd = vec4_to_vec3(mat_mult_vec4(vec3_to_vec4(o->fwd, T_POINT), rot_matrices[2 * rot_axis + rot_is_positive]));
-	o->right = vec4_to_vec3(mat_mult_vec4(vec3_to_vec4(o->right, T_POINT), rot_matrices[2 * rot_axis + rot_is_positive]));
-	o->up = vec4_to_vec3(mat_mult_vec4(vec3_to_vec4(o->up, T_POINT), rot_matrices[2 * rot_axis + rot_is_positive]));
+	o->fwd = vec4_to_vec3(mat_mult_vec4(vec3_to_vec4(o->fwd, T_POINT),
+		rot_matrices[2 * rot_axis + rot_is_positive]));
+	o->right = vec4_to_vec3(mat_mult_vec4(vec3_to_vec4(o->right, T_POINT),
+		rot_matrices[2 * rot_axis + rot_is_positive]));
+	o->up = vec4_to_vec3(mat_mult_vec4(vec3_to_vec4(o->up, T_POINT),
+		rot_matrices[2 * rot_axis + rot_is_positive]));
 }
 
+/* Object rotation keyhook handling */
 static int	handle_object_rotations(int keysym, t_data *rt)
 {
 	t_obj	*o;
 	
 	o = rt->selected;
-	if (keysym == NUMPAD1 || keysym == KEY_1)		/* Rotate clockwise around x axis */
+	if (keysym == NUMPAD1 || keysym == KEY_1)			/* Rotate clockwise around x axis */
 		apply_rotation(o, X_ROT, true);
 	else if (keysym == NUMPAD2 || keysym == KEY_2)		/* Rotate counter-clockwise x axis */
 		apply_rotation(o, X_ROT, false);

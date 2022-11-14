@@ -1,13 +1,13 @@
 #include "minirt.h"
 
+/* Clean and exit without error */
 int	rt_clean_exit(t_data *rt)
 {
 	rt_cleanup(rt);
 	exit(EXIT_SUCCESS);
 }
 
-
-
+/* Memory cleanup for .ppm image */
 void rt_clean_image(t_ppm image)
 {
 	t_i i;
@@ -21,6 +21,7 @@ void rt_clean_image(t_ppm image)
 	free(image.pixels);
 }
 
+/* Full memory cleanup */
 void	rt_cleanup(t_data *rt)
 {
 	int	i;
