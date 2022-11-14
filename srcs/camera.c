@@ -9,6 +9,9 @@ void	cam_init(t_data *rt)
 	/* Calculate view width & height*/
 	rt->cam.view_w = 2 * tan(deg_to_rad(rt->cam.fov) / 2);
 	rt->cam.view_h = (rt->cam.view_w / ((float)ASPECT_RATIO * 100.0f)) * 100.0f;
+
+	/* Run initial camera and ray calclations */
+	cam_recalc(rt);
 }
 
 /* Generate array of pre-cached rays */
@@ -23,12 +26,13 @@ void	cam_generate_rays(t_data *rt)
 		i.x = 0;
 		while (i.x < IMG_W)
 		{
+			/* Create initial rays */
 			ray.x = (rt->cam.view_w * ((float)i.x / (float)IMG_W)) - (rt->cam.view_w * 0.5f);
 			ray.y = (rt->cam.view_h * (1.0f - ((float)i.y / (float)IMG_H))) - (rt->cam.view_h * 0.5f);
 			ray.z = -1.0f;
 			ray.w = 0;
 
-			/* Apply camera rotation */
+			/* Apply camera rotation to ray */
 			ray = mat_mult_vec4(ray, rt->cam.m_pitch);
 			ray = mat_mult_vec4(ray, rt->cam.m_yaw);
 			rt->cam.rays[i.y][i.x] = unit_vec3(vec4_to_vec3(ray));

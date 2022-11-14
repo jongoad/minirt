@@ -3,6 +3,7 @@
 
 double	g_fps;
 
+/* Main data structure singleton fetch function */
 t_data	*get_data(void)
 {
 	static t_data *data;
@@ -16,31 +17,16 @@ int	main(int argc, char **argv)
 {
 	t_data	*rt;
 
-	/* Check for invalid command line input */
-	if (argc != 2)
+	if (argc != 2)						/* Check for invalid command line input */
 		exit_on_err(BAD_ARG_ERR);
-	rt = get_data();
-
-	/* Run parsing */
-	if (!parse(rt, argv[1]))
+	rt = get_data();					/* Initialize main data struct */
+	if (!parse(rt, argv[1]))			/* Run parsing */
 		return (0);
-
-	/* Initialize renderer after succesful parse */
-	rt_init(rt, argv[1]);
-	
-	set_hooks(rt);
+	rt_init(rt, argv[1]);				/* Initialize renderer & scene after succesful parse */
+	set_hooks(rt);						/* Set up hooks for MLX */
 	cam_init(rt);
-	// print_scene_after_init(rt);
-
-	cam_recalc(rt);
-
-	/* Preliminary render before entering main loop */
-	render_scene(rt);
-
-	display_default(rt);
-
-	/* Enter into main loop */
-	mlx_loop(rt->mlx_ptr);
-
+	render_scene(rt);					/* Preliminary render before entering main loop */
+	display_default(rt);				/* Push rendered image to window */
+	mlx_loop(rt->mlx_ptr);				/* Enter into main loop */
 	return (0);
 }

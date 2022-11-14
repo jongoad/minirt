@@ -11,6 +11,7 @@ void	init_plane(t_data *rt, char **input, int obj_nb)
 	init_color(&rt->objs[obj_nb]->clr, input[3]);					/* Set plane color */
 	rt->objs[obj_nb]->hit = hit_plane;
 	rt->objs[obj_nb]->rot = vec3(0,0,0);
+	rt->objs[obj_nb]->scale = 1.0f;
 	rt->objs[obj_nb]->shininess = SHININESS;
 	rt->objs[obj_nb]->texture.is_image = false;
 	rt->objs[obj_nb]->texture.is_checkers = false;
@@ -26,9 +27,11 @@ void	init_sphere(t_data *rt, char **input, int obj_nb)
 	rt->objs[obj_nb]->type = T_SPH;									/* Set object type */
 	init_float_triplet(&rt->objs[obj_nb]->pos, input[1]);			/* Set sphere position */
 	rt->objs[obj_nb]->radius = ft_atof(input[2]) / 2;				/* Set sphere radius */
+	rt->objs[obj_nb]->ref_radius = rt->objs[obj_nb]->radius;
 	init_color(&rt->objs[obj_nb]->clr, input[3]);					/* Set sphere color */
 	rt->objs[obj_nb]->hit = hit_sphere;
 	rt->objs[obj_nb]->rot = vec3(0,0,0);
+	rt->objs[obj_nb]->scale = 1.0f;
 	rt->objs[obj_nb]->shininess = SHININESS;
 	rt->objs[obj_nb]->texture.is_image = false;
 	rt->objs[obj_nb]->texture.is_checkers = false;
@@ -47,9 +50,12 @@ void	init_cylinder(t_data *rt, char **input, int obj_nb)
 	unit_vec3_self(&rt->objs[obj_nb]->fwd);							/* Normalize cylinder orientation */
 	rt->objs[obj_nb]->radius = ft_atof(input[3]) / 2;				/* Set cylinder radius */
 	rt->objs[obj_nb]->half_height = ft_atof(input[4]) / 2;			/* Set cylinder height, only (height / 2) is used */
+	rt->objs[obj_nb]->ref_radius = 	rt->objs[obj_nb]->radius;
+	rt->objs[obj_nb]->ref_half_height = rt->objs[obj_nb]->half_height;
 	init_color(&rt->objs[obj_nb]->clr, input[5]);					/* Set cylinder color */
 	rt->objs[obj_nb]->hit = hit_cylinder;
 	rt->objs[obj_nb]->rot = vec3(0,0,0);
+	rt->objs[obj_nb]->scale = 1.0f;
 	rt->objs[obj_nb]->shininess = SHININESS;
 	rt->objs[obj_nb]->texture.is_image = false;
 	rt->objs[obj_nb]->texture.is_checkers = false;
@@ -70,14 +76,15 @@ void	init_cone(t_data *rt, char **input, int obj_nb)
 	unit_vec3_self(&rt->objs[obj_nb]->fwd);							/* Normalize cone orientation */
 	half_tan = tanf(deg_to_rad(ft_atof(input[3]))) / 2.0F;
 	rt->objs[obj_nb]->half_height = ft_atof(input[4]) / 2;			/* Set cone height, only (height / 2) is used */
-	printf("rt->objs[obj_nb]->half_height = %f\n", rt->objs[obj_nb]->half_height);
-	rt->objs[obj_nb]->radius = tanf(rt->objs[obj_nb]->angle_ofs) * rt->objs[obj_nb]->half_height;			/* Set cone height, only (height / 2) is used */
+	rt->objs[obj_nb]->radius = tanf(rt->objs[obj_nb]->angle_ofs)
+		* rt->objs[obj_nb]->half_height;							/* Set cone height, only (height / 2) is used */
 	rt->objs[obj_nb]->angle_ofs = 1 + half_tan * half_tan;			/* Set cone angle */
-	printf("rt->objs[obj_nb]->angle = %f\n", rt->objs[obj_nb]->angle_ofs);
-	printf("rt->objs[obj_nb]->radius = %f\n", rt->objs[obj_nb]->radius);
+	rt->objs[obj_nb]->ref_angle = ft_atof(input[3]);
+	rt->objs[obj_nb]->ref_half_height = rt->objs[obj_nb]->half_height;
 	init_color(&rt->objs[obj_nb]->clr, input[5]);					/* Set cone color */
 	rt->objs[obj_nb]->hit = hit_cone;
 	rt->objs[obj_nb]->rot = vec3(0,0,0);
+	rt->objs[obj_nb]->scale = 1.0f;
 	rt->objs[obj_nb]->shininess = SHININESS;
 	rt->objs[obj_nb]->texture.is_image = false;
 	rt->objs[obj_nb]->texture.is_checkers = false;

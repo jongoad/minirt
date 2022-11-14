@@ -1,6 +1,7 @@
 #include "minirt.h"
 #include "hooks.h"
 
+/* Intialize hooks for MLX */
 void	set_hooks(t_data *rt)
 {
 	mlx_do_key_autorepeaton(rt->mlx_ptr);
@@ -24,6 +25,7 @@ void	set_hooks(t_data *rt)
 	return ;
 }
 
+/* Do nothing hook */
 int	default_hook(t_data *rt)
 {
 	(void)rt;
