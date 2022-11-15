@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   hit_cylinder.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: iyahoui- <iyahoui-@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/11/15 14:21:19 by iyahoui-          #+#    #+#             */
+/*   Updated: 2022/11/15 14:22:53 by iyahoui-         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minirt.h"
 
 static bool	cylinder_quadratic(t_ray *r, t_obj *o, t_quadratic *q)
@@ -5,12 +17,10 @@ static bool	cylinder_quadratic(t_ray *r, t_obj *o, t_quadratic *q)
 	q->oc = sub_vec3(r->orig, o->pos);
 	q->dir_dot_fwd = dot_vec3(r->dir, o->fwd);
 	q->oc_dot_fwd = dot_vec3(q->oc, o->fwd);
-
 	q->a = dot_vec3(r->dir, r->dir) - q->dir_dot_fwd * q->dir_dot_fwd;
 	q->half_b = dot_vec3(r->dir, q->oc) - q->dir_dot_fwd * q->oc_dot_fwd;
-	q->c = dot_vec3(q->oc, q->oc) -
-		q->oc_dot_fwd * q->oc_dot_fwd - o->radius * o->radius;
-
+	q->c = dot_vec3(q->oc, q->oc)
+		- q->oc_dot_fwd * q->oc_dot_fwd - o->radius * o->radius;
 	q->discriminant = q->half_b * q->half_b - q->a * q->c;
 	if (q->discriminant < 0)
 		return (false);

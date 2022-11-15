@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   vectors_self_vec3.c                                :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: iyahoui- <iyahoui-@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/11/15 14:13:45 by iyahoui-          #+#    #+#             */
+/*   Updated: 2022/11/15 14:13:46 by iyahoui-         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minirt.h"
 
 /* Directly add a vec3's components to the calling vec3 */
@@ -24,7 +36,7 @@ void	sub_vec3_self(t_vec3 *a, t_vec3 b)
 		a->z -= b.z;
 }
 
-/* Directly multiplies a vec3's components by the calling vec3's components, and attributes them to the calling vec3 */
+/* Directly multiplies a vec3's components by the calling vec3's components */
 void	mult_vec3_vec3_self(t_vec3 *a, t_vec3 b)
 {
 		a->x *= b.x;
@@ -32,7 +44,7 @@ void	mult_vec3_vec3_self(t_vec3 *a, t_vec3 b)
 		a->z *= b.z;
 }
 
-/* Directly transforms calling vector into its cross product with second vector */
+/* Directly transforms calling vector into its cross product with 2nd vector */
 void	cross_vec3_self(t_vec3 *a, t_vec3 b)
 {
 	a->x = (a->y * b.z) - (a->z * b.y);

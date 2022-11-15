@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   hit_sphere.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: iyahoui- <iyahoui-@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/11/15 14:21:45 by iyahoui-          #+#    #+#             */
+/*   Updated: 2022/11/15 14:22:07 by iyahoui-         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minirt.h"
 
 bool	hit_sphere(t_ray *r, t_obj *o, t_hit_rec *rec)
@@ -11,13 +23,13 @@ bool	hit_sphere(t_ray *r, t_obj *o, t_hit_rec *rec)
 	q.c = dot_vec3(oc, oc) - o->radius * o->radius;
 	q.discriminant = q.half_b * q.half_b - q.a * q.c;
 	if (q.discriminant < 0 || q.a == 0)
-		return (false);	
+		return (false);
 	q.sqrtd = sqrtf(q.discriminant);
 	q.root = (-q.half_b - q.sqrtd) / q.a;
 	if (q.root < T_MIN || q.root > rec->t)
 	{
 		q.root = (-q.half_b + q.sqrtd) / q.a;
-		if (q.root < T_MIN || q.root > rec->t)	
+		if (q.root < T_MIN || q.root > rec->t)
 			return (false);
 		rec->inside_surface = true;
 	}

@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   hit_lights.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: iyahoui- <iyahoui-@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/11/15 14:21:25 by iyahoui-          #+#    #+#             */
+/*   Updated: 2022/11/15 14:22:27 by iyahoui-         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minirt.h"
 
 bool	hit_light(t_ray *r, t_obj *l, t_hit_rec *rec)
@@ -17,7 +29,7 @@ bool	hit_lights(t_data *rt, t_ray *r, t_hit_rec *rec)
 	while (i < rt->nb_lights)
 	{
 		rt->lights[i]->fwd = r->dir;
-		rt->lights[i]->radius = LIGHT_RADIUS; // FIXME: if this works, move to init
+		rt->lights[i]->radius = LIGHT_RADIUS;
 		if (hit_disk(r, rt->lights[i], &tmp))
 		{
 			if (length_vec3(sub_vec3(rt->lights[i]->pos, tmp.p)) < LIGHT_RADIUS)
@@ -34,12 +46,11 @@ bool	hit_lights(t_data *rt, t_ray *r, t_hit_rec *rec)
 	return (tmp.hit_anything);
 }
 
-
 t_color	apply_light_halos(t_data *rt, t_ray *r, t_hit_rec *rec, t_color color)
 {
-	t_hit_rec rec2;
-	int i;
-	float dist;
+	t_hit_rec	rec2;
+	int			i;
+	float		dist;
 
 	(void)rec;
 	i = -1;

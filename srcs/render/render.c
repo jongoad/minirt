@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   render.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: iyahoui- <iyahoui-@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/11/15 14:18:56 by iyahoui-          #+#    #+#             */
+/*   Updated: 2022/11/15 14:21:02 by iyahoui-         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minirt.h"
 #include <time.h>
 
@@ -20,24 +32,18 @@ bool	hit_anything(t_data *rt, t_ray *r, t_hit_rec *rec)
 static inline t_color	render_pixel(t_data *rt, t_ray *r, t_hit_rec *rec)
 {
 	register t_color	pixel_color;
-	t_vec3 p;
-	// t_vec3 normal;
-	t_mat4 rot;
+	t_vec3				p;
+	t_mat4				rot;
 
 	rec->t = T_MAX;
 	rec->hit_anything = false;
 	if (hit_anything(rt, r, rec))
 	{
-		/* Handle translation and rotation of hit point for texture and normal application */
-		//FIXME - Confirm that normal actually needs to be rotated as well
 		if ((rt->toggle.is_texture || rt->toggle.is_normal) && rec->obj->type == T_SPH)
 		{
-			/* Hanble hit record point transformation */
-			p =  sub_vec3(rec->p, rec->obj->pos);
+			p = sub_vec3(rec->p, rec->obj->pos);
 			rot = mat_rot_compound(deg_to_rad(rec->obj->rot.x), deg_to_rad(rec->obj->rot.y), deg_to_rad(rec->obj->rot.z));
 			p = vec4_to_vec3(mat_mult_vec4(vec3_to_vec4(p, T_POINT), rot));
-			// normal = vec4_to_vec3(mat_mult_vec4(vec3_to_vec4(rec->normal, T_VEC), rot));
-			/* Apply texture and/or normal map */
 			if (rt->toggle.is_texture && (rec->obj->texture.is_image || rec->obj->texture.is_checkers))
 				rec->color = obj_get_color(rt, p, rec->obj);
 			if (rt->toggle.is_normal && rec->obj->normal.is_image)
@@ -55,7 +61,7 @@ static inline t_color	render_pixel(t_data *rt, t_ray *r, t_hit_rec *rec)
 /* Render current scene and displayto screen */
 void	render_scene(t_data *rt)
 {
-	t_ray	r;
+	t_ray		r;
 	t_hit_rec	rec;
 	int			i;
 	int			j;
@@ -71,7 +77,6 @@ void	render_scene(t_data *rt)
 			fill_pixel(rt->img, i, j, render_pixel(rt, &r, &rec));
 		}
 	}
-
 	display_default(rt);
 	print_data_to_screen(rt);
 }
