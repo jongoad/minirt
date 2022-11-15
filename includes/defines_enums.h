@@ -1,59 +1,70 @@
-#ifndef DEFINES_ENUMS_H_
-#define DEFINES_ENUMS_H_
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   defines_enums.h                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: jgoad <jgoad@student.42.fr>                +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/11/15 15:24:22 by jgoad             #+#    #+#             */
+/*   Updated: 2022/11/15 15:30:47 by jgoad            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#ifndef DEFINES_ENUMS_H
+# define DEFINES_ENUMS_H
 
 /****************************/
 /*         Defines          */
 /****************************/
 
 /* Image Controls */
-#define ASPECT_RATIO ((float)16 / (float)9)
-#define IMG_W 2000
-#define IMG_H (int)(IMG_W / ASPECT_RATIO)
+# define ASPECT_RATIO 1.7777778
+# define IMG_W 1280
+# define IMG_H 720
 
 /* Parse Defines */
-#define READ_SIZE 100000000
-#define NB_OBJ_TYPE 7
+# define READ_SIZE 100000000
+# define NB_OBJ_TYPE 7
 # ifndef BONUS
 #  define BONUS 0
 # endif // BONUS
 
 /* Math Defines */
-#define T_MAX 1e4
-#define T_MIN 0.01f
-#define EPSILON 0.000001f
-#define PI 3.14159265359f
+# define T_MAX 1e4
+# define T_MIN 0.01f
+# define EPSILON 0.000001f
+# define PI 3.14159265359f
 
 /* Light Defines */
-#define LIGHT_INTENSITY 150.0F
-#define KD 0.8F * LIGHT_INTENSITY
-#define KS 0.1F * LIGHT_INTENSITY
-#define SHININESS 20
-#define LIGHT_RADIUS 1.1F	/* For light halos */
-#define GAMMA 1/1.2F
+# define LIGHT_INTENSITY 150.0F
+# define KD 120.0f
+# define KS 15.0f
+# define SHININESS 20
+# define LIGHT_RADIUS 1.1f
 
 /* Object Defines */
-#define NO_HIT -1
-#define OBJ_ROT_RATE (PI) / 8
-#define MAX_SHININESS 100
+# define NO_HIT -1
+# define OBJ_ROT_RATE 0.39269908169f
+# define MAX_SHININESS 100
 
 /* Camera Defines */
-#define CAM_ROT_RATE 45.0f
-#define CAM_TRANS 1.0f
-#define CAM_MAX_TILT 89.0f
+# define CAM_ROT_RATE 45.0f
+# define CAM_TRANS 1.0f
+# define CAM_MAX_TILT 89.0f
 
 /****************************/
 /*          Enums           */
 /****************************/
 
 /* Bash colors for terminal printing */
-#define BASH_BLACK "\033[0;30m"
-#define BASH_RED "\033[1;31m"
-#define BASH_GREEN "\033[0;32m"
-#define BASH_YELLOW "\033[0;33m"
-#define BASH_BLUE "\033[0;34m"
-#define BASH_PURPLE "\033[0;35m"
-#define BASH_CYAN "\033[0;36m"
-#define BASH_RESET "\033[0m"
+# define BASH_BLACK "\033[0;30m"
+# define BASH_RED "\033[1;31m"
+# define BASH_GREEN "\033[0;32m"
+# define BASH_YELLOW "\033[0;33m"
+# define BASH_BLUE "\033[0;34m"
+# define BASH_PURPLE "\033[0;35m"
+# define BASH_CYAN "\033[0;36m"
+# define BASH_RESET "\033[0m"
 
 /* Colour Codes */
 typedef enum e_colors
@@ -68,7 +79,7 @@ typedef enum e_colors
 	RED = 0xFF0000,
 	WHITE = 0xFFFFFF,
 	YELLOW = 0xFFFF00
-} t_colors;
+}	t_colors;
 
 /* Scene Object Types*/
 typedef enum e_obj_types
@@ -78,14 +89,14 @@ typedef enum e_obj_types
 	T_CONE = 'o',
 	T_PLANE = 'p',
 	T_LIGHT = 'l'
-} e_obj_types;
+}	t_obj_types;
 
 /* Vector types for converting from vec3 to vec4 */
 typedef enum e_vec_types
 {
 	T_VEC = 'v',
 	T_POINT = 'p'
-} e_vec_types;
+}	t_vec_types;
 
 /* Rotation axis types */
 typedef enum e_rot_axes
@@ -93,13 +104,13 @@ typedef enum e_rot_axes
 	X_ROT = 0,
 	Y_ROT = 1,
 	Z_ROT = 2
-} e_rot_axes;
+}	t_rot_axes;
 
 /* .ppm Image types */
 typedef enum e_image_type
 {
 	T_TEXTURE = 'T',
 	T_NORMAL = 'N'
-}	e_image_type;
+}	t_image_type;
 
 #endif // DEFINES_ENUMS_H_

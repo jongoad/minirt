@@ -1,13 +1,13 @@
 /* ************************************************************************** */
-/*																			*/
-/*														:::	  ::::::::   */
-/*   matrix.c										   :+:	  :+:	:+:   */
-/*													+:+ +:+		 +:+	 */
-/*   By: jgoad <jgoad@student.42.fr>				+#+  +:+	   +#+		*/
-/*												+#+#+#+#+#+   +#+		   */
-/*   Created: 2022/01/06 23:11:16 by jgoad			 #+#	#+#			 */
-/*   Updated: 2022/11/09 16:42:15 by jgoad			###   ########.fr	   */
-/*																			*/
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   matrix.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: jgoad <jgoad@student.42.fr>                +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/11/15 15:13:35 by jgoad             #+#    #+#             */
+/*   Updated: 2022/11/15 15:13:38 by jgoad            ###   ########.fr       */
+/*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
@@ -26,7 +26,7 @@ void	mat_id(t_mat4 *m)
 			if (i.x == i.y)
 				m->m[i.y][i.x] = 1;
 			else
-				m->m[i.y][i.x] = 0; 
+				m->m[i.y][i.x] = 0;
 			i.x++;
 		}
 		i.y++;
@@ -55,7 +55,6 @@ t_mat4	mat_rot_compound(float x, float y, float z)
 	m = mat_mult_mat(m, mat_rot(x, 'x'));
 	m = mat_mult_mat(m, mat_rot(y, 'y'));
 	m = mat_mult_mat(m, mat_rot(z, 'z'));
-
 	return (m);
 }
 
@@ -65,28 +64,28 @@ t_mat4	mat_rot(float rad, char axis)
 	t_mat4	m;
 
 	mat_id(&m);
-	if (axis == 'x') //If rotation axis is x
+	if (axis == 'x')
 	{
 		m.m[1][1] = cos(rad);
 		m.m[1][2] = sin(rad);
 		m.m[2][1] = -sin(rad);
 		m.m[2][2] = cos(rad);
 	}
-	else if (axis == 'y') //If rotation axis is y
+	else if (axis == 'y')
 	{
 		m.m[0][0] = cos(rad);
 		m.m[0][2] = -sin(rad);
 		m.m[2][0] = sin(rad);
 		m.m[2][2] = cos(rad);
 	}
-	else if (axis == 'z') //If rotation axis is x
+	else if (axis == 'z')
 	{
 		m.m[0][0] = cos(rad);
 		m.m[0][1] = sin(rad);
 		m.m[1][0] = -sin(rad);
 		m.m[1][1] = cos(rad);
 	}
-	return (m);	
+	return (m);
 }
 
 /* Create translation matrix */
@@ -99,6 +98,5 @@ t_mat4	mat_trans(t_vec4 trans)
 	m.m[1][3] = trans.y;
 	m.m[2][3] = trans.z;
 	m.m[3][3] = trans.w;
-
 	return (m);
 }

@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   minirt.h                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: jgoad <jgoad@student.42.fr>                +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/11/15 15:33:01 by jgoad             #+#    #+#             */
+/*   Updated: 2022/11/15 15:54:03 by jgoad            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef MINIRT_H
 # define MINIRT_H
 
@@ -13,9 +25,7 @@
 # include <fcntl.h>
 # include <time.h>
 
-
 /* Library Includes */
-// # include "../minilibx_opengl/mlx_opengl.h"
 # include "../minilibx_macos/mlx.h"
 # include "../libft/libft.h"
 
@@ -24,11 +34,9 @@
 # include "defines_enums.h"
 # include "error.h"
 
-
 /*******************************/
 /*    Function Declarations    */
 /*******************************/
-
 
 /* Hooks */
 void	set_hooks(t_data *rt);
@@ -36,28 +44,29 @@ void	set_hooks(t_data *rt);
 /* Objects */
 t_obj	*new_sphere( t_vec3 pos, float radius, t_vec3 color );
 t_obj	*new_plane(t_vec3 pos, t_vec3 normal, t_vec3 color);
-t_obj	*new_cylinder(t_vec3 pos, t_vec3 normal, float diameter, float height, t_vec3 color);
+t_obj	*new_cylinder(t_vec3 pos, t_vec3 normal, float diameter,
+			float height, t_vec3 color);
 
 /* Object intersection functions */
 bool	hit_sphere(t_ray *r, t_obj *o, t_hit_rec *rec);
 bool	hit_sphere_no_hit_rec(t_ray *r, t_obj *o);
 bool	hit_plane(t_ray *r, t_obj *o, t_hit_rec *rec);
-bool	hit_disk(t_ray *r, t_obj *o, t_hit_rec *rec);   /* Uses obj's radius to limit plane intersection to a disk */
-bool	hit_caps(t_ray *r, t_obj *o, t_hit_rec *rec);   /* Wrapper function to insetersect upper and lower disks for cones/cylinders */
+bool	hit_disk(t_ray *r, t_obj *o, t_hit_rec *rec);
+bool	hit_caps(t_ray *r, t_obj *o, t_hit_rec *rec);
 bool	hit_cylinder(t_ray *r, t_obj *o, t_hit_rec *rec);
 bool	hit_cone(t_ray *r, t_obj *o, t_hit_rec *rec);
 
 /* Colors */
-t_color     int_to_color(int c);
-int         color_to_int(t_color c);
-t_vec3	    color_to_vec3(t_color c);
-t_color     lerp_color(t_color a, t_color b, float factor);
-t_color     color_x_vec3(t_color col, t_vec3 factor);
-t_color     mult_color(t_color a, float factor);
-t_color     add_color(t_color a, t_color b);
+t_color	int_to_color(int c);
+int		color_to_int(t_color c);
+t_vec3	color_to_vec3(t_color c);
+t_color	lerp_color(t_color a, t_color b, float factor);
+t_color	color_x_vec3(t_color col, t_vec3 factor);
+t_color	mult_color(t_color a, float factor);
+t_color	add_color(t_color a, t_color b);
 
 /* Display */
-int	display_default(t_data *rt);
+int		display_default(t_data *rt);
 
 /* Ray Generation */
 t_obj	*cast_ray_at_pixel(t_data *rt, int x, int y);
@@ -72,11 +81,10 @@ void	render_scene(t_data *rt);
 /* Rendering - Lights */
 t_color	pixel_shader(t_data *rt, t_hit_rec *rec, t_color color);
 t_color	apply_light_halos(t_data *rt, t_ray *r, t_hit_rec *rec, t_color color);
-bool    hit_lights(t_data *rt, t_ray *r, t_hit_rec *rec);
+bool	hit_lights(t_data *rt, t_ray *r, t_hit_rec *rec);
 
 /* Benchmarking FIXME: to remove for mandatory part */
 void	display_fps(t_data *rt, double start_time);
-
 
 /****************************************/
 /*          Utility Functions           */
@@ -87,7 +95,6 @@ float	deg_to_rad(float deg);
 void	print_usage(void);
 float	roundf_precision(float n, float p);
 int		count_array_2d(char **array);
-
 
 /****************************************/
 /*        Memory & Error Functions      */
@@ -144,16 +151,13 @@ void	negate_vec3_self(t_vec3 *v);
 /* Vector Utilities */
 t_vec4	vec3_to_vec4(t_vec3 input, char type);
 t_vec3	vec4_to_vec3(t_vec4 input);
-void	print_vec3(t_vec3 v);       /* Debug utils. FIXME: to remove at end of project */
-
+void	print_vec3(t_vec3 v);
 
 /****************************************/
 /*          Camera Functions            */
 /****************************************/
 
 void	cam_calc_transforms(t_data *rt);
-
-
 t_vec4	vec4(float x, float y, float z, float w);
 t_mat4	mat4(t_vec4 a, t_vec4 b, t_vec4 c, t_vec4 d);
 void	cam_init(t_data *rt);
@@ -162,7 +166,6 @@ void	cam_calc_project(t_data *rt);
 void	cam_generate_rays(t_data *rt);
 void	cam_recalc(t_data *rt);
 
-
 /****************************************/
 /*           Parsing Functions          */
 /****************************************/
@@ -170,7 +173,7 @@ void	cam_recalc(t_data *rt);
 /* Main Parsing */
 void	init_parse(t_parse *dat);
 int		open_scene(t_parse *dat, char *path);
-int		check_tok(char *input, char** tok);
+int		check_tok(char *input, char **tok);
 int		check_scene(t_parse *dat);
 int		parse(t_data *rt, char *path);
 
@@ -185,7 +188,7 @@ int		parse_cone(char **obj);
 int		parse_obj_bonus(char *obj);
 
 /* Parsing Utililities */
-int 	check_rgb(char *rgb);
+int		check_rgb(char *rgb);
 int		check_orientation(char *orient);
 int		check_coords(char *coord);
 int		check_path(char *path, char type);
@@ -226,7 +229,7 @@ void	init_cone(t_data *rt, char **input, int obj_nb);
 /* Bonus Attributes Inialization */
 void	init_texture(t_obj *obj, char *input);
 void	init_normal(t_obj *obj, char *input);
-void	init_obj_bonus(t_obj *obj, char **input);;
+void	init_obj_bonus(t_obj *obj, char **input);
 
 /* Initialization Utilities*/
 void	init_color(t_color *clr, char *input);
@@ -234,22 +237,23 @@ void	init_float_triplet(t_vec3 *vec, char *input);
 void	count_objects(t_data *rt);
 void	init_parse_fct_ptrs(t_data *rt);
 
-
 /****************************************/
 /*                BONUS               */
 /****************************************/
 
 /* Shape Specific UV mapping */
-t_vec2 spherical_map(t_vec3 p);
-t_vec2 planar_map(t_vec3 p);
-t_vec2 cylindrical_map(t_vec3 p);
+t_vec2	spherical_map(t_vec3 p);
+t_vec2	planar_map(t_vec3 p);
+t_vec2	cylindrical_map(t_vec3 p);
 
 /* Checkerboard Pattern */
-t_texture uv_checkers(int width, int height, t_color c1, t_color c2);
-t_color uv_pattern_at_checkers(t_texture texture, t_vec2 uv);
+t_color	uv_pattern_at_checkers(t_texture texture, t_vec2 uv);
+
+/* Fuck you norminette */
+t_texture	uv_checkers(int width, int height, t_color c1, t_color c2);
 
 /* Image texture mapping */
-t_color uv_pattern_at_image(t_texture texture, t_vec2 uv);
+t_color	uv_pattern_at_image(t_texture texture, t_vec2 uv);
 t_color	obj_get_color(t_data *rt, t_vec3 p, t_obj *obj);
 
 /* Normal Mapping */
@@ -258,13 +262,13 @@ t_vec3	get_normal_map(t_vec3 p, t_obj *obj);
 t_vec3	obj_get_normal(t_vec3 normal, t_vec3 p, t_obj *obj);
 
 /* Reading & Parsing .PPM Files */
-void 	parse_ppm_skip_comment(char *buf, int *p);
+void	parse_ppm_skip_comment(char *buf, int *p);
 void	parse_ppm_skip_whitespace(char *buf, int *p);
-int 	parse_ppm_identifier(char *buf, int *p);
-void 	parse_ppm_width(t_ppm *img, char *buf, int *p);
-void 	parse_ppm_height(t_ppm *img, char *buf, int *p);
-void 	parse_ppm_maxval(t_ppm *img, char *buf, int *p);
-void 	parse_ppm_header(t_ppm *img, char *buf, int *p);
+int		parse_ppm_identifier(char *buf, int *p);
+void	parse_ppm_width(t_ppm *img, char *buf, int *p);
+void	parse_ppm_height(t_ppm *img, char *buf, int *p);
+void	parse_ppm_maxval(t_ppm *img, char *buf, int *p);
+void	parse_ppm_header(t_ppm *img, char *buf, int *p);
 int		parse_ppm(t_ppm *img, char *buf);
 int		read_ppm(t_ppm *img, char *path);
 int		return_on_err_ppm(char *err, int fd, char *buf, char *path);

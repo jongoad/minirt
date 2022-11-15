@@ -1,11 +1,17 @@
-#ifndef MINIRT_HOOKS_H
-# define MINIRT_HOOKS_H
-/**
- *	This header is for the hooks family of c files
- *		hooks.c
- *		key_hooks.c
- *		mouse_hooks.c
- */
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   hooks.h                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: jgoad <jgoad@student.42.fr>                +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/11/15 15:32:24 by jgoad             #+#    #+#             */
+/*   Updated: 2022/11/15 15:32:46 by jgoad            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#ifndef HOOKS_H
+# define HOOKS_H
 
 /* Relevant struct protoypes */
 typedef struct s_data	t_data;
