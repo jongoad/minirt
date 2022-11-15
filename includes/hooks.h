@@ -7,11 +7,8 @@
  *		mouse_hooks.c
  */
 
-# define TWO_PI 6.28318530718
-
-
+/* Relevant struct protoypes */
 typedef struct s_data	t_data;
-
 
 /* macOS Key Codes */
 typedef enum e_keyhooks
@@ -75,6 +72,7 @@ typedef enum e_keyhooks
 	NUMPAD_PLUS = 69
 }	t_keyhooks;
 
+/* Mouse Keyhook Types */
 typedef enum e_mousehooks
 {
 	LEFT_CLICK = 1,

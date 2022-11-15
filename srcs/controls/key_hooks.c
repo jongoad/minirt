@@ -52,7 +52,6 @@ int	handle_key_press_hook(int keysym, t_data *rt)
 	}
 	return (0);
 }
-
 void	apply_object_scale(t_obj *o, bool is_positive)
 {
 	/* Apply change to scale value*/

@@ -25,6 +25,28 @@ int validate_float(char *val)
 	return (1);
 }
 
+/* Check if orientation contains a single non-zero value */
+bool	check_orient_zero(char **split)
+{
+	int		i;
+	bool	is_val;
+	float 	res;
+
+	i = 0;
+	is_val = false;
+	while (split[i])
+	{
+		res = ft_atof(split[i]);
+		if (res != 0.0f)
+		{
+			is_val = true;
+			break;
+		}
+		i++;
+	}
+	return(is_val);
+}
+
 /* Check if float is valid, and if applicable if it falls within range */
 int	check_float(char *val, float lim1, float lim2)
 {

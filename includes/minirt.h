@@ -204,6 +204,7 @@ int		parse_error(t_parse *dat, char *err, char **line);
 void	parse_free(t_parse *dat);
 void	split_scene(t_parse *dat);
 char	**create_tok(void);
+bool	check_orient_zero(char **split);
 
 /****************************************/
 /*       Initialization Functions       */

@@ -24,7 +24,7 @@ sp	-1.0,-2.0,0.0			1.0					20,20,255			shininess:16.0			texture:images/earth_tex
 
 # Cylinder (cy)
 #	Position		|	Orientation		|	Radius	|	Height	|	Colour		
-cy	5.0,-2.0,0.0			0.0,0.0,0.0			2.0			5.0		255,255,255
+cy	5.0,-2.0,0.0			0.1,0.0,0.0			2.0			5.0		255,255,255
 
 #####################
 # Bonus Object Types

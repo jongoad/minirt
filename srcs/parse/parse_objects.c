@@ -12,7 +12,7 @@ int parse_plane(char **obj)
 		return (0);
 	if (!check_coords(obj[1]))							/* Check position data */
 		return (0);
-	if (!check_orientation(obj[2]))						/* Check orientation vector */
+	if (!check_orientation(obj[2]))			/* Check orientation vector */
 		return (0);
 	if (!check_rgb(obj[3]))								/* Ensure RGB values are within range and valid */
 		return (0);

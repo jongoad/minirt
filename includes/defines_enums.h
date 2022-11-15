@@ -41,11 +41,6 @@
 #define CAM_TRANS_RATE 1.0f
 #define CAM_MAX_TILT 89.0f
 
-/* Camera Toggles */
-
-#define CAM_TOGGLE_YAW true
-#define CAM_TOGGLE_PITCH true
-
 /****************************/
 /*          Enums           */
 /****************************/
@@ -85,12 +80,14 @@ typedef enum e_obj_types
 	T_LIGHT = 'l'
 } e_obj_types;
 
+/* Vector types for converting from vec3 to vec4 */
 typedef enum e_vec_types
 {
 	T_VEC = 'v',
 	T_POINT = 'p'
 } e_vec_types;
 
+/* Rotation axis types */
 typedef enum e_rot_axes
 {
 	X_ROT = 0,
@@ -98,6 +95,7 @@ typedef enum e_rot_axes
 	Z_ROT = 2
 } e_rot_axes;
 
+/* .ppm Image types */
 typedef enum e_image_type
 {
 	T_TEXTURE = 'T',

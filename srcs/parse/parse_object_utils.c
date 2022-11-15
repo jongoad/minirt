@@ -48,9 +48,9 @@ int	check_orientation(char *orient)
 		}
 		i.x++;
 	}
-	ft_free_split(split);
-	if (i.x != 3)
+	if (i.x != 3 || !check_orient_zero(split))
 		retval = 0;
+	ft_free_split(split);
 	if (retval == 0)
 		ft_putstr_fd(PARSE_ERR_ORIENT, 2);
 	return (retval);
