@@ -53,7 +53,11 @@ OBJS	= $(addprefix $(OBJ_DIR)/, $(CFILES:.c=.o))
 OBJ_DIR_BONUS	= obj_bonus
 OBJS_BONUS		= $(addprefix $(OBJ_DIR_BONUS)/, $(CFILES:.c=.o))
 
-INCFILES	=	defines_enums.h error.h hooks.h minirt.h structs.h
+INCFILES	=	defines_enums.h \
+				error.h \
+				hooks.h \
+				minirt.h \
+				structs.h
 
 
 INC_DIR			= ./includes
@@ -85,6 +89,7 @@ COMPILE_EXE_LINUX_OUT	=	$$($(COMPILE_EXE_LINUX) 2>&1 | sed -e 's/error/\\\033[0;
 # bonus
 COMPILE_C_BONUS			=	$(CC) $(CFLAGS) $(CFLAGS_BONUS) $(INCLFLAGS) -o $@ -c $<
 COMPILE_C_BONUS_OUT		=	$$($(COMPILE_C_BONUS) 2>&1 | sed -e 's/error/\\\033[0;31merror\\\033[0m/g' -e 's/warning/\\\033[0;33mwarning\\\033[0m/g')
+
 COMPILE_EXE_BONUS		=	$(CC) $(CFLAGS) $(CFLAGS_BONUS) $(LIBFT_FLAGS) $(LIBM_FLAG) $(MLX_FLAGS) $(INCLFLAGS) $(OBJS_BONUS) -o $(NAME_BONUS)
 COMPILE_EXE_BONUS_OUT	=	$$($(COMPILE_EXE_BONUS) 2>&1 | sed -e 's/error/\\\033[0;31merror\\\033[0m/g' -e 's/warning/\\\033[0;33mwarning\\\033[0m/g')
 
@@ -119,7 +124,7 @@ $(NAME):	libft pretty_print $(OBJS)
 	@echo -e "\n$(CYAN)>>>>>>>> Compiling into executable $(UYELLOW)./$(NAME)$(RESET_COL)"
 	@$(COMPILE_EXE_OUT)
 
-$(NAME_BONUS): libft pretty_print $(OBJS_BONUS)
+$(NAME_BONUS): libft pretty_print_bonus $(OBJS_BONUS)
 	@echo -e "\n$(CYAN)>>>>>>>> Compiling into executable $(UYELLOW)./$(NAME_BONUS)$(RESET_COL)"
 	@$(COMPILE_EXE_BONUS_OUT)
 
