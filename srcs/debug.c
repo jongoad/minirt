@@ -33,7 +33,7 @@ void	print_obj_info(t_data *rt, int id)
 	printf("\n\n");
 }
 
-// /* Print out all objects in scene */
+/* Print out all objects in scene */
 void	print_scene_after_init(t_data *rt)
 {
 	int i;

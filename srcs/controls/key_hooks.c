@@ -7,15 +7,15 @@ static int	handle_object_rotations(int keysym, t_data *rt);
 /* Key release event hooks */
 int	handle_key_release_hook(int keysym, t_data *rt)
 {
-	if (keysym == KEY_ESC)
+	if (keysym == KEY_ESC)											/* Handle program exit on ESC keypress */
 		rt_clean_exit(rt);
-	if (keysym == KEY_L)
+	if (keysym == KEY_L)											/* Toggle light halo visualization on L keypress*/
 		rt->toggle.is_light_halo = !(rt->toggle.is_light_halo);
-	else if (keysym == KEY_N)
+	else if (keysym == KEY_N)										/* Toggle normal map visualization on N keypress*/
 		rt->toggle.is_normal = !(rt->toggle.is_normal);
-	else if (keysym == KEY_T)
+	else if (keysym == KEY_T)										/* Toggle texture visualization on T keypress */
 		rt->toggle.is_texture = !(rt->toggle.is_texture);
-	else if (keysym == KEY_F1)
+	else if (keysym == KEY_F1)										/* Print out program controls to terminal on F1 keypress */
 		print_usage();
 	else
 		return (0);
@@ -29,45 +29,46 @@ int	handle_key_press_hook(int keysym, t_data *rt)
 	if (rt->cam.is_move)
 	{
 		if (keysym == KEY_W)			/* Move camera forwards */
-			rt->cam.pos = add_vec3(rt->cam.pos, mult_vec3(rt->cam.forward, CAM_TRANS_RATE));
+			rt->cam.pos = add_vec3(rt->cam.pos, mult_vec3(rt->cam.forward, CAM_TRANS));
 		if (keysym == KEY_S)			/* Move camera backwards */
-			rt->cam.pos = sub_vec3(rt->cam.pos, mult_vec3(rt->cam.forward, CAM_TRANS_RATE));
+			rt->cam.pos = sub_vec3(rt->cam.pos, mult_vec3(rt->cam.forward, CAM_TRANS));
 		if (keysym == KEY_A)			/* Move camera left */
-			rt->cam.pos = sub_vec3(rt->cam.pos, mult_vec3(rt->cam.right, CAM_TRANS_RATE));
+			rt->cam.pos = sub_vec3(rt->cam.pos, mult_vec3(rt->cam.right, CAM_TRANS));
 		if (keysym == KEY_D)			/* Move camera right */
-			rt->cam.pos = add_vec3(rt->cam.pos, mult_vec3(rt->cam.right, CAM_TRANS_RATE));
+			rt->cam.pos = add_vec3(rt->cam.pos, mult_vec3(rt->cam.right, CAM_TRANS));
 		if (keysym == KEY_Q)			/* Move camera down */
-			rt->cam.pos = sub_vec3(rt->cam.pos, mult_vec3(rt->cam.real_up, CAM_TRANS_RATE));
+			rt->cam.pos = sub_vec3(rt->cam.pos, mult_vec3(rt->cam.real_up, CAM_TRANS));
 		if (keysym == KEY_E)			/* Move camera up */
-			rt->cam.pos = add_vec3(rt->cam.pos, mult_vec3(rt->cam.real_up, CAM_TRANS_RATE));
+			rt->cam.pos = add_vec3(rt->cam.pos, mult_vec3(rt->cam.real_up, CAM_TRANS));
 		cam_recalc(rt);
 		render_scene(rt);
 	}
 	else if (rt->selected != NULL)
 	{
-		if (keysym == KEY_SPACE)
+		if (keysym == KEY_SPACE)									/* Print out object data on SPACE keypress */
 			print_obj_data(rt->selected);
-		handle_object_translations(keysym, rt);
-		handle_object_rotations(keysym, rt);
+		handle_object_translations(keysym, rt);						/* Apply object translation */
+		handle_object_rotations(keysym, rt);						/* Handle object rotations */
 	}
 	return (0);
 }
+
+/* Apply scale transformation to specified object */
 void	apply_object_scale(t_obj *o, bool is_positive)
 {
-	/* Apply change to scale value*/
-	if (is_positive)
+	if (is_positive)												/* Apply change to scale value*/
 		o->scale *= 1.1;
 	else
 	{
 		o->scale /= 1.1;
-		if (o->scale > 0.1)
+		if (o->scale > 0.1)											/* Clamp minimum scale value */
 			o->scale = 0.1;
 	}
-	if (o->type == T_SPH || o->type == T_CYL)				/* If sphere or cylinder adjust radius */
+	if (o->type == T_SPH || o->type == T_CYL)						/* If sphere or cylinder adjust radius */
 		o->radius = o->ref_radius * o->scale;
-	if (o->type == T_CYL || o->type == T_CONE)				/* If cylinder or cone adjust height */
+	if (o->type == T_CYL || o->type == T_CONE)						/* If cylinder or cone adjust height */
 		o->half_height = o->ref_half_height * o->scale;
-	if (o->type == T_CONE)									/* If cone set new radius based on height */
+	if (o->type == T_CONE)											/* If cone set new radius based on height */
 		o->radius = tanf(o->angle) * o->half_height;
 }
 

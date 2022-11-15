@@ -46,6 +46,7 @@ t_mat4	mat_scale(t_vec4 scale)
 	return (m);
 }
 
+/* Create compound rotation matrix for 3 axis */
 t_mat4	mat_rot_compound(float x, float y, float z)
 {
 	t_mat4	m;

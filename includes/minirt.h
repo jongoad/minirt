@@ -20,7 +20,6 @@
 # include "../libft/libft.h"
 
 /* Local File Includes */
-#include "structs_basic.h"
 # include "structs.h"
 # include "defines_enums.h"
 # include "error.h"
@@ -59,8 +58,6 @@ t_color     add_color(t_color a, t_color b);
 
 /* Display */
 int	display_default(t_data *rt);
-int	display_img(t_data *rt, t_img *img);
-
 
 /* Ray Generation */
 t_obj	*cast_ray_at_pixel(t_data *rt, int x, int y);
@@ -85,9 +82,7 @@ void	display_fps(t_data *rt, double start_time);
 /*          Utility Functions           */
 /****************************************/
 
-void	draw_background(t_img *img, int color);
 void	fill_pixel(t_img *img, int x, int y, t_color color);
-double	lerp(double start, double end, double curr);
 float	deg_to_rad(float deg);
 void	print_usage(void);
 float	roundf_precision(float n, float p);
@@ -120,7 +115,6 @@ t_vec4	mat_mult_vec4(t_vec4 v, t_mat4 m);
 t_mat4	mat_rot_compound(float x, float y, float z);
 
 /* Vectors by copy */
-t_vec3  point(float x, float y, float z);		// FIXME: might remove, sets w to 1
 t_vec3	vec3(float x, float y, float z);
 t_vec3	add_vec3(t_vec3 a, t_vec3 b);
 t_vec3	add3_vec3(t_vec3 a, t_vec3 b, t_vec3 c);
@@ -134,7 +128,6 @@ t_vec3	unit_vec3(t_vec3 v);
 t_vec3	cross_vec3(t_vec3 a, t_vec3 b);
 t_vec3	negate_vec3(t_vec3 v);
 t_vec3	lerp_vec3( t_vec3 a, t_vec3 b, float factor );
-t_vec3  mean_vec3( t_vec3 a, t_vec3 b );
 double	cos_vec3(t_vec3 a, t_vec3 b);
 
 /* Vectors self-operations */

@@ -1,8 +1,6 @@
 #include "minirt.h"
 #include "hooks.h"
 
-double	g_fps;
-
 /* Main data structure singleton fetch function */
 t_data	*get_data(void)
 {

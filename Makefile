@@ -19,11 +19,12 @@ RESET_COL	=	\033[0m
 
 CFILES	=	cleanup.c \
 			camera.c \
-			color.c \
+			color/color_conversions.c \
+			color/color_operations.c \
 			display.c \
 			main.c \
 			ray.c \
-			utils.c \
+			utils.c math_utils.c \
 			controls/hooks.c controls/key_hooks.c controls/mouse_hooks.c \
 			vector/vectors.c vector/vectors_self.c vector/vectors_utils.c \
 			intersection/hit_caps.c \
@@ -52,9 +53,8 @@ OBJS	= $(addprefix $(OBJ_DIR)/, $(CFILES:.c=.o))
 OBJ_DIR_BONUS	= obj_bonus
 OBJS_BONUS		= $(addprefix $(OBJ_DIR_BONUS)/, $(CFILES:.c=.o))
 
-INCFILES	=	hooks.h \
-				minirt.h \
-				defines_enums.h
+INCFILES	=	defines_enums.h error.h hooks.h minirt.h structs.h
+
 
 INC_DIR			= ./includes
 INCS			= $(addprefix $(INC_DIR)/, $(INCFILES))

@@ -9,7 +9,7 @@ void	init_plane(t_data *rt, char **input, int obj_nb)
 	init_float_triplet(&rt->objs[obj_nb]->fwd, input[2]);			/* Set plane orientation */
 	unit_vec3_self(&rt->objs[obj_nb]->fwd);							/* Normalize plane orientation */
 	init_color(&rt->objs[obj_nb]->clr, input[3]);					/* Set plane color */
-	rt->objs[obj_nb]->hit = hit_plane;
+	rt->objs[obj_nb]->hit = hit_plane;								
 	rt->objs[obj_nb]->rot = vec3(0,0,0);
 	rt->objs[obj_nb]->scale = 1.0f;
 	rt->objs[obj_nb]->shininess = SHININESS;
