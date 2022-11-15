@@ -6,7 +6,7 @@
 /*   By: jgoad <jgoad@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/15 15:33:01 by jgoad             #+#    #+#             */
-/*   Updated: 2022/11/15 16:14:26 by jgoad            ###   ########.fr       */
+/*   Updated: 2022/11/15 17:06:59 by jgoad            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,12 +41,6 @@
 
 /* Hooks */
 void	set_hooks(t_data *rt);
-
-/* Objects */
-t_obj	*new_sphere( t_vec3 pos, float radius, t_vec3 color );
-t_obj	*new_plane(t_vec3 pos, t_vec3 normal, t_vec3 color);
-t_obj	*new_cylinder(t_vec3 pos, t_vec3 normal, float diameter,
-			float height, t_vec3 color);
 
 /* Object intersection functions */
 int		hit_sphere(t_ray *r, t_obj *o, t_hit_rec *rec);
