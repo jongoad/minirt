@@ -6,7 +6,7 @@
 /*   By: iyahoui- <iyahoui-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/15 14:21:19 by iyahoui-          #+#    #+#             */
-/*   Updated: 2022/11/15 14:22:53 by iyahoui-         ###   ########.fr       */
+/*   Updated: 2022/11/15 16:11:31 by iyahoui-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ static bool	cylinder_quadratic(t_ray *r, t_obj *o, t_quadratic *q)
  *  https://hugi.scene.org/online/hugi24/ \
  * 	coding%20graphics%20chris%20dragan%20raytracing%20shapes.htm
 **/
-bool	hit_cylinder_body(t_ray *r, t_obj *o, t_hit_rec *rec)
+int	hit_cylinder_body(t_ray *r, t_obj *o, t_hit_rec *rec)
 {
 	static t_quadratic		q;
 	double					dist;
@@ -60,14 +60,12 @@ bool	hit_cylinder_body(t_ray *r, t_obj *o, t_hit_rec *rec)
 	return (true);
 }
 
-bool	hit_cylinder(t_ray *r, t_obj *o, t_hit_rec *rec)
+int	hit_cylinder(t_ray *r, t_obj *o, t_hit_rec *rec)
 {
-	bool	hit;
+	int	hit;
 
-	hit = false;
-	if (hit_caps(r, o, rec))
-		hit = true;
-	if (hit_cylinder_body(r, o, rec))
-		hit = true;
+	hit = 0;
+	hit += hit_caps(r, o, rec);
+	hit += hit_cylinder_body(r, o, rec);
 	return (hit);
 }

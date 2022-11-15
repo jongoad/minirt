@@ -6,7 +6,7 @@
 /*   By: iyahoui- <iyahoui-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/15 14:21:16 by iyahoui-          #+#    #+#             */
-/*   Updated: 2022/11/15 14:23:25 by iyahoui-         ###   ########.fr       */
+/*   Updated: 2022/11/15 16:11:58 by iyahoui-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,14 +62,12 @@ bool	hit_cone_body(t_ray *r, t_obj *o, t_hit_rec *rec)
 	return (true);
 }
 
-bool	hit_cone(t_ray *r, t_obj *o, t_hit_rec *rec)
+int	hit_cone(t_ray *r, t_obj *o, t_hit_rec *rec)
 {
-	bool	hit;
+	int	hit;
 
-	hit = false;
-	if (hit_caps(r, o, rec))
-		hit = true;
-	if (hit_cone_body(r, o, rec))
-		hit = true;
+	hit = 0;
+	hit += hit_caps(r, o, rec);
+	hit += hit_cone_body(r, o, rec);
 	return (hit);
 }

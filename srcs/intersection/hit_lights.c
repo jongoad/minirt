@@ -6,13 +6,13 @@
 /*   By: iyahoui- <iyahoui-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/15 14:21:25 by iyahoui-          #+#    #+#             */
-/*   Updated: 2022/11/15 14:22:27 by iyahoui-         ###   ########.fr       */
+/*   Updated: 2022/11/15 16:12:20 by iyahoui-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
 
-bool	hit_light(t_ray *r, t_obj *l, t_hit_rec *rec)
+int	hit_light(t_ray *r, t_obj *l, t_hit_rec *rec)
 {
 	l->fwd = r->dir;
 	return (hit_plane(r, l, rec));

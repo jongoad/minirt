@@ -6,13 +6,13 @@
 /*   By: iyahoui- <iyahoui-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/15 14:21:45 by iyahoui-          #+#    #+#             */
-/*   Updated: 2022/11/15 14:22:07 by iyahoui-         ###   ########.fr       */
+/*   Updated: 2022/11/15 16:10:26 by iyahoui-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
 
-bool	hit_sphere(t_ray *r, t_obj *o, t_hit_rec *rec)
+int	hit_sphere(t_ray *r, t_obj *o, t_hit_rec *rec)
 {
 	register t_vec3			oc;
 	static t_quadratic		q;
@@ -23,14 +23,14 @@ bool	hit_sphere(t_ray *r, t_obj *o, t_hit_rec *rec)
 	q.c = dot_vec3(oc, oc) - o->radius * o->radius;
 	q.discriminant = q.half_b * q.half_b - q.a * q.c;
 	if (q.discriminant < 0 || q.a == 0)
-		return (false);
+		return (0);
 	q.sqrtd = sqrtf(q.discriminant);
 	q.root = (-q.half_b - q.sqrtd) / q.a;
 	if (q.root < T_MIN || q.root > rec->t)
 	{
 		q.root = (-q.half_b + q.sqrtd) / q.a;
 		if (q.root < T_MIN || q.root > rec->t)
-			return (false);
+			return (0);
 		rec->inside_surface = true;
 	}
 	rec->hit_anything = true;
@@ -38,5 +38,5 @@ bool	hit_sphere(t_ray *r, t_obj *o, t_hit_rec *rec)
 	rec->p = ray_at(r, rec->t);
 	rec->normal = div_vec3(sub_vec3(rec->p, o->pos), o->radius);
 	rec->color = o->clr;
-	return (true);
+	return (1);
 }

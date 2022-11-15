@@ -6,13 +6,13 @@
 /*   By: iyahoui- <iyahoui-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/15 14:21:22 by iyahoui-          #+#    #+#             */
-/*   Updated: 2022/11/15 14:21:22 by iyahoui-         ###   ########.fr       */
+/*   Updated: 2022/11/15 16:11:03 by iyahoui-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
 
-bool	hit_disk(t_ray *r, t_obj *o, t_hit_rec *rec)
+int	hit_disk(t_ray *r, t_obj *o, t_hit_rec *rec)
 {
 	register float	discriminant;
 	register float	t;

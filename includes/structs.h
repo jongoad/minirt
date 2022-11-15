@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   structs.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jgoad <jgoad@student.42.fr>                +#+  +:+       +#+        */
+/*   By: iyahoui- <iyahoui-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/15 15:45:10 by jgoad             #+#    #+#             */
-/*   Updated: 2022/11/15 16:06:50 by jgoad            ###   ########.fr       */
+/*   Updated: 2022/11/15 16:09:12 by iyahoui-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -188,7 +188,7 @@ typedef struct s_obj
 	t_texture	texture;
 	t_texture	normal;
 	float		shininess;
-	bool		(*hit)(t_ray *r, t_obj *o, t_hit_rec *rec);
+	int			(*hit)(t_ray *r, t_obj *o, t_hit_rec *rec);
 	float		scale;
 	t_vec3		rot;
 }	t_obj;
