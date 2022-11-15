@@ -105,5 +105,11 @@ int		handle_mouse_hook(int button, int x, int y, t_data *rt);
 int		handle_mouse_btn_release(int button, int x, int y, t_data *rt);
 int		handle_mouse_motion(int x, int y, t_data *rt);
 int		default_hook(t_data *rt);
+int		handle_mouse_xy_translation(float pcnt_x, float pcnt_y, t_data *rt);
+int		handle_mouse_z_translation(t_data *rt, int button);
+void	save_rot(t_obj *obj, unsigned char axis, bool is_positive);
+void	apply_rotation(t_obj *o, unsigned char rot_axis, bool rot_is_positive);
+int		handle_object_rotations(int keysym, t_data *rt);
+int		handle_object_translations(int keysym, t_data *rt);
 
 #endif // MINIRT_HOOKS_H

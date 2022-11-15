@@ -27,7 +27,9 @@ CFILES	=	cleanup.c \
 			utils.c math_utils.c \
 			controls/hooks.c \
 			controls/key_hooks.c \
+			controls/key_hooks_rotations.c \
 			controls/mouse_hooks.c \
+			controls/mouse_translations.c \
 			intersection/hit_caps.c \
 			intersection/hit_cone.c \
 			intersection/hit_cylinder.c \
