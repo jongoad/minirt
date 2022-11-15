@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   render.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jgoad <jgoad@student.42.fr>                +#+  +:+       +#+        */
+/*   By: iyahoui- <iyahoui-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/15 14:18:56 by iyahoui-          #+#    #+#             */
-/*   Updated: 2022/11/15 14:52:27 by jgoad            ###   ########.fr       */
+/*   Updated: 2022/11/15 15:03:16 by iyahoui-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,5 +89,4 @@ void	render_scene(t_data *rt)
 		}
 	}
 	display_default(rt);
-	print_data_to_screen(rt);
 }
