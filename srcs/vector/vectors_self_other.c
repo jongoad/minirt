@@ -32,6 +32,14 @@ void	mult_vec3_vec3_self(t_vec3 *a, t_vec3 b)
 		a->z *= b.z;
 }
 
+/* Directly transforms calling vector into its cross product with second vector */
+void	cross_vec3_self(t_vec3 *a, t_vec3 b)
+{
+	a->x = (a->y * b.z) - (a->z * b.y);
+	a->y = (a->z * b.x) - (a->x * b.z);
+	a->z = (a->x * b.y) - (a->y * b.x);
+}
+
 /* Directly multiplies a vec3's components by a scalar */
 void	mult_vec3_self(t_vec3 *v, double b)
 {
@@ -56,14 +64,6 @@ void	unit_vec3_self(t_vec3 *v)
 		+ v->y * v->y
 		+ v->z * v->z);
 	return mult_vec3_self(v, is);
-}
-
-/* Directly transforms calling vector into its cross product with second vector */
-void	cross_vec3_self(t_vec3 *a, t_vec3 b)
-{
-	a->x = (a->y * b.z) - (a->z * b.y);
-	a->y = (a->z * b.x) - (a->x * b.z);
-	a->z = (a->x * b.y) - (a->y * b.x);
 }
 
 /* Directly negates all components of the calling vector */

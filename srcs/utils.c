@@ -56,3 +56,10 @@ void	print_usage(void)
 		printf("Toggle normal on/off:	   KEY_N\n");
 	}
 }
+
+/* Print error message and return value */
+int	return_on_err(char *err_msg, int retval)
+{
+	ft_putstr_fd(err_msg, 2);
+	return (retval);
+}

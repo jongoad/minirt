@@ -1,7 +1,7 @@
 #include "minirt.h"
 
 /* Skip a commented line */
-void parse_ppm_skip_comment(char *buf, int *p)
+void	parse_ppm_skip_comment(char *buf, int *p)
 {
 	while (buf[*p] && buf[*p] != '\n')
 		(*p)++;
@@ -16,43 +16,56 @@ void	parse_ppm_skip_whitespace(char *buf, int *p)
 		(*p)++;
 }
 
+/* Write a single pixel */
+void	write_ppm_color(t_color *pixel, char *buf, int *p)
+{
+	int	i;
+
+	i = 0;
+	while (i < 3)
+	{
+		if (i == 0)
+			pixel->r = buf[(*p)];
+		else if (i == 1)
+			pixel->g = buf[(*p)];
+		else if (i == 2)
+			pixel->b = buf[(*p)];
+		(*p)++;
+		i++;
+	}
+
+}
 /* Parse .ppm file data and read into memory */
 int	parse_ppm(t_ppm *img, char *buf)
 {
-	t_i i;
-	int p;
+	t_i	i;
+	int	p;
 
 	p = 0;
-	img->type = parse_ppm_identifier(buf, &p);						/* Ensure filetype is correct */
+	img->type = parse_ppm_identifier(buf, &p);
 	if (!img->type)
-	{
-		ft_putstr_fd(PPM_ERR_TYPE, 2);
-		return (0);
-	}
-	parse_ppm_header(img, buf, &p);									/* Parse header data */
+		return_on_err(PPM_ERR_TYPE, 0);
+	parse_ppm_header(img, buf, &p);
 	img->pixels = ft_xalloc(sizeof(t_color *) * img->height);
-	i.y = 0;
-	while (i.y < img->height)
+	i.y = -1;
+	while (++i.y < img->height)
 	{
-		i.x = 0;
+		i.x = -1;
 		img->pixels[i.y] = ft_xalloc(sizeof(t_color) * img->width);
-		while (i.x < img->width)
+		while (++i.x < img->width)
 		{
-			i.z = 0;
-			while (i.z < 3)											/* Read colour data and assign to memory */
+			i.z = -1;
+			while (++i.z < 3)
 			{
-					if (i.z == 0)
-						img->pixels[i.y][i.x].r = buf[p];
-					else if (i.z == 1)
-						img->pixels[i.y][i.x].g = buf[p];
-					else if (i.z == 2)
-						img->pixels[i.y][i.x].b = buf[p];
-					p++;
-					i.z++;
+				if (i.z == 0)
+					img->pixels[i.y][i.x].r = buf[p];
+				else if (i.z == 1)
+					img->pixels[i.y][i.x].g = buf[p];
+				else if (i.z == 2)
+					img->pixels[i.y][i.x].b = buf[p];
+				p++;
 			}
-			i.x++;
 		}
-		i.y++;
 	}
 	return (1);
 }
@@ -60,8 +73,8 @@ int	parse_ppm(t_ppm *img, char *buf)
 /* Open a .ppm image file. Parse it and read into memory */
 int	read_ppm(t_ppm *img, char *path)
 {
-	int 	fd;
-	int 	status;
+	int		fd;
+	int		status;
 	char	*buf;
 
 	fd = open(path, O_RDONLY);

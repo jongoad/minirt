@@ -97,6 +97,7 @@ t_data	*get_data(void);
 int		rt_clean_exit(t_data *rt);
 void	rt_cleanup(t_data *rt);
 void	exit_on_err(char *err_message);
+int		return_on_err(char *err_msg, int retval);
 void	*ft_xalloc(size_t size);
 
 /****************************************/
@@ -117,7 +118,6 @@ t_mat4	mat_rot_compound(float x, float y, float z);
 /* Vectors by copy */
 t_vec3	vec3(float x, float y, float z);
 t_vec3	add_vec3(t_vec3 a, t_vec3 b);
-t_vec3	add3_vec3(t_vec3 a, t_vec3 b, t_vec3 c);
 double	dot_vec3(t_vec3 a, t_vec3 b);
 t_vec3	sub_vec3(t_vec3 a, t_vec3 b);
 t_vec3	mult_vec3_vec3(t_vec3 a, t_vec3 b);

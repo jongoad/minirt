@@ -25,8 +25,9 @@ CFILES	=	cleanup.c \
 			main.c \
 			ray.c \
 			utils.c math_utils.c \
-			controls/hooks.c controls/key_hooks.c controls/mouse_hooks.c \
-			vector/vectors.c vector/vectors_self.c vector/vectors_utils.c \
+			controls/hooks.c \
+			controls/key_hooks.c \
+			controls/mouse_hooks.c \
 			intersection/hit_caps.c \
 			intersection/hit_cone.c \
 			intersection/hit_cylinder.c \
@@ -36,12 +37,31 @@ CFILES	=	cleanup.c \
 			intersection/hit_sphere.c \
 			render/render.c \
 			render/shader.c \
-			parse/parse.c parse/parse_objects.c parse/parse_light_camera.c \
-			parse/parse_utils.c parse/parse_object_utils.c parse/parse_type_utils.c \
-			init/init.c init/init_mlx.c init/init_utils.c \
-			init/init_objects.c init/init_light_camera.c init/init_bonus.c \
-			matrix/matrix.c matrix/matrix_utils.c \
-			texture/texture.c texture/read_ppm.c texture/parse_ppm.c texture/normal_map.c texture/shape_map.c \
+			parse/parse.c \
+			parse/parse_objects.c \
+			parse/parse_light_camera.c \
+			parse/parse_utils.c \
+			parse/parse_object_utils.c \
+			parse/parse_type_utils.c \
+			init/init.c init/init_mlx.c \
+			init/init_utils.c \
+			init/init_objects.c \
+			init/init_light_camera.c \
+			init/init_bonus.c \
+			matrix/matrix.c \
+			matrix/matrix_utils.c \
+			texture/texture.c \
+			texture/read_ppm.c \
+			texture/parse_ppm.c \
+			texture/normal_map.c \
+			texture/shape_map.c \
+			vector/vectors_create.c \
+			vector/vectors_x_scalar.c \
+			vector/vectors_x_vec3.c \
+			vector/vectors_self_scalar.c \
+			vector/vectors_self_vec3.c \
+			vector/vectors_utils.c \
+			vector/cos_vec3.c \
 			debug.c
 
 SRC_DIR	= srcs
