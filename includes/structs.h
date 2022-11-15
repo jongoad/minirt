@@ -24,17 +24,14 @@ typedef struct s_toggle		t_toggle;
 typedef struct s_ppm		t_ppm;
 typedef struct s_texture	t_texture;
 
-/*******************************/
-/*         QoL Typedefs        */
-/*******************************/
-typedef t_vec3	t_point;
 
 /*******************************/
-/*        3D Data Structs      */
+/*         Basic Structs       */
 /*******************************/
 
-/* UV float data*/
-//FIXME - Check if this is necessary
+/***** Vectors *****/
+
+/* Vector/vertex with 2 components (used for UV data) */
 typedef struct s_vec2
 {
 	float u;
@@ -42,13 +39,11 @@ typedef struct s_vec2
 }	t_vec2;
 
 /* Vector/vertex with 3 components */
-//FIXME - Should remove w value from this
 typedef struct s_vec3
 {
 	float	x;
 	float	y;
 	float	z;
-	float	w;
 }	t_vec3;
 
 /* Vector/vertex with four components */
@@ -58,38 +53,41 @@ typedef struct s_vec4
 	float	y;
 	float	z;
 	float	w;
-
 }	t_vec4;
 
-/* Ray vector */
-typedef	struct s_ray
-{
-	t_vec3 	orig;					/* Originating point of ray (camera focal point) */
-	t_vec3	dir;					/* Secondary point of ray (pixel on image plane) */
-}	t_ray;
+/***** Matrices *****/
 
-/* UV coordinate struct */
-typedef struct s_uv
+/* 4x4 matrix */
+typedef struct s_mat4
 {
-	unsigned int u;
-	unsigned int v;
-}	t_uv;
+	double	m[4][4];
+}	t_mat4;
 
-/*******************************/
-/*       Utility Structs       */
-/*******************************/
+/***** Colour *****/
+
+/* Color Data */
+typedef	struct s_color
+{
+	unsigned char	r;
+	unsigned char	g;
+	unsigned char 	b;
+}	t_color;
+
+/***** General Utility *****/
 
 /* Iterator */
 typedef struct s_i
 {
-	int x;
+	int	x;
 	int y;
 	int z;
-	//Check if all 6 of these iterators are needed
-	int i;
-	int j;
-	int k;
 }	t_i;
+
+/*******************************/
+/*       Compound Structs      */
+/*******************************/
+
+/***** Math Utility *****/
 
 /* Quadratic solver */
 typedef struct s_quadratic
@@ -100,39 +98,21 @@ typedef struct s_quadratic
     float	discriminant;
 	float	sqrtd;
 	float	root;
-	double	dir_dot_fwd;		/* For cones and cylinders */
-	double	oc_dot_fwd;		/* For cones and cylinders */
+	double	dir_dot_fwd;			/* For cones and cylinders */
+	double	oc_dot_fwd;				/* For cones and cylinders */
 	t_vec3	oc;
 }	t_quadratic;
 
-/* Color data */
-typedef	struct s_color
-{
-	unsigned char	r;
-	unsigned char	g;
-	unsigned char 	b;
-}	t_color;
-
-
-/* 4x4 matrix */
-typedef struct s_mat4
-{
-	double	m[4][4];
-}	t_mat4;
-
-
-/*******************************/
-/*            BONUS            */
-/*******************************/
+/***** Texture Mapping *****/
 
 /* PPM image data */
 typedef struct s_ppm
 {
-	int				type;		/* .PPM file type (P6 or P3)*/
+	int				type;			/* .PPM file type (P6 or P3) */
 	int				width;
 	int				height;
-	unsigned int	maxval;		/* Maximum colour value */
-	t_color			**pixels;
+	unsigned int	maxval;			/* Maximum colour value */
+	t_color			**pixels;		/* Array of pixel colour data */
 }	t_ppm;
 
 /* Texture data */
@@ -140,17 +120,15 @@ typedef struct s_texture
 {
 	int		width;
 	int		height;
-	t_ppm	image;
+	t_ppm	image;					/* Loaded image data */
 	bool	is_image;
 	bool	is_checkers;
-	t_color	c1;
-	t_color c2;
+	t_color	c1;						/* Colour 1 for checkers pattern */
+	t_color c2;						/* Colour 2 for checkers pattern */
 }	t_texture;
 
 
-/*******************************/
-/*        Objects Structs      */
-/*******************************/
+/***** Object Data *****/
 
 /* Ambient light object */
 typedef struct s_ambient
@@ -216,18 +194,22 @@ typedef struct s_obj
 	float		shininess;				/* Reflectivity value */
 
 	/* Function pointers for ray collision per object */
-	bool		(*hit)(t_ray *r, t_obj *o, t_hit_rec *rec);	/* Function ptr for any object type */
+	bool		(*hit)(t_ray *r, t_obj *o, t_hit_rec *rec);
 	
 	/* Transformation data */
-	//This data might not be necesssary
 	float		scale;
 	t_vec3		rot;
-	t_vec3		trans;
 }	t_obj;
 
-/******************************************/
-/*        Raytracing Utility Structs      */
-/******************************************/
+/***** Raytracing data *****/
+
+/* Ray vector */
+typedef	struct s_ray
+{
+	t_vec3 	orig;					/* Originating point of ray (camera focal point) */
+	t_vec3	dir;					/* Secondary point of ray (pixel on image plane) */
+}	t_ray;
+
 /* Ray/object intersection data */
 typedef struct s_hit_rec
 {
@@ -241,9 +223,7 @@ typedef struct s_hit_rec
 }	t_hit_rec;
 
 
-/*******************************/
-/*       Parse Data Struct     */
-/*******************************/
+/* Parsing data */
 typedef struct s_parse
 {
 	bool	has_camera;
@@ -305,7 +285,6 @@ typedef struct s_data
 	int			win_h;
 	int			win_w;
 	t_toggle	toggle;					/* Struct for all toggleable variables */
-	//Should move mlx, window data to its own struct for clarity
 }	t_data;
 
 #endif	//STRUCTS_H_

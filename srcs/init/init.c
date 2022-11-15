@@ -91,10 +91,7 @@ void	init_toggle(t_data *rt)
 /* Split input and initialize objects */
 void	rt_init(t_data *rt, char *filepath)
 {
-	// FIXME: temporary represents an arbitrary shade of grey (ASK ISMAEL WHAT IS GOING ON HERE, SHOULDNT COLOUR BE SET BY AMBIENT COLOUR?)
 	rt->background = int_to_color(BLACK);
-	// rt->background = lerp_color(int_to_color(BLACK), int_to_color(WHITE), 0.2);
-	// rt->background = lerp_color(int_to_color(BLACK), rt->ambient.clr, rt->ambient.ratio);
 	rt->selected = 0;
 	rt_init_mlx(rt, filepath);														/* Setup mlx window data*/
 	rt_init_img(rt);																/* Setup mlx image data */

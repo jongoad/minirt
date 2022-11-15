@@ -20,6 +20,7 @@
 # include "../libft/libft.h"
 
 /* Local File Includes */
+#include "structs_basic.h"
 # include "structs.h"
 # include "defines_enums.h"
 # include "error.h"
@@ -114,7 +115,6 @@ t_mat4	mat_rot(float x, char axis);
 t_mat4	mat_trans(t_vec4 trans);
 t_mat4	mat_mult_mat(t_mat4 m1, t_mat4 m2);
 t_vec4	mat_mult_vec4(t_vec4 v, t_mat4 m);
-t_vec3	mat_mult_vec3(t_vec3 v, t_mat4 m); // Added by Ismael
 
 /* Matrix Utilities */
 t_mat4	mat_rot_compound(float x, float y, float z);
