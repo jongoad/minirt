@@ -6,7 +6,7 @@
 /*   By: jgoad <jgoad@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/15 15:33:01 by jgoad             #+#    #+#             */
-/*   Updated: 2022/11/15 15:54:03 by jgoad            ###   ########.fr       */
+/*   Updated: 2022/11/15 16:05:18 by jgoad            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@
 # include "../libft/libft.h"
 
 /* Local File Includes */
+# include "normfail.h"
 # include "structs.h"
 # include "defines_enums.h"
 # include "error.h"
@@ -240,7 +241,6 @@ void	init_parse_fct_ptrs(t_data *rt);
 /****************************************/
 /*                BONUS               */
 /****************************************/
-
 /* Shape Specific UV mapping */
 t_vec2	spherical_map(t_vec3 p);
 t_vec2	planar_map(t_vec3 p);
@@ -248,9 +248,6 @@ t_vec2	cylindrical_map(t_vec3 p);
 
 /* Checkerboard Pattern */
 t_color	uv_pattern_at_checkers(t_texture texture, t_vec2 uv);
-
-/* Fuck you norminette */
-t_texture	uv_checkers(int width, int height, t_color c1, t_color c2);
 
 /* Image texture mapping */
 t_color	uv_pattern_at_image(t_texture texture, t_vec2 uv);

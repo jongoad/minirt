@@ -80,7 +80,8 @@ INCFILES	=	defines_enums.h \
 				error.h \
 				hooks.h \
 				minirt.h \
-				structs.h
+				structs.h \
+				normfail.h
 
 
 INC_DIR			= ./includes

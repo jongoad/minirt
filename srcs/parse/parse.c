@@ -6,7 +6,7 @@
 /*   By: jgoad <jgoad@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/15 15:14:04 by jgoad             #+#    #+#             */
-/*   Updated: 2022/11/15 15:14:06 by jgoad            ###   ########.fr       */
+/*   Updated: 2022/11/15 15:57:20 by jgoad            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,8 @@ int	check_tok(char *input, char **types)
 	t_i	i;
 
 	i.x = 0;
+	if (!input)
+		return (-1);
 	if (input[0] == '#')
 		return (-2);
 	while (types[i.x])
