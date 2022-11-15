@@ -7,9 +7,9 @@ float	deg_to_rad(float deg)
 }
 
 /* Round a float at a specified precision */
-float roundf_precision(float n, float p)
+float	roundf_precision(float n, float p)
 {
-	double res;
+	double	res;
 
 	res = round(n * p);
 	return (res / p);

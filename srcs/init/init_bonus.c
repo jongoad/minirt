@@ -3,20 +3,20 @@
 /* Load and initialize texture from image file */
 void	init_texture(t_obj *obj, char *input)
 {
-	if (!ft_strcmp(input, "checkers"))							/* Create a checkerboard texture */
+	if (!ft_strcmp(input, "checkers"))
 	{
 		if (obj->type == T_SPH)
 			obj->texture = uv_checkers(16, 8,
-			int_to_color(BLACK), int_to_color(WHITE));
+					int_to_color(BLACK), int_to_color(WHITE));
 		else
 			obj->texture = uv_checkers(8, 8,
-			int_to_color(BLACK), int_to_color(WHITE));
+					int_to_color(BLACK), int_to_color(WHITE));
 		obj->texture.is_checkers = true;
 	}
-	else if (!read_ppm(&obj->texture.image, input))				/* Load texture from .ppm file */
+	else if (!read_ppm(&obj->texture.image, input))
 		return ;
 	else
-	{ 
+	{
 		obj->texture.is_image = true;
 		obj->texture.width = obj->texture.image.width;
 		obj->texture.height = obj->texture.image.height;
@@ -27,7 +27,7 @@ void	init_texture(t_obj *obj, char *input)
 void	init_normal(t_obj *obj, char *input)
 {
 	obj->normal.is_image = false;
-	if (!read_ppm(&obj->normal.image, input))					/* Load normal map from .ppm file */
+	if (!read_ppm(&obj->normal.image, input))
 		return ;
 	else
 	{
@@ -46,14 +46,14 @@ void	init_obj_bonus(t_obj *obj, char **input)
 	i.x = 0;
 	while (input[i.x])
 	{
-		split = ft_split(input[i.x], ':');						/* Ensure bonus attribute has enough components */
+		split = ft_split(input[i.x], ':');
 		if (split[0] && split[1])
 		{
-			if (!ft_strcmp(split[0], "texture"))				/* Initialize texture */
+			if (!ft_strcmp(split[0], "texture"))
 				init_texture(obj, split[1]);
-			else if (!ft_strcmp(split[0], "normal"))			/* Intialize normal map */
+			else if (!ft_strcmp(split[0], "normal"))
 				init_normal(obj, split[1]);
-			else if (!ft_strcmp(split[0], "shininess"))			/* Initialize shininess values */
+			else if (!ft_strcmp(split[0], "shininess"))
 				obj->shininess = ft_atof(split[1]);
 		}
 		ft_free_split(split);

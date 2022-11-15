@@ -9,8 +9,6 @@ void	init_color(t_color *clr, char *input)
 	clr->r = ft_atoi(split[0]);
 	clr->g = ft_atoi(split[1]);
 	clr->b = ft_atoi(split[2]);
-	// clr->weight = 1;
-	//FIXME - If weight is not being used anywhere is can be removed
 	ft_free_split(split);
 }
 
@@ -29,7 +27,7 @@ void	init_float_triplet(t_vec3 *vec, char *input)
 /* Count objects for allocation and final parse step */
 void	count_objects(t_data *rt)
 {
-	int res;
+	int	res;
 	int	i;
 
 	i = 0;

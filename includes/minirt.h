@@ -267,6 +267,7 @@ void 	parse_ppm_maxval(t_ppm *img, char *buf, int *p);
 void 	parse_ppm_header(t_ppm *img, char *buf, int *p);
 int		parse_ppm(t_ppm *img, char *buf);
 int		read_ppm(t_ppm *img, char *path);
+int		return_on_err_ppm(char *err, int fd, char *buf, char *path);
 
 /****************************************/
 /*           Debug Utilities            */

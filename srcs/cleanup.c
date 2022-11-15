@@ -8,9 +8,9 @@ int	rt_clean_exit(t_data *rt)
 }
 
 /* Memory cleanup for .ppm image */
-void rt_clean_image(t_ppm image)
+void	rt_clean_image(t_ppm image)
 {
-	t_i i;
+	t_i	i;
 
 	i.y = 0;
 	while (i.y < image.height)

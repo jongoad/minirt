@@ -1,7 +1,7 @@
 #include "minirt.h"
 
 /* Parse plane (pl) */
-int parse_plane(char **obj)
+int	parse_plane(char **obj)
 {
 	t_i	i;
 
@@ -10,13 +10,13 @@ int parse_plane(char **obj)
 		i.x++;
 	if (i.x < 4)
 		return (0);
-	if (!check_coords(obj[1]))							/* Check position data */
+	if (!check_coords(obj[1]))
 		return (0);
-	if (!check_orientation(obj[2]))			/* Check orientation vector */
+	if (!check_orientation(obj[2]))
 		return (0);
-	if (!check_rgb(obj[3]))								/* Ensure RGB values are within range and valid */
+	if (!check_rgb(obj[3]))
 		return (0);
-	if (BONUS && i.x > 4)								/* Check bonus attributes */
+	if (BONUS && i.x > 4)
 	{
 		i.x = 4;
 		while (obj[i.x])
@@ -32,20 +32,20 @@ int parse_plane(char **obj)
 /* Parse sphere (sp) */
 int	parse_sphere(char **obj)
 {
-	t_i i;
+	t_i	i;
 
 	i.x = 0;
 	while (obj[i.x])
 		i.x++;
 	if (i.x < 4)
 		return (0);
-	if (!check_coords(obj[1]))							/* Check position data */
+	if (!check_coords(obj[1]))
 		return (0);
-	else if (!check_float(obj[2], 0, 0))				/* Ensure sphere diameter value is valid */
+	else if (!check_float(obj[2], 0, 0))
 		return (0);
-	else if (!check_rgb(obj[3]))						/* Ensure RGB values are within range and valid */
+	else if (!check_rgb(obj[3]))
 		return (0);
-	if (BONUS && i.x > 4)								/* Check bonus attributes */
+	if (BONUS && i.x > 4)
 	{
 		i.x = 4;
 		while (obj[i.x])
@@ -61,24 +61,20 @@ int	parse_sphere(char **obj)
 /* Parse cylinder (cy) */
 int	parse_cylinder(char **obj)
 {
-	t_i i;
+	t_i	i;
 
 	i.x = 0;
 	while (obj[i.x])
 		i.x++;
 	if (i.x < 6)
 		return (0);
-	if (!check_coords(obj[1]))							/* Check position data */
+	if (!check_coords(obj[1]) || !check_orientation(obj[2]))
 		return (0);
-	if (!check_orientation(obj[2])) 					/* Check orientation vector */
+	if (!check_float(obj[3], 0, 0) || !check_float(obj[4], 0, 0))
 		return (0);
-	if (!check_float(obj[3], 0, 0))						/* Ensure cylinder diameter value is valid */
+	if (!check_rgb(obj[5]))
 		return (0);
-	if (!check_float(obj[4], 0, 0))						/* Ensure cylinder height value is valid */
-		return (0);
-	if (!check_rgb(obj[5]))								/* Ensure RGB values are within range and valid */
-		return (0);
-	if (BONUS && i.x > 6)								/* Check bonus attributes */
+	if (BONUS && i.x > 6)
 	{
 		i.x = 6;
 		while (obj[i.x])
@@ -94,24 +90,20 @@ int	parse_cylinder(char **obj)
 /* Parse cone (co) */
 int	parse_cone(char **obj)
 {
-	t_i i;
+	t_i	i;
 
 	i.x = 0;
 	while (obj[i.x])
 		i.x++;
 	if (i.x < 6)
 		return (0);
-	else if (!check_coords(obj[1]))						/* Check position data */
+	else if (!check_coords(obj[1]) || !check_orientation(obj[2]))
 		return (0);
-	else if (!check_orientation(obj[2]))				/* Check orientation vector */
+	else if (!check_float(obj[3], 1, 75) || !check_float(obj[4], 0.1, 100))
 		return (0);
-	else if (!check_float(obj[3], 1, 75)) 				/* Ensure cone angle value is valid */
+	else if (!check_rgb(obj[5]))
 		return (0);
-	else if (!check_float(obj[4], 0.1, 100))			/* Ensure cone height value is valid */
-		return (0);
-	else if (!check_rgb(obj[5]))						/* Ensure RGB values are within range and valid */
-		return (0);
-	if (BONUS && i.x > 6)								/* Check bonus attributes */
+	if (BONUS && i.x > 6)
 	{
 		i.x = 6;
 		while (obj[i.x])
@@ -134,14 +126,14 @@ int	parse_obj_bonus(char *obj)
 	retval = 1;
 	if (count_array_2d(split) == 2)
 	{
-		if (!ft_strcmp(split[0], "shininess"))				/* Parse object shininess */
-			if (!check_float(split[1], 0, MAX_SHININESS))	/* Check if shininess value is within range */
+		if (!ft_strcmp(split[0], "shininess"))
+			if (!check_float(split[1], 0, MAX_SHININESS))
 				retval = 0;
-		if (!ft_strcmp(split[0], "texture"))				/* Parse object texture */
-			if (!check_path(split[1], T_TEXTURE))			/* Check if filepath or keyword follows defined syntax */
+		if (!ft_strcmp(split[0], "texture"))
+			if (!check_path(split[1], T_TEXTURE))
 				retval = 0;
-		if (!ft_strcmp(split[0], "normal"))					/* Parse object normal map */
-			if (!check_path(split[1], T_NORMAL))			/* Check if filepath follows defined syntax */
+		if (!ft_strcmp(split[0], "normal"))
+			if (!check_path(split[1], T_NORMAL))
 				retval = 0;
 	}
 	else

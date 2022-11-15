@@ -3,18 +3,18 @@
 /* Initialize parse variables */
 void	init_parse(t_parse *dat)
 {
-	dat->buf = NULL;															/* Initialize buffer variables to NULL */
+	dat->buf = NULL;
 	dat->scene = NULL;
 	dat->split = NULL;
-	dat->f[0] = parse_ambient;													/* Assign object parsing function pointer array */
+	dat->f[0] = parse_ambient;
 	dat->f[1] = parse_camera;
 	dat->f[2] = parse_light;
 	dat->f[3] = parse_plane;
 	dat->f[4] = parse_sphere;
 	dat->f[5] = parse_cylinder;
 	dat->f[6] = parse_cone;
-	dat->tok = create_tok();													/* Create token array for accessing function pointer array */
-	dat->has_ambient = false;													/* Set duplicate object check variables*/
+	dat->tok = create_tok();
+	dat->has_ambient = false;
 	dat->has_camera = false;
 }
 
@@ -34,13 +34,13 @@ int	open_scene(t_parse *dat, char *path)
 	status = read(dat->fd, dat->buf, READ_SIZE);
 	if (status == -1)
 		return (parse_error(dat, PARSE_ERR_READ, NULL));
-	dat->split = ft_split(dat->buf, '\n');										/* Split scene by newline */
-	while (dat->split && dat->split[i])											/* Count number of non-empty lines to ensure file contains data */
+	dat->split = ft_split(dat->buf, '\n');
+	while (dat->split && dat->split[i])
 		i++;
 	if (i == 0)
 		return (parse_error(dat, PARSE_ERR_EMPTY, NULL));
-	replace_whitespace(dat);													/* Trim unecessary whitespace from lines */
-	split_scene(dat);															/* Split each scene line into components */
+	replace_whitespace(dat);
+	split_scene(dat);
 	return (1);
 }
 
@@ -50,12 +50,11 @@ int	check_tok(char *input, char **types)
 	t_i	i;
 
 	i.x = 0;
-
-	if (input[0] == '#')														/* If a comment line is found, ignore the line entirely */
+	if (input[0] == '#')
 		return (-2);
 	while (types[i.x])
 	{
-		if (!ft_strcmp(input, types[i.x]))										/* If valid object type identifier found, return index to access function pointer array */
+		if (!ft_strcmp(input, types[i.x]))
 			return (i.x);
 		i.x++;
 	}
@@ -63,7 +62,7 @@ int	check_tok(char *input, char **types)
 }
 
 /* Check each scene element for validity */
-int check_scene(t_parse *dat)
+int	check_scene(t_parse *dat)
 {
 	t_i	i;
 	int	res;
@@ -71,20 +70,20 @@ int check_scene(t_parse *dat)
 	i.x = -1;
 	while (dat->scene[++i.x])
 	{
-		res = check_tok(dat->scene[i.x][0], dat->tok);							/* Check type identifier against token array */
-		if (res == -2)															/* Ignore comment and continue */
-			continue;
-		if (res == -1)															/* Return error if no type match */
+		res = check_tok(dat->scene[i.x][0], dat->tok);
+		if (res == -2)
+			continue ;
+		if (res == -1)
 			return (parse_error(dat, PARSE_ERR_OBJ, dat->scene[i.x]));
-		if ((res == 0 && dat->has_ambient) || (res == 1 && dat->has_camera))	/* Handle duplicate scene object error */
+		if ((res == 0 && dat->has_ambient) || (res == 1 && dat->has_camera))
 			return (parse_error(dat, PARSE_ERR_DUP, dat->scene[i.x]));
 		if (res == 0 && !dat->has_ambient)
 			dat->has_ambient = true;
 		if (res == 1 && !dat->has_camera)
 			dat->has_camera = true;
-		if (res == 6 && !BONUS)													/* Handle bonus object without bonus error */
+		if (res == 6 && !BONUS)
 			return (parse_error(dat, PARSE_ERR_BONUS, dat->scene[i.x]));
-		if (!dat->f[res](dat->scene[i.x]))										/* Call correct parse function for object */
+		if (!dat->f[res](dat->scene[i.x]))
 			return (parse_error(dat, PARSE_ERR_BAD_DATA, dat->scene[i.x]));
 	}
 	return (1);

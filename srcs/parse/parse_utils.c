@@ -3,7 +3,7 @@
 /* Replace all whitespaces with space char */
 void	replace_whitespace(t_parse *dat)
 {
-	t_i i;
+	t_i	i;
 
 	i.y = 0;
 	while (dat->split[i.y])
@@ -11,7 +11,7 @@ void	replace_whitespace(t_parse *dat)
 		i.x = 0;
 		while (dat->split[i.y][i.x])
 		{
-			if (is_set(dat->split[i.y][i.x], "\t\v\f\r"))				/* If non space character whitespace is found, replace with space character */
+			if (is_set(dat->split[i.y][i.x], "\t\v\f\r"))
 				dat->split[i.y][i.x] = ' ';
 			i.x++;
 		}
@@ -22,11 +22,11 @@ void	replace_whitespace(t_parse *dat)
 /* Free parse memory on error return */
 int	parse_error(t_parse *dat, char *err, char **line)
 {
-	t_i i;
+	t_i	i;
 
 	i.x = 0;
 	ft_putstr_fd(err, 2);
-	if (line)															/* If line is provided, print line where error occured */
+	if (line)
 	{
 		ft_putchar_fd('\t', 2);
 		while (line[i.x])
@@ -37,21 +37,21 @@ int	parse_error(t_parse *dat, char *err, char **line)
 			i.x++;
 		}
 	}
-	parse_free(dat);													/* Free parse data before return */
+	parse_free(dat);
 	return (0);
 }
 
 /* Free all allocated memory used for parsing */
 void	parse_free(t_parse *dat)
 {
-	t_i i;
+	t_i	i;
 
 	i.x = 0;
-	if (dat->buf)														/* Free read buffer */
+	if (dat->buf)
 		free(dat->buf);
-	if (dat->split)														/* Free scene line split */
+	if (dat->split)
 		ft_free_split(dat->split);
-	if (dat->scene)														/* Free object component split */
+	if (dat->scene)
 	{
 		while (dat->scene[i.x])
 		{
@@ -60,7 +60,7 @@ void	parse_free(t_parse *dat)
 		}
 		free(dat->scene);
 	}
-	if (dat->tok)														/* Free identifier token array */
+	if (dat->tok)
 		ft_free_split(dat->tok);
 	close(dat->fd);
 }
@@ -68,16 +68,16 @@ void	parse_free(t_parse *dat)
 /* Split individual scene lines by space */
 void	split_scene(t_parse *dat)
 {
-	t_i i;
+	t_i	i;
 
 	i.x = 0;
 	while (dat->split[i.x])
 		i.x++;
 	dat->scene = ft_xalloc(sizeof(char *) * (i.x + 1));
 	i.x = 0;
-	while(dat->split[i.x])
+	while (dat->split[i.x])
 	{
-		dat->scene[i.x] = ft_split(dat->split[i.x], ' ');				/* Split each scene object into components */
+		dat->scene[i.x] = ft_split(dat->split[i.x], ' ');
 		i.x++;
 	}
 	dat->scene[i.x] = NULL;
@@ -87,7 +87,7 @@ void	split_scene(t_parse *dat)
 char	**create_tok(void)
 {
 	char	**tok;
-	
+
 	tok = ft_xalloc(sizeof(char *) * 8);
 	tok[0] = ft_strdup("A");
 	tok[1] = ft_strdup("C");

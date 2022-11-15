@@ -55,6 +55,7 @@ CFILES	=	cleanup.c \
 			texture/parse_ppm.c \
 			texture/normal_map.c \
 			texture/shape_map.c \
+			texture/utils_ppm.c \
 			vector/vectors_create.c \
 			vector/vectors_x_scalar.c \
 			vector/vectors_x_vec3.c \
