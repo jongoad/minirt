@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minirt.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iyahoui- <iyahoui-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jgoad <jgoad@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/15 15:33:01 by jgoad             #+#    #+#             */
-/*   Updated: 2022/11/15 16:09:33 by iyahoui-         ###   ########.fr       */
+/*   Updated: 2022/11/15 16:14:26 by jgoad            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,13 +49,13 @@ t_obj	*new_cylinder(t_vec3 pos, t_vec3 normal, float diameter,
 			float height, t_vec3 color);
 
 /* Object intersection functions */
-int	hit_sphere(t_ray *r, t_obj *o, t_hit_rec *rec);
-int	hit_sphere_no_hit_rec(t_ray *r, t_obj *o);
-int	hit_plane(t_ray *r, t_obj *o, t_hit_rec *rec);
-int	hit_disk(t_ray *r, t_obj *o, t_hit_rec *rec);
-int	hit_caps(t_ray *r, t_obj *o, t_hit_rec *rec);
-int	hit_cylinder(t_ray *r, t_obj *o, t_hit_rec *rec);
-int	hit_cone(t_ray *r, t_obj *o, t_hit_rec *rec);
+int		hit_sphere(t_ray *r, t_obj *o, t_hit_rec *rec);
+int		hit_sphere_no_hit_rec(t_ray *r, t_obj *o);
+int		hit_plane(t_ray *r, t_obj *o, t_hit_rec *rec);
+int		hit_disk(t_ray *r, t_obj *o, t_hit_rec *rec);
+int		hit_caps(t_ray *r, t_obj *o, t_hit_rec *rec);
+int		hit_cylinder(t_ray *r, t_obj *o, t_hit_rec *rec);
+int		hit_cone(t_ray *r, t_obj *o, t_hit_rec *rec);
 
 /* Colors */
 t_color	int_to_color(int c);
