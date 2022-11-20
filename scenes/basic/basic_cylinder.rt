@@ -1,0 +1,15 @@
+# Ambient light (A)
+#	Intensity		|	Colour
+A   1.0                 255,255,255
+
+# Point Light (L)
+#	Position		|	Intensity		|	Colour
+L	10.0,4.0,2.0		1.0					255,255,255
+
+# Camera (C)
+#	Position		|	Orientation		|	Field of View (FOV)
+C   0.0,0.0,10.0        0.0,0.0,-1.0		50
+
+# Cylinder (cy)
+#	Position		|	Orientation		|	Radius	|	Height	|	Colour
+cy	0.0,0.0,0.0			0.0,1.0,0.0			2.0			4.0			100,25,255

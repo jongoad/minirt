@@ -6,7 +6,7 @@
 /*   By: jgoad <jgoad@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/15 15:12:56 by jgoad             #+#    #+#             */
-/*   Updated: 2022/11/15 15:12:58 by jgoad            ###   ########.fr       */
+/*   Updated: 2022/11/20 15:12:28 by jgoad            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,10 +19,10 @@ void	init_texture(t_obj *obj, char *input)
 	{
 		if (obj->type == T_SPH)
 			obj->texture = uv_checkers(16, 8,
-					int_to_color(BLACK), int_to_color(WHITE));
+					obj->clr, int_to_color(WHITE));
 		else
 			obj->texture = uv_checkers(8, 8,
-					int_to_color(BLACK), int_to_color(WHITE));
+					obj->clr, int_to_color(WHITE));
 		obj->texture.is_checkers = true;
 	}
 	else if (!read_ppm(&obj->texture.image, input))

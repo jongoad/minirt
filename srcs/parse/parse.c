@@ -6,7 +6,7 @@
 /*   By: jgoad <jgoad@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/15 15:14:04 by jgoad             #+#    #+#             */
-/*   Updated: 2022/11/15 15:57:20 by jgoad            ###   ########.fr       */
+/*   Updated: 2022/11/20 16:30:20 by jgoad            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,13 +100,24 @@ int	check_scene(t_parse *dat)
 		if (!dat->f[res](dat->scene[i.x]))
 			return (parse_error(dat, PARSE_ERR_BAD_DATA, dat->scene[i.x]));
 	}
+	if (!dat->has_ambient || !dat->has_camera)
+		return (parse_error(dat, PARSE_ERR_MISS, NULL));
 	return (1);
 }
 
 /* Parse .rt scene file to ensure data is valid */
 int	parse(t_data *rt, char *path)
 {
+	int	i;
+
+	i = 0;
 	init_parse(&rt->parse);
+	if (!path)
+		return_on_err("Error: path provided is empty string\n", 0);
+	while (path[i])
+		i++;
+	if (i < 4 || path[i - 1] != 't' || path[i - 2] != 'r' || path[i - 3] != '.')
+		return (return_on_err(INVALID_SCENE, 0));
 	if (!open_scene(&rt->parse, path) || !check_scene(&rt->parse))
 		return (0);
 	return (1);
