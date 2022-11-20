@@ -1,6 +1,6 @@
-NAME				=	minirt
-NAME_BONUS			=	minirt_bonus
-NAME_LINUX			=	minirt_linux
+NAME				=	miniRT
+NAME_BONUS			=	miniRT_bonus
+NAME_LINUX			=	miniRT_linux
 
 CC				= gcc
 CFLAGS			= -Wall -Werror -Wextra -Ofast -g -funsafe-math-optimizations
