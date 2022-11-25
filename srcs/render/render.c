@@ -6,7 +6,7 @@
 /*   By: iyahoui- <iyahoui-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/15 14:18:56 by iyahoui-          #+#    #+#             */
-/*   Updated: 2022/11/25 16:23:07 by iyahoui-         ###   ########.fr       */
+/*   Updated: 2022/11/25 16:24:36 by iyahoui-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,8 @@ void	render_scene(t_data *rt)
 	t_hit_rec	rec;
 	int			i;
 	int			j;
-
+	printf("Cam orientation:\n\tx: %f\n\ty: %f\n\tz: %f\n", rt->cam.forward.x, rt->cam.forward.y, rt->cam.forward.z);
+	printf("Ray[320][640]:\n\tx: %f\n\ty: %f\n\tz: %f\n", rt->cam.rays[320][640].x, rt->cam.rays[320][640].y, rt->cam.rays[320][640].z);
 	r.orig = rt->cam.pos;
 	j = -1;
 	while (++j < rt->img->height)

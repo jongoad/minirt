@@ -6,7 +6,7 @@
 /*   By: iyahoui- <iyahoui-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/11 13:35:14 by iyahoui-          #+#    #+#             */
-/*   Updated: 2022/11/25 16:17:50 by iyahoui-         ###   ########.fr       */
+/*   Updated: 2022/11/25 16:24:31 by iyahoui-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ double	get_magnitude_dbl(double n)
 	if (n < 0)
 		n *= -1;
 	magnitude = 1;
-	while (n >= 10)
+	while (n >= 10 )
 	{
 		magnitude *= 10;
 		n /= 10;

@@ -6,7 +6,7 @@
 /*   By: iyahoui- <iyahoui-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/04 15:11:37 by ismaelyahya       #+#    #+#             */
-/*   Updated: 2022/11/25 16:17:36 by iyahoui-         ###   ########.fr       */
+/*   Updated: 2022/11/25 16:24:28 by iyahoui-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,8 +30,8 @@ double	ft_atof(const char *str)
 			sign *= -1;
 	while (ft_isdigit(str[i]))
 		integer = 10 * integer + (str[i++] - '0');
-	if (!str[i] || str[i++] != '.')
-		return (integer);
+    if (!str[i] || str[i++] != '.')
+        return (integer);
 	while (ft_isdigit(str[i]))
 		decimal = 10 * decimal + (str[i++] - '0');
 	return ((sign * integer) + (decimal / (get_magnitude_dbl(decimal) * 10)));
