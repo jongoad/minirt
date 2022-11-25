@@ -16,7 +16,7 @@
 t_texture	uv_checkers(int width, int height, t_color c1, t_color c2)
 {
 	t_texture	res;
-
+	
 	res.width = width;
 	res.height = height;
 	res.c1 = c1;

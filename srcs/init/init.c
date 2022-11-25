@@ -6,7 +6,7 @@
 /*   By: jgoad <jgoad@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/15 15:13:20 by jgoad             #+#    #+#             */
-/*   Updated: 2022/11/15 15:13:23 by jgoad            ###   ########.fr       */
+/*   Updated: 2022/11/25 16:12:46 by jgoad            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,17 +56,20 @@ void	init_cam_angles(t_data *rt)
 	float	res;
 	t_vec3	cross_test;
 
+	if (rt->cam.forward.x == 0 && (rt->cam.forward.y == -1
+			|| rt->cam.forward.y == 1) && rt->cam.forward.z == 0)
+				rt->cam.forward.z = 0.00001;
 	if (sqrt(pow(rt->cam.forward.y, 2) + pow(rt->cam.forward.z, 2)) == 0.0)
 		rt->cam.pitch = (90 - (acos(rt->cam.forward.y
 						/ (sqrt(pow(rt->cam.forward.y, 2)
 								+ pow(rt->cam.forward.x, 2))))
 					* (180 / PI))) * -1.0f;
 	else
-		rt->cam.pitch = (90 - (acos(rt->cam.forward.y
+			rt->cam.pitch = (90 - (acos(rt->cam.forward.y
 						/ (sqrt(pow(rt->cam.forward.y, 2)
 								+ pow(rt->cam.forward.z, 2))))
 					* (180 / PI))) * -1.0f;
-	rt->cam.pitch = roundf_precision(rt->cam.pitch, 5);
+		rt->cam.pitch = roundf_precision(rt->cam.pitch, 5);
 	rt->cam.yaw = acos(-rt->cam.forward.z / (sqrt(pow(rt->cam.forward.x, 2)
 					+ pow(rt->cam.forward.z, 2)))) * (180 / PI);
 	rt->cam.yaw = roundf_precision(rt->cam.yaw, 5);
