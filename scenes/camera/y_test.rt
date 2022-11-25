@@ -1,0 +1,19 @@
+# Ambient light (A)
+#	Intensity		|	Colour
+A   1.0                 255,255,255
+
+# Point Light (L)
+#	Position		|	Intensity		|	Colour
+L	0.0,10.0,0.0		1.0					255,255,255
+
+# Camera (C)
+#	Position		|	Orientation		|	Field of View (FOV)
+C   0.0,10.0,0.0        0.0,-1.0,0.0		50
+
+# Sphere (sp)
+#	Position		|	Radius			|	Colour	
+sp  0.0,0.0,0.0         2.0				   	255,20,20
+
+# Plane (pl)
+#	Position		|	Orientation		|	Colour		
+pl	0.0,-3.0,0.0		0.0,1.0,0.0			255,20,255
