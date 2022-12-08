@@ -3,17 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   key_hooks_rotations.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iyahoui- <iyahoui-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jgoad <jgoad@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/15 14:57:52 by iyahoui-          #+#    #+#             */
-/*   Updated: 2022/11/15 15:00:33 by iyahoui-         ###   ########.fr       */
+/*   Updated: 2022/12/08 13:40:28 by jgoad            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
 #include "hooks.h"
 
-/* Track object rotation for allowing texture rotation */
+/* Track object rotation to allowing texture rotation */
 void	save_rot(t_obj *obj, unsigned char axis, bool is_positive)
 {
 	float	rot_val;
@@ -45,7 +45,8 @@ void	save_rot(t_obj *obj, unsigned char axis, bool is_positive)
 void	apply_rotation(t_obj *o, unsigned char rot_axis, bool rot_is_positive)
 {
 	static t_mat4	rot_matrices[6];
-
+	
+	/* Initialize static rotation matrices for each direction on each axis */
 	if (!rot_matrices[0].m[0][0])
 	{
 		rot_matrices[2 * X_ROT + 0] = mat_rot(PI / 16, 'x');

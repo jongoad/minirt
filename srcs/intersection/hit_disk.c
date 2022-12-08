@@ -3,15 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   hit_disk.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iyahoui- <iyahoui-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jgoad <jgoad@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/15 14:21:22 by iyahoui-          #+#    #+#             */
-/*   Updated: 2022/11/15 16:11:03 by iyahoui-         ###   ########.fr       */
+/*   Updated: 2022/12/08 13:50:50 by jgoad            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
 
+/* Calculate ray-object intersection for circular planes */
 int	hit_disk(t_ray *r, t_obj *o, t_hit_rec *rec)
 {
 	register float	discriminant;

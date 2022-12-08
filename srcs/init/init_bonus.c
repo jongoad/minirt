@@ -6,13 +6,13 @@
 /*   By: jgoad <jgoad@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/15 15:12:56 by jgoad             #+#    #+#             */
-/*   Updated: 2022/11/20 15:12:28 by jgoad            ###   ########.fr       */
+/*   Updated: 2022/12/08 13:43:10 by jgoad            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
 
-/* Load and initialize texture from image file */
+/* Load and initialize texture from .ppm image file */
 void	init_texture(t_obj *obj, char *input)
 {
 	if (!ft_strcmp(input, "checkers"))
@@ -35,7 +35,7 @@ void	init_texture(t_obj *obj, char *input)
 	}
 }
 
-/* Load and initialize normal map from image file*/
+/* Load and initialize normal map from .ppm image file*/
 void	init_normal(t_obj *obj, char *input)
 {
 	obj->normal.is_image = false;

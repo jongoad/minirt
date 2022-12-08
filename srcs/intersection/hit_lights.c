@@ -3,21 +3,23 @@
 /*                                                        :::      ::::::::   */
 /*   hit_lights.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iyahoui- <iyahoui-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jgoad <jgoad@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/15 14:21:25 by iyahoui-          #+#    #+#             */
-/*   Updated: 2022/11/15 16:12:20 by iyahoui-         ###   ########.fr       */
+/*   Updated: 2022/12/08 14:15:20 by jgoad            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
 
+/* Create hit record for light rays */
 int	hit_light(t_ray *r, t_obj *l, t_hit_rec *rec)
 {
 	l->fwd = r->dir;
 	return (hit_plane(r, l, rec));
 }
 
+/* Check for intersections with light rays */
 bool	hit_lights(t_data *rt, t_ray *r, t_hit_rec *rec)
 {
 	t_hit_rec	tmp;
@@ -46,6 +48,7 @@ bool	hit_lights(t_data *rt, t_ray *r, t_hit_rec *rec)
 	return (tmp.hit_anything);
 }
 
+/* Apply light halo effect based on ray-plane intersection */
 t_color	apply_light_halos(t_data *rt, t_ray *r, t_hit_rec *rec, t_color color)
 {
 	t_hit_rec	rec2;

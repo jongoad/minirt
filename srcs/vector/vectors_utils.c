@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   vectors_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iyahoui- <iyahoui-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jgoad <jgoad@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/15 14:12:14 by iyahoui-          #+#    #+#             */
-/*   Updated: 2022/11/15 14:13:21 by iyahoui-         ###   ########.fr       */
+/*   Updated: 2022/12/08 13:20:57 by jgoad            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,7 @@ t_vec4	vec4(float x, float y, float z, float w)
 	return (res);
 }
 
+/* Print vec3 data */
 void	print_vec3(t_vec3 v)
 {
 	printf("(%f, %f, %f)", v.x, v.y, v.z);

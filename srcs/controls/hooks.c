@@ -6,7 +6,7 @@
 /*   By: jgoad <jgoad@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/15 15:12:35 by jgoad             #+#    #+#             */
-/*   Updated: 2022/11/15 15:12:46 by jgoad            ###   ########.fr       */
+/*   Updated: 2022/12/08 13:32:01 by jgoad            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,18 +22,8 @@ void	set_hooks(t_data *rt)
 	mlx_loop_hook(rt->mlx_ptr, default_hook, rt);
 	mlx_hook(rt->win_ptr, DESTROY_NOTIFY, 0, rt_clean_exit, rt);
 	mlx_hook(rt->win_ptr, KEYPRESS, KEYPRESS_MASK, handle_key_press_hook, rt);
-	mlx_hook(
-		rt->win_ptr,
-		MOTION_NOTIFY,
-		MOUSE_RELEASE_MASK,
-		handle_mouse_motion,
-		rt);
-	mlx_hook(
-		rt->win_ptr,
-		MOUSE_RELEASE,
-		MOUSE_RELEASE_MASK,
-		handle_mouse_btn_release,
-		rt);
+	mlx_hook(rt->win_ptr, MOTION_NOTIFY, MOUSE_RELEASE_MASK, handle_mouse_motion, rt);
+	mlx_hook(rt->win_ptr, MOUSE_RELEASE, MOUSE_RELEASE_MASK, handle_mouse_btn_release, rt);
 	return ;
 }
 

@@ -3,15 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   hit_plane.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iyahoui- <iyahoui-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jgoad <jgoad@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/15 14:21:41 by iyahoui-          #+#    #+#             */
-/*   Updated: 2022/11/15 16:10:40 by iyahoui-         ###   ########.fr       */
+/*   Updated: 2022/12/08 14:15:46 by jgoad            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
 
+/* Check for ray intersection with plane objects */
 int	hit_plane(t_ray *r, t_obj *o, t_hit_rec *rec)
 {
 	register float	discriminant;

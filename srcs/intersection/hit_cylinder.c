@@ -3,15 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   hit_cylinder.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iyahoui- <iyahoui-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jgoad <jgoad@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/15 14:21:19 by iyahoui-          #+#    #+#             */
-/*   Updated: 2022/11/15 16:11:31 by iyahoui-         ###   ########.fr       */
+/*   Updated: 2022/12/08 13:49:23 by jgoad            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
 
+/* Cache quadratic solver data for current object */
 static bool	cylinder_quadratic(t_ray *r, t_obj *o, t_quadratic *q)
 {
 	q->oc = sub_vec3(r->orig, o->pos);
@@ -19,8 +20,7 @@ static bool	cylinder_quadratic(t_ray *r, t_obj *o, t_quadratic *q)
 	q->oc_dot_fwd = dot_vec3(q->oc, o->fwd);
 	q->a = dot_vec3(r->dir, r->dir) - q->dir_dot_fwd * q->dir_dot_fwd;
 	q->half_b = dot_vec3(r->dir, q->oc) - q->dir_dot_fwd * q->oc_dot_fwd;
-	q->c = dot_vec3(q->oc, q->oc)
-		- q->oc_dot_fwd * q->oc_dot_fwd - o->radius * o->radius;
+	q->c = dot_vec3(q->oc, q->oc) - q->oc_dot_fwd * q->oc_dot_fwd - o->radius * o->radius;
 	q->discriminant = q->half_b * q->half_b - q->a * q->c;
 	if (q->discriminant < 0)
 		return (false);
@@ -29,10 +29,7 @@ static bool	cylinder_quadratic(t_ray *r, t_obj *o, t_quadratic *q)
 	return (true);
 }
 
-/** Formula for body intersection found at 
- *  https://hugi.scene.org/online/hugi24/ \
- * 	coding%20graphics%20chris%20dragan%20raytracing%20shapes.htm
-**/
+/* Calculate ray-object intersection for cylinder body */
 int	hit_cylinder_body(t_ray *r, t_obj *o, t_hit_rec *rec)
 {
 	static t_quadratic		q;
@@ -60,6 +57,7 @@ int	hit_cylinder_body(t_ray *r, t_obj *o, t_hit_rec *rec)
 	return (true);
 }
 
+/* Check for ray-object intersection for a cylinder object */
 int	hit_cylinder(t_ray *r, t_obj *o, t_hit_rec *rec)
 {
 	int	hit;

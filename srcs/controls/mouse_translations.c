@@ -1,18 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   mouse_hooks copy.c                                 :+:      :+:    :+:   */
+/*   mouse_translations.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iyahoui- <iyahoui-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jgoad <jgoad@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/15 14:53:16 by iyahoui-          #+#    #+#             */
-/*   Updated: 2022/11/15 14:54:24 by iyahoui-         ###   ########.fr       */
+/*   Updated: 2022/12/08 13:42:46 by jgoad            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
 #include "hooks.h"
 
+/* Handle individual object movement using mouse motion */
 int	handle_mouse_xy_translation(float pcnt_x, float pcnt_y, t_data *rt)
 {
 	float	z_dist;
@@ -32,6 +33,7 @@ int	handle_mouse_xy_translation(float pcnt_x, float pcnt_y, t_data *rt)
 	return (false);
 }
 
+/* Handle individual object movement using mousewheel */
 int	handle_mouse_z_translation(t_data *rt, int button)
 {
 	float	z_offset;

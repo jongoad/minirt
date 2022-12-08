@@ -6,7 +6,7 @@
 /*   By: jgoad <jgoad@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/15 15:13:20 by jgoad             #+#    #+#             */
-/*   Updated: 2022/11/25 16:12:46 by jgoad            ###   ########.fr       */
+/*   Updated: 2022/12/08 13:30:38 by jgoad            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@ void	init_scene(t_data *rt)
 	obj_nb = 0;
 	light_nb = 0;
 	init_scene_allocate(rt);
+	/* Iterate through parsed scene elements and initialize scene objects */
 	while (rt->parse.scene[i])
 	{
 		res = check_tok(rt->parse.scene[i][0], rt->parse.tok);
@@ -56,9 +57,11 @@ void	init_cam_angles(t_data *rt)
 	float	res;
 	t_vec3	cross_test;
 
+	/* Protection for initial camera pointing straight up or down */
 	if (rt->cam.forward.x == 0 && (rt->cam.forward.y == -1
 			|| rt->cam.forward.y == 1) && rt->cam.forward.z == 0)
 				rt->cam.forward.z = 0.00001;
+	/* Calculate initial camera rotation on x-axis (pitch) */
 	if (sqrt(pow(rt->cam.forward.y, 2) + pow(rt->cam.forward.z, 2)) == 0.0)
 		rt->cam.pitch = (90 - (acos(rt->cam.forward.y
 						/ (sqrt(pow(rt->cam.forward.y, 2)
@@ -69,7 +72,8 @@ void	init_cam_angles(t_data *rt)
 						/ (sqrt(pow(rt->cam.forward.y, 2)
 								+ pow(rt->cam.forward.z, 2))))
 					* (180 / PI))) * -1.0f;
-		rt->cam.pitch = roundf_precision(rt->cam.pitch, 5);
+	rt->cam.pitch = roundf_precision(rt->cam.pitch, 5);
+	/* Calculate initial camera rotation on y-axis (yaw) */
 	rt->cam.yaw = acos(-rt->cam.forward.z / (sqrt(pow(rt->cam.forward.x, 2)
 					+ pow(rt->cam.forward.z, 2)))) * (180 / PI);
 	rt->cam.yaw = roundf_precision(rt->cam.yaw, 5);

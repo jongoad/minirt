@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   mouse_hooks.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iyahoui- <iyahoui-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jgoad <jgoad@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/15 14:53:16 by iyahoui-          #+#    #+#             */
-/*   Updated: 2022/11/15 14:55:04 by iyahoui-         ###   ########.fr       */
+/*   Updated: 2022/12/08 13:41:19 by jgoad            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,7 @@ int	handle_mouse_hook(int button, int x, int y, t_data *rt)
 	(void)rt;
 	(void)x;
 	(void)y;
+	/* Cast a ray for current pixel on mouse left click to select an object */
 	if (button == LEFT_CLICK)
 	{
 		rt->selected = cast_ray_at_pixel(rt, x, y);

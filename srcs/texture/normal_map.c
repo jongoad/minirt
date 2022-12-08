@@ -6,7 +6,7 @@
 /*   By: jgoad <jgoad@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/15 15:15:00 by jgoad             #+#    #+#             */
-/*   Updated: 2022/11/15 15:15:00 by jgoad            ###   ########.fr       */
+/*   Updated: 2022/12/08 13:26:16 by jgoad            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,15 +38,13 @@ t_vec3	get_normal_map(t_vec3 p, t_obj *obj)
 	unsigned int	u;
 	unsigned int	v;
 
+	/* Find 2D uv coords based on 3D point on sphere */
 	pos = spherical_map(p);
 	u = floor((1.0f - pos.u) * (obj->normal.width - 1));
 	v = floor((1.0f - pos.v) * (obj->normal.height - 1));
-	normal.x = (((float)obj->normal.image.pixels[v][u].r / 255.0f)
-			* 2.0f) - 1.0f;
-	normal.y = (((float)obj->normal.image.pixels[v][u].g / 255.0f)
-			* 2.0f) - 1.0f;
-	normal.z = (((float)obj->normal.image.pixels[v][u].b / 255.0f)
-			* 2.0f) - 1.0f;
+	normal.x = (((float)obj->normal.image.pixels[v][u].r / 255.0f) * 2.0f) - 1.0f;
+	normal.y = (((float)obj->normal.image.pixels[v][u].g / 255.0f) * 2.0f) - 1.0f;
+	normal.z = (((float)obj->normal.image.pixels[v][u].b / 255.0f) * 2.0f) - 1.0f;
 	return (unit_vec3(normal));
 }
 
@@ -59,11 +57,14 @@ t_vec3	obj_get_normal(t_vec3 normal, t_vec3 p, t_obj *obj)
 	t_vec3	p_u;
 	t_vec3	res;
 
+	/* Find perurbation data from normal map image for a given point */
 	perturb = get_normal_map(p, obj);
+	/* Protection from unuseable cross product results */
 	if (normal.y > 0.99f || normal.y < -0.99f)
 		new_up = vec3(1, 0, 0);
 	else
 		new_up = vec3(0, 1, 0);
+	/* Apply normal perturbation */
 	p_v = unit_vec3(cross_vec3(new_up, normal));
 	p_u = unit_vec3(cross_vec3(normal, p_v));
 	res = add_vec3(normal, mult_vec3(p_u, perturb.x));

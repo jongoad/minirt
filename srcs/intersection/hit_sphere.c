@@ -3,15 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   hit_sphere.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iyahoui- <iyahoui-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jgoad <jgoad@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/15 14:21:45 by iyahoui-          #+#    #+#             */
-/*   Updated: 2022/11/15 16:10:26 by iyahoui-         ###   ########.fr       */
+/*   Updated: 2022/12/08 14:16:07 by jgoad            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
 
+/* Check for ray intersection with sphere objects */
 int	hit_sphere(t_ray *r, t_obj *o, t_hit_rec *rec)
 {
 	register t_vec3			oc;
